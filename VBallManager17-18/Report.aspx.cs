@@ -53,6 +53,7 @@ namespace VballManager
                     if (fee.IsPaid)
                     {
                         Fee paidFee = new Fee();
+                        paidFee.Date = fee.Date;
                         paidFee.PayDate = fee.PayDate;
                         paidFee.Amount = fee.Amount;
                         paidFee.FeeDesc = player.Name + "-" + fee.FeeDesc;
@@ -68,10 +69,10 @@ namespace VballManager
             {
                 TableRow row = new TableRow();
                 TableCell dateCell = new TableCell();
-                dateCell.Text = paidFee.PayDate.ToString("MMM. dd yyyy");
+                dateCell.Text = paidFee.Date.ToString("MMM. dd yyyy");
                 row.Cells.Add(dateCell);
                 TableCell descCell = new TableCell();
-                descCell.Text = paidFee.FeeDesc;
+                descCell.Text = paidFee.FeeDesc ;
                 row.Cells.Add(descCell);
                 TableCell creditCell = new TableCell();
                 if (paidFee.Amount > 0)

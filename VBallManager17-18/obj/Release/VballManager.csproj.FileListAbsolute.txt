@@ -3,3 +3,8 @@ C:\Users\dzhao\Documents\Visual Studio 2010\Projects\WebApplication1\VBallManage
 C:\Users\dzhao\Documents\Visual Studio 2010\Projects\WebApplication1\VBallManager\bin\VBallManager.pdb
 C:\Users\dzhao\Documents\Visual Studio 2010\Projects\WebApplication1\VBallManager\obj\Release\VBallManager.dll
 C:\Users\dzhao\Documents\Visual Studio 2010\Projects\WebApplication1\VBallManager\obj\Release\VBallManager.pdb
+E:\Volleyball\volleyball\VBallManager17-18\bin\VballManager.dll
+E:\Volleyball\volleyball\VBallManager17-18\bin\VballManager.pdb
+E:\Volleyball\volleyball\VBallManager17-18\obj\Release\VballManager.csprojResolveAssemblyReference.cache
+E:\Volleyball\volleyball\VBallManager17-18\obj\Release\VballManager.dll
+E:\Volleyball\volleyball\VBallManager17-18\obj\Release\VballManager.pdb
