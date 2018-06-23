@@ -1,0 +1,1358 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ADI3 xmlns="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1" xmlns:content="http://www.cablelabs.com/namespaces/metadata/xsd/content/1" xmlns:core="http://www.cablelabs.com/namespaces/metadata/xsd/core/1" xmlns:offer="http://www.cablelabs.com/namespaces/metadata/xsd/offer/1" xmlns:terms="http://www.cablelabs.com/namespaces/metadata/xsd/terms/1" xmlns:title="http://www.cablelabs.com/namespaces/metadata/xsd/title/1" xmlns:vod30="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Offer uriId="yes.co.il/IBMS/offer/251181">
+    <core:Ext>
+      <OfferName>Game Of Thrones 2</OfferName>
+      <OfferType>TVE OH Series Basic - VOD TVE</OfferType>
+      <OfferKind code="SERIE">Series</OfferKind>
+      <ServiceRef uriId="yes.co.il/IBMS/service/182"/>
+      <CaTemplateInstance>
+        <TemplateKey>900001</TemplateKey>
+        <TemplateName>TVE VOD Subscription + Rate Code</TemplateName>
+        <Parameters>
+          <CaParameter name="SVOD" value="50209" parameterNumber="1" productType="0"/>
+          <CaParameter name="VOD Rate Code" value="99998" parameterNumber="2"/>
+        </Parameters>
+      </CaTemplateInstance>
+      <CmsId> </CmsId>
+    </core:Ext>
+    <offer:Presentation>
+      <offer:CategoryRef uriId="yes.co.il/IBMS/category/17655"/>
+      <offer:Ext/>
+    </offer:Presentation>
+    <offer:Presentation>
+      <offer:CategoryRef uriId="yes.co.il/IBMS/category/25882"/>
+      <offer:Ext/>
+    </offer:Presentation>
+    <offer:Presentation>
+      <offer:CategoryRef uriId="yes.co.il/IBMS/category/17613"/>
+      <offer:Ext/>
+    </offer:Presentation>
+    <offer:PromotionalContentGroupRef uriId="yes.co.il/IBMS/offer/251181"/>
+    <offer:BillingId>99998</offer:BillingId>
+    <offer:TermsRef uriId="yes.co.il/IBMS/offer/251181"/>
+    <offer:ContentGroupRef uriId="yes.co.il/IBMS/offer-item/846128"/>
+    <offer:ContentGroupRef uriId="yes.co.il/IBMS/offer-item/846129"/>
+    <offer:ContentGroupRef uriId="yes.co.il/IBMS/offer-item/846130"/>
+    <offer:ContentGroupRef uriId="yes.co.il/IBMS/offer-item/846131"/>
+    <offer:ContentGroupRef uriId="yes.co.il/IBMS/offer-item/846132"/>
+    <offer:ContentGroupRef uriId="yes.co.il/IBMS/offer-item/846133"/>
+    <offer:ContentGroupRef uriId="yes.co.il/IBMS/offer-item/846134"/>
+    <offer:ContentGroupRef uriId="yes.co.il/IBMS/offer-item/846135"/>
+    <offer:ContentGroupRef uriId="yes.co.il/IBMS/offer-item/846136"/>
+    <offer:ContentGroupRef uriId="yes.co.il/IBMS/offer-item/846137"/>
+  </Offer>
+  <Terms uriId="yes.co.il/IBMS/offer/251181">
+    <terms:SubscriberViewLimit startDateTime="2016-03-17T00:00:01Z" endDateTime="2018-05-22T10:00:01Z" maximumViews="0"/>
+    <terms:SuggestedPrice currency="ILS">0</terms:SuggestedPrice>
+  </Terms>
+  <Category uriId="yes.co.il/IBMS/category/17655">
+    <offer:CategoryPath xml:lang="IW">ערוצי הסדרות/כל הסדרות</offer:CategoryPath>
+  </Category>
+  <Category uriId="yes.co.il/IBMS/category/25882">
+    <offer:CategoryPath xml:lang="IW">yesBinge/סדרות yes Oh</offer:CategoryPath>
+  </Category>
+  <Category uriId="yes.co.il/IBMS/category/17613">
+    <offer:CategoryPath xml:lang="IW">ערוצי הסדרות/yes Oh - חינם</offer:CategoryPath>
+  </Category>
+  <ContentGroup type="OfferItemContentGroup" uriId="yes.co.il/IBMS/offer-item/846128">
+    <core:Ext>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/855767"/>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/855766"/>
+    </core:Ext>
+    <offer:TitleRef uriId="yes.co.il/IBMS/program/340336-440658"/>
+    <offer:MovieRef uriId="yes.co.il/IBMS/asset/1010737"/>
+    <offer:PosterRef uriId="yes.co.il/IBMS/asset/848087"/>
+  </ContentGroup>
+  <ContentGroup type="OfferItemContentGroup" uriId="yes.co.il/IBMS/offer-item/846129">
+    <core:Ext>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/864982"/>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/864983"/>
+    </core:Ext>
+    <offer:TitleRef uriId="yes.co.il/IBMS/program/340341-440663"/>
+    <offer:MovieRef uriId="yes.co.il/IBMS/asset/1010742"/>
+    <offer:PosterRef uriId="yes.co.il/IBMS/asset/848092"/>
+  </ContentGroup>
+  <ContentGroup type="OfferItemContentGroup" uriId="yes.co.il/IBMS/offer-item/846130">
+    <core:Ext>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/867669"/>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/867668"/>
+    </core:Ext>
+    <offer:TitleRef uriId="yes.co.il/IBMS/program/340342-482833"/>
+    <offer:MovieRef uriId="yes.co.il/IBMS/asset/1010745"/>
+    <offer:PosterRef uriId="yes.co.il/IBMS/asset/848093"/>
+  </ContentGroup>
+  <ContentGroup type="OfferItemContentGroup" uriId="yes.co.il/IBMS/offer-item/846131">
+    <core:Ext>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/862871"/>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/862872"/>
+    </core:Ext>
+    <offer:TitleRef uriId="yes.co.il/IBMS/program/340340-440662"/>
+    <offer:MovieRef uriId="yes.co.il/IBMS/asset/1010741"/>
+    <offer:PosterRef uriId="yes.co.il/IBMS/asset/848091"/>
+  </ContentGroup>
+  <ContentGroup type="OfferItemContentGroup" uriId="yes.co.il/IBMS/offer-item/846132">
+    <core:Ext>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/854143"/>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/854142"/>
+    </core:Ext>
+    <offer:TitleRef uriId="yes.co.il/IBMS/program/340335-440657"/>
+    <offer:MovieRef uriId="yes.co.il/IBMS/asset/1010736"/>
+    <offer:PosterRef uriId="yes.co.il/IBMS/asset/848086"/>
+  </ContentGroup>
+  <ContentGroup type="OfferItemContentGroup" uriId="yes.co.il/IBMS/offer-item/846133">
+    <core:Ext>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/859341"/>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/859340"/>
+    </core:Ext>
+    <offer:TitleRef uriId="yes.co.il/IBMS/program/340338-440660"/>
+    <offer:MovieRef uriId="yes.co.il/IBMS/asset/1010739"/>
+    <offer:PosterRef uriId="yes.co.il/IBMS/asset/848089"/>
+  </ContentGroup>
+  <ContentGroup type="OfferItemContentGroup" uriId="yes.co.il/IBMS/offer-item/846134">
+    <core:Ext>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/860550"/>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/860551"/>
+    </core:Ext>
+    <offer:TitleRef uriId="yes.co.il/IBMS/program/340339-440661"/>
+    <offer:MovieRef uriId="yes.co.il/IBMS/asset/1010740"/>
+    <offer:PosterRef uriId="yes.co.il/IBMS/asset/848090"/>
+  </ContentGroup>
+  <ContentGroup type="OfferItemContentGroup" uriId="yes.co.il/IBMS/offer-item/846135">
+    <core:Ext>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/868774"/>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/868775"/>
+    </core:Ext>
+    <offer:TitleRef uriId="yes.co.il/IBMS/program/340343-440665"/>
+    <offer:MovieRef uriId="yes.co.il/IBMS/asset/1010743"/>
+    <offer:PosterRef uriId="yes.co.il/IBMS/asset/848094"/>
+  </ContentGroup>
+  <ContentGroup type="OfferItemContentGroup" uriId="yes.co.il/IBMS/offer-item/846136">
+    <core:Ext>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/857498"/>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/857499"/>
+    </core:Ext>
+    <offer:TitleRef uriId="yes.co.il/IBMS/program/340337-440659"/>
+    <offer:MovieRef uriId="yes.co.il/IBMS/asset/1010738"/>
+    <offer:PosterRef uriId="yes.co.il/IBMS/asset/848088"/>
+  </ContentGroup>
+  <ContentGroup type="OfferItemContentGroup" uriId="yes.co.il/IBMS/offer-item/846137">
+    <core:Ext>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/870784"/>
+      <SubtitleRef uriId="yes.co.il/IBMS/asset/870785"/>
+    </core:Ext>
+    <offer:TitleRef uriId="yes.co.il/IBMS/program/340344-440666"/>
+    <offer:MovieRef uriId="yes.co.il/IBMS/asset/1010744"/>
+    <offer:PosterRef uriId="yes.co.il/IBMS/asset/848095"/>
+  </ContentGroup>
+  <ContentGroup type="PromotionalContentGroup" uriId="yes.co.il/IBMS/offer/251181">
+    <offer:TitleRef uriId="yes.co.il/IBMS/offer/251181"/>
+    <offer:MovieRef uriId=""/>
+    <offer:PosterRef uriId="yes.co.il/IBMS/asset/848097"/>
+  </ContentGroup>
+  <ContentGroup type="ShowContentGroup" uriId="yes.co.il/IBMS/show/959">
+    <offer:TitleRef uriId="yes.co.il/IBMS/show/959"/>
+    <offer:MovieRef uriId=""/>
+    <offer:PosterRef uriId="yes.co.il/IBMS/asset/762284"/>
+  </ContentGroup>
+  <Title type="ProgramTitle" uriId="yes.co.il/IBMS/program/340336-440658">
+    <core:Ext>
+      <SeriesRef uriId="yes.co.il/IBMS/series/60183"/>
+      <EpisodeNo>2</EpisodeNo>
+    </core:Ext>
+    <title:LocalizableTitle xml:lang="EN">
+      <title:TitleSortName>Game Of Thrones 2 2</title:TitleSortName>
+      <title:TitleBrief> </title:TitleBrief>
+      <title:TitleMedium> </title:TitleMedium>
+      <title:TitleLong>Game Of Thrones 2 2</title:TitleLong>
+      <title:SummaryShort>Tyrion chastens Cersei for alienating the king’s subjects.  On the road north, Arya shares a secret with Gendry, a Night’s Watch recruit. With supplies dwindling, one of Dany's scouts returns with news of their position.</title:SummaryShort>
+      <title:SummaryLong> </title:SummaryLong>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/14927" fullName="Peter Dinklage" firstName="Peter" lastName="Dinklage" sortableName="Dinklage,Peter"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/18293" fullName="Lena Headey" firstName="Lena" lastName="Headey" sortableName="Headey,Lena"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23849" fullName="Kit Harington" firstName="Kit" lastName="Harington" sortableName="Harington,Kit"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/27008" fullName="Michelle Fairley" firstName="Michelle" lastName="Fairley" sortableName="Fairley,Michelle"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/22335" fullName="Emilia Clarke" firstName="Emilia" lastName="Clarke" sortableName="Clarke,Emilia"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23787" fullName="Nikolaj Coster-Waldau" firstName="Nikolaj" lastName="Coster-Waldau" sortableName="Coster-Waldau,Nikolaj"/>
+    </title:LocalizableTitle>
+    <title:Rating>private:R18</title:Rating>
+    <title:Rating>dvb:13</title:Rating>
+    <title:DisplayRunTime>00:51</title:DisplayRunTime>
+    <title:Genre>private:General Entertainment/Entertainment</title:Genre>
+    <title:Genre>dvb:11/12</title:Genre>
+    <title:ShowType>private:S</title:ShowType>
+  </Title>
+  <Movie uriId="yes.co.il/IBMS/asset/1010737">
+    <core:Ext>
+      <CmsXml>
+        <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<cm:opencase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cm="http://opencase.extend.com/cm" xsi:schemaLocation="http://opencase.extend.com/cm http://http://vms.tve.yeseng.co.il:80//opencase/ContentManager/resource/rest/schema/contentManager.xsd">
+<cm:component xsi:type="cm:MaterialLogicalVideo"><cm:altCode><![CDATA[Game Of Thrones 2,night Lands, The,ep: 2]]/></cm:altCode><cm:componentPk><![CDATA[106834]]/></cm:componentPk><cm:createDate>2013-09-22T15:15:00.251+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset/1010737</cm:externalID><cm:lastModified>2014-11-24T17:01:00.401+02:00</cm:lastModified><cm:name><![CDATA[V2PC0]]/></cm:name><cm:uuid><![CDATA[b6ed9177-6004-41c7-8814-cdcb020077d3]]/></cm:uuid><cm:isActive>true</cm:isActive><cm:providers/><cm:Metadata_Folder><cm:MetadataVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106832]]/></cm:componentPk><cm:createDate>2013-09-22T15:15:00.172+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset_metadata/1010737</cm:externalID><cm:lastModified>2014-11-24T17:01:00.267+02:00</cm:lastModified><cm:name><![CDATA[V2PC0]]/></cm:name><cm:uuid><![CDATA[5dfd569d-a608-4e22-9583-11e57a2be386]]/></cm:uuid><cm:locale><cm:country><![CDATA[US]]/></cm:country><cm:language><![CDATA[en]]/></cm:language><cm:localePk><![CDATA[6]]/></cm:localePk></cm:locale><cm:titleLong><![CDATA[Night Lands, The]]/></cm:titleLong><cm:advisories/><cm:castMembers/><cm:categories/><cm:directors/><cm:genres/><cm:producers/><cm:ratings/><cm:seriesName><![CDATA[Game Of Thrones 2]]/></cm:seriesName><cm:writers/><cm:creators/><cm:duration><![CDATA[00:00:00]]/></cm:duration><cm:episodeNumber><![CDATA[2]]/></cm:episodeNumber></cm:MetadataVideo></cm:Metadata_Folder><cm:Videos><cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[250752]]/></cm:componentPk><cm:createDate>2014-03-02T21:27:00.983+02:00</cm:createDate><cm:lastModified>2014-03-02T21:27:00.983+02:00</cm:lastModified><cm:name><![CDATA[V2PC0__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[2a1c6c1f-4f4a-4cc3-bf81-92a9244d4f5e]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[be90cbf1-09f2-457e-ad8a-ed6ca3e67977]]/></cm:contentFileUUID><cm:contentID>d56edbe6-6220-40fb-b605-51283b6706cf</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1804]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;d56edbe6-6220-40fb-b605-51283b6706cf&lt;/contentID&gt;
+    &lt;keyID&gt;87b9d79b-5cc1-41c9-87ce-84e077004481&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC0__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/56aabd40-e6dc-447b-8668-dbd4f219773d/CTM_Ingest/out/804b98cd-bef5-4c01-a2f4-dfc54804e6cd/English_Phone/V2PC0__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[250648]]/></cm:componentPk><cm:createDate>2014-03-02T21:27:00.143+02:00</cm:createDate><cm:lastModified>2014-03-02T21:27:00.143+02:00</cm:lastModified><cm:name><![CDATA[V2PC0__TS__DRM__MUTE__HSS__CTV__ALL.ism]]/></cm:name><cm:uuid><![CDATA[6600bff4-a31f-407f-84b8-f3338540855e]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[15a76d35-7a1f-4ad1-8e46-134f05833d45]]/></cm:contentFileUUID><cm:contentID>08cbc856-c425-4028-9d2f-6dd314214bc2</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[2530]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;08cbc856-c425-4028-9d2f-6dd314214bc2&lt;/contentID&gt;
+    &lt;keyID&gt;87b9d79b-5cc1-41c9-87ce-84e077004481&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[text/xml]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC0__TS__DRM__MUTE__HSS__CTV__ALL.ism]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/56aabd40-e6dc-447b-8668-dbd4f219773d/CTM_Ingest/out/804b98cd-bef5-4c01-a2f4-dfc54804e6cd/ATS_TEMP/V2PC0__TS__DRM__MUTE__HSS__CTV__ALL.ism/MANIFEST]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.ms</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[250753]]/></cm:componentPk><cm:createDate>2014-03-02T21:27:01.165+02:00</cm:createDate><cm:lastModified>2014-03-02T21:27:01.165+02:00</cm:lastModified><cm:name><![CDATA[V2PC0__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[519c3180-44f8-4436-b9dd-defd17874bb8]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[1933d026-c04c-4b83-8c9a-b1723e54789e]]/></cm:contentFileUUID><cm:contentID>d9f3d3dd-7c61-49f7-9d94-e0fe1a7d8f4d</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[2086]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;d9f3d3dd-7c61-49f7-9d94-e0fe1a7d8f4d&lt;/contentID&gt;
+    &lt;keyID&gt;87b9d79b-5cc1-41c9-87ce-84e077004481&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC0__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/56aabd40-e6dc-447b-8668-dbd4f219773d/CTM_Ingest/out/804b98cd-bef5-4c01-a2f4-dfc54804e6cd/Russian_Tablet/V2PC0__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[250750]]/></cm:componentPk><cm:createDate>2014-03-02T21:27:00.667+02:00</cm:createDate><cm:lastModified>2014-03-02T21:27:00.667+02:00</cm:lastModified><cm:name><![CDATA[V2PC0__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[18573e86-56a6-4ab4-ac32-243a3b5d200a]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[332d1827-452e-4739-9718-f03bfa6e9673]]/></cm:contentFileUUID><cm:contentID>0e8d0fc8-5096-4ff6-892d-a300ba8c40af</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1804]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;0e8d0fc8-5096-4ff6-892d-a300ba8c40af&lt;/contentID&gt;
+    &lt;keyID&gt;87b9d79b-5cc1-41c9-87ce-84e077004481&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC0__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/56aabd40-e6dc-447b-8668-dbd4f219773d/CTM_Ingest/out/804b98cd-bef5-4c01-a2f4-dfc54804e6cd/Russian_Phone/V2PC0__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[250649]]/></cm:componentPk><cm:createDate>2014-03-02T21:27:00.515+02:00</cm:createDate><cm:lastModified>2014-03-02T21:27:00.515+02:00</cm:lastModified><cm:name><![CDATA[V2PC0__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:name><cm:uuid><![CDATA[89437a97-744d-49a7-a451-4e629132ad60]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[c0f47751-613a-4fdc-bbc8-d7be59fc4ba5]]/></cm:contentFileUUID><cm:contentID>0de815c8-c83c-49fa-be4b-740cd22c2e54</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[4416]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;0de815c8-c83c-49fa-be4b-740cd22c2e54&lt;/contentID&gt;
+    &lt;keyID&gt;87b9d79b-5cc1-41c9-87ce-84e077004481&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[text/xml]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC0__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/56aabd40-e6dc-447b-8668-dbd4f219773d/CTM_Ingest/out/804b98cd-bef5-4c01-a2f4-dfc54804e6cd/Smooth_PC/V2PC0__TS__DRM__MUTE__HSS__PC__ALL.ism/MANIFEST]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.ms</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[250751]]/></cm:componentPk><cm:createDate>2014-03-02T21:27:00.846+02:00</cm:createDate><cm:lastModified>2014-03-02T21:27:00.846+02:00</cm:lastModified><cm:name><![CDATA[V2PC0__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[0b3bb0ee-4fab-4b22-a0c6-a2a95859322f]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[a92da0b9-f1c3-401e-9cec-54d97d80ecb7]]/></cm:contentFileUUID><cm:contentID>e0071536-15a8-4c55-b30a-76db618c7076</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[2086]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;e0071536-15a8-4c55-b30a-76db618c7076&lt;/contentID&gt;
+    &lt;keyID&gt;87b9d79b-5cc1-41c9-87ce-84e077004481&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC0__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/56aabd40-e6dc-447b-8668-dbd4f219773d/CTM_Ingest/out/804b98cd-bef5-4c01-a2f4-dfc54804e6cd/English_Tablet/V2PC0__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest></cm:Videos><cm:Subtitles></cm:Subtitles><cm:Images><cm:Thumbnails></cm:Thumbnails><cm:Artwork></cm:Artwork></cm:Images><cm:Ad_Insertion_Points></cm:Ad_Insertion_Points><cm:Manifest></cm:Manifest><cm:Chapters></cm:Chapters><cm:Licensing_Window></cm:Licensing_Window><cm:Video_Previews></cm:Video_Previews><cm:Identifiers></cm:Identifiers><cm:Related_Identifiers><cm:IsanVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106833]]/></cm:componentPk><cm:createDate>2013-09-22T15:15:00.224+02:00</cm:createDate><cm:lastModified>2014-11-24T17:01:00.367+02:00</cm:lastModified><cm:name><![CDATA[Night Lands, The;Ver 1]]/></cm:name><cm:uuid><![CDATA[077a6d3d-5da9-49a1-9d6e-0d80ae25d808]]/></cm:uuid><cm:identifier><![CDATA[yes.co.il/ibms/program/340336-440658]]/></cm:identifier></cm:IsanVideo></cm:Related_Identifiers></cm:component>
+</cm:opencase>]]>
+      </CmsXml>
+    </core:Ext>
+    <content:SourceUrl>V2PC0</content:SourceUrl>
+    <content:ScreenFormat>Standard</content:ScreenFormat>
+    <content:Resolution>private:1080I</content:Resolution>
+    <content:Duration>PT00H51M16S</content:Duration>
+    <content:IsHDContent>1</content:IsHDContent>
+    <content:SubtitleLanguage>RU</content:SubtitleLanguage>
+    <content:SubtitleLanguage>IW</content:SubtitleLanguage>
+  </Movie>
+  <Poster uriId="yes.co.il/IBMS/asset/848087">
+    <content:SourceUrl>VP000465521.JPG</content:SourceUrl>
+    <!--
+                <content:ContentFileSize/>
+                <content:ContentCheckSum/>
+              -->
+  </Poster>
+  <Title type="ProgramTitle" uriId="yes.co.il/IBMS/program/340341-440663">
+    <core:Ext>
+      <SeriesRef uriId="yes.co.il/IBMS/series/60183"/>
+      <EpisodeNo>7</EpisodeNo>
+    </core:Ext>
+    <title:LocalizableTitle xml:lang="EN">
+      <title:TitleSortName>Game Of Thrones 2 7</title:TitleSortName>
+      <title:TitleBrief> </title:TitleBrief>
+      <title:TitleMedium> </title:TitleMedium>
+      <title:TitleLong>Game Of Thrones 2 7</title:TitleLong>
+      <title:SummaryShort>Jaime meets a distant relative. Dany receives an invitation to the House of the Undying. Theon leads a search party. Jon loses his way in the wilderness; Cersei counsels Sansa.</title:SummaryShort>
+      <title:SummaryLong> </title:SummaryLong>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/14927" fullName="Peter Dinklage" firstName="Peter" lastName="Dinklage" sortableName="Dinklage,Peter"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/18293" fullName="Lena Headey" firstName="Lena" lastName="Headey" sortableName="Headey,Lena"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23849" fullName="Kit Harington" firstName="Kit" lastName="Harington" sortableName="Harington,Kit"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/27008" fullName="Michelle Fairley" firstName="Michelle" lastName="Fairley" sortableName="Fairley,Michelle"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/22335" fullName="Emilia Clarke" firstName="Emilia" lastName="Clarke" sortableName="Clarke,Emilia"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23787" fullName="Nikolaj Coster-Waldau" firstName="Nikolaj" lastName="Coster-Waldau" sortableName="Coster-Waldau,Nikolaj"/>
+    </title:LocalizableTitle>
+    <title:Rating>private:R18</title:Rating>
+    <title:Rating>dvb:13</title:Rating>
+    <title:DisplayRunTime>00:52</title:DisplayRunTime>
+    <title:Genre>private:General Entertainment/Entertainment</title:Genre>
+    <title:Genre>dvb:11/8</title:Genre>
+    <title:ShowType>private:S</title:ShowType>
+  </Title>
+  <Movie uriId="yes.co.il/IBMS/asset/1010742">
+    <core:Ext>
+      <CmsXml>
+        <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<cm:opencase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cm="http://opencase.extend.com/cm" xsi:schemaLocation="http://opencase.extend.com/cm http://http://vms.tve.yeseng.co.il:80//opencase/ContentManager/resource/rest/schema/contentManager.xsd">
+<cm:component xsi:type="cm:MaterialLogicalVideo"><cm:altCode><![CDATA[Game Of Thrones 2,Man Without Honor, A,Ep: 7]]/></cm:altCode><cm:componentPk><![CDATA[106846]]/></cm:componentPk><cm:createDate>2013-09-22T15:45:00.266+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset/1010742</cm:externalID><cm:lastModified>2014-11-24T17:25:00.431+02:00</cm:lastModified><cm:name><![CDATA[V2PC1]]/></cm:name><cm:uuid><![CDATA[dac06cb8-c9b6-4c18-a3b1-429641db649c]]/></cm:uuid><cm:isActive>true</cm:isActive><cm:providers/><cm:Metadata_Folder><cm:MetadataVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106845]]/></cm:componentPk><cm:createDate>2013-09-22T15:45:00.243+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset_metadata/1010742</cm:externalID><cm:lastModified>2014-11-24T17:25:00.383+02:00</cm:lastModified><cm:name><![CDATA[V2PC1]]/></cm:name><cm:uuid><![CDATA[ed0200e2-d8da-4c2d-b76d-aaa42444156f]]/></cm:uuid><cm:locale><cm:country><![CDATA[US]]/></cm:country><cm:language><![CDATA[en]]/></cm:language><cm:localePk><![CDATA[6]]/></cm:localePk></cm:locale><cm:titleLong><![CDATA[Man Without Honor, A]]/></cm:titleLong><cm:advisories/><cm:castMembers/><cm:categories/><cm:directors/><cm:genres/><cm:producers/><cm:ratings/><cm:seriesName><![CDATA[Game Of Thrones 2]]/></cm:seriesName><cm:writers/><cm:creators/><cm:duration><![CDATA[00:00:00]]/></cm:duration><cm:episodeNumber><![CDATA[7]]/></cm:episodeNumber></cm:MetadataVideo></cm:Metadata_Folder><cm:Videos><cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110109]]/></cm:componentPk><cm:createDate>2013-10-02T19:23:00.104+02:00</cm:createDate><cm:lastModified>2013-10-02T19:23:00.104+02:00</cm:lastModified><cm:name><![CDATA[V2PC1__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:name><cm:uuid><![CDATA[c5bd1bd4-a3a3-459f-840b-95ddf0470124]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[9e6caa89-9696-4565-9ae5-cf410b1bbd85]]/></cm:contentFileUUID><cm:contentID>335e57e8-8705-4ac8-a19c-18efc9c0681b</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[4416]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;335e57e8-8705-4ac8-a19c-18efc9c0681b&lt;/contentID&gt;
+    &lt;keyID&gt;dea931ba-aa69-44ee-a52c-6497f5b08e07&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[text/xml]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC1__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/9391da0c-5fc1-4924-bc7c-385296d1a896/CTM_Ingest/out/96e81325-c14f-42e5-b211-eb6d7194bf30/Smooth_PC/V2PC1__TS__DRM__MUTE__HSS__PC__ALL.ism/MANIFEST]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.ms</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110111]]/></cm:componentPk><cm:createDate>2013-10-02T19:23:00.560+02:00</cm:createDate><cm:lastModified>2013-10-02T19:23:00.560+02:00</cm:lastModified><cm:name><![CDATA[V2PC1__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[8c387303-7f32-41b5-95b1-bbc13dd239e5]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[3a4f5d34-08e9-468e-a1f2-f8e2d0ff580b]]/></cm:contentFileUUID><cm:contentID>acebc163-c050-472b-96cc-094daf45a01d</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1998]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;acebc163-c050-472b-96cc-094daf45a01d&lt;/contentID&gt;
+    &lt;keyID&gt;dea931ba-aa69-44ee-a52c-6497f5b08e07&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC1__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/9391da0c-5fc1-4924-bc7c-385296d1a896/CTM_Ingest/out/96e81325-c14f-42e5-b211-eb6d7194bf30/English_Tablet/V2PC1__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110112]]/></cm:componentPk><cm:createDate>2013-10-02T19:23:00.688+02:00</cm:createDate><cm:lastModified>2013-10-02T19:23:00.688+02:00</cm:lastModified><cm:name><![CDATA[V2PC1__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[a91098d4-d218-4336-aa4c-73ba414428e1]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[d3291cd8-97e7-4fab-95fd-d82f64a69649]]/></cm:contentFileUUID><cm:contentID>b72cce74-964c-4855-9967-f35e7d42b036</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1713]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;b72cce74-964c-4855-9967-f35e7d42b036&lt;/contentID&gt;
+    &lt;keyID&gt;dea931ba-aa69-44ee-a52c-6497f5b08e07&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC1__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/9391da0c-5fc1-4924-bc7c-385296d1a896/CTM_Ingest/out/96e81325-c14f-42e5-b211-eb6d7194bf30/English_Phone/V2PC1__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110110]]/></cm:componentPk><cm:createDate>2013-10-02T19:23:00.405+02:00</cm:createDate><cm:lastModified>2013-10-02T19:23:00.405+02:00</cm:lastModified><cm:name><![CDATA[V2PC1__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[8d910a97-cf9a-439c-a5b4-4239446d0e04]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[c831d0d3-0bb0-42b9-940b-41a8495439b1]]/></cm:contentFileUUID><cm:contentID>8f52de21-64fa-46ca-a8d2-c4e59e9bca71</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1998]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;8f52de21-64fa-46ca-a8d2-c4e59e9bca71&lt;/contentID&gt;
+    &lt;keyID&gt;dea931ba-aa69-44ee-a52c-6497f5b08e07&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC1__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/9391da0c-5fc1-4924-bc7c-385296d1a896/CTM_Ingest/out/96e81325-c14f-42e5-b211-eb6d7194bf30/Russian_Tablet/V2PC1__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110113]]/></cm:componentPk><cm:createDate>2013-10-02T19:23:00.809+02:00</cm:createDate><cm:lastModified>2013-10-02T19:23:00.809+02:00</cm:lastModified><cm:name><![CDATA[V2PC1__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[4e8d035c-80ca-4035-a785-3f0b5cbdf4e1]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[071a93eb-75d2-4eab-9d1b-135b1cd814f5]]/></cm:contentFileUUID><cm:contentID>b17a6c0a-37b3-4894-ac9a-e5cb1e1dc809</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1713]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;b17a6c0a-37b3-4894-ac9a-e5cb1e1dc809&lt;/contentID&gt;
+    &lt;keyID&gt;dea931ba-aa69-44ee-a52c-6497f5b08e07&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC1__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/9391da0c-5fc1-4924-bc7c-385296d1a896/CTM_Ingest/out/96e81325-c14f-42e5-b211-eb6d7194bf30/Russian_Phone/V2PC1__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest></cm:Videos><cm:Subtitles></cm:Subtitles><cm:Images><cm:Thumbnails></cm:Thumbnails><cm:Artwork></cm:Artwork></cm:Images><cm:Ad_Insertion_Points></cm:Ad_Insertion_Points><cm:Manifest></cm:Manifest><cm:Chapters></cm:Chapters><cm:Licensing_Window></cm:Licensing_Window><cm:Video_Previews></cm:Video_Previews><cm:Identifiers></cm:Identifiers><cm:Related_Identifiers><cm:IsanVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106844]]/></cm:componentPk><cm:createDate>2013-09-22T15:45:00.192+02:00</cm:createDate><cm:lastModified>2014-11-24T17:25:00.309+02:00</cm:lastModified><cm:name><![CDATA[Man Without Honor, A;Ver 1]]/></cm:name><cm:uuid><![CDATA[896cc768-df92-40cf-b8a3-9b615ca5a609]]/></cm:uuid><cm:identifier><![CDATA[yes.co.il/ibms/program/340341-440663]]/></cm:identifier></cm:IsanVideo></cm:Related_Identifiers></cm:component>
+</cm:opencase>]]>
+      </CmsXml>
+    </core:Ext>
+    <content:SourceUrl>V2PC1</content:SourceUrl>
+    <content:ScreenFormat>Standard</content:ScreenFormat>
+    <content:Resolution>private:1080I</content:Resolution>
+    <content:Duration>PT00H52M53S</content:Duration>
+    <content:IsHDContent>1</content:IsHDContent>
+    <content:SubtitleLanguage>IW</content:SubtitleLanguage>
+    <content:SubtitleLanguage>RU</content:SubtitleLanguage>
+  </Movie>
+  <Poster uriId="yes.co.il/IBMS/asset/848092">
+    <content:SourceUrl>VP000465526.JPG</content:SourceUrl>
+    <!--
+                <content:ContentFileSize/>
+                <content:ContentCheckSum/>
+              -->
+  </Poster>
+  <Title type="ProgramTitle" uriId="yes.co.il/IBMS/program/340342-482833">
+    <core:Ext>
+      <SeriesRef uriId="yes.co.il/IBMS/series/60183"/>
+      <EpisodeNo>8</EpisodeNo>
+    </core:Ext>
+    <title:LocalizableTitle xml:lang="EN">
+      <title:TitleSortName>Game Of Thrones 2 8</title:TitleSortName>
+      <title:TitleBrief> </title:TitleBrief>
+      <title:TitleMedium> </title:TitleMedium>
+      <title:TitleLong>Game Of Thrones 2 8</title:TitleLong>
+      <title:SummaryShort>Theon receives a visitor and holds down the fort. Arya calls in her final debt with Jaqen in a way that displeases him. Robb is betrayed. Dany ignores Jorah's advice. Stannis and Davos approach their destination.</title:SummaryShort>
+      <title:SummaryLong> </title:SummaryLong>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/14927" fullName="Peter Dinklage" firstName="Peter" lastName="Dinklage" sortableName="Dinklage,Peter"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/18293" fullName="Lena Headey" firstName="Lena" lastName="Headey" sortableName="Headey,Lena"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23849" fullName="Kit Harington" firstName="Kit" lastName="Harington" sortableName="Harington,Kit"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/27008" fullName="Michelle Fairley" firstName="Michelle" lastName="Fairley" sortableName="Fairley,Michelle"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/22335" fullName="Emilia Clarke" firstName="Emilia" lastName="Clarke" sortableName="Clarke,Emilia"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23787" fullName="Nikolaj Coster-Waldau" firstName="Nikolaj" lastName="Coster-Waldau" sortableName="Coster-Waldau,Nikolaj"/>
+    </title:LocalizableTitle>
+    <title:Rating>private:R18</title:Rating>
+    <title:Rating>dvb:13</title:Rating>
+    <title:DisplayRunTime>00:51</title:DisplayRunTime>
+    <title:Genre>private:General Entertainment/Entertainment</title:Genre>
+    <title:Genre>dvb:11/8</title:Genre>
+    <title:ShowType>private:S</title:ShowType>
+  </Title>
+  <Movie uriId="yes.co.il/IBMS/asset/1010745">
+    <core:Ext>
+      <CmsXml>
+        <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<cm:opencase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cm="http://opencase.extend.com/cm" xsi:schemaLocation="http://opencase.extend.com/cm http://http://vms.tve.yeseng.co.il:80//opencase/ContentManager/resource/rest/schema/contentManager.xsd">
+<cm:component xsi:type="cm:MaterialLogicalVideo"><cm:altCode><![CDATA[Game Of Thrones 2,prince Of Winterfell, The,ep: 8..]]/></cm:altCode><cm:componentPk><![CDATA[106902]]/></cm:componentPk><cm:createDate>2013-09-22T16:12:00.294+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset/1010745</cm:externalID><cm:lastModified>2015-08-11T03:18:04.428+03:00</cm:lastModified><cm:name><![CDATA[V2PC2]]/></cm:name><cm:uuid><![CDATA[97eb726c-37a4-44f4-ac43-2c1c346297e1]]/></cm:uuid><cm:isActive>true</cm:isActive><cm:providers/><cm:Metadata_Folder><cm:MetadataVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106901]]/></cm:componentPk><cm:createDate>2013-09-22T16:12:00.258+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset_metadata/1010745</cm:externalID><cm:lastModified>2015-08-11T03:18:04.382+03:00</cm:lastModified><cm:name><![CDATA[V2PC2]]/></cm:name><cm:uuid><![CDATA[4f0cd377-8137-4113-9d50-d52bc6e7a342]]/></cm:uuid><cm:locale><cm:country><![CDATA[US]]/></cm:country><cm:language><![CDATA[en]]/></cm:language><cm:localePk><![CDATA[6]]/></cm:localePk></cm:locale><cm:titleLong><![CDATA[Prince Of Winterfell, The]]/></cm:titleLong><cm:advisories/><cm:castMembers/><cm:categories/><cm:directors/><cm:genres/><cm:producers/><cm:ratings/><cm:seriesName><![CDATA[Game Of Thrones 2]]/></cm:seriesName><cm:writers/><cm:creators/><cm:duration><![CDATA[00:00:00]]/></cm:duration><cm:episodeNumber><![CDATA[8]]/></cm:episodeNumber></cm:MetadataVideo></cm:Metadata_Folder><cm:Videos><cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[117580]]/></cm:componentPk><cm:createDate>2013-10-14T04:30:00.422+02:00</cm:createDate><cm:lastModified>2013-10-14T04:30:00.422+02:00</cm:lastModified><cm:name><![CDATA[V2PC2__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[cffd0db1-5577-4d93-b92c-03ff4ff37a8c]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[d7fd82ab-66c7-4379-a430-1ecc5f7c0ea9]]/></cm:contentFileUUID><cm:contentID>c0098cc5-5ccf-400b-a113-f437374d1411</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1707]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;c0098cc5-5ccf-400b-a113-f437374d1411&lt;/contentID&gt;
+    &lt;keyID&gt;8123ecc5-0ae8-4104-9490-5ad079b28d5e&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC2__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/783fd4a1-8413-4628-bcf2-87996ef6b10b/CTM_Ingest/out/4ef77900-ea1c-4856-ad19-129be759789f/English_Phone/V2PC2__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[117581]]/></cm:componentPk><cm:createDate>2013-10-14T04:30:00.594+02:00</cm:createDate><cm:lastModified>2013-10-14T04:30:00.594+02:00</cm:lastModified><cm:name><![CDATA[V2PC2__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[b851416d-ca5d-4855-8a15-27b33e23574d]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[2a53fc11-88c2-4ede-87cd-48f30fdf9790]]/></cm:contentFileUUID><cm:contentID>146ac766-956f-422e-a00b-676ef39e3c56</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1989]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;146ac766-956f-422e-a00b-676ef39e3c56&lt;/contentID&gt;
+    &lt;keyID&gt;8123ecc5-0ae8-4104-9490-5ad079b28d5e&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC2__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/783fd4a1-8413-4628-bcf2-87996ef6b10b/CTM_Ingest/out/4ef77900-ea1c-4856-ad19-129be759789f/English_Tablet/V2PC2__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[117583]]/></cm:componentPk><cm:createDate>2013-10-14T04:30:00.872+02:00</cm:createDate><cm:lastModified>2013-10-14T04:30:00.872+02:00</cm:lastModified><cm:name><![CDATA[V2PC2__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[44077640-91d6-43e9-9e2d-809d51570ee3]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[d5e9c5be-a45b-40cb-9479-ef22eed4f517]]/></cm:contentFileUUID><cm:contentID>01e5ba95-b0d2-42d4-a7df-2c047155dc64</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1707]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;01e5ba95-b0d2-42d4-a7df-2c047155dc64&lt;/contentID&gt;
+    &lt;keyID&gt;8123ecc5-0ae8-4104-9490-5ad079b28d5e&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC2__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/783fd4a1-8413-4628-bcf2-87996ef6b10b/CTM_Ingest/out/4ef77900-ea1c-4856-ad19-129be759789f/Russian_Phone/V2PC2__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[117582]]/></cm:componentPk><cm:createDate>2013-10-14T04:30:00.734+02:00</cm:createDate><cm:lastModified>2013-10-14T04:30:00.734+02:00</cm:lastModified><cm:name><![CDATA[V2PC2__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[61b1f8d2-e287-44a2-97f2-50d3ef51747b]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[2ff9f7ed-f663-47de-9c30-96c8c17e25a1]]/></cm:contentFileUUID><cm:contentID>cb1219bb-e23a-42e8-8a96-c520c0c0752f</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1989]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;cb1219bb-e23a-42e8-8a96-c520c0c0752f&lt;/contentID&gt;
+    &lt;keyID&gt;8123ecc5-0ae8-4104-9490-5ad079b28d5e&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC2__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/783fd4a1-8413-4628-bcf2-87996ef6b10b/CTM_Ingest/out/4ef77900-ea1c-4856-ad19-129be759789f/Russian_Tablet/V2PC2__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[117579]]/></cm:componentPk><cm:createDate>2013-10-14T04:30:00.125+02:00</cm:createDate><cm:lastModified>2013-10-14T04:30:00.125+02:00</cm:lastModified><cm:name><![CDATA[V2PC2__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:name><cm:uuid><![CDATA[be947743-9227-4ced-946c-f9aab0ef8f4a]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[0af53ca0-8609-441a-92ef-ba17ac1a8013]]/></cm:contentFileUUID><cm:contentID>fe645feb-f997-4f77-b4f9-69131d3172b6</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[4416]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;fe645feb-f997-4f77-b4f9-69131d3172b6&lt;/contentID&gt;
+    &lt;keyID&gt;8123ecc5-0ae8-4104-9490-5ad079b28d5e&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[text/xml]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC2__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/783fd4a1-8413-4628-bcf2-87996ef6b10b/CTM_Ingest/out/4ef77900-ea1c-4856-ad19-129be759789f/Smooth_PC/V2PC2__TS__DRM__MUTE__HSS__PC__ALL.ism/MANIFEST]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.ms</cm:manifestType></cm:PhysicalAssetManifest></cm:Videos><cm:Subtitles></cm:Subtitles><cm:Images><cm:Thumbnails></cm:Thumbnails><cm:Artwork></cm:Artwork></cm:Images><cm:Ad_Insertion_Points></cm:Ad_Insertion_Points><cm:Manifest></cm:Manifest><cm:Chapters></cm:Chapters><cm:Licensing_Window></cm:Licensing_Window><cm:Video_Previews></cm:Video_Previews><cm:Identifiers></cm:Identifiers><cm:Related_Identifiers><cm:IsanVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106900]]/></cm:componentPk><cm:createDate>2013-09-22T16:12:00.204+02:00</cm:createDate><cm:lastModified>2015-08-11T03:18:04.327+03:00</cm:lastModified><cm:name><![CDATA[Prince Of Winterfell, The;HD Ver 2]]/></cm:name><cm:uuid><![CDATA[1941356b-efe6-4cc6-a82e-db8a5056b736]]/></cm:uuid><cm:identifier><![CDATA[yes.co.il/ibms/program/340342-482833]]/></cm:identifier></cm:IsanVideo></cm:Related_Identifiers></cm:component>
+</cm:opencase>]]>
+      </CmsXml>
+    </core:Ext>
+    <content:SourceUrl>V2PC2</content:SourceUrl>
+    <content:ScreenFormat>Standard</content:ScreenFormat>
+    <content:Resolution>private:1080I</content:Resolution>
+    <content:Duration>PT00H51M08S</content:Duration>
+    <content:IsHDContent>1</content:IsHDContent>
+    <content:SubtitleLanguage>RU</content:SubtitleLanguage>
+    <content:SubtitleLanguage>IW</content:SubtitleLanguage>
+  </Movie>
+  <Poster uriId="yes.co.il/IBMS/asset/848093">
+    <content:SourceUrl>VP000465527.JPG</content:SourceUrl>
+    <!--
+                <content:ContentFileSize/>
+                <content:ContentCheckSum/>
+              -->
+  </Poster>
+  <Title type="ProgramTitle" uriId="yes.co.il/IBMS/program/340340-440662">
+    <core:Ext>
+      <SeriesRef uriId="yes.co.il/IBMS/series/60183"/>
+      <EpisodeNo>6</EpisodeNo>
+    </core:Ext>
+    <title:LocalizableTitle xml:lang="EN">
+      <title:TitleSortName>Game Of Thrones 2 6</title:TitleSortName>
+      <title:TitleBrief> </title:TitleBrief>
+      <title:TitleMedium> </title:TitleMedium>
+      <title:TitleLong>Game Of Thrones 2 6</title:TitleLong>
+      <title:SummaryShort>Arya gets a surprise visit while Dany makes some vows. Joffrey encounters his subjects, and Jon is given a chance to prove his worth.</title:SummaryShort>
+      <title:SummaryLong> </title:SummaryLong>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/14927" fullName="Peter Dinklage" firstName="Peter" lastName="Dinklage" sortableName="Dinklage,Peter"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/18293" fullName="Lena Headey" firstName="Lena" lastName="Headey" sortableName="Headey,Lena"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23849" fullName="Kit Harington" firstName="Kit" lastName="Harington" sortableName="Harington,Kit"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/27008" fullName="Michelle Fairley" firstName="Michelle" lastName="Fairley" sortableName="Fairley,Michelle"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/22335" fullName="Emilia Clarke" firstName="Emilia" lastName="Clarke" sortableName="Clarke,Emilia"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23787" fullName="Nikolaj Coster-Waldau" firstName="Nikolaj" lastName="Coster-Waldau" sortableName="Coster-Waldau,Nikolaj"/>
+    </title:LocalizableTitle>
+    <title:Rating>private:R18</title:Rating>
+    <title:Rating>dvb:13</title:Rating>
+    <title:DisplayRunTime>00:51</title:DisplayRunTime>
+    <title:Genre>private:General Entertainment/Entertainment</title:Genre>
+    <title:Genre>dvb:11/8</title:Genre>
+    <title:ShowType>private:S</title:ShowType>
+  </Title>
+  <Movie uriId="yes.co.il/IBMS/asset/1010741">
+    <core:Ext>
+      <CmsXml>
+        <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<cm:opencase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cm="http://opencase.extend.com/cm" xsi:schemaLocation="http://opencase.extend.com/cm http://http://vms.tve.yeseng.co.il:80//opencase/ContentManager/resource/rest/schema/contentManager.xsd">
+<cm:component xsi:type="cm:MaterialLogicalVideo"><cm:altCode><![CDATA[Game Of Thrones 2,Old Gods And The New, The,Ep: 6]]/></cm:altCode><cm:componentPk><![CDATA[106843]]/></cm:componentPk><cm:createDate>2013-09-22T15:42:00.247+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset/1010741</cm:externalID><cm:lastModified>2014-11-24T17:24:00.428+02:00</cm:lastModified><cm:name><![CDATA[V2PC3]]/></cm:name><cm:uuid><![CDATA[bf45fec8-78bd-41ab-88de-d1328b9a416f]]/></cm:uuid><cm:isActive>true</cm:isActive><cm:providers/><cm:Metadata_Folder><cm:MetadataVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106842]]/></cm:componentPk><cm:createDate>2013-09-22T15:42:00.212+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset_metadata/1010741</cm:externalID><cm:lastModified>2014-11-24T17:24:00.297+02:00</cm:lastModified><cm:name><![CDATA[V2PC3]]/></cm:name><cm:uuid><![CDATA[1452a488-ce60-4af4-b565-fc13f6879418]]/></cm:uuid><cm:locale><cm:country><![CDATA[US]]/></cm:country><cm:language><![CDATA[en]]/></cm:language><cm:localePk><![CDATA[6]]/></cm:localePk></cm:locale><cm:titleLong><![CDATA[Old Gods And The New, The]]/></cm:titleLong><cm:advisories/><cm:castMembers/><cm:categories/><cm:directors/><cm:genres/><cm:producers/><cm:ratings/><cm:seriesName><![CDATA[Game Of Thrones 2]]/></cm:seriesName><cm:writers/><cm:creators/><cm:duration><![CDATA[00:00:00]]/></cm:duration><cm:episodeNumber><![CDATA[6]]/></cm:episodeNumber></cm:MetadataVideo></cm:Metadata_Folder><cm:Videos><cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110104]]/></cm:componentPk><cm:createDate>2013-10-02T19:06:00.680+02:00</cm:createDate><cm:lastModified>2013-10-02T19:06:00.680+02:00</cm:lastModified><cm:name><![CDATA[V2PC3__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:name><cm:uuid><![CDATA[ef473c20-93aa-4e9b-b8b1-d7e0baabd984]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[1ee80224-9d56-4197-93a3-3c001f0775eb]]/></cm:contentFileUUID><cm:contentID>f745c318-0c3d-4cf2-8c72-08986ac0ffaf</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[4416]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;f745c318-0c3d-4cf2-8c72-08986ac0ffaf&lt;/contentID&gt;
+    &lt;keyID&gt;f5cf1b95-1aa8-40a3-925e-aa6f6fd41b19&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[text/xml]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC3__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/b95565e7-3735-411a-b9e9-b4eba9ff63d8/CTM_Ingest/out/b7dd975b-74b4-4a1b-b26b-6cb1e6748f87/Smooth_PC/V2PC3__TS__DRM__MUTE__HSS__PC__ALL.ism/MANIFEST]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.ms</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110102]]/></cm:componentPk><cm:createDate>2013-10-02T19:06:00.393+02:00</cm:createDate><cm:lastModified>2013-10-02T19:06:00.393+02:00</cm:lastModified><cm:name><![CDATA[V2PC3__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[e8f1c65d-47da-4695-9aa1-439f85cf8c35]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[780b4e95-fc2a-4926-a83d-8619073f3a6e]]/></cm:contentFileUUID><cm:contentID>bd2c16e7-9234-417e-941e-23d998c21b59</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1713]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;bd2c16e7-9234-417e-941e-23d998c21b59&lt;/contentID&gt;
+    &lt;keyID&gt;f5cf1b95-1aa8-40a3-925e-aa6f6fd41b19&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC3__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/b95565e7-3735-411a-b9e9-b4eba9ff63d8/CTM_Ingest/out/b7dd975b-74b4-4a1b-b26b-6cb1e6748f87/Russian_Phone/V2PC3__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110105]]/></cm:componentPk><cm:createDate>2013-10-02T19:06:00.808+02:00</cm:createDate><cm:lastModified>2013-10-02T19:06:00.808+02:00</cm:lastModified><cm:name><![CDATA[V2PC3__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[2bebdb56-7b9d-4d92-9691-ae34cf835a96]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[07dd50ff-b197-43c2-a20c-6956bebcc651]]/></cm:contentFileUUID><cm:contentID>84588329-c56b-40a8-810b-f8c2f7d9b3ff</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1998]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;84588329-c56b-40a8-810b-f8c2f7d9b3ff&lt;/contentID&gt;
+    &lt;keyID&gt;f5cf1b95-1aa8-40a3-925e-aa6f6fd41b19&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC3__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/b95565e7-3735-411a-b9e9-b4eba9ff63d8/CTM_Ingest/out/b7dd975b-74b4-4a1b-b26b-6cb1e6748f87/Russian_Tablet/V2PC3__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110103]]/></cm:componentPk><cm:createDate>2013-10-02T19:06:00.529+02:00</cm:createDate><cm:lastModified>2013-10-02T19:06:00.529+02:00</cm:lastModified><cm:name><![CDATA[V2PC3__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[cf0d82a1-7532-4a92-bb76-4236c6d5aad0]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[0ca7b41e-6a0e-4da5-bb9c-3f6f4ab0bc2c]]/></cm:contentFileUUID><cm:contentID>5bdf0c95-b73e-400a-b7a6-3a41c1b6cada</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1998]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;5bdf0c95-b73e-400a-b7a6-3a41c1b6cada&lt;/contentID&gt;
+    &lt;keyID&gt;f5cf1b95-1aa8-40a3-925e-aa6f6fd41b19&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC3__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/b95565e7-3735-411a-b9e9-b4eba9ff63d8/CTM_Ingest/out/b7dd975b-74b4-4a1b-b26b-6cb1e6748f87/English_Tablet/V2PC3__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110101]]/></cm:componentPk><cm:createDate>2013-10-02T19:06:00.125+02:00</cm:createDate><cm:lastModified>2013-10-02T19:06:00.125+02:00</cm:lastModified><cm:name><![CDATA[V2PC3__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[a53d6ed8-e365-461b-93c8-1c4b99400895]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[981f04cb-e3fb-4519-be7e-18d48544a7f9]]/></cm:contentFileUUID><cm:contentID>d5b3bf4c-4795-4d75-aa6e-8ef8c509c148</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1713]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;d5b3bf4c-4795-4d75-aa6e-8ef8c509c148&lt;/contentID&gt;
+    &lt;keyID&gt;f5cf1b95-1aa8-40a3-925e-aa6f6fd41b19&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC3__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/b95565e7-3735-411a-b9e9-b4eba9ff63d8/CTM_Ingest/out/b7dd975b-74b4-4a1b-b26b-6cb1e6748f87/English_Phone/V2PC3__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest></cm:Videos><cm:Subtitles></cm:Subtitles><cm:Images><cm:Thumbnails></cm:Thumbnails><cm:Artwork></cm:Artwork></cm:Images><cm:Ad_Insertion_Points></cm:Ad_Insertion_Points><cm:Manifest></cm:Manifest><cm:Chapters></cm:Chapters><cm:Licensing_Window></cm:Licensing_Window><cm:Video_Previews></cm:Video_Previews><cm:Identifiers></cm:Identifiers><cm:Related_Identifiers><cm:IsanVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106841]]/></cm:componentPk><cm:createDate>2013-09-22T15:42:00.148+02:00</cm:createDate><cm:lastModified>2014-11-24T17:24:00.376+02:00</cm:lastModified><cm:name><![CDATA[Old Gods And The New, The;Ver 1]]/></cm:name><cm:uuid><![CDATA[3520da92-2052-4f34-906c-e57f836691aa]]/></cm:uuid><cm:identifier><![CDATA[yes.co.il/ibms/program/340340-440662]]/></cm:identifier></cm:IsanVideo></cm:Related_Identifiers></cm:component>
+</cm:opencase>]]>
+      </CmsXml>
+    </core:Ext>
+    <content:SourceUrl>V2PC3</content:SourceUrl>
+    <content:ScreenFormat>Standard</content:ScreenFormat>
+    <content:Resolution>private:1080I</content:Resolution>
+    <content:Duration>PT00H51M44S</content:Duration>
+    <content:IsHDContent>1</content:IsHDContent>
+    <content:SubtitleLanguage>IW</content:SubtitleLanguage>
+    <content:SubtitleLanguage>RU</content:SubtitleLanguage>
+  </Movie>
+  <Poster uriId="yes.co.il/IBMS/asset/848091">
+    <content:SourceUrl>VP000465525.JPG</content:SourceUrl>
+    <!--
+                <content:ContentFileSize/>
+                <content:ContentCheckSum/>
+              -->
+  </Poster>
+  <Title type="ProgramTitle" uriId="yes.co.il/IBMS/program/340335-440657">
+    <core:Ext>
+      <SeriesRef uriId="yes.co.il/IBMS/series/60183"/>
+      <EpisodeNo>1</EpisodeNo>
+    </core:Ext>
+    <title:LocalizableTitle xml:lang="EN">
+      <title:TitleSortName>Game Of Thrones 2 1</title:TitleSortName>
+      <title:TitleBrief> </title:TitleBrief>
+      <title:TitleMedium> </title:TitleMedium>
+      <title:TitleLong>Game Of Thrones 2 1</title:TitleLong>
+      <title:SummaryShort>As Robb Stark and his army continue the war against the Lannisters, Tyrion arrives in King’s Landing to counsel Joffrey and temper the young king’s excesses. Stannis Baratheon plots an invasion to claim the throne.</title:SummaryShort>
+      <title:SummaryLong> </title:SummaryLong>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/14927" fullName="Peter Dinklage" firstName="Peter" lastName="Dinklage" sortableName="Dinklage,Peter"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/18293" fullName="Lena Headey" firstName="Lena" lastName="Headey" sortableName="Headey,Lena"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23849" fullName="Kit Harington" firstName="Kit" lastName="Harington" sortableName="Harington,Kit"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/27008" fullName="Michelle Fairley" firstName="Michelle" lastName="Fairley" sortableName="Fairley,Michelle"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/22335" fullName="Emilia Clarke" firstName="Emilia" lastName="Clarke" sortableName="Clarke,Emilia"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23787" fullName="Nikolaj Coster-Waldau" firstName="Nikolaj" lastName="Coster-Waldau" sortableName="Coster-Waldau,Nikolaj"/>
+    </title:LocalizableTitle>
+    <title:Rating>private:R18</title:Rating>
+    <title:Rating>dvb:13</title:Rating>
+    <title:DisplayRunTime>00:50</title:DisplayRunTime>
+    <title:Genre>private:General Entertainment/Entertainment</title:Genre>
+    <title:Genre>dvb:11/12</title:Genre>
+    <title:ShowType>private:S</title:ShowType>
+  </Title>
+  <Movie uriId="yes.co.il/IBMS/asset/1010736">
+    <core:Ext>
+      <CmsXml>
+        <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<cm:opencase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cm="http://opencase.extend.com/cm" xsi:schemaLocation="http://opencase.extend.com/cm http://http://vms.tve.yeseng.co.il:80//opencase/ContentManager/resource/rest/schema/contentManager.xsd">
+<cm:component xsi:type="cm:MaterialLogicalVideo"><cm:altCode><![CDATA[Game Of Thrones 2,North Remembers, The,Ep: 1.]]/></cm:altCode><cm:componentPk><![CDATA[106831]]/></cm:componentPk><cm:createDate>2013-09-22T15:14:00.307+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset/1010736</cm:externalID><cm:lastModified>2014-11-24T17:01:00.813+02:00</cm:lastModified><cm:name><![CDATA[V2PC4]]/></cm:name><cm:uuid><![CDATA[f999296f-06f1-4ef0-94b1-3574d1fa21b9]]/></cm:uuid><cm:isActive>true</cm:isActive><cm:providers/><cm:Metadata_Folder><cm:MetadataVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106830]]/></cm:componentPk><cm:createDate>2013-09-22T15:14:00.279+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset_metadata/1010736</cm:externalID><cm:lastModified>2014-11-24T17:01:00.715+02:00</cm:lastModified><cm:name><![CDATA[V2PC4]]/></cm:name><cm:uuid><![CDATA[fa0027a9-633b-4c7a-a967-0a2d5d5a4197]]/></cm:uuid><cm:locale><cm:country><![CDATA[US]]/></cm:country><cm:language><![CDATA[en]]/></cm:language><cm:localePk><![CDATA[6]]/></cm:localePk></cm:locale><cm:titleLong><![CDATA[North Remembers, The]]/></cm:titleLong><cm:advisories/><cm:castMembers/><cm:categories/><cm:directors/><cm:genres/><cm:producers/><cm:ratings/><cm:seriesName><![CDATA[Game Of Thrones 2]]/></cm:seriesName><cm:writers/><cm:creators/><cm:duration><![CDATA[00:00:00]]/></cm:duration><cm:episodeNumber><![CDATA[1]]/></cm:episodeNumber></cm:MetadataVideo></cm:Metadata_Folder><cm:Videos><cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110549]]/></cm:componentPk><cm:createDate>2013-10-07T12:43:20.984+02:00</cm:createDate><cm:lastModified>2013-10-07T12:43:20.984+02:00</cm:lastModified><cm:name><![CDATA[V2PC4__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[e7a6768c-3b21-4ebd-8021-4298783104c2]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[a8594c64-3e14-450c-b316-6d589871df07]]/></cm:contentFileUUID><cm:contentID>75ec62a1-4e34-4e36-8150-cedadfa41be8</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1999]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;75ec62a1-4e34-4e36-8150-cedadfa41be8&lt;/contentID&gt;
+    &lt;keyID&gt;ae008bc1-049b-4663-aca0-975d4379466b&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC4__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/324a2554-fa9b-4f76-9e34-271c9c2c4535/CTM_Ingest/out/81d61f4a-b50c-4172-9d37-8aa4aabe37d0/English_Tablet/V2PC4__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110552]]/></cm:componentPk><cm:createDate>2013-10-07T12:44:00.705+02:00</cm:createDate><cm:lastModified>2013-10-07T12:44:00.705+02:00</cm:lastModified><cm:name><![CDATA[V2PC4__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[19ce8f87-03b5-44f1-866b-54c79523c44e]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[5b29510f-3c39-4aae-8e58-d63e08bdbfc9]]/></cm:contentFileUUID><cm:contentID>0b4c0e38-b2c0-405a-9f64-641fd5994650</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1714]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;0b4c0e38-b2c0-405a-9f64-641fd5994650&lt;/contentID&gt;
+    &lt;keyID&gt;ae008bc1-049b-4663-aca0-975d4379466b&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC4__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/324a2554-fa9b-4f76-9e34-271c9c2c4535/CTM_Ingest/out/81d61f4a-b50c-4172-9d37-8aa4aabe37d0/English_Phone/V2PC4__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110551]]/></cm:componentPk><cm:createDate>2013-10-07T12:44:00.530+02:00</cm:createDate><cm:lastModified>2013-10-07T12:44:00.530+02:00</cm:lastModified><cm:name><![CDATA[V2PC4__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:name><cm:uuid><![CDATA[dbe32990-6912-4fce-8066-18a6029b72b7]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[5f0a4549-373b-4ba9-8ecd-ffc130093698]]/></cm:contentFileUUID><cm:contentID>2986a6b9-2024-4641-8eaf-33a2bf86c527</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[4416]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;2986a6b9-2024-4641-8eaf-33a2bf86c527&lt;/contentID&gt;
+    &lt;keyID&gt;ae008bc1-049b-4663-aca0-975d4379466b&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[text/xml]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC4__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/324a2554-fa9b-4f76-9e34-271c9c2c4535/CTM_Ingest/out/81d61f4a-b50c-4172-9d37-8aa4aabe37d0/Smooth_PC/V2PC4__TS__DRM__MUTE__HSS__PC__ALL.ism/MANIFEST]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.ms</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110548]]/></cm:componentPk><cm:createDate>2013-10-07T12:43:20.665+02:00</cm:createDate><cm:lastModified>2013-10-07T12:43:20.665+02:00</cm:lastModified><cm:name><![CDATA[V2PC4__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[229cb7da-de25-4201-8fd5-d9927ce83af4]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[4fcee651-1037-4355-95ce-e89ea0422feb]]/></cm:contentFileUUID><cm:contentID>da3fdcbc-3c05-489f-a2d8-e2f978d361e2</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1714]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;da3fdcbc-3c05-489f-a2d8-e2f978d361e2&lt;/contentID&gt;
+    &lt;keyID&gt;ae008bc1-049b-4663-aca0-975d4379466b&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC4__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/324a2554-fa9b-4f76-9e34-271c9c2c4535/CTM_Ingest/out/81d61f4a-b50c-4172-9d37-8aa4aabe37d0/Russian_Phone/V2PC4__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110550]]/></cm:componentPk><cm:createDate>2013-10-07T12:44:00.154+02:00</cm:createDate><cm:lastModified>2013-10-07T12:44:00.154+02:00</cm:lastModified><cm:name><![CDATA[V2PC4__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[78329c50-5629-42a8-9b6d-53f32334bd11]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[28764868-6644-4121-be16-8b119593d694]]/></cm:contentFileUUID><cm:contentID>cb628746-5381-4440-aa2f-c93b936bc202</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1999]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;cb628746-5381-4440-aa2f-c93b936bc202&lt;/contentID&gt;
+    &lt;keyID&gt;ae008bc1-049b-4663-aca0-975d4379466b&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC4__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/324a2554-fa9b-4f76-9e34-271c9c2c4535/CTM_Ingest/out/81d61f4a-b50c-4172-9d37-8aa4aabe37d0/Russian_Tablet/V2PC4__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest></cm:Videos><cm:Subtitles></cm:Subtitles><cm:Images><cm:Thumbnails></cm:Thumbnails><cm:Artwork></cm:Artwork></cm:Images><cm:Ad_Insertion_Points></cm:Ad_Insertion_Points><cm:Manifest></cm:Manifest><cm:Chapters></cm:Chapters><cm:Licensing_Window></cm:Licensing_Window><cm:Video_Previews></cm:Video_Previews><cm:Identifiers></cm:Identifiers><cm:Related_Identifiers><cm:IsanVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106829]]/></cm:componentPk><cm:createDate>2013-09-22T15:14:00.174+02:00</cm:createDate><cm:lastModified>2014-11-24T17:01:00.746+02:00</cm:lastModified><cm:name><![CDATA[North Remembers, The;Ver 1]]/></cm:name><cm:uuid><![CDATA[35a29d82-a172-4857-beea-56d983777fcb]]/></cm:uuid><cm:identifier><![CDATA[yes.co.il/ibms/program/340335-440657]]/></cm:identifier></cm:IsanVideo></cm:Related_Identifiers></cm:component>
+</cm:opencase>]]>
+      </CmsXml>
+    </core:Ext>
+    <content:SourceUrl>V2PC4</content:SourceUrl>
+    <content:ScreenFormat>Standard</content:ScreenFormat>
+    <content:Resolution>private:1080I</content:Resolution>
+    <content:Duration>PT00H50M30S</content:Duration>
+    <content:IsHDContent>1</content:IsHDContent>
+    <content:SubtitleLanguage>RU</content:SubtitleLanguage>
+    <content:SubtitleLanguage>IW</content:SubtitleLanguage>
+  </Movie>
+  <Poster uriId="yes.co.il/IBMS/asset/848086">
+    <content:SourceUrl>VP000465520.JPG</content:SourceUrl>
+    <!--
+                <content:ContentFileSize/>
+                <content:ContentCheckSum/>
+              -->
+  </Poster>
+  <Title type="ProgramTitle" uriId="yes.co.il/IBMS/program/340338-440660">
+    <core:Ext>
+      <SeriesRef uriId="yes.co.il/IBMS/series/60183"/>
+      <EpisodeNo>4</EpisodeNo>
+    </core:Ext>
+    <title:LocalizableTitle xml:lang="EN">
+      <title:TitleSortName>Game Of Thrones 2 4</title:TitleSortName>
+      <title:TitleBrief> </title:TitleBrief>
+      <title:TitleMedium> </title:TitleMedium>
+      <title:TitleLong>Game Of Thrones 2 4</title:TitleLong>
+      <title:SummaryShort>Joffrey punishes Sansa for Robb’s victories, while Tyrion and Bronn scramble to temper the king’s cruelty. Catelyn entreats Stannis and Renly to forego their ambitions and unite against the Lannisters.</title:SummaryShort>
+      <title:SummaryLong> </title:SummaryLong>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/14927" fullName="Peter Dinklage" firstName="Peter" lastName="Dinklage" sortableName="Dinklage,Peter"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/18293" fullName="Lena Headey" firstName="Lena" lastName="Headey" sortableName="Headey,Lena"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23849" fullName="Kit Harington" firstName="Kit" lastName="Harington" sortableName="Harington,Kit"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/27008" fullName="Michelle Fairley" firstName="Michelle" lastName="Fairley" sortableName="Fairley,Michelle"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/22335" fullName="Emilia Clarke" firstName="Emilia" lastName="Clarke" sortableName="Clarke,Emilia"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23787" fullName="Nikolaj Coster-Waldau" firstName="Nikolaj" lastName="Coster-Waldau" sortableName="Coster-Waldau,Nikolaj"/>
+    </title:LocalizableTitle>
+    <title:Rating>private:R18</title:Rating>
+    <title:Rating>dvb:13</title:Rating>
+    <title:DisplayRunTime>00:48</title:DisplayRunTime>
+    <title:Genre>private:General Entertainment/Entertainment</title:Genre>
+    <title:Genre>dvb:11/12</title:Genre>
+    <title:ShowType>private:S</title:ShowType>
+  </Title>
+  <Movie uriId="yes.co.il/IBMS/asset/1010739">
+    <core:Ext>
+      <CmsXml>
+        <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<cm:opencase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cm="http://opencase.extend.com/cm" xsi:schemaLocation="http://opencase.extend.com/cm http://http://vms.tve.yeseng.co.il:80//opencase/ContentManager/resource/rest/schema/contentManager.xsd">
+<cm:component xsi:type="cm:MaterialLogicalVideo"><cm:altCode><![CDATA[Game Of Thrones 2,Garden Of Bones,Ep: 4.]]/></cm:altCode><cm:componentPk><![CDATA[106837]]/></cm:componentPk><cm:createDate>2013-09-22T15:26:00.261+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset/1010739</cm:externalID><cm:lastModified>2014-11-24T17:18:00.415+02:00</cm:lastModified><cm:name><![CDATA[V2PC5]]/></cm:name><cm:uuid><![CDATA[6b6c6de6-d2c2-410a-a8bc-b4de1f5c6e3a]]/></cm:uuid><cm:isActive>true</cm:isActive><cm:providers/><cm:Metadata_Folder><cm:MetadataVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106835]]/></cm:componentPk><cm:createDate>2013-09-22T15:26:00.182+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset_metadata/1010739</cm:externalID><cm:lastModified>2014-11-24T17:18:00.377+02:00</cm:lastModified><cm:name><![CDATA[V2PC5]]/></cm:name><cm:uuid><![CDATA[6f9774ad-2e2b-4637-b9b8-100233f70fff]]/></cm:uuid><cm:locale><cm:country><![CDATA[US]]/></cm:country><cm:language><![CDATA[en]]/></cm:language><cm:localePk><![CDATA[6]]/></cm:localePk></cm:locale><cm:titleLong><![CDATA[Garden Of Bones]]/></cm:titleLong><cm:advisories/><cm:castMembers/><cm:categories/><cm:directors/><cm:genres/><cm:producers/><cm:ratings/><cm:seriesName><![CDATA[Game Of Thrones 2]]/></cm:seriesName><cm:writers/><cm:creators/><cm:duration><![CDATA[00:00:00]]/></cm:duration><cm:episodeNumber><![CDATA[4]]/></cm:episodeNumber></cm:MetadataVideo></cm:Metadata_Folder><cm:Videos><cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110380]]/></cm:componentPk><cm:createDate>2013-10-07T12:40:41.234+02:00</cm:createDate><cm:lastModified>2013-10-07T12:40:41.234+02:00</cm:lastModified><cm:name><![CDATA[V2PC5__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[4d1d52dd-e123-4c04-9b1a-fb2435cc4493]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[81230a34-f155-4dce-8d27-438208927b4a]]/></cm:contentFileUUID><cm:contentID>238e8e2e-9b65-4247-a05e-f48471ab4f1a</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1713]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;238e8e2e-9b65-4247-a05e-f48471ab4f1a&lt;/contentID&gt;
+    &lt;keyID&gt;070ff997-c2e8-4af6-9860-8207857e211f&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC5__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/4af46978-b68b-4894-9de6-c246d8618107/CTM_Ingest/out/567b8b65-a464-4db6-b5cf-c653c4d2df24/Russian_Phone/V2PC5__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110379]]/></cm:componentPk><cm:createDate>2013-10-07T12:40:38.917+02:00</cm:createDate><cm:lastModified>2013-10-07T12:40:38.917+02:00</cm:lastModified><cm:name><![CDATA[V2PC5__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:name><cm:uuid><![CDATA[fe751b63-c386-4184-8e27-b854d592d963]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[0a84c2e6-696c-445e-bd6b-3c6b5fb2fa05]]/></cm:contentFileUUID><cm:contentID>0ec9542f-5ccc-45a6-9f81-e786655454ae</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[4416]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;0ec9542f-5ccc-45a6-9f81-e786655454ae&lt;/contentID&gt;
+    &lt;keyID&gt;070ff997-c2e8-4af6-9860-8207857e211f&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[text/xml]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC5__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/4af46978-b68b-4894-9de6-c246d8618107/CTM_Ingest/out/567b8b65-a464-4db6-b5cf-c653c4d2df24/Smooth_PC/V2PC5__TS__DRM__MUTE__HSS__PC__ALL.ism/MANIFEST]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.ms</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110382]]/></cm:componentPk><cm:createDate>2013-10-07T12:40:44.095+02:00</cm:createDate><cm:lastModified>2013-10-07T12:40:44.095+02:00</cm:lastModified><cm:name><![CDATA[V2PC5__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[9de07099-64a9-436f-8254-7952908aa142]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[106f3a02-0413-4c03-8585-32e5f2dfdbaf]]/></cm:contentFileUUID><cm:contentID>02654caa-02ea-4b1f-b063-5c311ee5a9b1</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1998]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;02654caa-02ea-4b1f-b063-5c311ee5a9b1&lt;/contentID&gt;
+    &lt;keyID&gt;070ff997-c2e8-4af6-9860-8207857e211f&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC5__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/4af46978-b68b-4894-9de6-c246d8618107/CTM_Ingest/out/567b8b65-a464-4db6-b5cf-c653c4d2df24/English_Tablet/V2PC5__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110381]]/></cm:componentPk><cm:createDate>2013-10-07T12:40:41.427+02:00</cm:createDate><cm:lastModified>2013-10-07T12:40:41.427+02:00</cm:lastModified><cm:name><![CDATA[V2PC5__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[a419c64f-3b6f-4e13-950c-c6b690f83def]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[16c84247-ab87-429f-a27c-f5473f9715b3]]/></cm:contentFileUUID><cm:contentID>4ec17e25-3016-4190-b98a-76fdb2fa8721</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1998]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;4ec17e25-3016-4190-b98a-76fdb2fa8721&lt;/contentID&gt;
+    &lt;keyID&gt;070ff997-c2e8-4af6-9860-8207857e211f&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC5__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/4af46978-b68b-4894-9de6-c246d8618107/CTM_Ingest/out/567b8b65-a464-4db6-b5cf-c653c4d2df24/Russian_Tablet/V2PC5__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110378]]/></cm:componentPk><cm:createDate>2013-10-07T12:40:38.704+02:00</cm:createDate><cm:lastModified>2013-10-07T12:40:38.704+02:00</cm:lastModified><cm:name><![CDATA[V2PC5__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[c9b19ffe-57e5-4f49-a8ae-7f575aa048ad]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[36801309-0524-4320-a500-4eff59a5a781]]/></cm:contentFileUUID><cm:contentID>472920bb-1ece-440e-9ec6-9a45b79e8562</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1713]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;472920bb-1ece-440e-9ec6-9a45b79e8562&lt;/contentID&gt;
+    &lt;keyID&gt;070ff997-c2e8-4af6-9860-8207857e211f&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC5__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/4af46978-b68b-4894-9de6-c246d8618107/CTM_Ingest/out/567b8b65-a464-4db6-b5cf-c653c4d2df24/English_Phone/V2PC5__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest></cm:Videos><cm:Subtitles></cm:Subtitles><cm:Images><cm:Thumbnails></cm:Thumbnails><cm:Artwork></cm:Artwork></cm:Images><cm:Ad_Insertion_Points></cm:Ad_Insertion_Points><cm:Manifest></cm:Manifest><cm:Chapters></cm:Chapters><cm:Licensing_Window></cm:Licensing_Window><cm:Video_Previews></cm:Video_Previews><cm:Identifiers></cm:Identifiers><cm:Related_Identifiers><cm:IsanVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106836]]/></cm:componentPk><cm:createDate>2013-09-22T15:26:00.239+02:00</cm:createDate><cm:lastModified>2014-11-24T17:18:00.314+02:00</cm:lastModified><cm:name><![CDATA[Garden Of Bones;Ver 1]]/></cm:name><cm:uuid><![CDATA[7c9a2205-0ab5-462c-97b3-dc6a990303ea]]/></cm:uuid><cm:identifier><![CDATA[yes.co.il/ibms/program/340338-440660]]/></cm:identifier></cm:IsanVideo></cm:Related_Identifiers></cm:component>
+</cm:opencase>]]>
+      </CmsXml>
+    </core:Ext>
+    <content:SourceUrl>V2PC5</content:SourceUrl>
+    <content:ScreenFormat>Standard</content:ScreenFormat>
+    <content:Resolution>private:1080I</content:Resolution>
+    <content:Duration>PT00H48M34S</content:Duration>
+    <content:IsHDContent>1</content:IsHDContent>
+    <content:SubtitleLanguage>RU</content:SubtitleLanguage>
+    <content:SubtitleLanguage>IW</content:SubtitleLanguage>
+  </Movie>
+  <Poster uriId="yes.co.il/IBMS/asset/848089">
+    <content:SourceUrl>VP000465523.JPG</content:SourceUrl>
+    <!--
+                <content:ContentFileSize/>
+                <content:ContentCheckSum/>
+              -->
+  </Poster>
+  <Title type="ProgramTitle" uriId="yes.co.il/IBMS/program/340339-440661">
+    <core:Ext>
+      <SeriesRef uriId="yes.co.il/IBMS/series/60183"/>
+      <EpisodeNo>5</EpisodeNo>
+    </core:Ext>
+    <title:LocalizableTitle xml:lang="EN">
+      <title:TitleSortName>Game Of Thrones 2 5</title:TitleSortName>
+      <title:TitleBrief> </title:TitleBrief>
+      <title:TitleMedium> </title:TitleMedium>
+      <title:TitleLong>Game Of Thrones 2 5</title:TitleLong>
+      <title:SummaryShort>The end of the Baratheon rivalry drives Catelyn to flee and Littlefinger to act. At King’s Landing, Tyrion’s source alerts him to Joffrey’s flawed defense plan and a mysterious secret weapon.</title:SummaryShort>
+      <title:SummaryLong> </title:SummaryLong>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/14927" fullName="Peter Dinklage" firstName="Peter" lastName="Dinklage" sortableName="Dinklage,Peter"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/18293" fullName="Lena Headey" firstName="Lena" lastName="Headey" sortableName="Headey,Lena"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23849" fullName="Kit Harington" firstName="Kit" lastName="Harington" sortableName="Harington,Kit"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/27008" fullName="Michelle Fairley" firstName="Michelle" lastName="Fairley" sortableName="Fairley,Michelle"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/22335" fullName="Emilia Clarke" firstName="Emilia" lastName="Clarke" sortableName="Clarke,Emilia"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23787" fullName="Nikolaj Coster-Waldau" firstName="Nikolaj" lastName="Coster-Waldau" sortableName="Coster-Waldau,Nikolaj"/>
+    </title:LocalizableTitle>
+    <title:Rating>private:R18</title:Rating>
+    <title:Rating>dvb:13</title:Rating>
+    <title:DisplayRunTime>00:51</title:DisplayRunTime>
+    <title:Genre>private:General Entertainment/Entertainment</title:Genre>
+    <title:Genre>dvb:11/8</title:Genre>
+    <title:ShowType>private:S</title:ShowType>
+  </Title>
+  <Movie uriId="yes.co.il/IBMS/asset/1010740">
+    <core:Ext>
+      <CmsXml>
+        <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<cm:opencase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cm="http://opencase.extend.com/cm" xsi:schemaLocation="http://opencase.extend.com/cm http://http://vms.tve.yeseng.co.il:80//opencase/ContentManager/resource/rest/schema/contentManager.xsd">
+<cm:component xsi:type="cm:MaterialLogicalVideo"><cm:altCode><![CDATA[Game Of Thrones 2,Ghost Of Harrenhal, The,Ep: 5]]/></cm:altCode><cm:componentPk><![CDATA[106840]]/></cm:componentPk><cm:createDate>2013-09-22T15:33:00.226+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset/1010740</cm:externalID><cm:lastModified>2014-11-24T17:24:00.877+02:00</cm:lastModified><cm:name><![CDATA[V2PC6]]/></cm:name><cm:uuid><![CDATA[fb1db150-144d-4332-b101-ce689bcad302]]/></cm:uuid><cm:isActive>true</cm:isActive><cm:providers/><cm:Metadata_Folder><cm:MetadataVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106838]]/></cm:componentPk><cm:createDate>2013-09-22T15:33:00.162+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset_metadata/1010740</cm:externalID><cm:lastModified>2014-11-24T17:24:00.761+02:00</cm:lastModified><cm:name><![CDATA[V2PC6]]/></cm:name><cm:uuid><![CDATA[e4735681-b3c4-425a-9289-d318f76aefe0]]/></cm:uuid><cm:locale><cm:country><![CDATA[US]]/></cm:country><cm:language><![CDATA[en]]/></cm:language><cm:localePk><![CDATA[6]]/></cm:localePk></cm:locale><cm:titleLong><![CDATA[Ghost Of Harrenhal, The]]/></cm:titleLong><cm:advisories/><cm:castMembers/><cm:categories/><cm:directors/><cm:genres/><cm:producers/><cm:ratings/><cm:seriesName><![CDATA[Game Of Thrones 2]]/></cm:seriesName><cm:writers/><cm:creators/><cm:duration><![CDATA[00:00:00]]/></cm:duration><cm:episodeNumber><![CDATA[5]]/></cm:episodeNumber></cm:MetadataVideo></cm:Metadata_Folder><cm:Videos><cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110233]]/></cm:componentPk><cm:createDate>2013-10-03T05:09:00.690+02:00</cm:createDate><cm:lastModified>2013-10-03T05:09:00.690+02:00</cm:lastModified><cm:name><![CDATA[V2PC6__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[b85a6687-673e-4495-89b0-2e2666046533]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[c526782a-a02b-4470-a5d7-fbf4c8eb47e6]]/></cm:contentFileUUID><cm:contentID>bd5957dc-c8be-408a-8e14-f95c30d0f6ba</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1998]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;bd5957dc-c8be-408a-8e14-f95c30d0f6ba&lt;/contentID&gt;
+    &lt;keyID&gt;e6a6386a-8332-4952-bb7f-c3d27aba771e&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC6__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/19beb967-dd75-4145-9923-0ed069ce415f/CTM_Ingest/out/e643ccf8-8341-4d09-8d59-e7582717f892/English_Tablet/V2PC6__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110232]]/></cm:componentPk><cm:createDate>2013-10-03T05:09:00.550+02:00</cm:createDate><cm:lastModified>2013-10-03T05:09:00.550+02:00</cm:lastModified><cm:name><![CDATA[V2PC6__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[b186dead-dbe1-4208-98df-5189db3becf7]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[df2b56f8-6c0d-450a-9771-9c6fac773325]]/></cm:contentFileUUID><cm:contentID>5546be9e-c90a-4bf1-b5af-3934f6054965</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1713]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;5546be9e-c90a-4bf1-b5af-3934f6054965&lt;/contentID&gt;
+    &lt;keyID&gt;e6a6386a-8332-4952-bb7f-c3d27aba771e&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC6__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/19beb967-dd75-4145-9923-0ed069ce415f/CTM_Ingest/out/e643ccf8-8341-4d09-8d59-e7582717f892/Russian_Phone/V2PC6__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110230]]/></cm:componentPk><cm:createDate>2013-10-03T05:09:00.113+02:00</cm:createDate><cm:lastModified>2013-10-03T05:09:00.113+02:00</cm:lastModified><cm:name><![CDATA[V2PC6__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[fa7f936f-5c43-4268-b7c5-d434a1f59f58]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[18abdd29-132e-4db4-9fad-2cc63861668d]]/></cm:contentFileUUID><cm:contentID>2eaa5f5f-833e-4240-8cd9-dc023f9ea8d4</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1713]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;2eaa5f5f-833e-4240-8cd9-dc023f9ea8d4&lt;/contentID&gt;
+    &lt;keyID&gt;e6a6386a-8332-4952-bb7f-c3d27aba771e&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC6__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/19beb967-dd75-4145-9923-0ed069ce415f/CTM_Ingest/out/e643ccf8-8341-4d09-8d59-e7582717f892/English_Phone/V2PC6__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110234]]/></cm:componentPk><cm:createDate>2013-10-03T05:09:00.821+02:00</cm:createDate><cm:lastModified>2013-10-03T05:09:00.821+02:00</cm:lastModified><cm:name><![CDATA[V2PC6__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[f0f9b28e-e62b-48df-99f5-1dd4663a6141]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[8e36a7af-c772-44f1-91c8-afd816c6a8ce]]/></cm:contentFileUUID><cm:contentID>dbc60254-8c0e-4a06-85ac-2e2d0c090ac9</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1998]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;dbc60254-8c0e-4a06-85ac-2e2d0c090ac9&lt;/contentID&gt;
+    &lt;keyID&gt;e6a6386a-8332-4952-bb7f-c3d27aba771e&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC6__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/19beb967-dd75-4145-9923-0ed069ce415f/CTM_Ingest/out/e643ccf8-8341-4d09-8d59-e7582717f892/Russian_Tablet/V2PC6__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110231]]/></cm:componentPk><cm:createDate>2013-10-03T05:09:00.390+02:00</cm:createDate><cm:lastModified>2013-10-03T05:09:00.390+02:00</cm:lastModified><cm:name><![CDATA[V2PC6__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:name><cm:uuid><![CDATA[b454a055-1282-46b2-8a65-e78c19e6eabe]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[acce9b84-be6b-49b0-bd51-64b6ae0000a5]]/></cm:contentFileUUID><cm:contentID>9dbdb13d-53e6-49ce-b5e0-1905f9ac05af</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[4416]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;9dbdb13d-53e6-49ce-b5e0-1905f9ac05af&lt;/contentID&gt;
+    &lt;keyID&gt;e6a6386a-8332-4952-bb7f-c3d27aba771e&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[text/xml]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC6__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/19beb967-dd75-4145-9923-0ed069ce415f/CTM_Ingest/out/e643ccf8-8341-4d09-8d59-e7582717f892/Smooth_PC/V2PC6__TS__DRM__MUTE__HSS__PC__ALL.ism/MANIFEST]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.ms</cm:manifestType></cm:PhysicalAssetManifest></cm:Videos><cm:Subtitles></cm:Subtitles><cm:Images><cm:Thumbnails></cm:Thumbnails><cm:Artwork></cm:Artwork></cm:Images><cm:Ad_Insertion_Points></cm:Ad_Insertion_Points><cm:Manifest></cm:Manifest><cm:Chapters></cm:Chapters><cm:Licensing_Window></cm:Licensing_Window><cm:Video_Previews></cm:Video_Previews><cm:Identifiers></cm:Identifiers><cm:Related_Identifiers><cm:IsanVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106839]]/></cm:componentPk><cm:createDate>2013-09-22T15:33:00.205+02:00</cm:createDate><cm:lastModified>2014-11-24T17:24:00.821+02:00</cm:lastModified><cm:name><![CDATA[Ghost Of Harrenhal, The;Ver 1]]/></cm:name><cm:uuid><![CDATA[1b6c14cf-bfad-46e9-88f8-3ed387f74b8b]]/></cm:uuid><cm:identifier><![CDATA[yes.co.il/ibms/program/340339-440661]]/></cm:identifier></cm:IsanVideo></cm:Related_Identifiers></cm:component>
+</cm:opencase>]]>
+      </CmsXml>
+    </core:Ext>
+    <content:SourceUrl>V2PC6</content:SourceUrl>
+    <content:ScreenFormat>Standard</content:ScreenFormat>
+    <content:Resolution>private:1080I</content:Resolution>
+    <content:Duration>PT00H51M55S</content:Duration>
+    <content:IsHDContent>1</content:IsHDContent>
+    <content:SubtitleLanguage>IW</content:SubtitleLanguage>
+    <content:SubtitleLanguage>RU</content:SubtitleLanguage>
+  </Movie>
+  <Poster uriId="yes.co.il/IBMS/asset/848090">
+    <content:SourceUrl>VP000465524.JPG</content:SourceUrl>
+    <!--
+                <content:ContentFileSize/>
+                <content:ContentCheckSum/>
+              -->
+  </Poster>
+  <Title type="ProgramTitle" uriId="yes.co.il/IBMS/program/340343-440665">
+    <core:Ext>
+      <SeriesRef uriId="yes.co.il/IBMS/series/60183"/>
+      <EpisodeNo>9</EpisodeNo>
+    </core:Ext>
+    <title:LocalizableTitle xml:lang="EN">
+      <title:TitleSortName>Game Of Thrones 2 9</title:TitleSortName>
+      <title:TitleBrief> </title:TitleBrief>
+      <title:TitleMedium> </title:TitleMedium>
+      <title:TitleLong>Game Of Thrones 2 9</title:TitleLong>
+      <title:SummaryShort>Stannis finally begins his assault on King's Landing and Tyrion and the Lannisters must fight for their lives on the Blackwater Rush.</title:SummaryShort>
+      <title:SummaryLong> </title:SummaryLong>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/14927" fullName="Peter Dinklage" firstName="Peter" lastName="Dinklage" sortableName="Dinklage,Peter"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/18293" fullName="Lena Headey" firstName="Lena" lastName="Headey" sortableName="Headey,Lena"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23849" fullName="Kit Harington" firstName="Kit" lastName="Harington" sortableName="Harington,Kit"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/27008" fullName="Michelle Fairley" firstName="Michelle" lastName="Fairley" sortableName="Fairley,Michelle"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/22335" fullName="Emilia Clarke" firstName="Emilia" lastName="Clarke" sortableName="Clarke,Emilia"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23787" fullName="Nikolaj Coster-Waldau" firstName="Nikolaj" lastName="Coster-Waldau" sortableName="Coster-Waldau,Nikolaj"/>
+    </title:LocalizableTitle>
+    <title:Rating>private:R18</title:Rating>
+    <title:Rating>dvb:13</title:Rating>
+    <title:DisplayRunTime>00:52</title:DisplayRunTime>
+    <title:Genre>private:General Entertainment/Entertainment</title:Genre>
+    <title:Genre>dvb:11/8</title:Genre>
+    <title:ShowType>private:S</title:ShowType>
+  </Title>
+  <Movie uriId="yes.co.il/IBMS/asset/1010743">
+    <core:Ext>
+      <CmsXml>
+        <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<cm:opencase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cm="http://opencase.extend.com/cm" xsi:schemaLocation="http://opencase.extend.com/cm http://http://vms.tve.yeseng.co.il:80//opencase/ContentManager/resource/rest/schema/contentManager.xsd">
+<cm:component xsi:type="cm:MaterialLogicalVideo"><cm:altCode><![CDATA[Game Of Thrones 2,Blackwater,Ep: 9]]/></cm:altCode><cm:componentPk><![CDATA[106865]]/></cm:componentPk><cm:createDate>2013-09-22T15:55:00.699+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset/1010743</cm:externalID><cm:lastModified>2014-11-24T17:34:00.478+02:00</cm:lastModified><cm:name><![CDATA[V2PC7]]/></cm:name><cm:uuid><![CDATA[03dbd985-8cb3-4093-9b02-487f788051ba]]/></cm:uuid><cm:isActive>true</cm:isActive><cm:providers/><cm:Metadata_Folder><cm:MetadataVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106863]]/></cm:componentPk><cm:createDate>2013-09-22T15:55:00.631+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset_metadata/1010743</cm:externalID><cm:lastModified>2014-11-24T17:34:00.377+02:00</cm:lastModified><cm:name><![CDATA[V2PC7]]/></cm:name><cm:uuid><![CDATA[1f1e38ae-03d0-4436-ab7a-83b353700d88]]/></cm:uuid><cm:locale><cm:country><![CDATA[US]]/></cm:country><cm:language><![CDATA[en]]/></cm:language><cm:localePk><![CDATA[6]]/></cm:localePk></cm:locale><cm:titleLong><![CDATA[Blackwater]]/></cm:titleLong><cm:advisories/><cm:castMembers/><cm:categories/><cm:directors/><cm:genres/><cm:producers/><cm:ratings/><cm:seriesName><![CDATA[Game Of Thrones 2]]/></cm:seriesName><cm:writers/><cm:creators/><cm:duration><![CDATA[00:00:00]]/></cm:duration><cm:episodeNumber><![CDATA[9]]/></cm:episodeNumber></cm:MetadataVideo></cm:Metadata_Folder><cm:Videos><cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110082]]/></cm:componentPk><cm:createDate>2013-10-02T18:56:00.508+02:00</cm:createDate><cm:lastModified>2013-10-02T18:56:00.508+02:00</cm:lastModified><cm:name><![CDATA[V2PC7__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[09eb06d0-b676-4bfd-a6f9-d99daf153797]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[afce5b2f-6c53-4db1-b61e-a316eab1b2f0]]/></cm:contentFileUUID><cm:contentID>08a26f12-cfa6-466c-b624-9b91b953eb90</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1713]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;08a26f12-cfa6-466c-b624-9b91b953eb90&lt;/contentID&gt;
+    &lt;keyID&gt;8c248793-7a16-4ce9-a097-683221e1391c&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC7__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/3eb07191-d94c-449b-a7ad-6dcb08f43042/CTM_Ingest/out/dfa6af96-0ffd-4422-83dc-f01236329759/Russian_Phone/V2PC7__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110083]]/></cm:componentPk><cm:createDate>2013-10-02T18:56:00.629+02:00</cm:createDate><cm:lastModified>2013-10-02T18:56:00.629+02:00</cm:lastModified><cm:name><![CDATA[V2PC7__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[2b3bfdb1-7073-4dcc-b26a-3d0008f3d1e4]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[968e7f37-8642-496f-9f8e-043da0c672c3]]/></cm:contentFileUUID><cm:contentID>5702c21e-965f-4703-bdf3-774da694c25d</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1998]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;5702c21e-965f-4703-bdf3-774da694c25d&lt;/contentID&gt;
+    &lt;keyID&gt;8c248793-7a16-4ce9-a097-683221e1391c&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC7__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/3eb07191-d94c-449b-a7ad-6dcb08f43042/CTM_Ingest/out/dfa6af96-0ffd-4422-83dc-f01236329759/English_Tablet/V2PC7__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110080]]/></cm:componentPk><cm:createDate>2013-10-02T18:56:00.134+02:00</cm:createDate><cm:lastModified>2013-10-02T18:56:00.134+02:00</cm:lastModified><cm:name><![CDATA[V2PC7__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[36c7478c-3eea-4476-84fa-1308e12affb6]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[6f2ac9d0-5057-4488-8ce2-019c08d624e0]]/></cm:contentFileUUID><cm:contentID>bf03916d-038b-48b1-bc4f-1cb9865ed02b</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1998]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;bf03916d-038b-48b1-bc4f-1cb9865ed02b&lt;/contentID&gt;
+    &lt;keyID&gt;8c248793-7a16-4ce9-a097-683221e1391c&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC7__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/3eb07191-d94c-449b-a7ad-6dcb08f43042/CTM_Ingest/out/dfa6af96-0ffd-4422-83dc-f01236329759/Russian_Tablet/V2PC7__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110084]]/></cm:componentPk><cm:createDate>2013-10-02T18:56:00.780+02:00</cm:createDate><cm:lastModified>2013-10-02T18:56:00.780+02:00</cm:lastModified><cm:name><![CDATA[V2PC7__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[82435922-0316-4efc-aa6a-6672c672e9aa]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[92a34f1b-ccf3-4fc2-802f-b876138bab52]]/></cm:contentFileUUID><cm:contentID>02b24023-b5db-43b9-b2bb-8f3a9ccfc49f</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1713]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;02b24023-b5db-43b9-b2bb-8f3a9ccfc49f&lt;/contentID&gt;
+    &lt;keyID&gt;8c248793-7a16-4ce9-a097-683221e1391c&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC7__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/3eb07191-d94c-449b-a7ad-6dcb08f43042/CTM_Ingest/out/dfa6af96-0ffd-4422-83dc-f01236329759/English_Phone/V2PC7__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110081]]/></cm:componentPk><cm:createDate>2013-10-02T18:56:00.348+02:00</cm:createDate><cm:lastModified>2013-10-02T18:56:00.348+02:00</cm:lastModified><cm:name><![CDATA[V2PC7__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:name><cm:uuid><![CDATA[cd0727da-3005-4a1f-b7bc-b0cbbe90e969]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[4ed491b3-0838-452f-ad5e-ed57faaaf871]]/></cm:contentFileUUID><cm:contentID>96a510bf-e7c4-4b03-ac92-8233f0068d4d</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[4416]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;96a510bf-e7c4-4b03-ac92-8233f0068d4d&lt;/contentID&gt;
+    &lt;keyID&gt;8c248793-7a16-4ce9-a097-683221e1391c&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[text/xml]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC7__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/3eb07191-d94c-449b-a7ad-6dcb08f43042/CTM_Ingest/out/dfa6af96-0ffd-4422-83dc-f01236329759/Smooth_PC/V2PC7__TS__DRM__MUTE__HSS__PC__ALL.ism/MANIFEST]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.ms</cm:manifestType></cm:PhysicalAssetManifest></cm:Videos><cm:Subtitles></cm:Subtitles><cm:Images><cm:Thumbnails></cm:Thumbnails><cm:Artwork></cm:Artwork></cm:Images><cm:Ad_Insertion_Points></cm:Ad_Insertion_Points><cm:Manifest></cm:Manifest><cm:Chapters></cm:Chapters><cm:Licensing_Window></cm:Licensing_Window><cm:Video_Previews></cm:Video_Previews><cm:Identifiers></cm:Identifiers><cm:Related_Identifiers><cm:IsanVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106864]]/></cm:componentPk><cm:createDate>2013-09-22T15:55:00.678+02:00</cm:createDate><cm:lastModified>2014-11-24T17:34:00.318+02:00</cm:lastModified><cm:name><![CDATA[Blackwater;Ver 1]]/></cm:name><cm:uuid><![CDATA[c146fd7d-bde2-44e6-8128-72f5097c7f12]]/></cm:uuid><cm:identifier><![CDATA[yes.co.il/ibms/program/340343-440665]]/></cm:identifier></cm:IsanVideo></cm:Related_Identifiers></cm:component>
+</cm:opencase>]]>
+      </CmsXml>
+    </core:Ext>
+    <content:SourceUrl>V2PC7</content:SourceUrl>
+    <content:ScreenFormat>Standard</content:ScreenFormat>
+    <content:Resolution>private:1080I</content:Resolution>
+    <content:Duration>PT00H52M12S</content:Duration>
+    <content:IsHDContent>1</content:IsHDContent>
+    <content:SubtitleLanguage>IW</content:SubtitleLanguage>
+    <content:SubtitleLanguage>RU</content:SubtitleLanguage>
+  </Movie>
+  <Poster uriId="yes.co.il/IBMS/asset/848094">
+    <content:SourceUrl>VP000465528.JPG</content:SourceUrl>
+    <!--
+                <content:ContentFileSize/>
+                <content:ContentCheckSum/>
+              -->
+  </Poster>
+  <Title type="ProgramTitle" uriId="yes.co.il/IBMS/program/340337-440659">
+    <core:Ext>
+      <SeriesRef uriId="yes.co.il/IBMS/series/60183"/>
+      <EpisodeNo>3</EpisodeNo>
+    </core:Ext>
+    <title:LocalizableTitle xml:lang="EN">
+      <title:TitleSortName>Game Of Thrones 2 3</title:TitleSortName>
+      <title:TitleBrief> </title:TitleBrief>
+      <title:TitleMedium> </title:TitleMedium>
+      <title:TitleLong>Game Of Thrones 2 3</title:TitleLong>
+      <title:SummaryShort>Tyrion plots three alliances through the promise of marriage. Catelyn arrives in the Stormlands to forge an alliance of her own. But King Renly, his new wife Margaery and her brother Loras Tyrell have other plans.</title:SummaryShort>
+      <title:SummaryLong> </title:SummaryLong>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/14927" fullName="Peter Dinklage" firstName="Peter" lastName="Dinklage" sortableName="Dinklage,Peter"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/18293" fullName="Lena Headey" firstName="Lena" lastName="Headey" sortableName="Headey,Lena"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23849" fullName="Kit Harington" firstName="Kit" lastName="Harington" sortableName="Harington,Kit"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/27008" fullName="Michelle Fairley" firstName="Michelle" lastName="Fairley" sortableName="Fairley,Michelle"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/22335" fullName="Emilia Clarke" firstName="Emilia" lastName="Clarke" sortableName="Clarke,Emilia"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23787" fullName="Nikolaj Coster-Waldau" firstName="Nikolaj" lastName="Coster-Waldau" sortableName="Coster-Waldau,Nikolaj"/>
+    </title:LocalizableTitle>
+    <title:Rating>private:R18</title:Rating>
+    <title:Rating>dvb:13</title:Rating>
+    <title:DisplayRunTime>00:50</title:DisplayRunTime>
+    <title:Genre>private:General Entertainment/Entertainment</title:Genre>
+    <title:Genre>dvb:11/12</title:Genre>
+    <title:ShowType>private:S</title:ShowType>
+  </Title>
+  <Movie uriId="yes.co.il/IBMS/asset/1010738">
+    <core:Ext>
+      <CmsXml>
+        <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<cm:opencase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cm="http://opencase.extend.com/cm" xsi:schemaLocation="http://opencase.extend.com/cm http://http://vms.tve.yeseng.co.il:80//opencase/ContentManager/resource/rest/schema/contentManager.xsd">
+<cm:component xsi:type="cm:MaterialLogicalVideo"><cm:altCode><![CDATA[Game Of Thrones 2,What Is Dead May Never Die,Ep: 3.]]/></cm:altCode><cm:componentPk><![CDATA[106862]]/></cm:componentPk><cm:createDate>2013-09-22T15:20:00.282+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset/1010738</cm:externalID><cm:lastModified>2014-11-24T17:17:00.422+02:00</cm:lastModified><cm:name><![CDATA[V2PC8]]/></cm:name><cm:uuid><![CDATA[bf1d20d0-c15c-4186-b003-e5d40a549820]]/></cm:uuid><cm:isActive>true</cm:isActive><cm:providers/><cm:Metadata_Folder><cm:MetadataVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106861]]/></cm:componentPk><cm:createDate>2013-09-22T15:20:00.249+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset_metadata/1010738</cm:externalID><cm:lastModified>2014-11-24T17:17:00.301+02:00</cm:lastModified><cm:name><![CDATA[V2PC8]]/></cm:name><cm:uuid><![CDATA[ece5f1f6-f776-4a04-a73f-aed055e44864]]/></cm:uuid><cm:locale><cm:country><![CDATA[US]]/></cm:country><cm:language><![CDATA[en]]/></cm:language><cm:localePk><![CDATA[6]]/></cm:localePk></cm:locale><cm:titleLong><![CDATA[What Is Dead May Never Die]]/></cm:titleLong><cm:advisories/><cm:castMembers/><cm:categories/><cm:directors/><cm:genres/><cm:producers/><cm:ratings/><cm:seriesName><![CDATA[Game Of Thrones 2]]/></cm:seriesName><cm:writers/><cm:creators/><cm:duration><![CDATA[00:00:00]]/></cm:duration><cm:episodeNumber><![CDATA[3]]/></cm:episodeNumber></cm:MetadataVideo></cm:Metadata_Folder><cm:Videos><cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110706]]/></cm:componentPk><cm:createDate>2013-10-07T12:47:01.183+02:00</cm:createDate><cm:lastModified>2013-10-07T12:47:01.183+02:00</cm:lastModified><cm:name><![CDATA[V2PC8__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[baee9451-07aa-4fbe-a832-197883caa88f]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[4ae3f479-89df-438c-98a9-3f9f7441aa9f]]/></cm:contentFileUUID><cm:contentID>363deb5e-aecb-4138-be94-b4454fe1afaf</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1713]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;363deb5e-aecb-4138-be94-b4454fe1afaf&lt;/contentID&gt;
+    &lt;keyID&gt;a28de68a-93b7-4cb0-944e-3e7ed42790aa&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC8__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/810d808a-6719-428e-9a6a-387a8405c6b1/CTM_Ingest/out/95a18cb6-5101-4379-802a-8593eaf51150/English_Phone/V2PC8__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110705]]/></cm:componentPk><cm:createDate>2013-10-07T12:47:01.043+02:00</cm:createDate><cm:lastModified>2013-10-07T12:47:01.043+02:00</cm:lastModified><cm:name><![CDATA[V2PC8__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[917afc1f-a48b-499e-9ece-96bf6b202d52]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[259c900d-b3d3-42a5-87dc-1041660a6caf]]/></cm:contentFileUUID><cm:contentID>4a54134a-7c69-4159-a75a-332213691a43</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1998]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;4a54134a-7c69-4159-a75a-332213691a43&lt;/contentID&gt;
+    &lt;keyID&gt;a28de68a-93b7-4cb0-944e-3e7ed42790aa&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC8__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/810d808a-6719-428e-9a6a-387a8405c6b1/CTM_Ingest/out/95a18cb6-5101-4379-802a-8593eaf51150/English_Tablet/V2PC8__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110707]]/></cm:componentPk><cm:createDate>2013-10-07T12:47:01.357+02:00</cm:createDate><cm:lastModified>2013-10-07T12:47:01.357+02:00</cm:lastModified><cm:name><![CDATA[V2PC8__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[3c6d7cb5-9feb-444c-a6c3-9a413b8fc748]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[aa117e46-9254-4552-8883-417d28e9747b]]/></cm:contentFileUUID><cm:contentID>3c8d4b69-0bd9-41ca-b90f-e93a1a64aa62</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1713]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;3c8d4b69-0bd9-41ca-b90f-e93a1a64aa62&lt;/contentID&gt;
+    &lt;keyID&gt;a28de68a-93b7-4cb0-944e-3e7ed42790aa&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC8__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/810d808a-6719-428e-9a6a-387a8405c6b1/CTM_Ingest/out/95a18cb6-5101-4379-802a-8593eaf51150/Russian_Phone/V2PC8__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110703]]/></cm:componentPk><cm:createDate>2013-10-07T12:47:00.697+02:00</cm:createDate><cm:lastModified>2013-10-07T12:47:00.697+02:00</cm:lastModified><cm:name><![CDATA[V2PC8__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:name><cm:uuid><![CDATA[9d82889d-a95d-4f73-9e5a-543a8097cdd0]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[00f484c8-a8cd-496a-b306-70e7de4f15e7]]/></cm:contentFileUUID><cm:contentID>aa049c8c-c48b-4f8a-896a-fab7eb26b2d1</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[4416]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;aa049c8c-c48b-4f8a-896a-fab7eb26b2d1&lt;/contentID&gt;
+    &lt;keyID&gt;a28de68a-93b7-4cb0-944e-3e7ed42790aa&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[text/xml]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC8__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/810d808a-6719-428e-9a6a-387a8405c6b1/CTM_Ingest/out/95a18cb6-5101-4379-802a-8593eaf51150/Smooth_PC/V2PC8__TS__DRM__MUTE__HSS__PC__ALL.ism/MANIFEST]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.ms</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110704]]/></cm:componentPk><cm:createDate>2013-10-07T12:47:00.866+02:00</cm:createDate><cm:lastModified>2013-10-07T12:47:00.866+02:00</cm:lastModified><cm:name><![CDATA[V2PC8__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[253fdd1d-0362-4fe3-8519-ab49fd424824]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[ae9ed7e3-a359-4355-980b-f069450e6416]]/></cm:contentFileUUID><cm:contentID>9f06be50-e63a-4905-b614-c529a30596af</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1998]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;9f06be50-e63a-4905-b614-c529a30596af&lt;/contentID&gt;
+    &lt;keyID&gt;a28de68a-93b7-4cb0-944e-3e7ed42790aa&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC8__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/810d808a-6719-428e-9a6a-387a8405c6b1/CTM_Ingest/out/95a18cb6-5101-4379-802a-8593eaf51150/Russian_Tablet/V2PC8__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest></cm:Videos><cm:Subtitles></cm:Subtitles><cm:Images><cm:Thumbnails></cm:Thumbnails><cm:Artwork></cm:Artwork></cm:Images><cm:Ad_Insertion_Points></cm:Ad_Insertion_Points><cm:Manifest></cm:Manifest><cm:Chapters></cm:Chapters><cm:Licensing_Window></cm:Licensing_Window><cm:Video_Previews></cm:Video_Previews><cm:Identifiers></cm:Identifiers><cm:Related_Identifiers><cm:IsanVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106860]]/></cm:componentPk><cm:createDate>2013-09-22T15:20:00.188+02:00</cm:createDate><cm:lastModified>2014-11-24T17:17:00.389+02:00</cm:lastModified><cm:name><![CDATA[What Is Dead May Never Die;Ver 1]]/></cm:name><cm:uuid><![CDATA[b8b93331-da6c-411a-a6cc-edd4d628fa3f]]/></cm:uuid><cm:identifier><![CDATA[yes.co.il/ibms/program/340337-440659]]/></cm:identifier></cm:IsanVideo></cm:Related_Identifiers></cm:component>
+</cm:opencase>]]>
+      </CmsXml>
+    </core:Ext>
+    <content:SourceUrl>V2PC8</content:SourceUrl>
+    <content:ScreenFormat>Standard</content:ScreenFormat>
+    <content:Resolution>private:1080I</content:Resolution>
+    <content:Duration>PT00H50M33S</content:Duration>
+    <content:IsHDContent>1</content:IsHDContent>
+    <content:SubtitleLanguage>IW</content:SubtitleLanguage>
+    <content:SubtitleLanguage>RU</content:SubtitleLanguage>
+  </Movie>
+  <Poster uriId="yes.co.il/IBMS/asset/848088">
+    <content:SourceUrl>VP000465522.JPG</content:SourceUrl>
+    <!--
+                <content:ContentFileSize/>
+                <content:ContentCheckSum/>
+              -->
+  </Poster>
+  <Title type="ProgramTitle" uriId="yes.co.il/IBMS/program/340344-440666">
+    <core:Ext>
+      <SeriesRef uriId="yes.co.il/IBMS/series/60183"/>
+      <EpisodeNo>10</EpisodeNo>
+    </core:Ext>
+    <title:LocalizableTitle xml:lang="EN">
+      <title:TitleSortName>Game Of Thrones 2 10</title:TitleSortName>
+      <title:TitleBrief> </title:TitleBrief>
+      <title:TitleMedium> </title:TitleMedium>
+      <title:TitleLong>Game Of Thrones 2 10</title:TitleLong>
+      <title:SummaryShort>The aftermath of the battle sees the winner reward his followers while Tyrion finds himself in a strange situation. Maester Luwin has final advice for Theon. Arya receives a gift. Dany visits a wondrous place in Qarth.</title:SummaryShort>
+      <title:SummaryLong> </title:SummaryLong>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/14927" fullName="Peter Dinklage" firstName="Peter" lastName="Dinklage" sortableName="Dinklage,Peter"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/18293" fullName="Lena Headey" firstName="Lena" lastName="Headey" sortableName="Headey,Lena"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23849" fullName="Kit Harington" firstName="Kit" lastName="Harington" sortableName="Harington,Kit"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/27008" fullName="Michelle Fairley" firstName="Michelle" lastName="Fairley" sortableName="Fairley,Michelle"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/22335" fullName="Emilia Clarke" firstName="Emilia" lastName="Clarke" sortableName="Clarke,Emilia"/>
+      <title:Actor castUriId="yes.co.il/IBMS/cast/23787" fullName="Nikolaj Coster-Waldau" firstName="Nikolaj" lastName="Coster-Waldau" sortableName="Coster-Waldau,Nikolaj"/>
+    </title:LocalizableTitle>
+    <title:Rating>private:R18</title:Rating>
+    <title:Rating>dvb:13</title:Rating>
+    <title:DisplayRunTime>01:00</title:DisplayRunTime>
+    <title:Genre>private:General Entertainment/Entertainment</title:Genre>
+    <title:Genre>dvb:11/8</title:Genre>
+    <title:ShowType>private:S</title:ShowType>
+  </Title>
+  <Movie uriId="yes.co.il/IBMS/asset/1010744">
+    <core:Ext>
+      <CmsXml>
+        <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<cm:opencase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cm="http://opencase.extend.com/cm" xsi:schemaLocation="http://opencase.extend.com/cm http://http://vms.tve.yeseng.co.il:80//opencase/ContentManager/resource/rest/schema/contentManager.xsd">
+<cm:component xsi:type="cm:MaterialLogicalVideo"><cm:altCode><![CDATA[Game Of Thrones 2,Valar Morghulis,Ep: 10]]/></cm:altCode><cm:componentPk><![CDATA[106849]]/></cm:componentPk><cm:createDate>2013-09-22T16:03:01.773+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset/1010744</cm:externalID><cm:lastModified>2014-11-24T17:35:00.431+02:00</cm:lastModified><cm:name><![CDATA[V2PC9]]/></cm:name><cm:uuid><![CDATA[3cc8d93b-f43b-42cb-92f6-3a78db312e53]]/></cm:uuid><cm:isActive>true</cm:isActive><cm:providers/><cm:Metadata_Folder><cm:MetadataVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106848]]/></cm:componentPk><cm:createDate>2013-09-22T16:03:01.754+02:00</cm:createDate><cm:externalID>yes.co.il/ibms/asset_metadata/1010744</cm:externalID><cm:lastModified>2014-11-24T17:35:00.279+02:00</cm:lastModified><cm:name><![CDATA[V2PC9]]/></cm:name><cm:uuid><![CDATA[cea47b0c-d5f1-4c79-abb6-3ca76ddee302]]/></cm:uuid><cm:locale><cm:country><![CDATA[US]]/></cm:country><cm:language><![CDATA[en]]/></cm:language><cm:localePk><![CDATA[6]]/></cm:localePk></cm:locale><cm:titleLong><![CDATA[Valar Morghulis]]/></cm:titleLong><cm:advisories/><cm:castMembers/><cm:categories/><cm:directors/><cm:genres/><cm:producers/><cm:ratings/><cm:seriesName><![CDATA[Game Of Thrones 2]]/></cm:seriesName><cm:writers/><cm:creators/><cm:duration><![CDATA[00:00:00]]/></cm:duration><cm:episodeNumber><![CDATA[10]]/></cm:episodeNumber></cm:MetadataVideo></cm:Metadata_Folder><cm:Videos><cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110154]]/></cm:componentPk><cm:createDate>2013-10-02T21:29:00.448+02:00</cm:createDate><cm:lastModified>2013-10-02T21:29:00.448+02:00</cm:lastModified><cm:name><![CDATA[V2PC9__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:name><cm:uuid><![CDATA[8e54d481-0b11-4360-9b0b-0aeb9210da3d]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[056db5d5-b843-4766-be1b-9f99f6ea1be2]]/></cm:contentFileUUID><cm:contentID>23f94850-9273-40d9-abbc-7155657db59b</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[4416]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;23f94850-9273-40d9-abbc-7155657db59b&lt;/contentID&gt;
+    &lt;keyID&gt;8ecc4b6a-8e71-4be3-883b-4aa9504a736f&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[text/xml]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC9__TS__DRM__MUTE__HSS__PC__ALL.ism]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/5cf0db1a-cd47-43e9-83b7-d1965d270363/CTM_Ingest/out/d6927722-ee19-4eb4-ba07-26afbc933c50/Smooth_PC/V2PC9__TS__DRM__MUTE__HSS__PC__ALL.ism/MANIFEST]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.ms</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110156]]/></cm:componentPk><cm:createDate>2013-10-02T21:29:00.721+02:00</cm:createDate><cm:lastModified>2013-10-02T21:29:00.721+02:00</cm:lastModified><cm:name><![CDATA[V2PC9__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[9d42f789-c88d-4c98-a47a-3303234f63eb]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[14d7acef-354b-4125-a0c9-fccba70a616d]]/></cm:contentFileUUID><cm:contentID>3b8e5e55-957d-468d-9fd1-9ee68beafbc0</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1998]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;3b8e5e55-957d-468d-9fd1-9ee68beafbc0&lt;/contentID&gt;
+    &lt;keyID&gt;8ecc4b6a-8e71-4be3-883b-4aa9504a736f&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC9__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/5cf0db1a-cd47-43e9-83b7-d1965d270363/CTM_Ingest/out/d6927722-ee19-4eb4-ba07-26afbc933c50/Russian_Tablet/V2PC9__TS__DRM__MUTE__HLS__TABLET__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110157]]/></cm:componentPk><cm:createDate>2013-10-02T21:29:00.838+02:00</cm:createDate><cm:lastModified>2013-10-02T21:29:00.838+02:00</cm:lastModified><cm:name><![CDATA[V2PC9__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[7f936a9a-6dbe-43a3-b82d-b36a01ac872d]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[69287228-cbfa-462c-882f-093c32df9cd0]]/></cm:contentFileUUID><cm:contentID>cbee6032-34e5-4aab-b7bd-228d13949c96</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1998]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;cbee6032-34e5-4aab-b7bd-228d13949c96&lt;/contentID&gt;
+    &lt;keyID&gt;8ecc4b6a-8e71-4be3-883b-4aa9504a736f&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC9__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/5cf0db1a-cd47-43e9-83b7-d1965d270363/CTM_Ingest/out/d6927722-ee19-4eb4-ba07-26afbc933c50/English_Tablet/V2PC9__TS__DRM__MUTE__HLS__TABLET__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110153]]/></cm:componentPk><cm:createDate>2013-10-02T21:29:00.164+02:00</cm:createDate><cm:lastModified>2013-10-02T21:29:00.164+02:00</cm:lastModified><cm:name><![CDATA[V2PC9__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:name><cm:uuid><![CDATA[ad3f91a3-ff3d-422f-b5c2-7b35f3c2b456]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[7a520000-b05d-4282-be6b-444a370827b8]]/></cm:contentFileUUID><cm:contentID>133f3f91-843d-4207-b790-7f48d64d5b08</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1713]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;133f3f91-843d-4207-b790-7f48d64d5b08&lt;/contentID&gt;
+    &lt;keyID&gt;8ecc4b6a-8e71-4be3-883b-4aa9504a736f&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC9__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/5cf0db1a-cd47-43e9-83b7-d1965d270363/CTM_Ingest/out/d6927722-ee19-4eb4-ba07-26afbc933c50/Russian_Phone/V2PC9__TS__DRM__MUTE__HLS__PHONE__RUS.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest>
+
+<cm:PhysicalAssetManifest xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[110155]]/></cm:componentPk><cm:createDate>2013-10-02T21:29:00.588+02:00</cm:createDate><cm:lastModified>2013-10-02T21:29:00.588+02:00</cm:lastModified><cm:name><![CDATA[V2PC9__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:name><cm:uuid><![CDATA[4d257178-cc88-4dc5-b34d-c6010206cc47]]/></cm:uuid><cm:assetFormats/><cm:contentFileUUID><![CDATA[2e3ae9bd-5b84-4858-8eea-1c30753f1a96]]/></cm:contentFileUUID><cm:contentID>ad3d5a0f-7095-4aab-8473-3951e49be45c</cm:contentID><cm:encryptionImplementationTechnology>PLAYREADY</cm:encryptionImplementationTechnology><cm:fileSize><![CDATA[1713]]/></cm:fileSize><cm:isEncrypted><![CDATA[true]]/></cm:isEncrypted><cm:isSigned><![CDATA[false]]/></cm:isSigned><cm:licenseRequestData>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;PlayReadyPackagingHeader&gt;
+    &lt;contentID&gt;ad3d5a0f-7095-4aab-8473-3951e49be45c&lt;/contentID&gt;
+    &lt;keyID&gt;8ecc4b6a-8e71-4be3-883b-4aa9504a736f&lt;/keyID&gt;
+    &lt;LAURL&gt;http://vms.yesvms.co.il/opencase/EntitlementManager/resource/rest/playready/license&lt;/LAURL&gt;
+&lt;/PlayReadyPackagingHeader&gt;
+</cm:licenseRequestData><cm:mimeType><![CDATA[application/x-mpegURL]]/></cm:mimeType><cm:pcFileName><![CDATA[V2PC9__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:pcFileName><cm:targetDevices/><cm:url><![CDATA[http://vod.yestve.co.il/vod/5cf0db1a-cd47-43e9-83b7-d1965d270363/CTM_Ingest/out/d6927722-ee19-4eb4-ba07-26afbc933c50/English_Phone/V2PC9__TS__DRM__MUTE__HLS__PHONE__ENG.m3u8]]/></cm:url><cm:manifestType>component.fieldgroup.physicalasset.manifest.type.apple</cm:manifestType></cm:PhysicalAssetManifest></cm:Videos><cm:Subtitles></cm:Subtitles><cm:Images><cm:Thumbnails></cm:Thumbnails><cm:Artwork></cm:Artwork></cm:Images><cm:Ad_Insertion_Points></cm:Ad_Insertion_Points><cm:Manifest></cm:Manifest><cm:Chapters></cm:Chapters><cm:Licensing_Window></cm:Licensing_Window><cm:Video_Previews></cm:Video_Previews><cm:Identifiers></cm:Identifiers><cm:Related_Identifiers><cm:IsanVideo xmlns:cm="http://opencase.extend.com/cm"><cm:componentPk><![CDATA[106847]]/></cm:componentPk><cm:createDate>2013-09-22T16:03:00.189+02:00</cm:createDate><cm:lastModified>2014-11-24T17:35:00.390+02:00</cm:lastModified><cm:name><![CDATA[Valar Morghulis;Ver 1]]/></cm:name><cm:uuid><![CDATA[a2b6399a-f7dd-4be7-95fe-4943b3b901e9]]/></cm:uuid><cm:identifier><![CDATA[yes.co.il/ibms/program/340344-440666]]/></cm:identifier></cm:IsanVideo></cm:Related_Identifiers></cm:component>
+</cm:opencase>]]>
+      </CmsXml>
+    </core:Ext>
+    <content:SourceUrl>V2PC9</content:SourceUrl>
+    <content:ScreenFormat>Standard</content:ScreenFormat>
+    <content:Resolution>private:1080I</content:Resolution>
+    <content:Duration>PT01H00M49S</content:Duration>
+    <content:IsHDContent>1</content:IsHDContent>
+    <content:SubtitleLanguage>IW</content:SubtitleLanguage>
+    <content:SubtitleLanguage>RU</content:SubtitleLanguage>
+  </Movie>
+  <Poster uriId="yes.co.il/IBMS/asset/848095">
+    <content:SourceUrl>VP000465529.JPG</content:SourceUrl>
+    <!--
+                <content:ContentFileSize/>
+                <content:ContentCheckSum/>
+              -->
+  </Poster>
+  <Title type="SeriesTitle" uriId="yes.co.il/IBMS/series/60183">
+    <core:Ext>
+      <SeasonNo>2</SeasonNo>
+      <ShowRef uriId="yes.co.il/IBMS/show/959"/>
+    </core:Ext>
+    <title:LocalizableTitle xml:lang="EN">
+      <title:TitleSortName>Game Of Thrones 2</title:TitleSortName>
+      <title:TitleBrief> </title:TitleBrief>
+      <title:TitleMedium> </title:TitleMedium>
+      <title:TitleLong>Game Of Thrones 2</title:TitleLong>
+      <title:SummaryShort>A second season for HBO's adaptation of George R.R. Martin's epic fantasy novels. Exploring a medieval-like fantasy world with its plethora of characters all struggling in the only game that matters-the game of thrones.</title:SummaryShort>
+      <title:SummaryLong> </title:SummaryLong>
+    </title:LocalizableTitle>
+    <title:Rating> </title:Rating>
+    <title:DisplayRunTime>00:00</title:DisplayRunTime>
+    <title:Genre> </title:Genre>
+    <title:ShowType>private:S</title:ShowType>
+  </Title>
+  <Title type="ShowTitle" uriId="yes.co.il/IBMS/show/959">
+    <title:LocalizableTitle xml:lang="EN">
+      <title:TitleSortName>Game Of Thrones</title:TitleSortName>
+      <title:TitleBrief> </title:TitleBrief>
+      <title:TitleMedium> </title:TitleMedium>
+      <title:TitleLong>Game Of Thrones</title:TitleLong>
+      <title:SummaryShort>
+        Based on the bestselling novels by George R.R. Martin. The story of King Robert Baration, ruler of the West Rose Kingdom, who's helped by lord Eduard Stark, his right hand.
+      </title:SummaryShort>
+      <title:SummaryLong> </title:SummaryLong>
+    </title:LocalizableTitle>
+    <title:Rating> </title:Rating>
+    <title:DisplayRunTime>00:00</title:DisplayRunTime>
+    <title:Genre>private:Series Action</title:Genre>
+    <title:Genre>dvb:11/12</title:Genre>
+    <title:ShowType>Other</title:ShowType>
+  </Title>
+  <Poster uriId="yes.co.il/IBMS/asset/762284">
+    <content:SourceUrl>VP000410777.JPG</content:SourceUrl>
+    <!--
+                <content:ContentFileSize/>
+                <content:ContentCheckSum/>
+              -->
+  </Poster>
+  <Title type="OfferDescrTitle" uriId="yes.co.il/IBMS/offer/251181">
+    <title:LocalizableTitle xml:lang="EN">
+      <title:TitleBrief> </title:TitleBrief>
+      <title:TitleMedium> </title:TitleMedium>
+      <title:TitleLong>Series,monthly renewing subscription    </title:TitleLong>
+      <title:SummaryShort> </title:SummaryShort>
+      <title:SummaryMedium> </title:SummaryMedium>
+      <title:SummaryLong> </title:SummaryLong>
+    </title:LocalizableTitle>
+    <title:Rating> </title:Rating>
+    <title:DisplayRunTime>00:00</title:DisplayRunTime>
+    <title:Genre> </title:Genre>
+    <title:ShowType>Other</title:ShowType>
+  </Title>
+  <Poster uriId="yes.co.il/IBMS/asset/848097">
+    <content:SourceUrl>VP000465531.JPG</content:SourceUrl>
+    <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+  </Poster>
+  <Ext>
+    <Subtitle uriId="yes.co.il/IBMS/asset/855767">
+      <SourceUrl>0325731A.RUS</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>RU</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/855766">
+      <SourceUrl>0325731A.HEB</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>IW</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/864982">
+      <SourceUrl>0330519A.HEB</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>IW</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/864983">
+      <SourceUrl>0330519A.RUS</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>RU</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/867669">
+      <SourceUrl>0331957A.RUS</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>RU</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/867668">
+      <SourceUrl>0331957A.HEB</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>IW</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/862871">
+      <SourceUrl>0329515A.HEB</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>IW</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/862872">
+      <SourceUrl>0329515A.RUS</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>RU</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/854143">
+      <SourceUrl>0325040A.RUS</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>RU</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/854142">
+      <SourceUrl>0325040A.HEB</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>IW</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/859341">
+      <SourceUrl>0327656A.RUS</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>RU</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/859340">
+      <SourceUrl>0327656A.HEB</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>IW</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/860550">
+      <SourceUrl>0328300A.HEB</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>IW</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/860551">
+      <SourceUrl>0328300A.RUS</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>RU</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/868774">
+      <SourceUrl>0332547A.HEB</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>IW</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/868775">
+      <SourceUrl>0332547A.RUS</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>RU</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/857498">
+      <SourceUrl>0326617A.HEB</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>IW</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/857499">
+      <SourceUrl>0326617A.RUS</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>RU</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/870784">
+      <SourceUrl>0333680A.HEB</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>IW</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+    <Subtitle uriId="yes.co.il/IBMS/asset/870785">
+      <SourceUrl>0333680A.RUS</SourceUrl>
+      <!--
+              <content:ContentFileSize/>
+              <content:ContentCheckSum/>
+            -->
+      <Language>RU</Language>
+      <Format>private:XFL2</Format>
+    </Subtitle>
+  </Ext>
+  <ContentGroup type="CastContentGroup" uriId="yes.co.il/IBMS/cast/14927">
+    <offer:TitleRef uriId="yes.co.il/IBMS/cast/14927"/>
+    <offer:MovieRef uriId=""/>
+  </ContentGroup>
+  <Ext>
+    <CastTitle>
+      <PersonNameDetails xml:lang="EN" fullName="Peter Dinklage" firstName="Peter" lastName="Dinklage" sortableName="Dinklage,Peter"/>
+      <PersonNameDetails xml:lang="IW" fullName="פיטר דינקלג'" firstName="פיטר" lastName="דינקלג'" sortableName="דינקלג',פיטר"/>
+      <PersonNameDetails xml:lang="AR" fullName="Peter Dinklage" firstName="Peter" lastName="Dinklage" sortableName="Dinklage,Peter"/>
+      <PersonNameDetails xml:lang="RU" fullName="Peter Dinklage" firstName="Peter" lastName="Dinklage" sortableName="Dinklage,Peter"/>
+    </CastTitle>
+  </Ext>
+  <ContentGroup type="CastContentGroup" uriId="yes.co.il/IBMS/cast/18293">
+    <offer:TitleRef uriId="yes.co.il/IBMS/cast/18293"/>
+    <offer:MovieRef uriId=""/>
+  </ContentGroup>
+  <Ext>
+    <CastTitle>
+      <PersonNameDetails xml:lang="EN" fullName="Lena Headey" firstName="Lena" lastName="Headey" sortableName="Headey,Lena"/>
+      <PersonNameDetails xml:lang="IW" fullName="לינה האדי" firstName="לינה" lastName="האדי" sortableName="האדי,לינה"/>
+      <PersonNameDetails xml:lang="RU" fullName="Lena Headey" firstName="Lena" lastName="Headey" sortableName="Headey,Lena"/>
+    </CastTitle>
+  </Ext>
+  <ContentGroup type="CastContentGroup" uriId="yes.co.il/IBMS/cast/23849">
+    <offer:TitleRef uriId="yes.co.il/IBMS/cast/23849"/>
+    <offer:MovieRef uriId=""/>
+  </ContentGroup>
+  <Ext>
+    <CastTitle>
+      <PersonNameDetails xml:lang="EN" fullName="Kit Harington" firstName="Kit" lastName="Harington" sortableName="Harington,Kit"/>
+      <PersonNameDetails xml:lang="IW" fullName="קיט הרינגטון" firstName="קיט" lastName="הרינגטון" sortableName="הרינגטון,קיט"/>
+      <PersonNameDetails xml:lang="RU" fullName="Kit Harington" firstName="Kit" lastName="Harington" sortableName="Harington,Kit"/>
+    </CastTitle>
+  </Ext>
+  <ContentGroup type="CastContentGroup" uriId="yes.co.il/IBMS/cast/27008">
+    <offer:TitleRef uriId="yes.co.il/IBMS/cast/27008"/>
+    <offer:MovieRef uriId=""/>
+  </ContentGroup>
+  <Ext>
+    <CastTitle>
+      <PersonNameDetails xml:lang="EN" fullName="Michelle Fairley" firstName="Michelle" lastName="Fairley" sortableName="Fairley,Michelle"/>
+      <PersonNameDetails xml:lang="IW" fullName="מישל פרליי" firstName="מישל" lastName="פרליי" sortableName="פרליי,מישל"/>
+      <PersonNameDetails xml:lang="RU" fullName="Michelle Fairley" firstName="Michelle" lastName="Fairley" sortableName="Fairley,Michelle"/>
+    </CastTitle>
+  </Ext>
+  <ContentGroup type="CastContentGroup" uriId="yes.co.il/IBMS/cast/22335">
+    <offer:TitleRef uriId="yes.co.il/IBMS/cast/22335"/>
+    <offer:MovieRef uriId=""/>
+  </ContentGroup>
+  <Ext>
+    <CastTitle>
+      <PersonNameDetails xml:lang="EN" fullName="Emilia Clarke" firstName="Emilia" lastName="Clarke" sortableName="Clarke,Emilia"/>
+      <PersonNameDetails xml:lang="IW" fullName="אמיליה קלארק" firstName="אמיליה" lastName="קלארק" sortableName="קלארק,אמיליה"/>
+      <PersonNameDetails xml:lang="RU" fullName="Emilia Clarke" firstName="Emilia" lastName="Clarke" sortableName="Clarke,Emilia"/>
+    </CastTitle>
+  </Ext>
+  <ContentGroup type="CastContentGroup" uriId="yes.co.il/IBMS/cast/23787">
+    <offer:TitleRef uriId="yes.co.il/IBMS/cast/23787"/>
+    <offer:MovieRef uriId=""/>
+  </ContentGroup>
+  <Ext>
+    <CastTitle>
+      <PersonNameDetails xml:lang="EN" fullName="Nikolaj Coster-Waldau" firstName="Nikolaj" lastName="Coster-Waldau" sortableName="Coster-Waldau,Nikolaj"/>
+      <PersonNameDetails xml:lang="IW" fullName="ניקולאי קוסטר-ואלדאו" firstName="ניקולאי" lastName="קוסטר-ואלדאו" sortableName="קוסטר-ואלדאו,ניקולאי"/>
+      <PersonNameDetails xml:lang="RU" fullName="Nikolaj Coster-Waldau" firstName="Nikolaj" lastName="Coster-Waldau" sortableName="Coster-Waldau,Nikolaj"/>
+    </CastTitle>
+  </Ext>
+</ADI3>
