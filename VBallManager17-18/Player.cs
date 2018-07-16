@@ -20,6 +20,9 @@ namespace VballManager
         private List<String> authorizedUsers = new List<string>();
         private bool deviceLinked;
         private List<Notification> notifications = new List<Notification>();
+        public int MondayPlayedCount;
+        public int FridayPlayedCount;
+        public int TotalPlayedCount;
 
         public List<Notification> Notifications
         {
@@ -224,6 +227,13 @@ namespace VballManager
         {
             get { return preRegistered; }
             set { preRegistered = value; }
+        }
+        private int playedCount;
+
+        public int PlayedCount
+        {
+            get { return playedCount; }
+            set { playedCount = value; }
         }
 
     }
