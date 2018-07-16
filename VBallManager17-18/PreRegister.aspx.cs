@@ -24,27 +24,100 @@ namespace VballManager
             {
                 Session[Constants.POOL] = poolName;
             }
-            if (CurrentPool == null)
+            if (Session[Constants.POOL] == null)
             {
                 return;
             }
             //   CreateTableHead();
-            List<Member> allMembers = new List<Member>();
-            allMembers.AddRange(CurrentPool.Members);
-             foreach (Member member in allMembers)
+            List<Attendee> allAttendees = new List<Attendee>();
+            char[] poolNames = Session[Constants.POOL].ToString().ToCharArray();
+            DayOfWeek day = DayOfWeek.Monday;
+            foreach (char name in poolNames)
             {
-                FillPreRegister(member, true);
-            }
-            List<Dropin> allDropins = new List<Dropin>();
-            allDropins.AddRange(CurrentPool.Dropins);
-            foreach (Dropin dropin in allDropins)
-            {
-                if (!dropin.IsSuspended)
+                Pool pool = Manager.FindPoolByName(name.ToString());
+                if (pool != null)
                 {
-                    FillPreRegister(dropin, false);
-                }
+                    day = pool.DayOfWeek;
+                    foreach(Attendee member in pool.Members)
+                    {
+                        bool included = false;
+                        foreach(Attendee attendee in allAttendees)
+                        {
+                            if (member.Id == attendee.Id)
+                            {
+                                included = true;
+                                break;
+                            }
+                        }
+                        if (!included)
+                        {
+                            SetPlayedCount(member, day);
+                            allAttendees.Add(member);
+                        }
+                    }
+                    foreach(Attendee dropin in pool.Dropins)
+                    {
+                        bool included = false;
+                        foreach (Attendee attendee in allAttendees)
+                        {
+                            if (dropin.Id == attendee.Id)
+                            {
+                                included = true;
+                                break;
+                            }
+                        }
+                        if (!included)
+                        {
+                            SetPlayedCount(dropin, day);
+                            allAttendees.Add(dropin);
+                        }
+                    }
+                  }
+            }
+            //Statistic played count
+            IEnumerable<Attendee> sortedAttendees = allAttendees.OrderByDescending(attendee => attendee.PlayedCount);
+            int order = 1;
+            foreach (Attendee attendee in sortedAttendees)
+            {
+                Player player = Manager.FindPlayerById(attendee.Id);
+                if (player.Suspend || (typeof(Dropin).IsInstanceOfType(attendee) && ((Dropin)attendee).IsCoop)) continue;
+                FillPreRegister(order++, attendee);
             }
          }
+
+        private void SetPlayedCount(Attendee attendee, DayOfWeek day)
+        {
+            int playedCount = 0;
+            Player player = Manager.FindPlayerById(attendee.Id);
+            foreach (Pool pool in Manager.Pools)
+            {
+                if (pool.DayOfWeek == day)
+                {
+                    if (pool.Members.Exists(member => member.Id == player.Id))
+                    {
+                        foreach (Game game in pool.Games)
+                        {
+                            if (game.Absences.Exists(player.Id))
+                            {
+                                continue;
+                            }
+                            playedCount++;
+                        }
+                    }
+                    else
+                    {
+                        foreach (Game game in pool.Games)
+                        {
+                            if (game.Pickups.Exists(player.Id))
+                            {
+                                playedCount++;
+                            }
+                        }
+                    }
+                }
+            }
+            attendee.PlayedCount = playedCount;
+        }
 
         private Pool CurrentPool
         {
@@ -55,24 +128,31 @@ namespace VballManager
             }
             set { }
         }
-        private void FillPreRegister(Attendee attendee, bool isMember)
+        private void FillPreRegister(int order, Attendee attendee)
         {
             Player player = Manager.FindPlayerById(attendee.Id);
-            TableRow row = new TableRow();
+             TableRow row = new TableRow();
+            //Order
             TableCell cell = new TableCell();
+            cell.Text = order.ToString();
+            row.Cells.Add(cell);
+            //Name
+            cell = new TableCell();
             cell.Text = player.Name;
             if (attendee.PreRegistered)
             {
                 count++;
             }
-            if (isMember)
-            {
-                cell.ForeColor = System.Drawing.Color.Blue;
-            }
+ 
             row.Cells.Add(cell);
+             //PlayerCount
+            cell = new TableCell();
+            cell.Text = attendee.PlayedCount.ToString(); ;
+            row.Cells.Add(cell);
+             //Membership
             row.Cells.Add(createCheckBoxCell(player.Id, attendee.PreRegistered));
-             this.SurveyTable.Rows.Add(row);
-            this.SurveyTable.Caption = "2017-2018 Member Pre-register(" + count + ")";
+           this.SurveyTable.Rows.Add(row);
+            this.SurveyTable.Caption = "2017-2018 Pre-register Membership (" + count + ")";
         }
         private TableCell createCheckBoxCell(String id, bool status)
         {

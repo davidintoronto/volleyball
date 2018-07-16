@@ -38,6 +38,9 @@
       <HintPath>bin\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Quartz">
+      <HintPath>C:\Users\David Zhao\Downloads\Quartz.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
@@ -62,6 +65,8 @@
     <Content Include="Billing.aspx" />
     <Content Include="BillingDetail.aspx" />
     <Content Include="Authen.aspx" />
+    <Content Include="PoolStatistics.aspx" />
+    <Content Include="Statistics.aspx" />
     <Content Include="Index.htm" />
     <Content Include="LinkDevice.aspx" />
     <Content Include="Register.aspx" />
@@ -148,6 +153,20 @@
     </Compile>
     <Compile Include="Authen.aspx.designer.cs">
       <DependentUpon>Authen.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PoolStatistics.aspx.cs">
+      <DependentUpon>PoolStatistics.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PoolStatistics.aspx.designer.cs">
+      <DependentUpon>PoolStatistics.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Statistics.aspx.cs">
+      <DependentUpon>Statistics.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Statistics.aspx.designer.cs">
+      <DependentUpon>Statistics.aspx</DependentUpon>
     </Compile>
     <Compile Include="LinkDevice.aspx.cs">
       <DependentUpon>LinkDevice.aspx</DependentUpon>
