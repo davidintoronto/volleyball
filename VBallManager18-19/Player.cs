@@ -19,7 +19,13 @@ namespace VballManager
         private bool isRegisterdMember;
         private List<String> authorizedUsers = new List<string>();
         private bool deviceLinked;
+        private int role = (int)Roles.Player;
+
         private List<Notification> notifications = new List<Notification>();
+
+        public int MondayPlayedCount;
+        public int FridayPlayedCount;
+        public int TotalPlayedCount;
 
         public List<Notification> Notifications
         {
@@ -31,6 +37,12 @@ namespace VballManager
         {
             get { return deviceLinked; }
             set { deviceLinked = value; }
+        }
+
+        public int Role
+        {
+            get { return role; }
+            set { role = value; }
         }
 
         public List<String> AuthorizedUsers
@@ -225,6 +237,13 @@ namespace VballManager
             get { return preRegistered; }
             set { preRegistered = value; }
         }
+        private int playedCount ;
+
+        public int PlayedCount
+        {
+            get { return playedCount; }
+            set { playedCount = value; }
+        }
 
     }
     public class Dropin : Attendee
@@ -334,5 +353,10 @@ namespace VballManager
           get { return text; }
           set { text = value; }
         }
+    }
+
+    public enum Roles
+    {
+        SuperAdmin=9, Admin=8, Manager=6, Captain=4, Player=2, User=0
     }
 }

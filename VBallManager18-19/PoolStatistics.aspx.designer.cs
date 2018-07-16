@@ -10,105 +10,123 @@
 namespace VballManager {
     
     
-    public partial class LinkDevice {
+    public partial class PoolStatistics {
         
         /// <summary>
-        /// LoginUserPanel control.
+        /// PoolStatPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel LoginUserPanel;
+        protected global::System.Web.UI.WebControls.Panel PoolStatPanel;
         
         /// <summary>
-        /// SelectUserLb control.
+        /// PoolStatTable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label SelectUserLb;
+        protected global::System.Web.UI.WebControls.Table PoolStatTable;
         
         /// <summary>
-        /// UserList control.
+        /// TableHeaderRow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList UserList;
+        protected global::System.Web.UI.WebControls.TableHeaderRow TableHeaderRow;
         
         /// <summary>
-        /// Label1 control.
+        /// TotalCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TotalCell;
         
         /// <summary>
-        /// PasswordTb control.
+        /// TableHeaderCell9 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PasswordTb;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell9;
         
         /// <summary>
-        /// LoginBtn control.
+        /// TableHeaderCell4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button LoginBtn;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell4;
         
         /// <summary>
-        /// LoginLabel control.
+        /// TableHeaderCell6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LoginLabel;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell6;
         
         /// <summary>
-        /// ReservePanel control.
+        /// FullWithWaitingCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel ReservePanel;
+        protected global::System.Web.UI.WebControls.TableHeaderCell FullWithWaitingCell;
         
         /// <summary>
-        /// ReserveLinkTable control.
+        /// FullTable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Table ReserveLinkTable;
+        protected global::System.Web.UI.WebControls.Table FullTable;
         
         /// <summary>
-        /// UserPanel control.
+        /// TableHeaderRow1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel UserPanel;
+        protected global::System.Web.UI.WebControls.TableHeaderRow TableHeaderRow1;
         
         /// <summary>
-        /// UserTable control.
+        /// TableHeaderCell1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Table UserTable;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell1;
+        
+        /// <summary>
+        /// TableHeaderCell2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell2;
+        
+        /// <summary>
+        /// TableHeaderCell3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell3;
     }
 }

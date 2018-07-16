@@ -12,14 +12,27 @@ namespace VballManager
     public class Game
     {
         private DateTime date;
+        private VList<Identifier> reserved = new VList<Identifier>();
         private VList<Absence> absences = new VList<Absence>();
         private VList<Pickup> pickups = new VList<Pickup>();
         private VList<Waiting> waitingList = new VList<Waiting>();
+        private VList<Identifier> noShow = new VList<Identifier>();
 
         public Game()
         { }
 
-        public VList<Waiting> WaitingList
+      public VList<Identifier> NoShow
+        {
+            get { return noShow; }
+            set { noShow = value; }
+        }
+
+       public VList<Identifier> Reserved
+        {
+            get { return reserved; }
+            set { reserved = value; }
+        }
+       public VList<Waiting> WaitingList
         {
             get { return waitingList; }
             set { waitingList = value; }
@@ -174,8 +187,6 @@ namespace VballManager
             get { return date; }
             set { date = value; }
         }
-
-
     }
 
     public class Absence : Identifier
@@ -293,6 +304,11 @@ namespace VballManager
     {
         public Identifier() { }
         protected String playerId;
+
+        public Identifier(String playerId)
+        {
+            this.playerId = playerId;
+        }
         public String PlayerId
         {
             get { return playerId; }

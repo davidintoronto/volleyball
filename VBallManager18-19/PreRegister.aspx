@@ -33,8 +33,14 @@
         </div>
     </asp:Panel>
         <asp:Panel ID="SurveyPanel" runat="server">
-            <asp:Table ID="SurveyTable" runat="server"  Style="width: 100%;  font-size: 5em;" Caption="2016-2017 Member Pre-register (*)"
+            <asp:Table ID="SurveyTable" runat="server"  Style="width: 100%;  font-size: 5em;" Caption="2016-2017 Member Pre-registration (*)"
                 Font-Bold="True" BackColor="#FAE0DC"> 
+             <asp:TableHeaderRow ID="TableHeaderRow" HorizontalAlign="Left" BackColor="#B3AB4D">
+                <asp:TableHeaderCell ID="TableHeaderCell9" Text="" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
+                <asp:TableHeaderCell ID="TableHeaderCell6" Text="Player Name" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
+                <asp:TableHeaderCell ID="PlayedCountCell" Text="Played" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
+                <asp:TableHeaderCell ID="DayHeaderCell" Text="Member" HorizontalAlign="Left"></asp:TableHeaderCell>
+             </asp:TableHeaderRow>
             </asp:Table>
         </asp:Panel>
         <asp:TextBox ID="DropinNameTb" runat="server" Font-Bold="True" Width="400px" Font-Size="1.2em" Visible="False"></asp:TextBox>

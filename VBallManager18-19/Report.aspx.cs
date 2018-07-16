@@ -64,7 +64,7 @@ namespace VballManager
             this.FeeReportTable.Rows.Clear();
             this.FeeReportTable.Rows.Add(this.FeeReportHeaderRow);
             decimal balance = 0;
-            IEnumerable<Fee> feesQuery = allPaidFees.OrderByDescending(fee => fee.PayDate);
+            IEnumerable<Fee> feesQuery = allPaidFees.OrderByDescending(fee => fee.Date);
             foreach (Fee paidFee in feesQuery)
             {
                 TableRow row = new TableRow();
@@ -101,7 +101,7 @@ namespace VballManager
             balanceRow.Cells.Add(balanceCell);
             
             //this.FeeReportTable.Rows.AddAt(0, balanceRow);
-            this.FeeReportTable.Caption = "2016-2017 Financial Reports - Balance : $" + balance.ToString();
+            this.FeeReportTable.Caption = "2017-2018 Financial Reports - Balance : $" + balance.ToString();
   
         }
 

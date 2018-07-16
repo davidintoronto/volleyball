@@ -181,10 +181,9 @@ namespace VballManager
             {
                 return;
             }
-            String admin = this.Request.Params[Constants.ADMIN]; 
-            foreach (Game game in query)
+             foreach (Game game in query)
             {
-                if (admin == null && game.Date <= comingGameDate)
+                if (!IsAdmin && game.Date <= comingGameDate)
                 {
                     continue;
                 }
@@ -206,13 +205,24 @@ namespace VballManager
                 this.GameTable.Rows.Add(row);
             }
         }
+        private bool IsAdmin
+        {
+            get
+            {
+                String operatorId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                if (Manager.FindPlayerById(operatorId).Role >= (int)Roles.Admin)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
 
         private void FillDropinAttendedGameTable(Player dropin)
         {
             IEnumerable<Game> query = CurrentPool.Games.OrderBy(game => game.Date);
             DateTime comingGameDate = (DateTime)Session[Constants.GAME_DATE];
-            String admin = this.Request.Params[Constants.ADMIN];
-            if (admin == null)
+              if (!IsAdmin)
             {
                 this.GameTable.Visible = false;
                 return;
@@ -437,6 +447,8 @@ namespace VballManager
                 {
                     Transfer transfer = player.FindTransferById(absence.TransferId);
                     player.Transfers.Remove(transfer);
+                    //Add to reserved list
+                    game.Reserved.Add(new Identifier(playerId));
                 }
                 game.Absences.Remove(absence);
             }
@@ -451,7 +463,7 @@ namespace VballManager
                         return;
                     }
 
-                    String operatorId = Request.Cookies[Constants.PRIMARY_USER].Value;
+                    String operatorId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
                     if (operatorId != player.Id && !player.AuthorizedUsers.Contains(operatorId))
                     {
                         ShowMessage("Sorry, but you are not authorized to make the cancellation for " + player.Name + ", Please contact admin for advice");
@@ -466,6 +478,8 @@ namespace VballManager
                     absence.TransferId = transfer.TransferId;
                 }
                 game.Absences.Add(absence);
+                //Remove from reserved list
+                game.Reserved.Remove(playerId);
             }
             DataAccess.Save(Manager);
             Response.Redirect(Request.RawUrl);
@@ -476,14 +490,6 @@ namespace VballManager
             this.PopupLabel.Text = message;
             this.ConfirmImageButton.Visible = false;
             this.PopupModal.Show();
-        }
-        
-        private bool IsAdmin
-        {
-            get
-            {
-                return this.Request.Params[Constants.ADMIN] != null && this.Request.Params[Constants.ADMIN].ToString() == Manager.SuperAdmin;
-            }
         }
         
         private bool IsAuthencated(String id)

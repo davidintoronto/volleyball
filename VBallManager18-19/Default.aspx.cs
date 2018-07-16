@@ -21,13 +21,20 @@ namespace VballManager
                 ShowMessage("Your device is not linked to any user account, please contact admin for advice");
                 return;
             }
-            Player player = Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER].Value);
-            if (player == null || player.Suspend)
+            Player currentUser = Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID]);
+            if (currentUser == null || currentUser.Suspend)
             {
                 ShowMessage("Sorry, but your device is no longer linked to any account, Please contact admin for advice");
                 return;
             }
-            String operatorId = Request.Cookies[Constants.PRIMARY_USER].Value;
+            Session[Constants.CURRENT_USER] = currentUser;
+            String passcode = Request.Cookies[Constants.PRIMARY_USER][Constants.PASSCODE];
+            if (String.IsNullOrEmpty(currentUser.Passcode) || String.IsNullOrEmpty(passcode) || passcode != currentUser.Passcode)
+            {
+                Response.Redirect("LinkDevice.aspx");
+                return;
+            }
+            String operatorId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
 
             String poolId = this.Request.Params[Constants.POOL_ID];
             String poolName = this.Request.Params[Constants.POOL];
@@ -44,8 +51,16 @@ namespace VballManager
             }
             if (CurrentPool == null)
             {
+                Response.Redirect("LinkDevice.aspx");
                 return;
             }
+            //Check to see if user is quilified to view current pool
+             if (!Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) && !CurrentPool.Members.Exists(attendee => attendee.Id == currentUser.Id) && !CurrentPool.Dropins.Exists(attendee => attendee.Id == currentUser.Id))
+             {
+                 Response.Redirect("LinkDevice.aspx");
+                 return;
+             }
+            // 
             DateTime gameDate = DateTime.Today;
             String gameDateString = this.Request.Params[Constants.GAME_DATE];
             if (gameDateString != null)
@@ -145,7 +160,7 @@ namespace VballManager
         private String GetNotificationMessages()
         {
             if (Request.Cookies[Constants.PRIMARY_USER] == null) return null;
-            String userId = Request.Cookies[Constants.PRIMARY_USER].Value;
+            String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
             Player user = Manager.FindPlayerById(userId);
             String messages = null;
             foreach (Notification notificaiton in user.Notifications)
@@ -464,7 +479,13 @@ namespace VballManager
                 statusCell.HorizontalAlign = HorizontalAlign.Right;
                 ImageButton imageBtn = new ImageButton();
                 imageBtn.ID = player.Id;
-                if (!IsAdmin && spotsFilledup)
+                //If current user is not permit to reserve for this player, disable the image btn
+                if (!IsPermitted(Actions.Reserve_Pool, player))
+                {
+                    imageBtn.Enabled = false;
+                }
+                //If no spot available and current player unreserved, disable image btn
+                if (!Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role) && spotsFilledup)
                 {
                     imageBtn.Enabled = pool.GetMemberAttendance(player.Id, date);
                 }
@@ -591,6 +612,16 @@ namespace VballManager
             }
             set { }
         }
+
+        private Player CurrentUser
+        {
+            get
+            {
+               return  (Player)Session[Constants.CURRENT_USER];
+            }
+            set { }
+        }
+        
         private DateTime ComingGameDate
         {
             get
@@ -605,12 +636,8 @@ namespace VballManager
         {
             get
             {
-                if (this.Request.Params[Constants.ADMIN] != null && this.Request.Params[Constants.ADMIN].ToString() == Manager.SuperAdmin)
-                {
-                    return true;
-                }
-                String operatorId = Request.Cookies[Constants.PRIMARY_USER].Value;
-                if (Manager.FindPlayerById(operatorId).Name == Constants.ADMIN)
+                String operatorId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                if (Manager.FindPlayerById(operatorId).Role >= (int)Roles.Admin)
                 {
                     return true;
                 }
@@ -618,10 +645,18 @@ namespace VballManager
             }
         }
 
-        private bool IsCookieAuthorized(Player player)
+        private bool IsPermitted(Actions action, Player player)
         {
-            String operatorId = Request.Cookies[Constants.PRIMARY_USER].Value;
-            if (this.IsAdmin || operatorId == player.Id || player.AuthorizedUsers.Contains(operatorId))
+            if (Manager.ActionPermitted(action, CurrentUser.Role) || CurrentUser.Id == player.Id || player.AuthorizedUsers.Contains(CurrentUser.Id))
+            {
+                return true;
+            }
+             return false;
+        }
+
+        private bool IsPermittedWithAlert(Actions action, Player player)
+        {
+             if  (Manager.ActionPermitted(action, CurrentUser.Role) || CurrentUser.Id == player.Id || player.AuthorizedUsers.Contains(CurrentUser.Id))
             {
                 return true;
             }
@@ -645,11 +680,7 @@ namespace VballManager
                 this.PasscodeAuthPopup.Show();
                 return;
             }
-            if (!IsCookieAuthorized(Manager.FindPlayerById(lbtn.ID)))
-            {
-                return;
-            }
-            if (!CurrentPool.GetMemberAttendance(lbtn.ID, ComingGameDate) && !IsAdmin && !Validation.MemberSpotAvailable(CurrentPool, ComingGameDate))
+            if (!CurrentPool.GetMemberAttendance(lbtn.ID, ComingGameDate) && !Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role) && !Validation.MemberSpotAvailable(CurrentPool, ComingGameDate))
             {
                 ShowMessage("Sorry, but all spots are already filled up. Please check back later.");
             }
@@ -687,6 +718,11 @@ namespace VballManager
                         player.Transfers.Remove(transfer);
                     }
                     game.Absences.Remove(absence);
+                    //Add back to reserved list
+                    Identifier id = new Identifier();
+                    id.PlayerId = player.Id;
+                    game.Reserved.Add(id);
+                    //log and save
                     LogHistory log = CreateLog(DateTime.Now, GetUserIP(), CurrentPool.Name, player.Name, "Reserve member");
                     Manager.Logs.Add(log);
                     DataAccess.Save(Manager);
@@ -701,9 +737,9 @@ namespace VballManager
 
         private LogHistory CreateLog(DateTime date, String userInfo, String poolName, String playerName, String type)
         {
-            if (Request.Cookies[Constants.PRIMARY_USER] != null && Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER].Value) != null)
+            if (Request.Cookies[Constants.PRIMARY_USER] != null && Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID]) != null)
             {
-                return new LogHistory(date, userInfo, poolName, playerName, type, Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER].Value).Name);
+                return new LogHistory(date, userInfo, poolName, playerName, type, Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID]).Name);
             }
             return new LogHistory(date, userInfo, poolName, playerName, type, "Unknown");
         }
@@ -744,6 +780,9 @@ namespace VballManager
                     absence.TransferId = transfer.TransferId;
                 }
                 game.Absences.Add(absence);
+                //Remove from reserved list
+                game.Reserved.Remove(player.Id);
+                //Log and save
                 LogHistory log = CreateLog(DateTime.Now, GetUserIP(), pool.Name, Manager.FindPlayerById(userId).Name, "Cancel member");
                 Manager.Logs.Add(log);
                 //Assgin a spot to the first one on waiting list
@@ -764,7 +803,7 @@ namespace VballManager
             List<Player> players = new List<Player>();
             foreach (Player player in Manager.Players)
             {
-                if (player.Name != "Admin" && !CurrentPool.Members.Exists(member => member.Id == player.Id) && !CurrentPool.Dropins.Exists(dropin => dropin.Id == player.Id))
+                if (!player.Suspend && !CurrentPool.Members.Exists(member => member.Id == player.Id) && !CurrentPool.Dropins.Exists(dropin => dropin.Id == player.Id))
                 {
                     players.Add(player);
                 }
@@ -824,7 +863,7 @@ namespace VballManager
             {
                 return;
             }
-            String operatorId = Request.Cookies[Constants.PRIMARY_USER].Value;
+            String operatorId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
             Player player = Manager.FindPlayerByName(playerName);
             if (player != null)
             {
@@ -949,7 +988,7 @@ namespace VballManager
                 this.PasscodeAuthPopup.Show();
                 return;
             }
-            if (!IsCookieAuthorized(Manager.FindPlayerById(lbtn.ID)))
+            if (!IsPermittedWithAlert(Actions.Reserve_Pool,  Manager.FindPlayerById(lbtn.ID)))
             {
                 return;
             }
@@ -1048,9 +1087,9 @@ namespace VballManager
 
         private String GetOperatorId()
         {
-            if (Request.Cookies[Constants.PRIMARY_USER] != null && Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER].Value) != null)
+            if (Request.Cookies[Constants.PRIMARY_USER] != null && Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID]) != null)
             {
-                return Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER].Value).Id;
+                return Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID]).Id;
             }
             return null;
         }
@@ -1206,7 +1245,7 @@ namespace VballManager
                 return;
             }
             Player player = Manager.FindPlayerById(lbtn.ID);
-            if (!IsCookieAuthorized(player))
+            if (!IsPermittedWithAlert(Actions.Reserve_Pool, player))
             {
                 return;
             }
@@ -1280,14 +1319,8 @@ namespace VballManager
                 this.PasscodeAuthPopup.Show();
                 return;
             }
-            if (this.IsAdmin)
-            {
-                Response.Redirect("Detail.aspx?id=" + id + "&" + Constants.ADMIN + "=" + Manager.SuperAdmin);
-            }
-            else
-            {
+
                 Response.Redirect("Detail.aspx?id=" + id);
-            }
         }
 
         protected void MoveReservation_Click(object sender, ImageClickEventArgs e)
@@ -1317,7 +1350,7 @@ namespace VballManager
                                 absence.TransferId = transfer.TransferId;
                             }
                             pool.FindGameByDate(ComingGameDate).Absences.Add(absence);
-                            Manager.Logs.Add(CreateLog(DateTime.Now, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel member", "Admin"));
+                            Manager.Logs.Add(CreateLog(DateTime.Now, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel member", "System"));
                             break;
                         }
                     }
@@ -1329,13 +1362,13 @@ namespace VballManager
                             Pickup pickup = (Pickup)pool.FindGameByDate(ComingGameDate).Pickups.FindByPlayerId(playerId);
                             pool.FindGameByDate(ComingGameDate).Pickups.Remove(playerId);
                             CancelDropinFee(pool, pickup);
-                            Manager.Logs.Add(CreateLog(DateTime.Now, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel dropin", "Admin"));
+                            Manager.Logs.Add(CreateLog(DateTime.Now, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel dropin", "System"));
                             break;
                         }
                         else if (pool.FindGameByDate(ComingGameDate).WaitingList.Exists(playerId))
                         {
                             pool.FindGameByDate(ComingGameDate).WaitingList.Remove(playerId);
-                            Manager.Logs.Add(CreateLog(DateTime.Now, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Canel waitinglist", "Admin"));
+                            Manager.Logs.Add(CreateLog(DateTime.Now, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Canel waitinglist", "System"));
                             break;
                         }
                     }
@@ -1352,7 +1385,7 @@ namespace VballManager
                     if (!transfer.IsUsed) player.Transfers.Remove(transfer);
                 }
                 game.Absences.Remove(playerId);
-                Manager.Logs.Add(CreateLog(DateTime.Now, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve member", "Admin"));
+                Manager.Logs.Add(CreateLog(DateTime.Now, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve member", "System"));
             }
             //Dropin reserve
             else if (destPool.Dropins.Exists(attendee => attendee.Id == playerId))
@@ -1360,7 +1393,7 @@ namespace VballManager
                 CostReference reference = CreateDropinFee(playerId);
                 Pickup pickup = new Pickup(playerId, reference);
                 game.Pickups.Add(pickup);
-                Manager.Logs.Add(CreateLog(DateTime.Now, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve dropin", "Admin"));
+                Manager.Logs.Add(CreateLog(DateTime.Now, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve dropin", "System"));
                 Dropin dropin = destPool.Dropins.Find(attendee => attendee.Id == playerId);
                 if (dropin.IsCoop) dropin.LastCoopDate = ComingGameDate;
             }

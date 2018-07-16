@@ -30,12 +30,12 @@ namespace VballManager
         public static String FEE_ID = "FeeId";
         public static String UNLOCK = "Unlock";
         public static String APP_LOCKED = "AppLocked";
-        public static String ADMIN = "Admin";
-        public static String PLAYER_ID = "PlayerId";
+         public static String PLAYER_ID = "PlayerId";
         public static int TWELVE = 12;
         public static String ACTION_MEMEBER_ADD = "MemberAdd";
         public static String ADD_PLAYER_POOL = "AddPlayerToPool";
         public static String PRIMARY_USER = "PrimaryUser";
+        public static String CURRENT_USER = "CurrentUser";
 
     }
 }

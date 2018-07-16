@@ -101,6 +101,16 @@ namespace VballManager
                     if (item.Selected && !CurrentPool.Members.Exists(member => member.Id == item.Value) && !CurrentPool.Dropins.Exists(dropin => dropin.Id == item.Value))
                     {
                         CurrentPool.Members.Add(new Member(item.Value));
+                        //Add to reserved list for the future games
+                        foreach (Game game in CurrentPool.Games)
+                        {
+                            if (game.Date >= DateTime.Today)
+                            {
+                                Identifier id = new Identifier();
+                                id.PlayerId = item.Value;
+                                  game.Reserved.Add(id);
+                            }
+                        }
                         //Change the player to club registered member and create membership fee it is  club member mode
                         Player player = Manager.FindPlayerById(item.Value);
                         if (Manager.ClubMemberMode)
@@ -182,7 +192,24 @@ namespace VballManager
             {
                 return;
             }
-            CurrentPool.RemoveMember(this.MemberListbox.SelectedValue);
+            String playerId = this.MemberListbox.SelectedValue;
+            CurrentPool.RemoveMember(playerId);
+            //Remove from reserved and absence list for the future games
+            foreach (Game game in CurrentPool.Games)
+            {
+                if (game.Date >= DateTime.Today)
+                {
+                    if (game.Reserved.Exists(playerId))
+                    {
+                        game.Reserved.Remove(playerId);
+                    }
+                    if (game.Absences.Exists(playerId))
+                    {
+                        game.Absences.Remove(playerId);
+                    }
+                }
+            }
+
             //Save
             DataAccess.Save(Manager);
             this.MemberListbox.DataSource = GetPlayers(CurrentPool.Members);
@@ -292,6 +319,15 @@ namespace VballManager
                     //continue;
                 }
                 Game game = new Game(date);
+                foreach (Member member in CurrentPool.Members)
+                {
+                    if (!member.IsCancelled && !member.IsSuspended)
+                    {
+                        Identifier id = new Identifier();
+                        id.PlayerId = member.Id;
+                        game.Reserved.Add(id);
+                    }
+                }
                 CurrentPool.Games.Add(game);
             }
             GameListbox.DataSource = CurrentPool.Games;
@@ -506,6 +542,8 @@ namespace VballManager
                         player.Transfers.Add(transfer);
                         Absence absence = new Absence(member.Id, transfer.TransferId);
                         game.Absences.Add(absence);
+                        //Remove from reserved list
+                        game.Reserved.Remove(player.Id);
                     }
                 }
             }
@@ -522,6 +560,10 @@ namespace VballManager
                             player.Transfers.Remove(transfer);
                         }
                         game.Absences.Remove(player.Id);
+                        //Add back to reserved list
+                        Identifier id = new Identifier();
+                        id.PlayerId = player.Id;
+                        game.Reserved.Add(id);
                     }
                 }
  

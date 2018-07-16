@@ -9,7 +9,7 @@ namespace VballManager
 {
     public partial class Admin : System.Web.UI.Page
     {
-       protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
             Application[Constants.DATA] = DataAccess.LoadReservation();
             if (!IsPostBack)
@@ -20,7 +20,7 @@ namespace VballManager
                 TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName);
                 //this.ServerTimeLb.Text = TimeZoneInfo.ConvertTime(DateTime.Now, easternZone).ToShortTimeString() + "-" + TimeZoneInfo.ConvertTime(DateTime.Today, easternZone).AddHours(Manager.LockReservationHour).ToShortTimeString();//DateTime.UtcNow.ToLocalTime().ToShortTimeString();
                 this.DropinSpotOpenHourTb.Text = Manager.DropinSpotOpeningHour.ToString();
-               // this.CoopReserveHourTb.Text = Manager.CoopReserveHour.ToString();
+                // this.CoopReserveHourTb.Text = Manager.CoopReserveHour.ToString();
                 this.LockReservationHourTb.Text = Manager.LockReservationHour.ToString();
                 this.ReadmeTb.Text = Manager.Readme;
                 this.ClubRegisterMemberModeCb.Checked = Manager.ClubMemberMode;
@@ -36,7 +36,7 @@ namespace VballManager
                 {
                     ((TextBox)Master.FindControl("PasscodeTb")).Text = Session[Constants.SUPER_ADMIN].ToString();
                 }
-               //Bind player list
+                //Bind player list
                 //int selectPlayerIndex = this.PlayerListbox.SelectedIndex;
                 this.PlayerListbox.DataSource = Manager.Players.OrderBy(player => player.Name);
                 this.PlayerListbox.DataTextField = "Name";
@@ -51,27 +51,98 @@ namespace VballManager
                 this.PlayerDDList.DataValueField = "Id";
                 this.PlayerDDList.DataBind();
                 this.PlayerDDList.SelectedIndex = selectPlayerIndex;
+                BindRoleDropdownList(this.Role);
                 //
-                this.DeletePlayerBtn.OnClientClick = "if ( !confirm('Are you sure you want to delete this fee?')) return false;";
-           }
-      }
+                this.DeletePlayerBtn.OnClientClick = "if ( !confirm('Are you sure you want to delete this Player?')) return false;";
+                //Update permits
+                UpdatePermits();
+            }
+            // ShowPermits();
+            ShowPermits();
+        }
 
-       private void RebindPlayerList()
-       {
-           this.PlayerListbox.DataSource = Manager.Players.OrderBy(p => p.Name);
-           this.PlayerListbox.DataBind();
-           this.PlayerDDList.DataSource = Manager.Players.OrderBy(p => p.Name);
-           this.PlayerDDList.DataBind();
-           foreach (ListItem playerItem in this.PlayerListbox.Items)
-           {
-               Player player = Manager.FindPlayerById(playerItem.Value);
-               playerItem.Selected = player.IsRegisterdMember;
-           }
-       }
 
-       protected void AddPlayerBtn_Click(object sender, EventArgs e)
+        private void ShowPermits()
         {
-            if(!IsSuperAdminPasscode() || this.PlayerNameTb.Text == "")
+            //Bind permits
+            foreach (Permit permit in Manager.Permits)
+            {
+                TableRow row = new TableRow();
+                TableCell cell = new TableCell();
+                cell.Text = permit.Action.ToString();
+                row.Cells.Add(cell);
+                cell = new TableCell();
+                DropDownList roleDDL = new DropDownList();
+                roleDDL.SelectedIndexChanged += new EventHandler(roleDDL_SelectedIndexChanged);
+                roleDDL.AutoPostBack = true;
+                BindRoleDropdownList(roleDDL);
+                roleDDL.ID = permit.Action.ToString();
+                roleDDL.DataBind();
+                roleDDL.SelectedValue = permit.Role.ToString();
+                cell.Controls.Add(roleDDL);
+                row.Cells.Add(cell);
+                this.AuthorizeTable.Rows.Add(row);
+            }
+
+        }
+
+        void roleDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DropDownList ddl = (DropDownList)sender;
+            String action = ddl.ID;
+            Permit permit = Manager.Permits.Find(per => per.Action.ToString() == action);
+            if (permit != null) permit.Role = int.Parse(ddl.SelectedValue);
+            DataAccess.Save(Manager);
+        }
+
+        private void BindRoleDropdownList(DropDownList ddl)
+        {
+            foreach (int value in Enum.GetValues(typeof(Roles)))
+            {
+                ddl.Items.Add(new ListItem(Enum.GetName(typeof(Roles), value), value.ToString()));
+            }
+        }
+
+        private void UpdatePermits()
+        {
+            foreach (Permit permit in Manager.Permits)
+            {
+                if (!Enum.IsDefined(typeof(Actions), permit.Action))
+                {
+                    Manager.Permits.Remove(permit);
+                    DataAccess.Save(Manager);
+                }
+            }
+            foreach (Actions newAction in Enum.GetValues(typeof(Actions)))
+            {
+                if (!Manager.Permits.Exists(permit => permit.Action == newAction))
+                {
+                    Permit permit = new Permit();
+                    permit.Action = newAction;
+                    permit.Role = 0;
+                    Manager.Permits.Add(permit);
+                    DataAccess.Save(Manager);
+                }
+            }
+
+        }
+
+        private void RebindPlayerList()
+        {
+            this.PlayerListbox.DataSource = Manager.Players.OrderBy(p => p.Name);
+            this.PlayerListbox.DataBind();
+            this.PlayerDDList.DataSource = Manager.Players.OrderBy(p => p.Name);
+            this.PlayerDDList.DataBind();
+            foreach (ListItem playerItem in this.PlayerListbox.Items)
+            {
+                Player player = Manager.FindPlayerById(playerItem.Value);
+                playerItem.Selected = player.IsRegisterdMember;
+            }
+        }
+
+        protected void AddPlayerBtn_Click(object sender, EventArgs e)
+        {
+            if (!IsSuperAdminPasscode() || this.PlayerNameTb.Text == "")
             {
                 return;
             }
@@ -82,7 +153,8 @@ namespace VballManager
                 {
                     continue;
                 }
-                Player player = new Player(name.Trim(), PlayerPasscodeTb.Text, PlayerMarkCb.Checked);
+                Player player = new Player(name.Trim(), null, PlayerMarkCb.Checked);
+                player.Role = int.Parse(this.Role.SelectedValue);
                 player.Suspend = this.PlayerSuspendCb.Checked;
                 Manager.Players.Add(player);
             }
@@ -92,7 +164,7 @@ namespace VballManager
 
         }
 
-  
+
         protected void UpdatePlayerBtn_Click(object sender, EventArgs e)
         {
             if (!IsSuperAdminPasscode() || this.PlayerNameTb.Text == "" || this.PlayerDDList.SelectedItem == null)
@@ -102,9 +174,10 @@ namespace VballManager
             Player player = Manager.FindPlayerById(this.PlayerDDList.SelectedItem.Value);
             player.Name = PlayerNameTb.Text;
             player.Passcode = PlayerPasscodeTb.Text;
+            player.Role = int.Parse(Role.SelectedValue);
             player.Marked = PlayerMarkCb.Checked;
             player.Suspend = PlayerSuspendCb.Checked;
-           //Save
+            //Save
             DataAccess.Save(Manager);
             RebindPlayerList();
             //Response.Redirect(Request.RawUrl);
@@ -123,7 +196,7 @@ namespace VballManager
         }
 
 
-       private VolleyballClub Manager
+        private VolleyballClub Manager
         {
             get
             {
@@ -169,8 +242,9 @@ namespace VballManager
             PlayerPasscodeTb.Text = player.Passcode;
             PlayerMarkCb.Checked = player.Marked;
             PlayerSuspendCb.Checked = player.Suspend;
+            this.Role.SelectedValue = player.Role.ToString();
         }
-  
+
 
         private void SetNextGameDate()
         {
@@ -191,7 +265,7 @@ namespace VballManager
 
 
 
-  
+
         protected void SaveSystemBtn_Click(object sender, EventArgs e)
         {
             if (!IsSuperAdminPasscode())
@@ -220,7 +294,7 @@ namespace VballManager
 
         }
 
- 
+
         private IEnumerable<Player> GetPlayers(List<String> ids)
         {
             List<Player> players = new List<Player>();
@@ -299,9 +373,9 @@ namespace VballManager
                 //Delete games
                 pool.Games = new List<Game>();
                 //Delete Dropins
-          //      pool.Dropins = new List<Dropin>();
+                //      pool.Dropins = new List<Dropin>();
                 //Delete member
-         //       pool.Members = new List<Member>();
+                //       pool.Members = new List<Member>();
             }
             foreach (Player player in Manager.Players)
             {
@@ -320,9 +394,9 @@ namespace VballManager
                 //Delete games
                 pool.Games = new List<Game>();
                 //Delete Dropins
-                      pool.Dropins = new List<Dropin>();
+                pool.Dropins = new List<Dropin>();
                 //Delete member
-                       pool.Members = new List<Member>();
+                pool.Members = new List<Member>();
             }
             foreach (Player player in Manager.Players)
             {
@@ -379,6 +453,7 @@ namespace VballManager
                 {
                     player.AuthorizedUsers.Clear();
                     player.DeviceLinked = false;
+                    player.Passcode = null;
                 }
             }
             if (ResetPlayerTransferCb.Checked)
@@ -387,10 +462,11 @@ namespace VballManager
                 {
                     player.Transfers.Clear();
                     player.FreeDropin = 0;
+                    player.Role = 0;
                 }
             }
             DataAccess.Save(Manager);
-       }
+        }
 
         protected void updateFeeTypes()
         {
@@ -411,7 +487,7 @@ namespace VballManager
                     {
                         fee.FeeType = FeeTypeEnum.Dropin.ToString();
                     }
-                    else 
+                    else
                     {
                         fee.FeeType = FeeTypeEnum.Admin.ToString();
                     }

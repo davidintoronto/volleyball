@@ -27,6 +27,13 @@ namespace VballManager
         private DateTime cookieExpire = DateTime.Parse("07/01/2018");
         private bool cookieAuthRequired = false;
         private String timeZoneName = "Eastern Standard Time";
+        private List<Permit> permits = new List<Permit>();
+
+        public List<Permit> Permits
+        {
+            get { return permits; }
+            set { permits = value; }
+        }
 
         public String TimeZoneName
         {
@@ -200,6 +207,27 @@ namespace VballManager
                 }
             );
         }
+        //Find active players
+        public List<Player> ActivePlayers
+        {
+            get
+            {
+                List<Player> activePlayers = new List<Player>();
+                foreach (Player player in Players)
+                {
+                    if (player.Suspend) continue;
+                    foreach (Pool pool in Pools)
+                    {
+                        if (pool.Members.Exists(attendee => attendee.Id == player.Id) || pool.Dropins.Exists(attendee => attendee.Id == player.Id))
+                        {
+                            activePlayers.Add(player);
+                            break;
+                        }
+                    }
+                }
+                return activePlayers;
+            }
+        }
         //Find pool by id
         public Pool FindPoolById(String id)
         {
@@ -290,6 +318,13 @@ namespace VballManager
             reversedId = reversedId.Replace('5', '4');
             reversedId = reversedId.Replace('Z', '5');
             return reversedId;
+        }
+
+        public bool ActionPermitted(Actions action, int role)
+        {
+            Permit featurePermit = Permits.Find(permit => permit.Action == action);
+            if (featurePermit != null && featurePermit.Role <= role) return true;
+                return false;
         }
     }
 
@@ -568,5 +603,26 @@ namespace VballManager
         }
     }
 
+    public class Permit
+    {
+        private Actions action;
 
+        public Actions Action
+        {
+            get { return action; }
+            set { action = value; }
+        }
+        private int role;
+
+        public int Role
+        {
+            get { return role; }
+            set { role = value; }
+        }
+    }
+
+    public enum Actions
+    {
+        View_All_Pools, Reserve_All_Pools, Reserve_Pool, Power_Reserve
+    }
 }
