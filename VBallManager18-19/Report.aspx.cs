@@ -18,8 +18,18 @@ namespace VballManager
             GenerationFeeReport();
         }
 
-        private bool IsSuperAdminPasscode()
+        private bool IsSuperAdmin()
         {
+            if (Request.Cookies[Constants.PRIMARY_USER] != null)
+            {
+                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                String passcode = Request.Cookies[Constants.PRIMARY_USER][Constants.PASSCODE];
+                Player player = Manager.FindPlayerById(userId);
+                if (!String.IsNullOrEmpty(player.Passcode) && player.Passcode == passcode && Manager.ActionPermitted(Actions.Admin_Management, player.Role))
+                {
+                    return true;
+                }
+            }
             TextBox passcodeTb = (TextBox)Master.FindControl("PasscodeTb");
             if (Manager.SuperAdmin != passcodeTb.Text)
             {

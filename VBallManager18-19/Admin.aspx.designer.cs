@@ -193,6 +193,15 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.TextBox ReadmeTb;
         
         /// <summary>
+        /// HomeIPLb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label HomeIPLb;
+        
+        /// <summary>
         /// SaveSystemBtn control.
         /// </summary>
         /// <remarks>
@@ -247,31 +256,13 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell6;
         
         /// <summary>
-        /// PlayerListbox control.
+        /// PlayerLb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList PlayerListbox;
-        
-        /// <summary>
-        /// SavePlayersBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SavePlayersBtn;
-        
-        /// <summary>
-        /// PlayerDDList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList PlayerDDList;
+        protected global::System.Web.UI.WebControls.ListBox PlayerLb;
         
         /// <summary>
         /// PlayerNameTb control.
@@ -310,6 +301,15 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.DropDownList Role;
         
         /// <summary>
+        /// WechatNameTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox WechatNameTb;
+        
+        /// <summary>
         /// PlayerMarkCb control.
         /// </summary>
         /// <remarks>
@@ -319,13 +319,13 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.CheckBox PlayerMarkCb;
         
         /// <summary>
-        /// PlayerSuspendCb control.
+        /// PlayerActiveCb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox PlayerSuspendCb;
+        protected global::System.Web.UI.WebControls.CheckBox PlayerActiveCb;
         
         /// <summary>
         /// AddPlayerBtn control.
@@ -353,6 +353,24 @@ namespace VballManager {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button DeletePlayerBtn;
+        
+        /// <summary>
+        /// PlayerListbox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList PlayerListbox;
+        
+        /// <summary>
+        /// SavePlayersBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SavePlayersBtn;
         
         /// <summary>
         /// Panel2 control.

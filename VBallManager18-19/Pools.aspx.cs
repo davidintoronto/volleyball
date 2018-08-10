@@ -39,7 +39,7 @@ namespace VballManager
 
        protected void AddPoolBtn_Click(object sender, EventArgs e)
        {
-           if (!IsSuperAdminPasscode() || this.PoolNameTb.Text == "")
+           if (!IsSuperAdmin() || this.PoolNameTb.Text == "")
            {
                return;
            }
@@ -59,7 +59,7 @@ namespace VballManager
 
        protected void UpdatePoolBtn_Click(object sender, EventArgs e)
        {
-           if (!IsSuperAdminPasscode() || this.PoolNameTb.Text == "")
+           if (!IsSuperAdmin() || this.PoolNameTb.Text == "")
            {
                return;
            }
@@ -73,7 +73,7 @@ namespace VballManager
 
        protected void AddMemberBtn_Click(object sender, EventArgs e)
        {
-           if (!IsSuperAdminPasscode())
+           if (!IsSuperAdmin())
            {
                return;
            }
@@ -83,7 +83,7 @@ namespace VballManager
        }
        protected void AddDropinBtn_Click(object sender, EventArgs e)
        {
-           if (!IsSuperAdminPasscode())
+           if (!IsSuperAdmin())
            {
                return;
            }
@@ -154,8 +154,18 @@ namespace VballManager
                 }
             }
         }
-        private bool IsSuperAdminPasscode()
+        private bool IsSuperAdmin()
         {
+            if (Request.Cookies[Constants.PRIMARY_USER] != null)
+            {
+                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                String passcode = Request.Cookies[Constants.PRIMARY_USER][Constants.PASSCODE];
+                Player player = Manager.FindPlayerById(userId);
+                if (!String.IsNullOrEmpty(player.Passcode) && player.Passcode == passcode && Manager.ActionPermitted(Actions.Admin_Management, player.Role))
+                {
+                    return true;
+                }
+            }
             TextBox passcodeTb = (TextBox)Master.FindControl("PasscodeTb");
             if (Manager.SuperAdmin != passcodeTb.Text)
             {
@@ -188,7 +198,7 @@ namespace VballManager
  
         protected void RemoveMemberBtn_Click(object sender, EventArgs e)
         {
-            if (!IsSuperAdminPasscode())
+            if (!IsSuperAdmin())
             {
                 return;
             }
@@ -218,7 +228,7 @@ namespace VballManager
         }
         protected void RemoveDropinBtn_Click(object sender, EventArgs e)
         {
-            if (!IsSuperAdminPasscode())
+            if (!IsSuperAdmin())
             {
                 return;
             }
@@ -233,7 +243,7 @@ namespace VballManager
 
         protected void PoolList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!IsSuperAdminPasscode() || this.PoolListbox.SelectedIndex ==-1)
+            if (!IsSuperAdmin() || this.PoolListbox.SelectedIndex ==-1)
             {
                 return;
             }
@@ -250,9 +260,12 @@ namespace VballManager
             this.AllowAddingDropinCb.Checked = pool.AllowAddNewDropinName;
             this.CoopReserveHourTb.Text = pool.ReservHourForCoop.ToString();
             this.CoopLessThanPlayersTb.Text = pool.LessThanPayersForCoop.ToString();
-            this.DaysBeforeReservingTb.Text = pool.DaysBeforeReserve.ToString();
+            this.DaysToReserveForMemberTb.Text = pool.DaysToReserve4Member.ToString();
+            this.DaysToReserveTb.Text = pool.DaysToReserve.ToString();
             this.AutoCoopReserveCb.Checked = pool.AutoCoopReserve;
             this.MaxCoopPlayerTb.Text = pool.MaxCoopPlayers.ToString();
+            this.StatsTypeDdl.SelectedValue = pool.StatsType;
+            this.WechatGroupName.Text = pool.WechatGroupName;
             //Bind memeber list
             int selectMemberIndex = this.MemberListbox.SelectedIndex;
             this.MemberListbox.DataSource = GetPlayers(pool.Members);
@@ -288,7 +301,7 @@ namespace VballManager
 
         protected void AddGameBtn_Click(object sender, EventArgs e)
         {
-            if (!IsSuperAdminPasscode() || this.GameDateTb.Text == "")
+            if (!IsSuperAdmin() || this.GameDateTb.Text == "")
             {
                 return;
             }
@@ -358,7 +371,7 @@ namespace VballManager
 
         protected void UpdateGameBtn_Click(object sender, EventArgs e)
         {
-            if (!IsSuperAdminPasscode() || this.GameDateTb.Text == "" || this.GameListbox.SelectedItem == null || this.GameListbox.SelectedItem.Text == this.GameDateTb.Text)
+            if (!IsSuperAdmin() || this.GameDateTb.Text == "" || this.GameListbox.SelectedItem == null || this.GameListbox.SelectedItem.Text == this.GameDateTb.Text)
             {
                 return;
             }
@@ -391,7 +404,7 @@ namespace VballManager
 
         protected void DeleteGameBtn_Click(object sender, EventArgs e)
         {
-            if (!IsSuperAdminPasscode() || this.GameListbox.SelectedIndex == -1)
+            if (!IsSuperAdmin() || this.GameListbox.SelectedIndex == -1)
             {
                 return;
             }
@@ -414,7 +427,7 @@ namespace VballManager
  
         protected void SavePoolBtn_Click(object sender, EventArgs e)
         {
-            if (!IsSuperAdminPasscode() || this.PoolListbox.SelectedIndex <0)
+            if (!IsSuperAdmin() || this.PoolListbox.SelectedIndex <0)
             {
                 return;
             }
@@ -427,9 +440,12 @@ namespace VballManager
             CurrentPool.MembershipFee = int.Parse(this.MemberShipFeeTb.Text);
             CurrentPool.ReservHourForCoop = int.Parse(this.CoopReserveHourTb.Text);
             CurrentPool.LessThanPayersForCoop = int.Parse(this.CoopLessThanPlayersTb.Text);
-            CurrentPool.DaysBeforeReserve = int.Parse(this.DaysBeforeReservingTb.Text);
+            CurrentPool.DaysToReserve4Member = int.Parse(this.DaysToReserveForMemberTb.Text);
+            CurrentPool.DaysToReserve = int.Parse(this.DaysToReserveTb.Text);
             CurrentPool.AutoCoopReserve = AutoCoopReserveCb.Checked;
             CurrentPool.MaxCoopPlayers = int.Parse(this.MaxCoopPlayerTb.Text);
+            CurrentPool.StatsType = this.StatsTypeDdl.SelectedValue;
+            CurrentPool.WechatGroupName = this.WechatGroupName.Text;
             DataAccess.Save(Manager);
             //Response.Redirect(Request.RawUrl);
 
@@ -437,7 +453,7 @@ namespace VballManager
 
         protected void ResetDropinsBtn_Click(object sender, EventArgs e)
         {
-            if (!IsSuperAdminPasscode() || this.PoolListbox.SelectedIndex < 0)
+            if (!IsSuperAdmin() || this.PoolListbox.SelectedIndex < 0)
             {
                 return;
             }

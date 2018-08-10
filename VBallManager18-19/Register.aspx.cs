@@ -9,7 +9,6 @@ namespace VballManager
 {
     public partial class Register : System.Web.UI.Page
     {
-        private static String RESET = "reset";
         private static String USER_ID = "id";
         protected void Page_Load(object sender, EventArgs e)
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.IO;
 
 namespace VballManager
 {
@@ -45,12 +46,12 @@ namespace VballManager
                 //this.PlayerListbox.SelectedIndex = selectPlayerIndex;
                 RebindPlayerList();
 
-                int selectPlayerIndex = this.PlayerDDList.SelectedIndex;
-                this.PlayerDDList.DataSource = Manager.Players.OrderBy(player => player.Name);
-                this.PlayerDDList.DataTextField = "Name";
-                this.PlayerDDList.DataValueField = "Id";
-                this.PlayerDDList.DataBind();
-                this.PlayerDDList.SelectedIndex = selectPlayerIndex;
+                int selectPlayerIndex = this.PlayerLb.SelectedIndex;
+                this.PlayerLb.DataSource = Manager.Players.OrderBy(player => player.Name);
+                this.PlayerLb.DataTextField = "Name";
+                this.PlayerLb.DataValueField = "Id";
+                this.PlayerLb.DataBind();
+                this.PlayerLb.SelectedIndex = selectPlayerIndex;
                 BindRoleDropdownList(this.Role);
                 //
                 this.DeletePlayerBtn.OnClientClick = "if ( !confirm('Are you sure you want to delete this Player?')) return false;";
@@ -59,6 +60,11 @@ namespace VballManager
             }
             // ShowPermits();
             ShowPermits();
+            //Home IP
+            String homeIpFile = System.AppDomain.CurrentDomain.BaseDirectory + Constants.IP_FILE;
+            if (File.Exists(homeIpFile))
+            this.HomeIPLb.Text = File.ReadAllText(System.AppDomain.CurrentDomain.BaseDirectory + Constants.IP_FILE);
+
         }
 
 
@@ -131,8 +137,8 @@ namespace VballManager
         {
             this.PlayerListbox.DataSource = Manager.Players.OrderBy(p => p.Name);
             this.PlayerListbox.DataBind();
-            this.PlayerDDList.DataSource = Manager.Players.OrderBy(p => p.Name);
-            this.PlayerDDList.DataBind();
+            this.PlayerLb.DataSource = Manager.Players.OrderBy(p => p.Name);
+            this.PlayerLb.DataBind();
             foreach (ListItem playerItem in this.PlayerListbox.Items)
             {
                 Player player = Manager.FindPlayerById(playerItem.Value);
@@ -142,7 +148,7 @@ namespace VballManager
 
         protected void AddPlayerBtn_Click(object sender, EventArgs e)
         {
-            if (!IsSuperAdminPasscode() || this.PlayerNameTb.Text == "")
+            if (!IsSuperAdmin() || this.PlayerNameTb.Text == "")
             {
                 return;
             }
@@ -155,7 +161,8 @@ namespace VballManager
                 }
                 Player player = new Player(name.Trim(), null, PlayerMarkCb.Checked);
                 player.Role = int.Parse(this.Role.SelectedValue);
-                player.Suspend = this.PlayerSuspendCb.Checked;
+                player.WechatName = this.WechatNameTb.Text;
+                player.IsActive = this.PlayerActiveCb.Checked;
                 Manager.Players.Add(player);
             }
             DataAccess.Save(Manager);
@@ -167,24 +174,35 @@ namespace VballManager
 
         protected void UpdatePlayerBtn_Click(object sender, EventArgs e)
         {
-            if (!IsSuperAdminPasscode() || this.PlayerNameTb.Text == "" || this.PlayerDDList.SelectedItem == null)
+            if (!IsSuperAdmin() || this.PlayerNameTb.Text == "" || this.PlayerLb.SelectedItem == null)
             {
                 return;
             }
-            Player player = Manager.FindPlayerById(this.PlayerDDList.SelectedItem.Value);
+            Player player = Manager.FindPlayerById(this.PlayerLb.SelectedItem.Value);
             player.Name = PlayerNameTb.Text;
             player.Passcode = PlayerPasscodeTb.Text;
             player.Role = int.Parse(Role.SelectedValue);
+            player.WechatName = WechatNameTb.Text;
             player.Marked = PlayerMarkCb.Checked;
-            player.Suspend = PlayerSuspendCb.Checked;
+            player.IsActive = PlayerActiveCb.Checked;
             //Save
             DataAccess.Save(Manager);
             RebindPlayerList();
             //Response.Redirect(Request.RawUrl);
         }
 
-        private bool IsSuperAdminPasscode()
+        private bool IsSuperAdmin()
         {
+            if (Request.Cookies[Constants.PRIMARY_USER] != null)
+            {
+                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                String passcode = Request.Cookies[Constants.PRIMARY_USER][Constants.PASSCODE];
+                Player player = Manager.FindPlayerById(userId);
+                if (!String.IsNullOrEmpty(player.Passcode) && player.Passcode == passcode && Manager.ActionPermitted(Actions.Admin_Management, player.Role))
+                {
+                    return true;
+                }
+            }
             TextBox passcodeTb = (TextBox)Master.FindControl("PasscodeTb");
             if (Manager.SuperAdmin != passcodeTb.Text)
             {
@@ -217,11 +235,11 @@ namespace VballManager
         }
         protected void DeletePlayerBtn_Click(object sender, EventArgs e)
         {
-            if (!IsSuperAdminPasscode())
+            if (!IsSuperAdmin())
             {
                 return;
             }
-            Manager.DeletePlayer(this.PlayerDDList.SelectedValue);
+            Manager.DeletePlayer(this.PlayerLb.SelectedValue);
             //Save
             DataAccess.Save(Manager);
             RebindPlayerList();
@@ -230,19 +248,20 @@ namespace VballManager
 
 
 
-        protected void PlayerDDList_SelectedIndexChanged(object sender, EventArgs e)
+        protected void PlayerListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!IsSuperAdminPasscode() || this.PlayerDDList.SelectedIndex < 0)
+            if (!IsSuperAdmin() || this.PlayerLb.SelectedIndex < 0)
             {
                 return;
             }
-            Player player = Manager.FindPlayerById(this.PlayerDDList.SelectedValue);
+            Player player = Manager.FindPlayerById(this.PlayerLb.SelectedValue);
             PlayerIdTb.Text = player.Id;
             PlayerNameTb.Text = player.Name;
             PlayerPasscodeTb.Text = player.Passcode;
             PlayerMarkCb.Checked = player.Marked;
-            PlayerSuspendCb.Checked = player.Suspend;
+            PlayerActiveCb.Checked = player.IsActive;
             this.Role.SelectedValue = player.Role.ToString();
+            this.WechatNameTb.Text = player.WechatName;
         }
 
 
@@ -268,7 +287,7 @@ namespace VballManager
 
         protected void SaveSystemBtn_Click(object sender, EventArgs e)
         {
-            if (!IsSuperAdminPasscode())
+            if (!IsSuperAdmin())
             {
                 return;
             }

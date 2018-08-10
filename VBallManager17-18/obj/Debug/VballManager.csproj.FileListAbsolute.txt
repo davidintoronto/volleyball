@@ -8,3 +8,8 @@ E:\Volleyball\volleyball\VBallManager17-18\bin\VballManager.pdb
 E:\Volleyball\volleyball\VBallManager17-18\obj\Debug\VballManager.csprojResolveAssemblyReference.cache
 E:\Volleyball\volleyball\VBallManager17-18\obj\Debug\VballManager.dll
 E:\Volleyball\volleyball\VBallManager17-18\obj\Debug\VballManager.pdb
+C:\Users\davzhao\Documents\GitHub\volleyball\VBallManager17-18\bin\VballManager.dll
+C:\Users\davzhao\Documents\GitHub\volleyball\VBallManager17-18\bin\VballManager.pdb
+C:\Users\davzhao\Documents\GitHub\volleyball\VBallManager17-18\obj\Debug\VballManager.csprojResolveAssemblyReference.cache
+C:\Users\davzhao\Documents\GitHub\volleyball\VBallManager17-18\obj\Debug\VballManager.dll
+C:\Users\davzhao\Documents\GitHub\volleyball\VBallManager17-18\obj\Debug\VballManager.pdb

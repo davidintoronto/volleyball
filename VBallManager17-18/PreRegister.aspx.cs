@@ -152,7 +152,7 @@ namespace VballManager
              //Membership
             row.Cells.Add(createCheckBoxCell(player.Id, attendee.PreRegistered));
            this.SurveyTable.Rows.Add(row);
-            this.SurveyTable.Caption = "2017-2018 Pre-register Membership (" + count + ")";
+            this.SurveyTable.Caption = "2018-2019 Pre-register Membership (" + count + ")";
         }
         private TableCell createCheckBoxCell(String id, bool status)
         {

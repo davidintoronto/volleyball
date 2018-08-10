@@ -13,28 +13,23 @@ namespace VballManager
     {
         private bool lockReservation = false;
         private String appLockedMessage = "Reservation app is locked at this moment, contact admin to make changes";
+ 
         protected void Page_Load(object sender, EventArgs e)
         {
             this.PopupModal.Hide();
             if (Manager.CookieAuthRequired && Request.Cookies[Constants.PRIMARY_USER] == null)
             {
-                ShowMessage("Your device is not linked to any user account, please contact admin for advice");
+                Response.Redirect(Constants.REQUEST_REGISTER_LINK_PAGE);
                 return;
             }
             Player currentUser = Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID]);
-            if (currentUser == null || currentUser.Suspend)
+            if (currentUser == null || !currentUser.IsActive)
             {
                 ShowMessage("Sorry, but your device is no longer linked to any account, Please contact admin for advice");
                 return;
             }
             Session[Constants.CURRENT_USER] = currentUser;
-            String passcode = Request.Cookies[Constants.PRIMARY_USER][Constants.PASSCODE];
-            if (String.IsNullOrEmpty(currentUser.Passcode) || String.IsNullOrEmpty(passcode) || passcode != currentUser.Passcode)
-            {
-                Response.Redirect("LinkDevice.aspx");
-                return;
-            }
-            String operatorId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+             String operatorId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
 
             String poolId = this.Request.Params[Constants.POOL_ID];
             String poolName = this.Request.Params[Constants.POOL];
@@ -55,11 +50,11 @@ namespace VballManager
                 return;
             }
             //Check to see if user is quilified to view current pool
-             if (!Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) && !CurrentPool.Members.Exists(attendee => attendee.Id == currentUser.Id) && !CurrentPool.Dropins.Exists(attendee => attendee.Id == currentUser.Id))
-             {
-                 Response.Redirect("LinkDevice.aspx");
-                 return;
-             }
+            if (!Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) && !CurrentPool.Members.Exists(attendee => attendee.Id == currentUser.Id) && !CurrentPool.Dropins.Exists(attendee => attendee.Id == currentUser.Id))
+            {
+                Response.Redirect("LinkDevice.aspx");
+                return;
+            }
             // 
             DateTime gameDate = DateTime.Today;
             String gameDateString = this.Request.Params[Constants.GAME_DATE];
@@ -106,11 +101,11 @@ namespace VballManager
                 return;
             }
             String unlock = this.Request.Params[Constants.UNLOCK];
-            if (unlock == null && !IsAdmin && Validation.IsReservationLocked(ComingGameDate, Manager))
+            if (unlock == null && Validation.IsReservationLocked(ComingGameDate, Manager))
             {
                 this.lockReservation = true;
             }
-            //Check if there is dropin spots available for the players in waiting list
+            //Check if there is dropin spots available for the players on waiting list
             Game comingGame = CurrentPool.FindGameByDate(ComingGameDate);
             while (!this.lockReservation && Validation.DropinSpotAvailable(CurrentPool, ComingGameDate) && comingGame.WaitingList.Count > 0)
             {
@@ -224,9 +219,9 @@ namespace VballManager
                         }
                         //Send the notification to the coop player
                         Player coopPlayer = Manager.FindPlayerById(coopCandidate.Id);
-                        coopPlayer.Notifications.Add(new Notification(DateTime.Today, "You are selected by system to play at Pool " + pool.Name + " on " + game.Date.ToShortDateString() + ". Your reservation has been moved to Pool " + pool.Name));
+                        //coopPlayer.Notifications.Add(new Notification(DateTime.Today, "You are selected by system to play at Pool " + pool.Name + " on " + game.Date.ToShortDateString() + ". Your reservation has been moved to Pool " + pool.Name));
                         //Move reservation to current pool for coming game
-                        MoveReservatioin(coopCandidate.Id, pool);
+                        MoveReservatioin(coopCandidate.Id, pool, null);
                     }
                 }
             }
@@ -275,15 +270,24 @@ namespace VballManager
         private void AssignDropinSpotToWaiting(Game comingGame)
         {
             String playerId = comingGame.WaitingList[0].PlayerId;// CurrentPool.AssignASpotToWaitingList(ComingGameDate);
-            CostReference reference = CreateDropinFee(playerId);
-            Pickup pickup = new Pickup(playerId, reference);
-            pickup.OperatorId = comingGame.WaitingList[0].OperatorId;
-            comingGame.Pickups.Add(pickup);
-            LogHistory log = new LogHistory(DateTime.Now, "System", CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve dropin", Manager.FindPlayerById(pickup.OperatorId).Name);
+            if (CurrentPool.Members.Exists(member => member.Id == playerId))
+            {
+                comingGame.Reserved.Add(new Identifier(playerId));
+                comingGame.Absences.Remove(playerId);
+            }
+            else
+            {
+                CostReference reference = CreateDropinFee(playerId);
+                Pickup pickup = new Pickup(playerId, reference);
+                pickup.OperatorId = comingGame.WaitingList[0].OperatorId;
+                comingGame.Pickups.Add(pickup);
+            }
+            Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.RESERVED, CurrentPool, CurrentPool, ComingGameDate);
+            LogHistory log = new LogHistory(DateTime.Now, comingGame.Date, "System", CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve dropin", Manager.FindPlayerById(comingGame.WaitingList[0].OperatorId).Name);
             Manager.Logs.Add(log);
             comingGame.WaitingList.Remove(playerId);
-
         }
+
         private void FillNavTable()
         {
             TableRow navRow = new TableRow();
@@ -333,7 +337,7 @@ namespace VballManager
             IEnumerable<Game> gameQuery = games.OrderByDescending(game => game.Date);
             foreach (Game game in gameQuery)
             {
-                if ((IsAdmin || game.Date >= DateTime.Today) && game.Date < ComingGameDate)
+                if ((Manager.ActionPermitted(Actions.View_Past_Games, CurrentUser.Role) || game.Date >= DateTime.Today) && game.Date < ComingGameDate)
                 {
                     return game;
                 }
@@ -430,16 +434,12 @@ namespace VballManager
 
         private void FillMemberTable(Pool pool, DateTime date)
         {
-            IEnumerable<Player> playerQuery = Manager.FindPlayersByAttendees(pool.Members).OrderBy(member => member.Name);
+            IEnumerable<Player> playerQuery = OrderMembersByStats();
             bool spotsFilledup = !Validation.MemberSpotAvailable(pool, date);
             bool alterbackcolor = false;
             foreach (Player player in playerQuery)
             {
                 Member member = pool.Members.Find(attendee => attendee.Id == player.Id);
-                if (member.IsCancelled && member.CancelDate <= date)
-                {
-                    continue;
-                }
                 TableRow row = new TableRow();
                 if (alterbackcolor)
                 {
@@ -459,7 +459,10 @@ namespace VballManager
                 lbtn.ID = player.Id + ",MEMEBER";
                 lbtn.Click += new EventHandler(Username_Click);
                 nameCell.Controls.Add(lbtn);
-                if (player.Marked)
+                 Image stats = new Image();
+                stats.ImageUrl = "~/Icons/number_" + player.TotalPlayedCount.ToString() + ".png";
+                nameCell.Controls.Add(stats);
+              if (player.Marked)
                 {
                     Image image = new Image();
                     image.ImageUrl = "~/Icons/Colorball.png";
@@ -478,17 +481,27 @@ namespace VballManager
                 TableCell statusCell = new TableCell();
                 statusCell.HorizontalAlign = HorizontalAlign.Right;
                 ImageButton imageBtn = new ImageButton();
-                imageBtn.ID = player.Id;
+                //If this player is on the waiting list, disable the action button
+                Game comingGame = pool.FindGameByDate(date);
+                if (comingGame.WaitingList.Exists(player.Id))
+                {
+                    imageBtn.ID = player.Id + "-InWaitingList";
+                    imageBtn.Enabled = false;
+                }
+                else
+                {
+                    imageBtn.ID = player.Id;
+                }
                 //If current user is not permit to reserve for this player, disable the image btn
                 if (!IsPermitted(Actions.Reserve_Pool, player))
                 {
                     imageBtn.Enabled = false;
                 }
                 //If no spot available and current player unreserved, disable image btn
-                if (!Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role) && spotsFilledup)
-                {
-                    imageBtn.Enabled = pool.GetMemberAttendance(player.Id, date);
-                }
+             //   if (!Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role) && spotsFilledup)
+           //     {
+            //        imageBtn.Enabled = pool.GetMemberAttendance(player.Id, date);
+            //    }
                 if (member.IsSuspended)
                 {
                     lbtn.Enabled = false;
@@ -507,6 +520,8 @@ namespace VballManager
 
         private void FillDropinTable(Pool pool, DateTime date)
         {
+            //Calcuate stats for dropins
+            DoStatsForDropin();
             Game game = pool.FindGameByDate(date);
             bool dropinSpotAvailable = Validation.DropinSpotAvailable(pool, date);
             IEnumerable<Player> query = Manager.FindPlayersByAttendees(pool.Dropins).OrderBy(dropin => dropin.Name);
@@ -617,11 +632,11 @@ namespace VballManager
         {
             get
             {
-               return  (Player)Session[Constants.CURRENT_USER];
+                return (Player)Session[Constants.CURRENT_USER];
             }
             set { }
         }
-        
+
         private DateTime ComingGameDate
         {
             get
@@ -632,31 +647,18 @@ namespace VballManager
             set { }
         }
 
-        private bool IsAdmin
-        {
-            get
-            {
-                String operatorId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
-                if (Manager.FindPlayerById(operatorId).Role >= (int)Roles.Admin)
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
-
         private bool IsPermitted(Actions action, Player player)
         {
             if (Manager.ActionPermitted(action, CurrentUser.Role) || CurrentUser.Id == player.Id || player.AuthorizedUsers.Contains(CurrentUser.Id))
             {
                 return true;
             }
-             return false;
+            return false;
         }
 
         private bool IsPermittedWithAlert(Actions action, Player player)
         {
-             if  (Manager.ActionPermitted(action, CurrentUser.Role) || CurrentUser.Id == player.Id || player.AuthorizedUsers.Contains(CurrentUser.Id))
+            if (Manager.ActionPermitted(action, CurrentUser.Role) || CurrentUser.Id == player.Id || player.AuthorizedUsers.Contains(CurrentUser.Id))
             {
                 return true;
             }
@@ -672,7 +674,7 @@ namespace VballManager
                 return;
             }
             ImageButton lbtn = (ImageButton)sender;
-            Session[Constants.CURRENT_USER_ID] = lbtn.ID;
+            Session[Constants.CURRENT_PLAYER_ID] = lbtn.ID;
             Session[Constants.ACTION_TYPE] = Constants.ACTION_MEMBER_ATTEND;
             Session[Constants.CONTROL] = sender;
             if (!IsAuthencated(lbtn.ID))
@@ -680,73 +682,88 @@ namespace VballManager
                 this.PasscodeAuthPopup.Show();
                 return;
             }
-            if (!CurrentPool.GetMemberAttendance(lbtn.ID, ComingGameDate) && !Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role) && !Validation.MemberSpotAvailable(CurrentPool, ComingGameDate))
+            if (!CurrentPool.GetMemberAttendance(lbtn.ID, ComingGameDate) && !Validation.MemberSpotAvailable(CurrentPool, ComingGameDate))
             {
-                ShowMessage("Sorry, but all spots are already filled up. Please check back later.");
-            }
-            else
-            {
-                //bool attending = Reservations.ReverseMemberAttendance(lbtn.ID, NextGameDate);
-                Player player = Manager.FindPlayerById(lbtn.ID);
-                if (!CurrentPool.GetMemberAttendance(lbtn.ID, ComingGameDate))
+                //Power reserve
+                if (Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role))
                 {
-                    //Check to see if the player has dropin spot in another pool on same day
-                    foreach (Pool pool in Manager.Pools)
-                    {
-                        if (pool.Name != CurrentPool.Name && pool.DayOfWeek == CurrentPool.DayOfWeek && pool.Dropins.Exists(dropin => dropin.Id == lbtn.ID))
-                        {
-                            if (pool.FindGameByDate(ComingGameDate).Pickups.Exists(lbtn.ID))
-                            {
-                                Session[Constants.ACTION_TYPE] = "MoveReservation";
-                                ShowPopupModal("You have aleady reserved a spot in pool " + pool.Name + " on the same day. Would you like to cancel that and reserve this one?");
-                                return;
-                            }
-                            else if (pool.FindGameByDate(ComingGameDate).WaitingList.Exists(lbtn.ID))
-                            {
-                                Session[Constants.ACTION_TYPE] = "MoveReservation";
-                                ShowPopupModal("You are aleady on waiting list of pool " + pool.Name + " on the same day. Would you like to cancel that and reserve this one?");
-                                return;
-                            }
-                        }
-                    }
-                    //Remove absence
-                    Game game = CurrentPool.FindGameByDate(ComingGameDate);
-                    Absence absence = (Absence)game.Absences.FindByPlayerId(lbtn.ID);
-                    if (absence.TransferId != null)
-                    {
-                        Transfer transfer = player.FindTransferById(absence.TransferId);
-                        player.Transfers.Remove(transfer);
-                    }
-                    game.Absences.Remove(absence);
-                    //Add back to reserved list
-                    Identifier id = new Identifier();
-                    id.PlayerId = player.Id;
-                    game.Reserved.Add(id);
-                    //log and save
-                    LogHistory log = CreateLog(DateTime.Now, GetUserIP(), CurrentPool.Name, player.Name, "Reserve member");
-                    Manager.Logs.Add(log);
-                    DataAccess.Save(Manager);
-                    ShowMessage("Your spot is reserved.");
+                    Session[Constants.ACTION_TYPE] = Constants.ACTION_POWER_RESERVE;
+                    ShowPopupModal("Sorry, But all spots are already filled up. Would you like to reserve an EXTRA spot?");
                 }
                 else
                 {
-                    ShowPopupModal("Are you sure to cancel?");
+                    Session[Constants.ACTION_TYPE] = Constants.ACTION_ADD_WAITING_LIST;
+                    ShowPopupModal("Sorry, But all spots are already filled up. Would you like to put onto the waiting list?");
                 }
+                return;
+          }
+            ContinueReserveMemberSpot(lbtn.ID);
+        }
+
+        private void ContinueReserveMemberSpot(String playerId)
+        {
+            //bool attending = Reservations.ReverseMemberAttendance(playerId, NextGameDate);
+            Player player = Manager.FindPlayerById(playerId);
+            if (!CurrentPool.GetMemberAttendance(playerId, ComingGameDate))
+            {
+                //Check to see if the player has dropin spot in another pool on same day
+                foreach (Pool pool in Manager.Pools)
+                {
+                    if (pool.Name != CurrentPool.Name && pool.DayOfWeek == CurrentPool.DayOfWeek && pool.Dropins.Exists(dropin => dropin.Id == playerId))
+                    {
+                        if (pool.FindGameByDate(ComingGameDate).Pickups.Exists(playerId))
+                        {
+                            Session[Constants.ACTION_TYPE] = Constants.ACTION_MOVE_RESERVATION;
+                            ShowPopupModal("You have aleady reserved a spot in pool " + pool.Name + " on the same day. Would you like to cancel that and reserve this one?");
+                            return;
+                        }
+                        else if (pool.FindGameByDate(ComingGameDate).WaitingList.Exists(playerId))
+                        {
+                            Session[Constants.ACTION_TYPE] = Constants.ACTION_MOVE_RESERVATION;
+                            ShowPopupModal("You are aleady on the waiting list of pool " + pool.Name + " on the same day. Would you like to cancel that and reserve this one?");
+                            return;
+                        }
+                    }
+                }
+                //Remove absence
+                Game game = CurrentPool.FindGameByDate(ComingGameDate);
+                Absence absence = (Absence)game.Absences.FindByPlayerId(playerId);
+                if (absence.TransferId != null)
+                {
+                    Transfer transfer = player.FindTransferById(absence.TransferId);
+                    player.Transfers.Remove(transfer);
+                }
+                game.Absences.Remove(absence);
+                //Add back to reserved list
+                Identifier id = new Identifier();
+                id.PlayerId = player.Id;
+                game.Reserved.Add(id);
+                //log and save
+                Manager.AddReservationNotifyWechatMessage(playerId, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, ComingGameDate);
+                LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), CurrentPool.Name, player.Name, "Reserve member");
+                Manager.Logs.Add(log);
+                DataAccess.Save(Manager);
+                Response.Redirect(Request.RawUrl);
+                //ShowMessage("Your spot is reserved.");
+            }
+            else
+            {
+                ShowPopupModal("Are you sure to cancel?");
             }
         }
 
-        private LogHistory CreateLog(DateTime date, String userInfo, String poolName, String playerName, String type)
+        private LogHistory CreateLog(DateTime date, DateTime gameDate, String userInfo, String poolName, String playerName, String type)
         {
             if (Request.Cookies[Constants.PRIMARY_USER] != null && Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID]) != null)
             {
-                return new LogHistory(date, userInfo, poolName, playerName, type, Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID]).Name);
+                return new LogHistory(date, gameDate, userInfo, poolName, playerName, type, Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID]).Name);
             }
-            return new LogHistory(date, userInfo, poolName, playerName, type, "Unknown");
+            return new LogHistory(date, gameDate, userInfo, poolName, playerName, type, "Unknown");
         }
 
-        private LogHistory CreateLog(DateTime date, String userInfo, String poolName, String playerName, String type, String operater)
+        private LogHistory CreateLog(DateTime date, DateTime gameDate, String userInfo, String poolName, String playerName, String type, String operater)
         {
-            return new LogHistory(date, userInfo, poolName, playerName, type, operater);
+            return new LogHistory(date, gameDate, userInfo, poolName, playerName, type, operater);
         }
 
         private void ShowPopupModal(String message)
@@ -761,18 +778,18 @@ namespace VballManager
         {
             this.PopupLabel.Text = message;
             this.ConfirmImageButton.Visible = false;
-            this.PopupModal.Show();
+             this.PopupModal.Show();
         }
 
         public void MemberCancelConfirm_Click(object sender, ImageClickEventArgs e)
         {
-            String userId = Session[Constants.CURRENT_USER_ID].ToString();
-            Player player = Manager.FindPlayerById(userId);
+            String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
+            Player player = Manager.FindPlayerById(playerId);
             Pool pool = CurrentPool;
             Game game = pool.FindGameByDate(ComingGameDate);
-            if (!game.Absences.Exists(userId))
+            if (!game.Absences.Exists(playerId))
             {
-                Absence absence = new Absence(userId);
+                Absence absence = new Absence(playerId);
                 if (!Manager.ClubMemberMode)
                 {
                     Transfer transfer = new Transfer(ComingGameDate);
@@ -783,7 +800,8 @@ namespace VballManager
                 //Remove from reserved list
                 game.Reserved.Remove(player.Id);
                 //Log and save
-                LogHistory log = CreateLog(DateTime.Now, GetUserIP(), pool.Name, Manager.FindPlayerById(userId).Name, "Cancel member");
+                Manager.AddReservationNotifyWechatMessage(playerId, CurrentUser.Id, Constants.CANCELLED, CurrentPool, CurrentPool, ComingGameDate);
+                LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), pool.Name, Manager.FindPlayerById(playerId).Name, "Cancel member");
                 Manager.Logs.Add(log);
                 //Assgin a spot to the first one on waiting list
                 if (!this.lockReservation && game.WaitingList.Count > 0 && Validation.DropinSpotAvailable(pool, ComingGameDate))
@@ -803,7 +821,7 @@ namespace VballManager
             List<Player> players = new List<Player>();
             foreach (Player player in Manager.Players)
             {
-                if (!player.Suspend && !CurrentPool.Members.Exists(member => member.Id == player.Id) && !CurrentPool.Dropins.Exists(dropin => dropin.Id == player.Id))
+                if (player.IsActive && !CurrentPool.Members.Exists(member => member.Id == player.Id) && !CurrentPool.Dropins.Exists(dropin => dropin.Id == player.Id))
                 {
                     players.Add(player);
                 }
@@ -897,6 +915,12 @@ namespace VballManager
             lbtn.ID = dropin.Id + ", DROPIN";
             lbtn.Click += new EventHandler(Username_Click);
             nameCell.Controls.Add(lbtn);
+            if (dropin.IsRegisterdMember)
+            {
+                Image stats = new Image();
+                stats.ImageUrl = "~/Icons/number_" + dropin.TotalPlayedCount.ToString() + ".png";
+                nameCell.Controls.Add(stats);
+            }
             foreach (Fee fee in dropin.Fees)
             {
                 if (!fee.IsPaid && fee.Amount > 0)
@@ -930,41 +954,41 @@ namespace VballManager
 
         protected void AddWaitingListConfirm_Click(object sender, ImageClickEventArgs e)
         {
-            String id = Session[Constants.CURRENT_USER_ID].ToString();
+            String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
             Game game = CurrentPool.FindGameByDate(ComingGameDate);
-            if (game.Pickups.Exists(id))
+            if (game.Pickups.Exists(playerId) || game.Reserved.Exists(playerId))
             {
                 return;
             }
-            if (!game.WaitingList.Exists(id))
+            if (!game.WaitingList.Exists(playerId))
             {
-
                 //Check to see of the player has reserved a spot in another pool on same day
                 foreach (Pool pool in Manager.Pools)
                 {
                     if (pool.Name != CurrentPool.Name && pool.DayOfWeek == CurrentPool.DayOfWeek)
                     {
-                        if (pool.Members.Exists(member => member.Id == id) && !pool.FindGameByDate(ComingGameDate).Absences.Exists(id))
+                        if (pool.Members.Exists(member => member.Id == playerId) && !pool.FindGameByDate(ComingGameDate).Absences.Exists(playerId))
                         {
                             ShowMessage("Sorry, But you have aleady reserved a spot in pool " + pool.Name + " on the same day. Cancel that spot before adding onto the waiting list");
                             return;
                         }
-                        if (pool.Dropins.Exists(dropin => dropin.Id == id) && pool.FindGameByDate(ComingGameDate).Pickups.Exists(id))
+                        if (pool.Dropins.Exists(dropin => dropin.Id == playerId) && pool.FindGameByDate(ComingGameDate).Pickups.Exists(playerId))
                         {
                             ShowMessage("Sorry, But you have aleady reserved a dropin spot in pool " + pool.Name + " on the same day. Cancel that spot beforeadding onto the waiting list");
                             return;
                         }
-                        else if (pool.FindGameByDate(ComingGameDate).WaitingList.Exists(id))
+                        else if (pool.FindGameByDate(ComingGameDate).WaitingList.Exists(playerId))
                         {
-                            ShowMessage("Sorry, But you are in waiting list in pool " + pool.Name + " on the same day. Cancel that before adding onto the waiting list");
+                            ShowMessage("Sorry, But you are on waiting list in pool " + pool.Name + " on the same day. Cancel that before adding onto the waiting list");
                             return;
                         }
                     }
                 }
-                Waiting waiting = new Waiting(id);
+                Waiting waiting = new Waiting(playerId);
                 waiting.OperatorId = GetOperatorId();
                 game.WaitingList.Add(waiting);
-                LogHistory log = CreateLog(DateTime.Now, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(id).Name, "Add to Waiting List");
+                Manager.AddReservationNotifyWechatMessage(playerId, waiting.OperatorId, Constants.WAITING, CurrentPool, CurrentPool, ComingGameDate);
+                LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Add to Waiting List");
                 Manager.Logs.Add(log);
                 DataAccess.Save(Manager);
             }
@@ -980,7 +1004,7 @@ namespace VballManager
                 return;
             }
             ImageButton lbtn = (ImageButton)sender;
-            Session[Constants.CURRENT_USER_ID] = lbtn.ID;
+            Session[Constants.CURRENT_PLAYER_ID] = lbtn.ID;
             Session[Constants.ACTION_TYPE] = Constants.ACTION_DROPIN_ADD;
             Session[Constants.CONTROL] = sender;
             if (!IsAuthencated(lbtn.ID))
@@ -988,13 +1012,18 @@ namespace VballManager
                 this.PasscodeAuthPopup.Show();
                 return;
             }
-            if (!IsPermittedWithAlert(Actions.Reserve_Pool,  Manager.FindPlayerById(lbtn.ID)))
+            if (!IsPermittedWithAlert(Actions.Reserve_Pool, Manager.FindPlayerById(lbtn.ID)))
             {
                 return;
             }
-            if (!IsAdmin && !Validation.IsDropinSpotOpening(ComingGameDate, CurrentPool, Manager))
+            Player player = Manager.FindPlayerById(lbtn.ID);
+            if (Manager.ActionPermitted(Actions.Reserve_Pool, CurrentUser.Role) && !Validation.IsDropinSpotOpening(player.IsRegisterdMember, ComingGameDate, CurrentPool, Manager))
             {
-                DateTime reserveDate = ComingGameDate.AddDays(-1 * CurrentPool.DaysBeforeReserve);
+                DateTime reserveDate = ComingGameDate.AddDays(-1 * CurrentPool.DaysToReserve4Member);
+                if (!player.IsRegisterdMember)
+                {
+                    reserveDate = ComingGameDate.AddDays(-1 * CurrentPool.DaysToReserve);
+                }
                 ShowMessage("Sorry, But drop-in reservations cannot be made until " + Manager.DropinSpotOpeningHour + " on " + reserveDate.ToLongDateString() + ". Please check back later.");
                 return;
             }
@@ -1003,29 +1032,56 @@ namespace VballManager
 
         private void ContinueAddDropin_Click(object sender, EventArgs e)
         {
-            String playerId = Session[Constants.CURRENT_USER_ID].ToString();
-            if (!IsAdmin)
-            {
-                if (CurrentPool.Dropins.Find(attendee => attendee.Id == playerId).IsCoop)
+            String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
+            Actions action = Actions.Reserve_Pool;
+            if (CurrentPool.Dropins.Find(attendee => attendee.Id == playerId).IsCoop)
                 {
                     if (!Validation.DropinSpotAvailableForCoop(CurrentPool, ComingGameDate))
                     {
-                        ShowMessage("Sorry, but Pool " + CurrentPool.Name + " has got enought players to start games. Please check back later.");
-                        return;
+                        if (Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role))
+                        {
+                            action = Actions.Power_Reserve;
+                        }
+                        else
+                        {
+                            ShowMessage("Sorry, but Pool " + CurrentPool.Name + " has got enought players to start games. Please check back later.");
+                            return;
+                        }
                     }
                     if (EastDateTimeToday.Date < ComingGameDate.Date || EastDateTimeNow.Hour < CurrentPool.ReservHourForCoop)
                     {
-                        ShowMessage("Sorry, but Pool " + CurrentPool.Name + " reservation starts at  " + CurrentPool.ReservHourForCoop + " O'clock on game day for co-op players. Check back later");
-                        return;
+                       if (!Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role))
+                       {
+                            ShowMessage("Sorry, but Pool " + CurrentPool.Name + " reservation starts at  " + CurrentPool.ReservHourForCoop + " O'clock on game day for co-op players. Check back later");
+                            return;
+                        }
                     }
                 }
                 else if (!Validation.DropinSpotAvailable(CurrentPool, ComingGameDate))
                 {
-                    Session[Constants.ACTION_TYPE] = "AddWaitingList";
-                    ShowPopupModal("Sorry, But all spots are already filled up. Would you like to put on waiting list?");
+                       if (Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role))
+                        {
+                            action = Actions.Power_Reserve;
+                        }
+                       else
+                       {
+                            Session[Constants.ACTION_TYPE] = Constants.ACTION_ADD_WAITING_LIST;
+                            ShowPopupModal("Sorry, But all spots are already filled up. Would you like to put onto the waiting list?");
+                    return;
+                      }
+                 }
+
+                if (action==Actions.Power_Reserve)
+                {
+                    Session[Constants.ACTION_TYPE] = Constants.ACTION_POWER_RESERVE;
+                    ShowPopupModal("All spots are already filled up. Would you like to reserve an EXTRA spot?");
                     return;
                 }
-            }
+                ContinueReservePickup(playerId);
+        }
+
+        private void ContinueReservePickup(String playerId)
+        {
             Game game = CurrentPool.FindGameByDate(ComingGameDate);
             if (CurrentPool.Dropins.Exists(dropin => dropin.Id == playerId) && !game.Pickups.Exists(playerId))
             {
@@ -1038,7 +1094,7 @@ namespace VballManager
                         {
                             if (!pool.FindGameByDate(ComingGameDate).Absences.Exists(playerId))
                             {
-                                Session[Constants.ACTION_TYPE] = "MoveReservation";
+                                Session[Constants.ACTION_TYPE] = Constants.ACTION_MOVE_RESERVATION;
                                 ShowPopupModal("You have aleady reserved a spot in pool " + pool.Name + " on the same day. Would you like to cancel that and reserve this one?");
                                 return;
                             }
@@ -1052,14 +1108,14 @@ namespace VballManager
                         {
                             if (pool.FindGameByDate(ComingGameDate).Pickups.Exists(playerId))
                             {
-                                Session[Constants.ACTION_TYPE] = "MoveReservation";
+                                Session[Constants.ACTION_TYPE] = Constants.ACTION_MOVE_RESERVATION;
                                 ShowPopupModal("You have aleady reserved a spot in pool " + pool.Name + " on the same day. Would you like to cancel that and reserve this one?");
                                 return;
                             }
                             else if (pool.FindGameByDate(ComingGameDate).WaitingList.Exists(playerId))
                             {
-                                Session[Constants.ACTION_TYPE] = "MoveReservation";
-                                ShowPopupModal("You are aleady on waiting list of pool " + pool.Name + " on the same day. Would you like to cancel that and reserve this one?");
+                                Session[Constants.ACTION_TYPE] = Constants.ACTION_MOVE_RESERVATION;
+                                ShowPopupModal("You are aleady on the waiting list of pool " + pool.Name + " on the same day. Would you like to cancel that and reserve this one?");
                                 return;
                             }
                         }
@@ -1070,8 +1126,9 @@ namespace VballManager
                 Pickup pickup = new Pickup(playerId, reference);
                 pickup.OperatorId = GetOperatorId();
                 game.Pickups.Add(pickup);
-                LogHistory log = CreateLog(DateTime.Now, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve dropin");
-                Manager.Logs.Add(log);
+                Manager.AddReservationNotifyWechatMessage(playerId, pickup.OperatorId, Constants.RESERVED, CurrentPool, CurrentPool, ComingGameDate);
+               LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve dropin");
+                 Manager.Logs.Add(log);
                 //Update last dropin date for coop
                 Dropin dropin = CurrentPool.Dropins.Find(attendee => attendee.Id == playerId);
                 if (dropin.IsCoop)
@@ -1236,7 +1293,7 @@ namespace VballManager
                 return;
             }
             ImageButton lbtn = (ImageButton)sender;
-            Session[Constants.CURRENT_USER_ID] = lbtn.ID;
+            Session[Constants.CURRENT_PLAYER_ID] = lbtn.ID;
             Session[Constants.ACTION_TYPE] = Constants.ACTION_DROPIN_REMOVE;
             Session[Constants.CONTROL] = sender;
             if (!IsAuthencated(lbtn.ID))
@@ -1277,7 +1334,7 @@ namespace VballManager
 
         protected void DropinCancelConfirm_Click(object sender, ImageClickEventArgs e)
         {
-            String playerId = Session[Constants.CURRENT_USER_ID].ToString();
+            String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
             Game game = CurrentPool.FindGameByDate(ComingGameDate);
             if (game.Pickups.Exists(playerId))
             {
@@ -1285,7 +1342,8 @@ namespace VballManager
                 game.Pickups.Remove(pickup);
                 //Cancel dropin fee
                 CancelDropinFee(pickup);
-                LogHistory log = CreateLog(DateTime.Now, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel dropin");
+                Manager.AddReservationNotifyWechatMessage(playerId, pickup.OperatorId, Constants.CANCELLED, CurrentPool, CurrentPool, ComingGameDate);
+                LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel dropin");
                 Manager.Logs.Add(log);
                 //reset last dropin time for coop
                 Dropin dropin = CurrentPool.Dropins.Find(attendee => attendee.Id == playerId);
@@ -1299,7 +1357,7 @@ namespace VballManager
             else
             {
                 game.WaitingList.Remove(playerId);
-                LogHistory log = CreateLog(DateTime.Now, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel waitinglist");
+                 LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel waitinglist");
                 Manager.Logs.Add(log);
             }
             DataAccess.Save(Manager);
@@ -1311,7 +1369,7 @@ namespace VballManager
         {
             LinkButton lbtn = (LinkButton)sender;
             String id = lbtn.ID.Split(',')[0];
-            Session[Constants.CURRENT_USER_ID] = id;
+            Session[Constants.CURRENT_PLAYER_ID] = id;
             Session[Constants.ACTION_TYPE] = Constants.ACTION_DETAIL;
             Session[Constants.CONTROL] = sender;
             if (!IsAuthencated(id))
@@ -1320,16 +1378,16 @@ namespace VballManager
                 return;
             }
 
-                Response.Redirect("Detail.aspx?id=" + id);
+            Response.Redirect("Detail.aspx?id=" + id);
         }
 
         protected void MoveReservation_Click(object sender, ImageClickEventArgs e)
         {
-            String playerId = Session[Constants.CURRENT_USER_ID].ToString();
-            MoveReservatioin(playerId, CurrentPool);
+            String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
+            MoveReservatioin(playerId, CurrentPool, CurrentUser.Id);
         }
 
-        private void MoveReservatioin(String playerId, Pool destPool)
+        private void MoveReservatioin(String playerId, Pool destPool, String operatorId)
         {
             Player player = Manager.FindPlayerById(playerId);
             //Check to see of the player has reserved a spot in another pool on same day
@@ -1350,7 +1408,8 @@ namespace VballManager
                                 absence.TransferId = transfer.TransferId;
                             }
                             pool.FindGameByDate(ComingGameDate).Absences.Add(absence);
-                            Manager.Logs.Add(CreateLog(DateTime.Now, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel member", "System"));
+                            Manager.AddReservationNotifyWechatMessage(playerId, operatorId, Constants.MOVED, destPool, pool, ComingGameDate);
+                            Manager.Logs.Add(CreateLog(DateTime.Now, ComingGameDate, GetUserIP(), pool.Name, Manager.FindPlayerById(playerId).Name, "Cancel member", "System"));
                             break;
                         }
                     }
@@ -1362,13 +1421,15 @@ namespace VballManager
                             Pickup pickup = (Pickup)pool.FindGameByDate(ComingGameDate).Pickups.FindByPlayerId(playerId);
                             pool.FindGameByDate(ComingGameDate).Pickups.Remove(playerId);
                             CancelDropinFee(pool, pickup);
-                            Manager.Logs.Add(CreateLog(DateTime.Now, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel dropin", "System"));
+                            Manager.AddReservationNotifyWechatMessage(playerId, operatorId, Constants.MOVED, destPool, pool, ComingGameDate);
+                            Manager.Logs.Add(CreateLog(DateTime.Now, ComingGameDate, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel dropin", "System"));
                             break;
                         }
                         else if (pool.FindGameByDate(ComingGameDate).WaitingList.Exists(playerId))
                         {
                             pool.FindGameByDate(ComingGameDate).WaitingList.Remove(playerId);
-                            Manager.Logs.Add(CreateLog(DateTime.Now, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Canel waitinglist", "System"));
+                            Manager.AddReservationNotifyWechatMessage(playerId, operatorId, Constants.MOVED, destPool, pool, ComingGameDate);
+                            Manager.Logs.Add(CreateLog(DateTime.Now, ComingGameDate, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Canel waitinglist", "System"));
                             break;
                         }
                     }
@@ -1385,7 +1446,8 @@ namespace VballManager
                     if (!transfer.IsUsed) player.Transfers.Remove(transfer);
                 }
                 game.Absences.Remove(playerId);
-                Manager.Logs.Add(CreateLog(DateTime.Now, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve member", "System"));
+                Manager.AddReservationNotifyWechatMessage(playerId, playerId, Constants.RESERVED, destPool, destPool, ComingGameDate);
+                Manager.Logs.Add(CreateLog(DateTime.Now, game.Date, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve member", "System"));
             }
             //Dropin reserve
             else if (destPool.Dropins.Exists(attendee => attendee.Id == playerId))
@@ -1393,7 +1455,7 @@ namespace VballManager
                 CostReference reference = CreateDropinFee(playerId);
                 Pickup pickup = new Pickup(playerId, reference);
                 game.Pickups.Add(pickup);
-                Manager.Logs.Add(CreateLog(DateTime.Now, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve dropin", "System"));
+                Manager.Logs.Add(CreateLog(DateTime.Now, game.Date, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve dropin", "System"));
                 Dropin dropin = destPool.Dropins.Find(attendee => attendee.Id == playerId);
                 if (dropin.IsCoop) dropin.LastCoopDate = ComingGameDate;
             }
@@ -1406,7 +1468,7 @@ namespace VballManager
         private bool IsAuthencated(String id)
         {
             Player member = Manager.FindPlayerById(id);
-            if (member.Suspend)
+            if (!member.IsActive)
             {
                 return false;
             }
@@ -1445,7 +1507,7 @@ namespace VballManager
         protected void AuthenLogin_Click(object sender, EventArgs e)
         {
             Session[Constants.PASSCODE] = PasscodeTb.Text;
-            if (!IsAuthencated(Session[Constants.CURRENT_USER_ID].ToString()))
+            if (!IsAuthencated(Session[Constants.CURRENT_PLAYER_ID].ToString()))
             {
                 this.PasscodeAuthPopup.Show();
                 return;
@@ -1453,16 +1515,16 @@ namespace VballManager
             Control control = (Control)Session[Constants.CONTROL];
             switch (Session[Constants.ACTION_TYPE].ToString())
             {
-                case "MemberAttend":
+                case Constants.ACTION_MEMBER_ATTEND:
                     MemberChangeAttendance_Click(control, null);
                     break;
-                case "Drop-inNew":
+                case Constants.ACTION_DROPIN_NEW:
                     AddNewDropin_Click(control, null);
                     break;
-                case "Drop-inAdd":
+                case Constants.ACTION_DROPIN_ADD:
                     AddBackDropin_Click(control, null);
                     break;
-                case "Drop-inRemove":
+                case Constants.ACTION_DROPIN_REMOVE:
                     CancelDropin_Click(control, null);
                     break;
                 case "Detail":
@@ -1474,22 +1536,26 @@ namespace VballManager
         {
             if (Session[Constants.ACTION_TYPE] != null)
             {
-                switch (Session[Constants.ACTION_TYPE].ToString())
+                  switch (Session[Constants.ACTION_TYPE].ToString())
                 {
-                    case "MemberAttend":
+                    case Constants.ACTION_MEMBER_ATTEND:
                         this.ConfirmImageButton.Click += MemberCancelConfirm_Click;
                         break;
-                    case "Drop-inRemove":
+                    case Constants.ACTION_DROPIN_REMOVE:
                         this.ConfirmImageButton.Click += DropinCancelConfirm_Click;
                         break;
-                    case "AddWaitingList":
+                    case Constants.ACTION_ADD_WAITING_LIST:
                         this.ConfirmImageButton.Click += AddWaitingListConfirm_Click;
                         break;
-                    case "Drop-inAdd":
+                    case Constants.ACTION_DROPIN_ADD:
                         this.ConfirmImageButton.Click += ContinueAddDropin_Click;
                         break;
-                    case "MoveReservation":
+                    case Constants.ACTION_MOVE_RESERVATION:
                         this.ConfirmImageButton.Click += MoveReservation_Click;
+                        break;
+                    case Constants.ACTION_POWER_RESERVE:
+                        this.ConfirmImageButton.Click += PowerReserve_Click;
+                        this.CloseImageBtn.Click += this.InquireAddingToWaitingList_Click;
                         break;
                 }
             }
@@ -1547,5 +1613,68 @@ namespace VballManager
         {
             Response.Redirect("PreRegister.aspx?Pool=" + CurrentPool.Name);
         }
+        private IEnumerable<Player> OrderMembersByStats()
+        {
+            foreach (Member member in CurrentPool.Members)
+            {
+                Player player = Manager.FindPlayerById(member.Id);
+                player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType);
+            }
+            IEnumerable<Player> players = Manager.FindPlayersByAttendees(CurrentPool.Members).OrderBy(member => member.Name);
+            return players.OrderByDescending(p => p.TotalPlayedCount);
+        }
+
+        private void DoStatsForDropin()
+        {
+            foreach (Dropin dropin in CurrentPool.Dropins)
+            {
+                Player player = Manager.FindPlayerById(dropin.Id);
+                player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType); 
+            }
+        }
+
+        private int CalculatePlayedStats(Player player, String statsType)
+        {
+            int playedCount = 0;
+            if (statsType == StatsTypes.None.ToString())
+                return playedCount;
+            foreach (Pool pool in Manager.Pools)
+            {
+                if (statsType == StatsTypes.Week.ToString() || pool.DayOfWeek == CurrentPool.DayOfWeek)
+                {
+                    foreach (Game game in pool.Games)
+                    {
+                        if (game.Date.Date < DateTime.Today.Date && (game.Reserved.Exists(player.Id) && !game.NoShow.Exists(player.Id) || game.Pickups.Exists(player.Id)))
+                        {
+                            playedCount++;
+                        }
+                    }
+                }
+            }
+            return playedCount;
+        }
+
+        protected void InquireAddingToWaitingList_Click(object sender, ImageClickEventArgs e)
+        {
+            if (Session[Constants.ACTION_TYPE].ToString() == Constants.ACTION_POWER_RESERVE)
+            {
+                Session[Constants.ACTION_TYPE] = Constants.ACTION_ADD_WAITING_LIST;
+                ShowPopupModal("Would you like to put onto the waiting list?");
+            }
+        }
+ 
+        protected void PowerReserve_Click(object sender, ImageClickEventArgs e)
+        {
+            String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
+            if (CurrentPool.Members.Exists(member => member.Id == playerId))
+            {
+                ContinueReserveMemberSpot(playerId);
+            }
+            else if (CurrentPool.Dropins.Exists(dropin => dropin.Id == playerId))
+            {
+                ContinueReservePickup(playerId);
+            }
+        }
+
     }
 }

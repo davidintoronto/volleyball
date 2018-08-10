@@ -7,11 +7,8 @@
     <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
-<!--<script>
-    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
-        WeixinJSBridge.call('hideToolbar');
-    });  
-</script> --></head>
+
+</head>
 <body>
     <form runat="server">
     <div class="page">

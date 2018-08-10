@@ -9,13 +9,12 @@ namespace VballManager
 {
     public partial class Statistics : System.Web.UI.Page
     {
-        private int count = 0;
-        protected void Page_Load(object sender, EventArgs e)
+         protected void Page_Load(object sender, EventArgs e)
         {
             IEnumerable<Player> playerQuery = Manager.Players.OrderBy(player => player.Name);
             foreach (Player player in playerQuery)
             {
-                if (!player.Suspend)
+                if (player.IsActive)
                 {
                     player.MondayPlayedCount = GetPlayedCount(player, DayOfWeek.Monday);
                     player.FridayPlayedCount = GetPlayedCount(player, DayOfWeek.Friday);
@@ -26,7 +25,7 @@ namespace VballManager
             int order = 1;
            foreach (Player player in playerQuery)
             {
-                if (!player.Suspend && player.TotalPlayedCount>5)
+                if (player.IsActive && player.TotalPlayedCount>5)
                 {
                     TableRow row = new TableRow();
                     TableCell orderCell = new TableCell();
@@ -56,7 +55,7 @@ namespace VballManager
             playerQuery = Manager.Players.OrderByDescending(player => player.FridayPlayedCount);
             foreach (Player player in playerQuery)
             {
-                if (!player.Suspend && player.TotalPlayedCount > 5)
+                if (player.IsActive && player.TotalPlayedCount > 5)
                 {
                     TableRow row = new TableRow();
                     TableCell orderCell = new TableCell();
@@ -88,7 +87,7 @@ namespace VballManager
             playerQuery = Manager.Players.OrderByDescending(player => player.TotalPlayedCount);
             foreach (Player player in playerQuery)
             {
-                if (!player.Suspend && player.TotalPlayedCount > 5)
+                if (player.IsActive && player.TotalPlayedCount > 5)
                 {
                     TableRow row = new TableRow();
                     TableCell orderCell = new TableCell();
@@ -129,11 +128,10 @@ namespace VballManager
                     {
                         foreach (Game game in pool.Games)
                         {
-                            if (game.Absences.Exists(player.Id))
+                            if (game.Date < DateTime.Today && game.Reserved.Exists(player.Id) && !game.NoShow.Exists(player.Id))
                             {
-                                continue;
+                                playedCount++;
                             }
-                            playedCount++;
                         }
                     }
                     else

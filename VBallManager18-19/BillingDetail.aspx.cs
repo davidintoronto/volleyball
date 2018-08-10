@@ -11,6 +11,7 @@ namespace VballManager
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsSuperAdmin()) return;
             if (Request.Params["id"] == null)
             {
                 Response.Redirect("Billing.aspx");
@@ -24,6 +25,20 @@ namespace VballManager
             FillPrePaymentTable(player);
         }
 
+        public bool IsSuperAdmin()
+        {
+            if (Request.Cookies[Constants.PRIMARY_USER] != null)
+            {
+                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                String passcode = Request.Cookies[Constants.PRIMARY_USER][Constants.PASSCODE];
+                Player player = Manager.FindPlayerById(userId);
+                if (!String.IsNullOrEmpty(player.Passcode) && player.Passcode == passcode && Manager.ActionPermitted(Actions.Admin_Management, player.Role))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         private void FillFeeAndPaymentTable(Player player)
         {

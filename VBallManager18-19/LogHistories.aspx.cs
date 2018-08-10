@@ -12,10 +12,10 @@ namespace VballManager
         protected void Page_Load(object sender, EventArgs e)
         {
             TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-            this.LogTable.Rows.Add(createLogTableRow("Date", "IP", "Pool", "Player", "Type", "Operator"));
+            this.LogTable.Rows.Add(createLogTableRow("Date", "Player", "Game Date",  "Pool","Type", "Operator"));
             foreach (LogHistory log in Manager.Logs)
             {
-                this.LogTable.Rows.Add(createLogTableRow(TimeZoneInfo.ConvertTime(log.Date, easternZone).ToString("yyyy-MM-dd hh:mm:ss"), log.UserInfo, log.PoolName, log.PlayerName, log.Type, log.OperatorName));
+                this.LogTable.Rows.Add(createLogTableRow(TimeZoneInfo.ConvertTime(log.Date, easternZone).ToString("yyyy-MM-dd hh:mm:ss"),  log.PlayerName, TimeZoneInfo.ConvertTime(log.GameDate, easternZone).ToString("yyyy-MM-dd"), log.PoolName,log.Type, log.OperatorName));
             }
         }
         private VolleyballClub Manager
@@ -27,20 +27,20 @@ namespace VballManager
             }
             set { }
         }
-        private TableRow createLogTableRow(String date, String userInfo, String poolName, String playerName, String type, String operatorName)
+        private TableRow createLogTableRow(String date, String playerName, String gameDate, String poolName, String type, String operatorName)
         {
             TableRow row = new TableRow();
             TableCell cell = new TableCell();
             cell.Text = date;
             row.Cells.Add(cell);
             cell = new TableCell();
-            cell.Text = userInfo;
+            cell.Text = playerName;
+            row.Cells.Add(cell);
+            cell = new TableCell();
+            cell.Text = gameDate;
             row.Cells.Add(cell);
             cell = new TableCell();
             cell.Text = poolName;
-            row.Cells.Add(cell);
-            cell = new TableCell();
-            cell.Text = playerName;
             row.Cells.Add(cell);
             cell = new TableCell();
             cell.Text = type;

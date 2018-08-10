@@ -14,7 +14,7 @@ namespace VballManager
             string title = GetTitleOfCurrentPool();
             Page.Title = title;
             this.TitleLabel.Text = title;
-            this.ClosePanel.Visible = false;
+            //this.ClosePanel.Visible = false;
             if (!Request.UserAgent.Contains("MicroMessenger"))
             {
                 this.ClosePanel.Visible = false;

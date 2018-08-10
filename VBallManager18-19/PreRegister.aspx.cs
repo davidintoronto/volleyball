@@ -80,7 +80,7 @@ namespace VballManager
             foreach (Attendee attendee in sortedAttendees)
             {
                 Player player = Manager.FindPlayerById(attendee.Id);
-                if (player.Suspend || (typeof(Dropin).IsInstanceOfType(attendee) && ((Dropin)attendee).IsCoop)) continue;
+                if (!player.IsActive || (typeof(Dropin).IsInstanceOfType(attendee) && ((Dropin)attendee).IsCoop)) continue;
                 FillPreRegister(order++, attendee);
             }
          }
@@ -170,14 +170,14 @@ namespace VballManager
         void checkBox_CheckedChanged(object sender, ImageClickEventArgs e)
         {
             ImageButton lbtn = (ImageButton)sender;
-            Session[Constants.CURRENT_USER_ID] = lbtn.ID;
+            Session[Constants.CURRENT_PLAYER_ID] = lbtn.ID;
             Session[Constants.CONTROL] = sender;
             this.ConfirmPopup.Show();
             return;
         }
 
         protected void Confirm_Click(object sender, EventArgs e){
-            String idString = Session[Constants.CURRENT_USER_ID].ToString();
+            String idString = Session[Constants.CURRENT_PLAYER_ID].ToString();
             String id = idString.Split(',')[0];
             Player player = Manager.FindPlayerById(id);
             Attendee attendee = CurrentPool.Members.Find(member => member.Id == id);

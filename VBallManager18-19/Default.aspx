@@ -48,7 +48,7 @@
                         Confirmation
                     </td>
                     <td align="right">
-                        <asp:ImageButton ID="CloseImageBtn" runat="server" ImageUrl="~/Icons/Close.png"/>
+                        <asp:ImageButton ID="CloseImageBtn" runat="server" ImageUrl="~/Icons/Close.png" />
                     </td>
                 </tr>
             </table>
@@ -60,6 +60,7 @@
         <br />
         <div class="Controls">
             <asp:ImageButton ID="ConfirmImageButton" runat="server"  ImageUrl="~/Icons/yes.png" />
+            <asp:ImageButton ID="NoImageButton" runat="server"  ImageUrl="~/Icons/no.png" Visible="False" />
         </div>
     </asp:Panel>
   

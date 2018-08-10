@@ -121,6 +121,15 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.ImageButton ConfirmImageButton;
         
         /// <summary>
+        /// NoImageButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton NoImageButton;
+        
+        /// <summary>
         /// AddDropinPopup control.
         /// </summary>
         /// <remarks>

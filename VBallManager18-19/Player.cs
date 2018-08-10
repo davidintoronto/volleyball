@@ -12,7 +12,7 @@ namespace VballManager
         private String passcode;
         private bool marked;
         private List<Transfer> transfers = new List<Transfer>();
-        private bool suspend = false;
+        private bool isActive = true;
         private List<Fee> fees = new List<Fee>();
         private decimal prePaidBalance;
         private int freeDropin;
@@ -20,14 +20,18 @@ namespace VballManager
         private List<String> authorizedUsers = new List<string>();
         private bool deviceLinked;
         private int role = (int)Roles.Player;
-
+        private String wechatName;
         private List<Notification> notifications = new List<Notification>();
-
         public int MondayPlayedCount;
         public int FridayPlayedCount;
         public int TotalPlayedCount;
-
-        public List<Notification> Notifications
+  
+        public String WechatName
+        {
+            get { return wechatName; }
+            set { wechatName = value; }
+        }
+      public List<Notification> Notifications
         {
             get { return notifications; }
             set { notifications = value; }
@@ -68,10 +72,10 @@ namespace VballManager
             set { fees = value; }
         }
 
-        public bool Suspend
+        public bool IsActive
         {
-            get { return suspend; }
-            set { suspend = value; }
+            get { return isActive; }
+            set { isActive = value; }
         }
 
         public List<Transfer> Transfers

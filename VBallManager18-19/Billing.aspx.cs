@@ -13,6 +13,8 @@ namespace VballManager
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsSuperAdmin()) return;
+
             IEnumerable<Player> playerrQuery = Manager.Players.OrderBy(player => player.Name);
             bool alterbackcolor = false;
             foreach (Player player in playerrQuery)
@@ -59,7 +61,7 @@ namespace VballManager
         {
             LinkButton lbtn = (LinkButton)sender;
             String id = lbtn.ID.Split(',')[0];
-            Session[Constants.CURRENT_USER_ID] = id;
+            Session[Constants.CURRENT_PLAYER_ID] = id;
             Session[Constants.ACTION_TYPE] = Constants.ACTION_DETAIL;
             Session[Constants.CONTROL] = sender;
             Response.Redirect("BillingDetail.aspx?id=" + id);
@@ -73,6 +75,21 @@ namespace VballManager
             }
             set { }
         }
- 
+
+        public bool IsSuperAdmin()
+        {
+            if (Request.Cookies[Constants.PRIMARY_USER] != null)
+            {
+                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                String passcode = Request.Cookies[Constants.PRIMARY_USER][Constants.PASSCODE];
+                Player player = Manager.FindPlayerById(userId);
+                if (!String.IsNullOrEmpty(player.Passcode) && player.Passcode == passcode && Manager.ActionPermitted(Actions.Admin_Management, player.Role))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 }

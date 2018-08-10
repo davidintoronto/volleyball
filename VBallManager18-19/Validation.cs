@@ -7,10 +7,17 @@ namespace VballManager
 {
     public class Validation
     {
-        public static bool IsDropinSpotOpening(DateTime date, Pool pool, VolleyballClub manager)
+        public static bool IsDropinSpotOpening(bool isMember, DateTime date, Pool pool, VolleyballClub manager)
         {
             DateTime reserveDate = TimeZoneInfo.ConvertTimeFromUtc(date, TimeZoneInfo.FindSystemTimeZoneById(manager.TimeZoneName));
-            reserveDate = reserveDate.AddDays(-1 * pool.DaysBeforeReserve).AddHours(-1 * reserveDate.Hour + manager.DropinSpotOpeningHour);
+            if (isMember)
+            {
+                reserveDate = reserveDate.AddDays(-1 * pool.DaysToReserve4Member).AddHours(-1 * reserveDate.Hour + manager.DropinSpotOpeningHour);
+            }
+            else 
+            {
+                reserveDate = reserveDate.AddDays(-1 * pool.DaysToReserve).AddHours(-1 * reserveDate.Hour + manager.DropinSpotOpeningHour);
+            }
             DateTime now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(manager.TimeZoneName));
             return now >= reserveDate;
         }

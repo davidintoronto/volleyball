@@ -156,9 +156,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                            </td>
-                            <td>
+                 <td>Home Ip</td>
+                 <td>
+                     <asp:Label ID="HomeIPLb" runat="server" Text="Label"></asp:Label>
                             </td>
                             <td>
                             </td>
@@ -169,8 +169,8 @@
                     </table>
                 </td>
                 <td>
-                    <asp:Panel ID="AuthorizationPanel" runat="server" BackColor="#FFFFCC" 
-                        BorderColor="#3333CC" BorderStyle="Inset">
+                    <asp:Panel ID="AuthorizationPanel" runat="server" BackColor="#FFFFCC" BorderColor="#3333CC"
+                        BorderStyle="Inset">
                         <asp:Table ID="AuthorizeTable" runat="server" Caption="Authorization/Permissions">
                             <asp:TableHeaderRow ID="TableHeaderRow" HorizontalAlign="Left" BackColor="#B3AB4D">
                                 <asp:TableHeaderCell ID="TableHeaderCell9" Text="Action Name" HorizontalAlign="Left"
@@ -187,52 +187,15 @@
     <br />
     <table id="SystemTable0" style="width: 100%;" __designer:mapid="3b" bgcolor="#BBCCEC">
         <tr __designer:mapid="3c">
-            <td class="style5">
-                <table>
-                    <tr>
-                        <td>
-                            Players and Registered Members
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <asp:CheckBoxList ID="PlayerListbox" runat="server" Height="288px" Width="898px"
-                                SelectionMode="Multiple" BorderColor="#0000CC" BorderStyle="Double" RepeatColumns="4"
-                                RepeatDirection="Horizontal">
-                            </asp:CheckBoxList>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right">
-                            <asp:Button ID="SavePlayersBtn" runat="server" Text="Save" Width="89px" OnClick="SavePlayersBtn_Click" />
-                        </td>
-                    </tr>
-                </table>
-            </td>
-            <td>
+             <td>
                 <table class="inlineBlock" style="width: 32%; top: inherit;">
-                    <tr>
-                        <td align="center" colspan="2">
-                            &nbsp;
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center" colspan="2">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center" colspan="2">
-                            Players
-                        </td>
-                    </tr>
-                    <tr>
+                      <tr>
                         <td>
                             &nbsp;
-                        </td>
-                        <td>
-                            <asp:DropDownList ID="PlayerDDList" runat="server" Height="20px" OnSelectedIndexChanged="PlayerDDList_SelectedIndexChanged"
-                                Width="122px" AutoPostBack="True">
-                            </asp:DropDownList>
+                            Players</td>
+                        <td valign="top">
+                            <asp:ListBox ID="PlayerLb" runat="server" Width="124px" Height="294px" 
+                                onselectedindexchanged="PlayerListBox_SelectedIndexChanged" AutoPostBack="True"></asp:ListBox>
                         </td>
                     </tr>
                     <tr>
@@ -241,7 +204,7 @@
                         </td>
                         <td>
                             &nbsp;
-                        </td>
+                            </td>
                     </tr>
                     <tr>
                         <td align="right">
@@ -269,7 +232,15 @@
                             </asp:DropDownList>
                         </td>
                     </tr>
-                    <tr>
+                     <tr>
+                        <td>
+                            &nbsp;
+                            Wechat</td>
+                        <td>
+                            <asp:TextBox ID="WechatNameTb" runat="server"></asp:TextBox>
+                            </td>
+                    </tr>
+                   <tr>
                         <td align="right">
                             Mark
                         </td>
@@ -279,10 +250,10 @@
                     </tr>
                     <tr>
                         <td>
-                            Suspend
+                            Active
                         </td>
                         <td>
-                            <asp:CheckBox ID="PlayerSuspendCb" runat="server" />
+                            <asp:CheckBox ID="PlayerActiveCb" runat="server" />
                         </td>
                     </tr>
                     <tr>
@@ -308,21 +279,38 @@
                             &nbsp;
                         </td>
                         <td align="center">
+                            &nbsp;
                             <asp:Button ID="DeletePlayerBtn" runat="server" OnClick="DeletePlayerBtn_Click" Text="Delete"
                                 Width="80px" />
                         </td>
                     </tr>
+                </table>
+            </td>
+          <td class="style5">
+                <table>
                     <tr>
                         <td>
-                            &nbsp;
+                            Registered Members 
+                        
+                            Registered Members 
                         </td>
-                        <td align="center">
-                            &nbsp;
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:CheckBoxList ID="PlayerListbox" runat="server" Height="288px" Width="898px"
+                                SelectionMode="Multiple" BorderColor="#0000CC" BorderStyle="Double" RepeatColumns="4"
+                                RepeatDirection="Horizontal">
+                            </asp:CheckBoxList>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">
+                            <asp:Button ID="SavePlayersBtn" runat="server" Text="Save" Width="89px" OnClick="SavePlayersBtn_Click" />
                         </td>
                     </tr>
                 </table>
             </td>
-        </tr>
+         </tr>
     </table>
     <asp:Panel ID="Panel2" runat="server" Style="margin-bottom: 0px">
         <asp:CheckBox ID="ClearPoolMemberCb" runat="server" Text="Clear Pool Member/Dropins" />

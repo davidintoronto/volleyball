@@ -29,6 +29,5 @@
    <asp:Panel ID="LogPanel" runat="server">
         <asp:Table Width="100%" ID="LogTable" runat="server" BackColor="#C5E1B9"></asp:Table>
         <asp:Button ID="ClearLogBtn" Text="Clear Log History" runat="server" OnClick="ClearLogHistory_Click" />
-        </asp:Panel>
     </asp:Panel>
 </asp:Content>

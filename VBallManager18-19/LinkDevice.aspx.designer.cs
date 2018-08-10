@@ -13,85 +13,31 @@ namespace VballManager {
     public partial class LinkDevice {
         
         /// <summary>
-        /// LoginUserPanel control.
+        /// ProfilePanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel LoginUserPanel;
+        protected global::System.Web.UI.WebControls.Panel ProfilePanel;
         
         /// <summary>
-        /// SelectUserLb control.
+        /// UsernameLb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label SelectUserLb;
+        protected global::System.Web.UI.WebControls.Label UsernameLb;
         
         /// <summary>
-        /// UserList control.
+        /// RegisterBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList UserList;
-        
-        /// <summary>
-        /// Label1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
-        
-        /// <summary>
-        /// PasswordTb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PasswordTb;
-        
-        /// <summary>
-        /// LoginBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button LoginBtn;
-        
-        /// <summary>
-        /// LoginLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LoginLabel;
-        
-        /// <summary>
-        /// ReservePanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel ReservePanel;
-        
-        /// <summary>
-        /// ReserveLinkTable control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Table ReserveLinkTable;
+        protected global::System.Web.UI.WebControls.Button RegisterBtn;
         
         /// <summary>
         /// UserPanel control.

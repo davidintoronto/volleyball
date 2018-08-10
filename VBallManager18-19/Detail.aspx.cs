@@ -11,6 +11,11 @@ namespace VballManager
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Manager.CookieAuthRequired && Request.Cookies[Constants.PRIMARY_USER] == null)
+            {
+                Response.Redirect(Constants.REQUEST_REGISTER_LINK_PAGE);
+                return;
+            }
             if (Request.Params["id"] == null)
             {
                 Response.Redirect("Default.aspx");

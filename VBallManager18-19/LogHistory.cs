@@ -11,9 +11,10 @@ namespace VballManager
         {
         }
 
-        public LogHistory(DateTime date, String userInfo, String poolName, String playerName, String type, String operatorName)
+        public LogHistory(DateTime date, DateTime gameDate, String userInfo, String poolName, String playerName, String type, String operatorName)
         {
             this.date = date;
+            this.gameDate = gameDate;
             this.userInfo = userInfo;
             this.poolName = poolName;
             this.playerName = playerName;
@@ -35,6 +36,14 @@ namespace VballManager
         {
             get { return date; }
             set { date = value; }
+        }
+
+        private DateTime gameDate;
+
+        public DateTime GameDate
+        {
+            get { return gameDate; }
+            set { gameDate = value; }
         }
         private String type;
 

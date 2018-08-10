@@ -17,10 +17,10 @@ namespace VballManager
         private int dropinFee = 5;
         private List<LogHistory> logs = new List<LogHistory>();
         private int lockReservationHour = 20;
-       // private int coopReserveHour = 15;
+        // private int coopReserveHour = 15;
         private List<Payment> payments = new List<Payment>();
         private String readme;
-        private GameScore score =new GameScore();
+        private GameScore score = new GameScore();
         private bool clubMemberMode = true;
         private bool isDropinFeeWithCap = false;
         private int registerMembershipFee;
@@ -28,6 +28,13 @@ namespace VballManager
         private bool cookieAuthRequired = false;
         private String timeZoneName = "Eastern Standard Time";
         private List<Permit> permits = new List<Permit>();
+        private List<WechatMessage> wechatMessages = new List<WechatMessage>();
+
+        public List<WechatMessage> WechatMessages
+        {
+            get { return wechatMessages; }
+            set { wechatMessages = value; }
+        }
 
         public List<Permit> Permits
         {
@@ -69,15 +76,15 @@ namespace VballManager
         {
             get { return clubMemberMode; }
             set { clubMemberMode = value; }
-        } 
+        }
 
         public GameScore GameScores
         {
             get { return score; }
             set { score = value; }
         }
- 
-       public String Readme
+
+        public String Readme
         {
             get { return readme; }
             set { readme = value; }
@@ -148,7 +155,7 @@ namespace VballManager
             get { return passcodeAuthen; }
             set { passcodeAuthen = value; }
         }
- 
+
         public String SuperAdmin
         {
             get { return superAdmin; }
@@ -176,7 +183,7 @@ namespace VballManager
                 }
             );
         }
- 
+
         //Find player by id
         public Player FindPlayerById(String id)
         {
@@ -215,7 +222,7 @@ namespace VballManager
                 List<Player> activePlayers = new List<Player>();
                 foreach (Player player in Players)
                 {
-                    if (player.Suspend) continue;
+                    if (!player.IsActive) continue;
                     foreach (Pool pool in Pools)
                     {
                         if (pool.Members.Exists(attendee => attendee.Id == player.Id) || pool.Dropins.Exists(attendee => attendee.Id == player.Id))
@@ -324,8 +331,57 @@ namespace VballManager
         {
             Permit featurePermit = Permits.Find(permit => permit.Action == action);
             if (featurePermit != null && featurePermit.Role <= role) return true;
-                return false;
+            return false;
         }
+
+        public void AddNotifyWechatMessage(Player player, String message)
+        {
+            WechatMessage wechat = new WechatMessage();
+            wechat.Date = DateTime.Today;
+            wechat.Message = message;
+            WechatMessages.Add(wechat);
+        }
+       
+       public void AddReservationNotifyWechatMessage(String playerId, String operatorId, String result, Pool pool, Pool originalPool, DateTime gameDate)
+        {
+            Player player = FindPlayerById(playerId);
+            Player user = operatorId == null? null : FindPlayerById(operatorId);
+            WechatMessage message = new WechatMessage();
+            message.Date = DateTime.Today.Date;
+            String text = null;
+            if (result == Constants.RESERVED || result == Constants.CANCELLED)
+            {
+                if (playerId == operatorId)
+                {
+                    text = WechatAt(player.WechatName) + "You " +  result.ToString();
+                }
+                else
+                {
+                    text = WechatAt(player.WechatName) + (user == null ? "Admin" : user.Name) + " " + result.ToString() + " for you";
+                }
+            }
+            else if (result == Constants.WAITING_TO_RESERVED)
+            {
+                text = WechatAt(player.WechatName) + result.ToString();
+            }
+            else if (result == Constants.MOVED)
+            {
+                text = WechatAt(player.WechatName) + result.ToString() + " " + pool.Name;
+            }
+            else if (result == Constants.WAITING && playerId != operatorId)
+            {
+                text = WechatAt(player.WechatName) + (user == null ? "Admin" : user.Name) + " " + result.ToString();
+            }
+
+            message.Message = originalPool.WechatGroupName + "|" + text + " in pool " + pool.Name + " for the volleyball games on " + gameDate.ToString("ddd, MMM d, yyyy");
+
+            this.WechatMessages.Add(message);
+        }
+
+       private String WechatAt(String wechatName)
+       {
+           return "@" + wechatName + "{ENTER} ";
+       }
     }
 
     public class Pool
@@ -333,14 +389,16 @@ namespace VballManager
         private String id;
         private String name;
         private String title;
+        private String wechatGroupName;
         private String messageBoard;
         private int maximumPlayerNumber = 14;
         private String scheduledGameTime;
         private bool allowAddNewDropinName;
         private int membershipFee;
-        private int daysBeforeReserve = 0;
-       // private List<String> members = new List<String>();
-       // private List<String> dropins = new List<String>();
+        private int daysToReserve4Memeber = 0;
+        private int daysToReserve = 0;
+        // private List<String> members = new List<String>();
+        // private List<String> dropins = new List<String>();
         private List<Member> members = new List<Member>();
         private List<Dropin> dropins = new List<Dropin>();
         private String wildcardPlayer;
@@ -348,42 +406,61 @@ namespace VballManager
         private List<Game> games = new List<Game>();
         private DayOfWeek dayOfWeek;
         private int reservHourForCoop = 12;
-       private int lessThanPayersForCoop = 13;
-       private bool autoCoopReserve = false;
-       private int maxCoopPlayers = 1;
+        private int lessThanPayersForCoop = 13;
+        private bool autoCoopReserve = false;
+        private int maxCoopPlayers = 1;
+        private String statsType = "None";
 
-       public int MaxCoopPlayers
-       {
-           get { return maxCoopPlayers; }
-           set { maxCoopPlayers = value; }
-       }
+        public String StatsType
+        {
+            get { return statsType; }
+            set { statsType = value; }
+        }
 
-       public bool AutoCoopReserve
-       {
-           get { return autoCoopReserve; }
-           set { autoCoopReserve = value; }
-       }
- 
-         //----------------------------------
-       public String Id
-       {
-           get { return id; }
-           set { id = value; }
-       }
+        public String WechatGroupName
+        {
+            get { return wechatGroupName; }
+            set { wechatGroupName = value; }
+        }
+
+        public int MaxCoopPlayers
+        {
+            get { return maxCoopPlayers; }
+            set { maxCoopPlayers = value; }
+        }
+
+        public bool AutoCoopReserve
+        {
+            get { return autoCoopReserve; }
+            set { autoCoopReserve = value; }
+        }
+
+        //----------------------------------
+        public String Id
+        {
+            get { return id; }
+            set { id = value; }
+        }
 
 
-       public int DaysBeforeReserve
-       {
-           get { return daysBeforeReserve; }
-           set { daysBeforeReserve = value; }
-       }
+        public int DaysToReserve4Member
+        {
+            get { return daysToReserve4Memeber; }
+            set { daysToReserve4Memeber = value; }
+        }
+
+        public int DaysToReserve
+        {
+            get { return daysToReserve; }
+            set { daysToReserve = value; }
+        }
 
         public int ReservHourForCoop
         {
             get { return reservHourForCoop; }
             set { reservHourForCoop = value; }
         }
- 
+
         public int LessThanPayersForCoop
         {
             get { return lessThanPayersForCoop; }
@@ -402,7 +479,7 @@ namespace VballManager
             get { return membershipFee; }
             set { membershipFee = value; }
         }
- 
+
 
         public String Name
         {
@@ -415,7 +492,7 @@ namespace VballManager
             set { wildcardPlayer = value; }
         }
 
- 
+
         public String MessageBoard
         {
             get { return messageBoard; }
@@ -439,14 +516,14 @@ namespace VballManager
             set { title = value; }
         }
 
-         public bool AllowAddNewDropinName
+        public bool AllowAddNewDropinName
         {
             get { return allowAddNewDropinName; }
             set { allowAddNewDropinName = value; }
         }
 
 
-         public int MaximumPlayerNumber
+        public int MaximumPlayerNumber
         {
             get { return maximumPlayerNumber; }
             set { maximumPlayerNumber = value; }
@@ -455,7 +532,7 @@ namespace VballManager
         public bool HasCap
         {
             get { return maximumPlayerNumber > 0; }
-    
+
         }
 
 
@@ -471,7 +548,7 @@ namespace VballManager
             set { games = value; }
         }
 
- 
+
         //Find game by date
         public Game FindGameByDate(DateTime date)
         {
@@ -553,7 +630,7 @@ namespace VballManager
         {
             if (Members.Exists(member => member.Id == id))
             {
-            Members.Remove(Members.Find(member => member.Id == id));
+                Members.Remove(Members.Find(member => member.Id == id));
             }
         }
         public void RemoveDropin(String id)
@@ -563,7 +640,7 @@ namespace VballManager
                 Dropins.Remove(Dropins.Find(dropin => dropin.Id == id));
             }
         }
- 
+
         //Remove game
         public void DeleteGame(DateTime date)
         {
@@ -574,7 +651,7 @@ namespace VballManager
             }
         }
 
-       //Game exists
+        //Game exists
         public bool GameExists(DateTime date)
         {
             return FindGameByDate(date) != null;
@@ -592,10 +669,10 @@ namespace VballManager
         {
             Game game = FindGameByDate(date);
             Absence absence = (Absence)game.Absences.FindByPlayerId(id);
-            if (absence != null) 
+            if (absence != null)
             {
-                    game.Absences.Remove(absence);
-                    return true;
+                game.Absences.Remove(absence);
+                return true;
             }
             absence = new Absence(id, transferId);
             game.Absences.Add(absence);
@@ -623,6 +700,30 @@ namespace VballManager
 
     public enum Actions
     {
-        View_All_Pools, Reserve_All_Pools, Reserve_Pool, Power_Reserve
+        View_All_Pools, View_Past_Games, Reserve_All_Pools, Reserve_Pool, Power_Reserve, Admin_Management
+    }
+
+    public enum StatsTypes
+    {
+        None, Day, Week
+    }
+
+    public class WechatMessage
+    {
+        private DateTime date;
+
+        public DateTime Date
+        {
+            get { return date; }
+            set { date = value; }
+        }
+
+        private String message;
+
+        public String Message
+        {
+            get { return message; }
+            set { message = value; }
+        }
     }
 }

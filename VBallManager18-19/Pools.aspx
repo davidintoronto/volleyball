@@ -16,10 +16,6 @@
         {
             width: 85px;
         }
-        .style11
-        {
-            width: 140px;
-        }
         .style12
         {
             width: 87px;
@@ -27,6 +23,14 @@
         .style13
         {
             width: 38px;
+        }
+        .style14
+        {
+            width: 193px;
+        }
+        .style15
+        {
+            width: 130px;
         }
     </style>
  </asp:Content>
@@ -119,13 +123,13 @@
         <td colspan="6" align="center"><asp:Label Text="Pool Settings" runat="server" 
                 Font-Bold="True"></asp:Label></td></tr>
             <tr>
-                <td  >
+                <td class="style15"  >
                     Title
                 </td>
-                <td   colspan="1" class="style13">
+                <td   colspan="1">
                     <asp:TextBox ID="TitleTb" runat="server" Width="96%" EnableTheming="True"></asp:TextBox>
                 </td>
-                  <td class="style11" >Day of Week</td>
+                  <td class="style14" >Day of Week</td>
                  <td  >
                      <asp:DropDownList ID="DayOfWeekDl" runat="server" Height="25px" Width="88px">
                          <asp:ListItem>Monday</asp:ListItem>
@@ -140,13 +144,13 @@
 
             </tr>
            <tr> 
-               <td>
+               <td class="style15">
                    Scheduled Time</td>
-                <td class="style13">
+                <td>
                     <asp:TextBox ID="ScheduleTimeTb" runat="server" Width="96%" 
                         EnableTheming="True"></asp:TextBox>
                 </td>
-               <td class="style11"  > Maximum Players </td>
+               <td class="style14"  > Maximum Players </td>
                 <td  >
                      <asp:TextBox ID="MaxPlayers" runat="server" Width="32px"></asp:TextBox>
                      <asp:CompareValidator ID="CompareValidator5" runat="server" 
@@ -160,13 +164,13 @@
                 </td>
               </tr>
              <tr>
-                 <td rowspan="3">
+                 <td rowspan="3" class="style15">
                     Message Board</td>
-                 <td rowspan="3"  align="center" class="style13">
+                 <td rowspan="3"  align="center">
                      <asp:TextBox ID="MessageTb" runat="server" 
-                         TextMode="MultiLine" Height="72px" Width="355px"></asp:TextBox>
+                         TextMode="MultiLine" Height="72px" Width="255px"></asp:TextBox>
                  </td>
-                <td class="style11"  >Allow add new dropin</td>
+                <td class="style14"  >Allow add new dropin</td>
                 <td  >
                     <asp:CheckBox ID="AllowAddingDropinCb" runat="server" />
                  </td>
@@ -178,7 +182,7 @@
 
            </tr>
            <tr>
-              <td class="style11"  >Membership Fee</td>
+              <td class="style14"  >Membership Fee</td>
                 <td  >
                     <asp:TextBox ID="MemberShipFeeTb" runat="server" Width="29px"></asp:TextBox>
                     <asp:CompareValidator ID="CompareValidator6" runat="server" 
@@ -193,23 +197,45 @@
 
             </tr>
            <tr>
-                           <td class="style11">
-                               Days before reserving</td>
+                           <td class="style14">
+                               Days to reserve(Member)</td>
                 <td>
-                    <asp:TextBox ID="DaysBeforeReservingTb" runat="server" Width="29px">0</asp:TextBox>
+                    <asp:TextBox ID="DaysToReserveForMemberTb" runat="server" Width="29px">0</asp:TextBox>
                 </td>
 
               <td  >
-                    <asp:Button ID="SavePoolBtn" runat="server" onclick="SavePoolBtn_Click" 
-                        Text="Save" Width="67px" />
-               </td>
-             </tr>
+                    Stats Type</td>
+                 <td>
+                     <asp:DropDownList ID="StatsTypeDdl" runat="server" Height="25px" Width="88px">
+                         <asp:ListItem>None</asp:ListItem>
+                         <asp:ListItem>Day</asp:ListItem>
+                         <asp:ListItem>Week</asp:ListItem>
+                     </asp:DropDownList>
+                           </td>
+           </tr>
            <tr>
                            <td class="style12">
                 </td>
                 <td>
                     &nbsp;</td>
-            </tr>
+               <td class="style15">
+                    Wechat Group</td>
+               <td>
+                    <asp:TextBox ID="WechatGroupName" runat="server" EnableTheming="True" 
+                        Width="96%"></asp:TextBox>
+                           </td>
+               <td class="style14">
+                    Days to reserve</td>
+                <td>
+                    <asp:TextBox ID="DaysToReserveTb" runat="server" Width="29px">0</asp:TextBox>
+                           </td>
+               <td>
+                    &nbsp;</td>
+               <td>
+                    <asp:Button ID="SavePoolBtn" runat="server" onclick="SavePoolBtn_Click" 
+                        Text="Save" Width="67px" />
+                           </td>
+           </tr>
         </table>
         
         <br />
