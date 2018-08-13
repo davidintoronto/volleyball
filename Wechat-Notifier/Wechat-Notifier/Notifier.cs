@@ -79,43 +79,50 @@ namespace Wechat_Notifier
             SetWindowPos(hWnd, IntPtr.Zero, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
             foreach (String vballMessage in vballMessages)
             {
-                //Parse vballmessage
-                String[] messages = vballMessage.Split('|');
-                if (messages.Length != 2)
+                try
                 {
-                    continue;
-                }
-                String chatName = messages[0];
-                String message = messages[1];
-               //Click on clean search field
-                DoMouseClick(243, 35);
-                //Click on search 
-                DoMouseClick(100, 35);
-                //Thread.Sleep(WAIT);
-                //Copy chat name or group into clipboard
-                Clipboard.SetText(chatName);
-                SendKeys.SendWait("^{v}");
-                //Check to see if chat name or group found
-                if (NoMatchChat())
-                {
-                    continue;
-                }
-                Thread.Sleep(WAIT);
-                //Click on first match one
-                DoMouseClick(80, 120);
-                //Check to see if message contains {ENTER}
-                if (message.Contains(ENTER))
-                {
-                    messages = message.Split(new String[] { ENTER }, StringSplitOptions.None);
-                    String at = messages[0];
-                    message = messages[1];
-                    SendKeys.SendWait(at);
-                    SendKeys.SendWait(ENTER);
+                    //Parse vballmessage
+                    String[] messages = vballMessage.Split('|');
+                    if (messages.Length != 2)
+                    {
+                        continue;
+                    }
+                    String chatName = messages[0];
+                    String message = messages[1];
+                    //Click on clean search field
+                    DoMouseClick(243, 35);
+                    //Click on search 
+                    DoMouseClick(100, 35);
                     //Thread.Sleep(WAIT);
+                    //Copy chat name or group into clipboard
+                    Clipboard.SetText(chatName);
+                    SendKeys.SendWait("^{v}");
+                    //Check to see if chat name or group found
+                    if (NoMatchChat())
+                    {
+                        continue;
+                    }
+                    Thread.Sleep(WAIT);
+                    //Click on first match one
+                    DoMouseClick(80, 120);
+                    //Check to see if message contains {ENTER}
+                    if (message.Contains(ENTER))
+                    {
+                        messages = message.Split(new String[] { ENTER }, StringSplitOptions.None);
+                        String at = messages[0];
+                        message = messages[1];
+                        SendKeys.SendWait(at);
+                        SendKeys.SendWait(ENTER);
+                        //Thread.Sleep(WAIT);
+                    }
+                    Clipboard.SetText(message);
+                    SendKeys.SendWait("^{v}");
+                    SendKeys.SendWait(ENTER);
                 }
-                Clipboard.SetText(message);
-                SendKeys.SendWait("^{v}");
-                SendKeys.SendWait(ENTER);
+                catch (Exception ex)
+                {
+                    this.MessageLb.Text = ex.Message;
+                }
             }
 
             //    this.MessageLb.Text = this.Location.X + "-" + this.Location.Y;

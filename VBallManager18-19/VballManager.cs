@@ -336,10 +336,13 @@ namespace VballManager
 
         public void AddNotifyWechatMessage(Player player, String message)
         {
-            WechatMessage wechat = new WechatMessage();
-            wechat.Date = DateTime.Today;
-            wechat.Message = message;
-            WechatMessages.Add(wechat);
+            if (!String.IsNullOrEmpty(player.WechatName))
+            {
+                WechatMessage wechat = new WechatMessage();
+                wechat.Date = DateTime.Today;
+                wechat.Message = player.WechatName + "|" + message;
+                WechatMessages.Add(wechat);
+            }
         }
        
        public void AddReservationNotifyWechatMessage(String playerId, String operatorId, String result, Pool pool, Pool originalPool, DateTime gameDate)

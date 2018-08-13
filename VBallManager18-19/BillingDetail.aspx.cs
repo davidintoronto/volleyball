@@ -30,9 +30,8 @@ namespace VballManager
             if (Request.Cookies[Constants.PRIMARY_USER] != null)
             {
                 String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
-                String passcode = Request.Cookies[Constants.PRIMARY_USER][Constants.PASSCODE];
                 Player player = Manager.FindPlayerById(userId);
-                if (!String.IsNullOrEmpty(player.Passcode) && player.Passcode == passcode && Manager.ActionPermitted(Actions.Admin_Management, player.Role))
+                if (Manager.ActionPermitted(Actions.Admin_Management, player.Role))
                 {
                     return true;
                 }
@@ -136,8 +135,11 @@ namespace VballManager
                  fee.PayDate = DateTime.MinValue;
              }
              DataAccess.Save(Manager);
+             if (fee.IsPaid)
+             {
+                 Manager.AddNotifyWechatMessage(player, "Hi, " + player.Name + ". We have received your payment $" + fee.Amount + " . Thank you!");
+             }
              Response.Redirect("BillingDetail.aspx?id="+playerId);
-             Manager.AddNotifyWechatMessage(player, "Hi, " + player.Name + ". We have received your payment $" + fee.Amount + " . Thank you!");
          }
 
          protected void PayAll_Click(object sender, EventArgs e)
@@ -156,8 +158,8 @@ namespace VballManager
                  }
              }
               DataAccess.Save(Manager);
+             if (total >0) Manager.AddNotifyWechatMessage(player, "Hi, " + player.Name + ". We have received your payment $" + total + " . Thank you!");
              Response.Redirect("BillingDetail.aspx?id=" + playerId);
-             Manager.AddNotifyWechatMessage(player, "Hi, " + player.Name + ". We have received your payment $" + total + " . Thank you!");
          }
 
          private void FillPrePaymentTable(Player player)

@@ -196,9 +196,8 @@ namespace VballManager
             if (Request.Cookies[Constants.PRIMARY_USER] != null)
             {
                 String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
-                String passcode = Request.Cookies[Constants.PRIMARY_USER][Constants.PASSCODE];
-                Player player = Manager.FindPlayerById(userId);
-                if (!String.IsNullOrEmpty(player.Passcode) && player.Passcode == passcode && Manager.ActionPermitted(Actions.Admin_Management, player.Role))
+                 Player player = Manager.FindPlayerById(userId);
+                if (Manager.ActionPermitted(Actions.Admin_Management, player.Role))
                 {
                     return true;
                 }
