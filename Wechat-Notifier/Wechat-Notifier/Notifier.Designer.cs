@@ -28,8 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.StartBtn = new System.Windows.Forms.Button();
             this.MessageLb = new System.Windows.Forms.Label();
+            this.HomePcIpTimer = new System.Windows.Forms.Timer(this.components);
+            this.WechatTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // StartBtn
@@ -50,6 +53,16 @@
             this.MessageLb.Size = new System.Drawing.Size(0, 13);
             this.MessageLb.TabIndex = 2;
             // 
+            // HomePcIpTimer
+            // 
+            this.HomePcIpTimer.Interval = 3600000;
+            this.HomePcIpTimer.Tick += new System.EventHandler(this.HomePcIpTimer_Tick);
+            // 
+            // WechatTimer
+            // 
+            this.WechatTimer.Interval = 60000;
+            this.WechatTimer.Tick += new System.EventHandler(this.WechatTimer_Tick);
+            // 
             // Notifier
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -68,6 +81,8 @@
 
         private System.Windows.Forms.Button StartBtn;
         private System.Windows.Forms.Label MessageLb;
+        private System.Windows.Forms.Timer HomePcIpTimer;
+        private System.Windows.Forms.Timer WechatTimer;
     }
 }
 

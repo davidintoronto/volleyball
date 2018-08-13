@@ -30,6 +30,12 @@ namespace Wechat_Notifier.VballMangerWebservice {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/WechatMessages", ReplyAction="*")]
         System.Threading.Tasks.Task<Wechat_Notifier.VballMangerWebservice.WechatMessagesResponse> WechatMessagesAsync(Wechat_Notifier.VballMangerWebservice.WechatMessagesRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/HomePcIP", ReplyAction="*")]
+        void HomePcIP();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/HomePcIP", ReplyAction="*")]
+        System.Threading.Tasks.Task HomePcIPAsync();
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -141,6 +147,14 @@ namespace Wechat_Notifier.VballMangerWebservice {
             Wechat_Notifier.VballMangerWebservice.WechatMessagesRequest inValue = new Wechat_Notifier.VballMangerWebservice.WechatMessagesRequest();
             inValue.Body = new Wechat_Notifier.VballMangerWebservice.WechatMessagesRequestBody();
             return ((Wechat_Notifier.VballMangerWebservice.VballWebServiceSoap)(this)).WechatMessagesAsync(inValue);
+        }
+        
+        public void HomePcIP() {
+            base.Channel.HomePcIP();
+        }
+        
+        public System.Threading.Tasks.Task HomePcIPAsync() {
+            return base.Channel.HomePcIPAsync();
         }
     }
 }

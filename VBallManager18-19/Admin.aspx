@@ -298,7 +298,7 @@
                     <tr>
                         <td>
                             <asp:CheckBoxList ID="PlayerListbox" runat="server" Height="288px" Width="898px"
-                                SelectionMode="Multiple" BorderColor="#0000CC" BorderStyle="Double" RepeatColumns="4"
+                                BorderColor="#0000CC" BorderStyle="Double" RepeatColumns="4"
                                 RepeatDirection="Horizontal">
                             </asp:CheckBoxList>
                         </td>

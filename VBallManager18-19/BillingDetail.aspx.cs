@@ -137,6 +137,7 @@ namespace VballManager
              }
              DataAccess.Save(Manager);
              Response.Redirect("BillingDetail.aspx?id="+playerId);
+             Manager.AddNotifyWechatMessage(player, "Hi, " + player.Name + ". We have received your payment $" + fee.Amount + " . Thank you!");
          }
 
          protected void PayAll_Click(object sender, EventArgs e)
@@ -144,16 +145,19 @@ namespace VballManager
              
              String playerId = (String)Session[Constants.PLAYER_ID];
              Player player = Manager.FindPlayerById(playerId);
+             decimal total = 0;
              foreach (Fee fee in player.Fees)
              {
                  if (!fee.IsPaid && fee.Amount > 0)
                  {
                      fee.IsPaid = true;
                      fee.PayDate = DateTime.Today;
+                     total = total + fee.Amount;
                  }
              }
               DataAccess.Save(Manager);
              Response.Redirect("BillingDetail.aspx?id=" + playerId);
+             Manager.AddNotifyWechatMessage(player, "Hi, " + player.Name + ". We have received your payment $" + total + " . Thank you!");
          }
 
          private void FillPrePaymentTable(Player player)

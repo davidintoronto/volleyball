@@ -17,6 +17,12 @@
           <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
         </s:sequence>
       </s:complexType>
+      <s:element name="HomePcIP">
+        <s:complexType />
+      </s:element>
+      <s:element name="HomePcIPResponse">
+        <s:complexType />
+      </s:element>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="WechatMessagesSoapIn">
@@ -25,10 +31,20 @@
   <wsdl:message name="WechatMessagesSoapOut">
     <wsdl:part name="parameters" element="tns:WechatMessagesResponse" />
   </wsdl:message>
+  <wsdl:message name="HomePcIPSoapIn">
+    <wsdl:part name="parameters" element="tns:HomePcIP" />
+  </wsdl:message>
+  <wsdl:message name="HomePcIPSoapOut">
+    <wsdl:part name="parameters" element="tns:HomePcIPResponse" />
+  </wsdl:message>
   <wsdl:portType name="VballWebServiceSoap">
     <wsdl:operation name="WechatMessages">
       <wsdl:input message="tns:WechatMessagesSoapIn" />
       <wsdl:output message="tns:WechatMessagesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="HomePcIP">
+      <wsdl:input message="tns:HomePcIPSoapIn" />
+      <wsdl:output message="tns:HomePcIPSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="VballWebServiceSoap" type="tns:VballWebServiceSoap">
@@ -42,11 +58,29 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="HomePcIP">
+      <soap:operation soapAction="http://tempuri.org/HomePcIP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="VballWebServiceSoap12" type="tns:VballWebServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="WechatMessages">
       <soap12:operation soapAction="http://tempuri.org/WechatMessages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HomePcIP">
+      <soap12:operation soapAction="http://tempuri.org/HomePcIP" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

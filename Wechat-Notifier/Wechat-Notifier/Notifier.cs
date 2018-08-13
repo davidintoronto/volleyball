@@ -47,9 +47,17 @@ namespace Wechat_Notifier
         public Notifier()
         {
             InitializeComponent();
+            HomePcIpTimer.Start();
+            WechatTimer.Start();
         }
 
         private void StartBtn_Click(object sender, EventArgs e)
+        {
+            HomePcIpTimer_Tick(sender, e);
+            SendMessagesToWechat();
+        }
+
+        private void SendMessagesToWechat()
         {
             // Find Wechat handler
             IntPtr hWnd = FindWindow("WeChatMainWndForStore", "WeChat");
@@ -59,12 +67,16 @@ namespace Wechat_Notifier
             {
                 return;
             }
+            List<String> vballMessages = QueryVballMessages();
+            if (vballMessages.ToArray().Length == 0)
+            {
+                return;
+            }
             //Bring wechat to front
             SetForegroundWindow(hWnd);
             // Move the window to (0,0) without changing its size or position
             // in the Z order.
             SetWindowPos(hWnd, IntPtr.Zero, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
-            List<String> vballMessages = QueryVballMessages();
             foreach (String vballMessage in vballMessages)
             {
                 //Parse vballmessage
@@ -93,12 +105,14 @@ namespace Wechat_Notifier
                 DoMouseClick(80, 120);
                 //Check to see if message contains {ENTER}
                 if (message.Contains(ENTER))
-                    messages = message.Split(new String[]{ENTER}, StringSplitOptions.None);
-                String at = messages[0];
-                message = messages[1];
-                SendKeys.SendWait(at);
-                SendKeys.SendWait(ENTER);
-                Thread.Sleep(WAIT);
+                {
+                    messages = message.Split(new String[] { ENTER }, StringSplitOptions.None);
+                    String at = messages[0];
+                    message = messages[1];
+                    SendKeys.SendWait(at);
+                    SendKeys.SendWait(ENTER);
+                    //Thread.Sleep(WAIT);
+                }
                 Clipboard.SetText(message);
                 SendKeys.SendWait("^{v}");
                 SendKeys.SendWait(ENTER);
@@ -139,6 +153,19 @@ namespace Wechat_Notifier
         {
             return IsNoMatchColorAt(68, 80) && IsNoMatchColorAt(95, 80) && IsNoMatchColorAt(83,120) && IsNoMatchColorAt(68,133) && IsNoMatchColorAt(95,133);
 
+        }
+
+        private void HomePcIpTimer_Tick(object sender, EventArgs e)
+        {
+            VballMangerWebservice.VballWebServiceSoapClient client = new VballMangerWebservice.VballWebServiceSoapClient();
+            client.HomePcIP();
+            HomePcIpTimer.Start();
+        }
+
+        private void WechatTimer_Tick(object sender, EventArgs e)
+        {
+            SendMessagesToWechat();
+            WechatTimer.Start();
         }
     }
 }

@@ -97,9 +97,9 @@ namespace VballManager
                 }
                 this.AuthUusersLb.Items.Add(item);
             }
-            //this.LinkDeviceTb.Text = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/LinkDevice.aspx?id=" + Manager.ReversedId(player.Id);
-            this.LinkDeviceTb.Text = "http://hitmen.000webhostapp.com/register.html?id=" + Manager.ReversedId(player.Id);
-            this.ResetLinkDeviceTb.Text = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/LinkDevice.aspx?reset=true&id=" + Manager.ReversedId(player.Id);
+            this.LinkDeviceTb.Text = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(player.Id);
+            //this.LinkDeviceTb.Text = "http://hitmen.000webhostapp.com/register.html?id=" + Manager.ReversedId(player.Id);
+            this.ResetLinkDeviceTb.Text = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?reset=true";
         }
 
  
@@ -125,7 +125,7 @@ namespace VballManager
         {
             if (this.PlayerListbox.SelectedIndex >= 0)
             {
-                Response.Redirect("LinkDevice.aspx?id=" + Manager.ReversedId(this.PlayerListbox.SelectedItem.Value));
+                Response.Redirect(Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(this.PlayerListbox.SelectedItem.Value));
             }
         }
 
@@ -133,7 +133,7 @@ namespace VballManager
         {
             if (this.PlayerListbox.SelectedIndex >= 0)
             {
-                Response.Redirect("LinkDevice.aspx?reset=true&id=" + Manager.ReversedId(this.PlayerListbox.SelectedItem.Value));
+                Response.Redirect(Constants.REGISTER_DEVICE_PAGE + "?reset=true");
             }
         }
 
