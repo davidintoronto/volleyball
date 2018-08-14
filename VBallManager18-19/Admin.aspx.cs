@@ -55,6 +55,7 @@ namespace VballManager
                 BindRoleDropdownList(this.Role);
                 //
                 this.DeletePlayerBtn.OnClientClick = "if ( !confirm('Are you sure you want to delete this Player?')) return false;";
+                this.SendWelcomeWechatMessageBtn.OnClientClick = "if ( !confirm('Are you sure to send welcome message to all the Players?')) return false;";
                 //Update permits
                 UpdatePermits();
             }
@@ -517,6 +518,52 @@ namespace VballManager
         protected void UpdateFeeTypeBtn_Click(object sender, EventArgs e)
         {
             updateFeeTypes();
+        }
+
+        protected void SendWelcomeWechatMessageBtn_Click(object sender, EventArgs e)
+        {
+            IEnumerable<Player> players = Manager.Players.FindAll(player => player.IsActive && !String.IsNullOrEmpty(player.WechatName));
+            foreach (Player player in players)
+            {
+                if (player.IsRegisterdMember)
+                {
+                    String message = "Hi, " + player.Name + ". Welcome to Hitmen Volleyball Club! We are happy to inform you that your application for membership has been accepted! As a registed member, you could become primary member of the pool you attend if your attendance rate is higher. And you are allow to make reservation one day before the game. let's play and have great fun!";
+                    Manager.AddNotifyWechatMessage(player, message);
+                    message = "Hi, " + player.Name + ". Here is your private register link " + Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(player.Id);
+                    Manager.AddNotifyWechatMessage(player, message);
+                    decimal total = 0;
+                    foreach (Fee fee in player.Fees)
+                    {
+                        if (!fee.IsPaid) total = total + fee.Amount;
+                    }
+                    if (total > 0)
+                    {
+                        message = "You membership fee is " + Manager.RegisterMembeshipFee + ". You unpaid fee is " + total + ". If you would like to pay e-transfer, please send to david_zzh@hotmail.com. Thanks";
+                        Manager.AddNotifyWechatMessage(player, message);
+                    }
+                }
+                else
+                {
+                    String message = "Hi, " + player.Name + ". Welcome to Hitmen Volleyball Club! Here is your private register link " + Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(player.Id);
+                    Manager.AddNotifyWechatMessage(player, message);
+                }
+            }
+        }
+
+        protected void SendPrimaryMemberNotificationWechatMessageBtn_Click(object sender, EventArgs e)
+        {
+            IEnumerable<Player> players = Manager.Players.FindAll(player => player.IsActive && player.IsRegisterdMember && !String.IsNullOrEmpty(player.WechatName));
+            foreach (Player player in players)
+            {
+                foreach (Pool pool in Manager.Pools)
+                {
+                    if (pool.Members.Exists(member => member.Id == player.Id))
+                    {
+                        String message = "Congratus! " + player.Name + ". We are very pleased that you have become 1 of 14 primary members in pool " + pool.Name + ". You deserve this because you attended a lot of games in the post. We will pre-reserve a spot for you for each week in this pool. However, please cancel your reservation if you cannot make it. Thanks";
+                        Manager.AddNotifyWechatMessage(player, message);
+                    }
+                }
+            }
         }
     }
 }

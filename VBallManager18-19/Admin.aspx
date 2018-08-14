@@ -305,7 +305,19 @@
                     </tr>
                     <tr>
                         <td align="right">
-                            <asp:Button ID="SavePlayersBtn" runat="server" Text="Save" Width="89px" OnClick="SavePlayersBtn_Click" />
+                 <table>
+                    <tr>
+                        <td align="left">
+                           <asp:Button ID="SendWelcomeWechatMessageBtn" runat="server" Text="Send Welcome Wechat Message" Width="212px" OnClick="SendWelcomeWechatMessageBtn_Click" />
+                        </td>
+                       <td align="left">
+                           <asp:Button ID="SendPrimaryMemberNotificationBtn" runat="server" Text="Send Primary Member Notificatioin" Width="212px" OnClick="SendPrimaryMemberNotificationWechatMessageBtn_Click" />
+                        </td>
+                       <td align="left">
+                          
+                        </td>
+                        <td>
+                           <asp:Button ID="SavePlayersBtn" runat="server" Text="Save" Width="89px" OnClick="SavePlayersBtn_Click" />
                         </td>
                     </tr>
                 </table>

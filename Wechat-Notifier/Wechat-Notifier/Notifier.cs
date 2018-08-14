@@ -44,6 +44,19 @@ namespace Wechat_Notifier
         [DllImport("user32.dll", SetLastError = true)]
         public static extern int ReleaseDC(IntPtr window, IntPtr dc);
 
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool GetWindowRect(IntPtr hWnd, ref RECT lpRect);
+        [StructLayout(LayoutKind.Sequential)]
+
+        public struct RECT
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+
         public Notifier()
         {
             InitializeComponent();
@@ -76,7 +89,9 @@ namespace Wechat_Notifier
             SetForegroundWindow(hWnd);
             // Move the window to (0,0) without changing its size or position
             // in the Z order.
-            SetWindowPos(hWnd, IntPtr.Zero, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+            //SetWindowPos(hWnd, IntPtr.Zero, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+            RECT rct = new RECT();
+            GetWindowRect(hWnd, ref rct);
             foreach (String vballMessage in vballMessages)
             {
                 try
@@ -90,9 +105,9 @@ namespace Wechat_Notifier
                     String chatName = messages[0];
                     String message = messages[1];
                     //Click on clean search field
-                    DoMouseClick(243, 35);
+                    DoMouseClick(rct, 243, 35);
                     //Click on search 
-                    DoMouseClick(100, 35);
+                    DoMouseClick(rct, 100, 35);
                     //Thread.Sleep(WAIT);
                     //Copy chat name or group into clipboard
                     Clipboard.SetText(chatName);
@@ -104,7 +119,7 @@ namespace Wechat_Notifier
                     }
                     Thread.Sleep(WAIT);
                     //Click on first match one
-                    DoMouseClick(80, 120);
+                    DoMouseClick(rct, 80, 120);
                     //Check to see if message contains {ENTER}
                     if (message.Contains(ENTER))
                     {
@@ -134,16 +149,16 @@ namespace Wechat_Notifier
             return client.WechatMessages();
         }
 
-        public void DoMouseClick(int x, int y)
+        private void DoMouseClick(RECT rct, int x, int y)
         {
-            Cursor.Position = new Point(x, y);
+            Cursor.Position = new Point(rct.Left + x, rct.Top + y);
             //Call the imported function with the cursor's current position
             uint X = (uint)Cursor.Position.X;
             uint Y = (uint)Cursor.Position.Y;
             mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
         }
 
-        public bool IsNoMatchColorAt(int x, int y)
+        private bool IsNoMatchColorAt(int x, int y)
         {
             int R = 25;
             int G = 173;
