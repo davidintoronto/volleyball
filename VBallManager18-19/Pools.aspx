@@ -214,10 +214,9 @@
                            </td>
            </tr>
            <tr>
-                           <td class="style12">
+                           <td class="style12" colspan="2">
+                               <asp:Button ID="SendPrimaryMemberNotificationBtn" runat="server" OnClick="SendPrimaryMemberNotificationWechatMessageBtn_Click" Text="Send Primary Member Notificatioin" Width="212px" />
                 </td>
-                <td>
-                    &nbsp;</td>
                <td class="style15">
                     Wechat Group</td>
                <td>

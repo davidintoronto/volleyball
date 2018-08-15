@@ -184,6 +184,33 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.CompareValidator CompareValidator7;
         
         /// <summary>
+        /// AdminEmailTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox AdminEmailTb;
+        
+        /// <summary>
+        /// MaxDropinfeeOweTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox MaxDropinfeeOweTb;
+        
+        /// <summary>
+        /// CompareValidator9 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator9;
+        
+        /// <summary>
         /// ReadmeTb control.
         /// </summary>
         /// <remarks>
@@ -326,6 +353,15 @@ namespace VballManager {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox PlayerActiveCb;
+        
+        /// <summary>
+        /// AllWechatNameBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AllWechatNameBtn;
         
         /// <summary>
         /// AddPlayerBtn control.

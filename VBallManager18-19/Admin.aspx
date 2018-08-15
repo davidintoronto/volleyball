@@ -146,10 +146,37 @@
                                     Type="Integer"></asp:CompareValidator>
                             </td>
                         </tr>
+                        <tr>
+                            <td class="style4">
+                                &nbsp;</td>
+                            <td>
+                                &nbsp;</td>
+                        </tr>
                     </table>
                 </td>
                 <td>
                     <table>
+                        <tr>
+                            <td>
+
+                                &nbsp;Admin email&nbsp;
+
+                            </td>
+                            <td>
+
+                                <asp:TextBox ID="AdminEmailTb" runat="server" Width="167px"></asp:TextBox>
+
+                            </td>
+                          <td>
+
+                              Max dropin fee owe</td>
+                            <td>
+
+                                <asp:TextBox ID="MaxDropinfeeOweTb" runat="server" Width="66px">0</asp:TextBox>
+                                <asp:CompareValidator ID="CompareValidator9" runat="server" ControlToValidate="MaxDropinfeeOweTb" ErrorMessage="Integers only please" ForeColor="#FF3300" Operator="DataTypeCheck" Type="Integer"></asp:CompareValidator>
+
+                            </td>
+                        </tr>
                         <tr>
                             <td colspan="4">
                                 <asp:TextBox ID="ReadmeTb" runat="server" Height="317px" TextMode="MultiLine" Width="550px"></asp:TextBox>
@@ -259,6 +286,8 @@
                     <tr>
                         <td>
                             &nbsp;
+                            <asp:Button ID="AllWechatNameBtn" runat="server" OnClick="AllWechatNameBtn_Click" Text="AllWechatName"
+                                Width="80px" />
                         </td>
                         <td align="center">
                             <asp:Button ID="AddPlayerBtn" runat="server" OnClick="AddPlayerBtn_Click" Text="Add"

@@ -9,6 +9,7 @@ namespace VballManager
     public class VolleyballClub
     {
         private String superAdmin = "adm!n";
+        private String adminEmail;
         private int timezoneOffset = 0;
         private int maxTransfers = 10;
         private List<Player> players = new List<Player>();
@@ -29,11 +30,24 @@ namespace VballManager
         private String timeZoneName = "Eastern Standard Time";
         private List<Permit> permits = new List<Permit>();
         private List<WechatMessage> wechatMessages = new List<WechatMessage>();
+        private int maxDropinFeeOwe = 20;
+
+        public int MaxDropinFeeOwe
+        {
+            get { return maxDropinFeeOwe; }
+            set { maxDropinFeeOwe = value; }
+        }
 
         public List<WechatMessage> WechatMessages
         {
             get { return wechatMessages; }
             set { wechatMessages = value; }
+        }
+
+        public String AdminEmail
+        {
+            get { return adminEmail; }
+            set { adminEmail = value; }
         }
 
         public List<Permit> Permits
@@ -344,11 +358,21 @@ namespace VballManager
                 WechatMessages.Add(wechat);
             }
         }
-       
-       public void AddReservationNotifyWechatMessage(String playerId, String operatorId, String result, Pool pool, Pool originalPool, DateTime gameDate)
+        public void AddNotifyWechatMessage(Pool pool, String message)
+        {
+            if (!String.IsNullOrEmpty(pool.WechatGroupName))
+            {
+                WechatMessage wechat = new WechatMessage();
+                wechat.Date = DateTime.Today;
+                wechat.Message = pool.WechatGroupName + "|" + message;
+                WechatMessages.Add(wechat);
+            }
+        }
+
+        public void AddReservationNotifyWechatMessage(String playerId, String operatorId, String result, Pool pool, Pool originalPool, DateTime gameDate)
         {
             Player player = FindPlayerById(playerId);
-            Player user = operatorId == null? null : FindPlayerById(operatorId);
+            Player user = operatorId == null ? null : FindPlayerById(operatorId);
             WechatMessage message = new WechatMessage();
             message.Date = DateTime.Today.Date;
             String text = null;
@@ -356,35 +380,48 @@ namespace VballManager
             {
                 if (playerId == operatorId)
                 {
-                    text = WechatAt(player.WechatName) + "You " +  result.ToString();
+                    text = WechatAt(player) + "You " + result.ToString();
                 }
                 else
                 {
-                    text = WechatAt(player.WechatName) + (user == null ? "Admin" : user.Name) + " " + result.ToString() + " for you";
+                    text = WechatAt(player) + (user == null ? "Admin" : user.Name) + " " + result.ToString() + " for you";
                 }
             }
             else if (result == Constants.WAITING_TO_RESERVED)
             {
-                text = WechatAt(player.WechatName) + result.ToString();
+                text = result.ToString() + " in pool " + pool.Name + GetForDate(gameDate);
+                this.AddNotifyWechatMessage(player, text);
+                text = WechatAt(player) + result.ToString();
             }
             else if (result == Constants.MOVED)
             {
-                text = WechatAt(player.WechatName) + result.ToString() + " " + pool.Name;
+                text = WechatAt(player) + result.ToString() + " " + pool.Name;
             }
             else if (result == Constants.WAITING && playerId != operatorId)
             {
-                text = WechatAt(player.WechatName) + (user == null ? "Admin" : user.Name) + " " + result.ToString();
+                text = WechatAt(player) + (user == null ? "Admin" : user.Name) + " " + result.ToString();
             }
 
-            message.Message = originalPool.WechatGroupName + "|" + text + " in pool " + pool.Name + " for the volleyball games on " + gameDate.ToString("ddd, MMM d, yyyy");
+            message.Message = originalPool.WechatGroupName + "|" + text + " in pool " + pool.Name + GetForDate(gameDate);
 
             this.WechatMessages.Add(message);
         }
 
-       private String WechatAt(String wechatName)
-       {
-           return "@" + wechatName + "{ENTER} ";
-       }
+        private String WechatAt(Player player)
+        {
+            if (String.IsNullOrEmpty(player.WechatName))
+            {
+                return player.Name + ", ";
+            }
+
+            return "@" + player.WechatName + "{ENTER} ";
+        }
+
+        private String GetForDate(DateTime gameDate)
+        {
+            if (gameDate.Date == DateTime.Today.Date) return " for the volleyball tonight.";
+            return " for the volleyball on " + gameDate.ToString("ddd, MMM d, yyyy");
+        }
     }
 
     public class Pool

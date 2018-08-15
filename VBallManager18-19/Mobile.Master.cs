@@ -41,7 +41,7 @@ namespace VballManager
                     return currentPool.Title;
                 }
             }
-            return null;
+            return "Hitmen Volleyball Club";
 
         }
     }
