@@ -32,7 +32,7 @@ namespace Wechat_Notifier
         private const int MOUSEEVENTF_RIGHTUP = 0x10;
         const uint SWP_NOSIZE = 0x0001;
         const uint SWP_NOZORDER = 0x0004;
-        const int WAIT = 3000;
+        const int WAIT = 1000;
         const String ENTER = "{ENTER}";
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -60,8 +60,17 @@ namespace Wechat_Notifier
         public Notifier()
         {
             InitializeComponent();
-            HomePcIpTimer.Start();
+            ResetHourSharpTimer();
             WechatTimer.Start();
+        }
+
+        private void ResetHourSharpTimer()
+        {
+            int minutes = DateTime.Now.Minute;
+            int seconds = DateTime.Now.Second;
+            int interval = ((60 - minutes) * 60 + (60 - seconds)) * 1000;
+            this.HourSharpTimer.Interval = interval;
+            this.HourSharpTimer.Start();
         }
 
         private void StartBtn_Click(object sender, EventArgs e)
@@ -80,57 +89,65 @@ namespace Wechat_Notifier
             {
                 return;
             }
-            List<String> vballMessages = QueryVballMessages();
-            if (vballMessages.ToArray().Length == 0)
+            VballMangerWebservice.WechatMessage[] vballMessages;
+            try
+            {
+               vballMessages = QueryVballMessages();
+            }
+            catch
+            {
+                this.MessageLb.Text = "Failed on webservice call";
+                return;
+            }
+            if (vballMessages ==null || vballMessages.ToArray().Length == 0)
             {
                 return;
             }
-            //Bring wechat to front
-            SetForegroundWindow(hWnd);
             // Move the window to (0,0) without changing its size or position
             // in the Z order.
             //SetWindowPos(hWnd, IntPtr.Zero, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
             RECT rct = new RECT();
             GetWindowRect(hWnd, ref rct);
-            foreach (String vballMessage in vballMessages)
+            foreach (VballMangerWebservice.WechatMessage vballMessage in vballMessages)
             {
                 try
                 {
-                    //Parse vballmessage
-                    String[] messages = vballMessage.Split('|');
-                    if (messages.Length != 2)
-                    {
-                        continue;
-                    }
-                    String chatName = messages[0];
-                    String message = messages[1];
+                    //Bring wechat to front
+                    SetForegroundWindow(hWnd);
                     //Click on clean search field
                     DoMouseClick(rct, 243, 35);
                     //Click on search 
                     DoMouseClick(rct, 100, 35);
                     //Thread.Sleep(WAIT);
                     //Copy chat name or group into clipboard
-                    Clipboard.SetText(chatName);
+                    Clipboard.SetText(vballMessage.WechatName);
                     SendKeys.SendWait("^{v}");
+                    Thread.Sleep(WAIT);
                     //Check to see if chat name or group found
-                    if (NoMatchChat())
+                    if (NoMatchChat(rct))
                     {
                         continue;
                     }
-                    Thread.Sleep(WAIT);
+                    //Thread.Sleep(WAIT);
                     //Click on first match one
                     DoMouseClick(rct, 80, 120);
                     //Check to see if message contains {ENTER}
-                    if (message.Contains(ENTER))
+                    Thread.Sleep(WAIT);
+                    if (!String.IsNullOrEmpty(vballMessage.At))
                     {
-                        messages = message.Split(new String[] { ENTER }, StringSplitOptions.None);
-                        String at = messages[0];
-                        message = messages[1];
-                        SendKeys.SendWait(at);
+                        SendKeys.SendWait("@" + vballMessage.At);
                         SendKeys.SendWait(ENTER);
                         //Thread.Sleep(WAIT);
                     }
-                    Clipboard.SetText(message);
+                    if (String.IsNullOrEmpty(vballMessage.Name))
+                    {
+                        Clipboard.SetText(vballMessage.Message);
+                    }
+                    else
+                    {
+                        Clipboard.SetText("Hi, " + vballMessage.Name + ". " + vballMessage.Message);
+                    }
+                    Thread.Sleep(WAIT);
                     SendKeys.SendWait("^{v}");
                     SendKeys.SendWait(ENTER);
                 }
@@ -143,7 +160,7 @@ namespace Wechat_Notifier
             //    this.MessageLb.Text = this.Location.X + "-" + this.Location.Y;
         }
 
-        private List<String> QueryVballMessages()
+        private VballMangerWebservice.WechatMessage[] QueryVballMessages()
         {
             VballMangerWebservice.VballWebServiceSoapClient client = new VballMangerWebservice.VballWebServiceSoapClient();
             return client.WechatMessages();
@@ -171,17 +188,20 @@ namespace Wechat_Notifier
             return color.R == R && color.G == G && color.B == B;
         }
 
-        private bool NoMatchChat()
+        private bool NoMatchChat(RECT rct)
         {
-            return IsNoMatchColorAt(68, 80) && IsNoMatchColorAt(95, 80) && IsNoMatchColorAt(83,120) && IsNoMatchColorAt(68,133) && IsNoMatchColorAt(95,133);
+            return IsNoMatchColorAt(rct.Left + 68, rct.Top + 80) && IsNoMatchColorAt(rct.Left + 95, rct.Top + 80) && IsNoMatchColorAt(rct.Left + 83, rct.Top + 120) && IsNoMatchColorAt(rct.Left + 68, rct.Top + 133) && IsNoMatchColorAt(rct.Left + 95, rct.Top + 133);
 
         }
 
         private void HomePcIpTimer_Tick(object sender, EventArgs e)
         {
-            VballMangerWebservice.VballWebServiceSoapClient client = new VballMangerWebservice.VballWebServiceSoapClient();
-            client.HomePcIP();
-            HomePcIpTimer.Start();
+            try
+            {
+                VballMangerWebservice.VballWebServiceSoapClient client = new VballMangerWebservice.VballWebServiceSoapClient();
+                client.QueryPublishLink(DateTime.Now.Hour);
+            }catch(Exception){}
+            ResetHourSharpTimer();
         }
 
         private void WechatTimer_Tick(object sender, EventArgs e)
