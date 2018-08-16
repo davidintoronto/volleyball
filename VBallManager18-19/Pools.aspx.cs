@@ -614,7 +614,7 @@ namespace VballManager
                 return;
             }
             Pool pool = Manager.FindPoolById(this.PoolListbox.SelectedValue);
-            String message = "@All Hi, everyone. We will re-assign primary members as scheduled. Following " + pool.Members.Count + " players are highly rated on their attendance, they will be the primary members for next few months";
+            String message = "Hi, everyone. We will re-assign the primary members as scheduled. Following " + pool.Members.Count + " players are highly rated by their attendances, they will be the primary members for next few months";
             Manager.AddNotifyWechatMessage(pool, message);
             foreach (Member member in pool.Members)
             {

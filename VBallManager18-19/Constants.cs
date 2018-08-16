@@ -17,6 +17,7 @@ namespace VballManager
         public const String MESSAGE = "Message";
         public const String PASSCODE = "Passcode";
         public const String LINKBUTTON_FONTSIZE = "1em";
+        public const String STATS_FONTSIZE = "0.8em";
         public const String CONTROL = "Control";
         public const String ACTION_TYPE = "ActionType";
         public const String ACTION_MEMBER_ATTEND = "MemberAttend";

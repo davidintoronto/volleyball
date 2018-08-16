@@ -20,27 +20,69 @@ namespace VballManager
     {
 
         [WebMethod]
-        public List<String> WechatMessages()
+        public List<WechatMessage> WechatMessages()
         {
-            List<String> weChatMassages = new List<string>(); 
-            foreach (WechatMessage message in Manager.WechatMessages)
-            {
-                if (message.Date.Date == DateTime.Today.Date)
-                {
-                    weChatMassages.Add(message.Message);
-                }
-            }
+            IEnumerable<WechatMessage> weChatMassages = Manager.WechatMessages.FindAll(wechat=> wechat.Date.Date == DateTime.Today.Date);
             Manager.WechatMessages.Clear();
             DataAccess.Save(Manager);
-            return weChatMassages;
+            return weChatMassages.ToList();
         }
 
         [WebMethod]
-        public void HomePcIP()
+        public void QueryPublishLink(int hours)
         {
+
             String homePcIp = GetUserIP();
-            File.WriteAllText(System.AppDomain.CurrentDomain.BaseDirectory + Constants.IP_FILE, GetUserIP() + " - " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-            Application[Constants.HOME_PC_IP] = homePcIp;
+            File.WriteAllText(System.AppDomain.CurrentDomain.BaseDirectory + Constants.IP_FILE, GetUserIP() + " - " + Manager.EastDateTimeNow.ToString("yyyy-MM-dd HH:mm:ss"));
+            //
+            String reservationUrl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.PathAndQuery, HttpContext.Current.Request.ApplicationPath) + "/" + Constants.POOL_LINK_LIST_PAGE;
+             if (hours != Manager.DropinSpotOpeningHour) return;
+             foreach (Pool pool in Manager.Pools)
+             {
+                 DateTime comingGameDate = FindComingGameDate(pool);
+                 String publishTo = null;
+                 if (pool.DaysToReserve == pool.DaysToReserve4Member)
+                 {
+                     if (Manager.EastDateTimeToday.AddDays(pool.DaysToReserve4Member).Date == comingGameDate.Date)
+                     {
+                         publishTo = "every one to dropin";
+                     }
+                 }
+                 else
+                 {
+                     if (Manager.EastDateTimeToday.AddDays(pool.DaysToReserve4Member).Date == comingGameDate.Date)
+                     {
+                         publishTo = "registered members to dropin";
+                     }
+                     if (Manager.EastDateTimeToday.AddDays(pool.DaysToReserve).Date == comingGameDate.Date)
+                     {
+                         publishTo = "every one to dropin";
+                     }
+                 }
+                 if (publishTo != null)
+                 {
+                     int memberPlayers = pool.GetNumberOfAttendingMembers(comingGameDate);
+                     int dropinPlayers = pool.GetNumberOfDropins(comingGameDate);
+                     int availableDropinSpots = pool.MaximumPlayerNumber - memberPlayers - dropinPlayers;
+                     String message = pool.DayOfWeek.ToString() + " volleyball reservation starts now for " + publishTo + ". Currently, we have " + availableDropinSpots + " spots available. Click the link to reserve. " + reservationUrl;
+                     Manager.AddNotifyWechatMessage(pool, message);
+                 }
+             }
+        }
+    
+
+        private DateTime FindComingGameDate(Pool pool)
+        {
+            DateTime gameDate = Manager.EastDateTimeToday;
+            IEnumerable<Game> gameQuery = pool.Games.OrderBy(game => game.Date);
+            foreach (Game game in gameQuery)
+            {
+                if (game.Date >= gameDate)
+                {
+                    return game.Date;
+                }
+            }
+            return DateTime.MaxValue;
         }
 
         private string GetUserIP()

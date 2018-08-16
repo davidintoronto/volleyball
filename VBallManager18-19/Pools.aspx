@@ -42,11 +42,11 @@
         OkControlID="" TargetControlID="SelectPlayerLabel" PopupControlID="PlayerListPanel" PopupDragHandleControlID=""
         Drag="true">
     </cc1:ModalPopupExtender>
-    <asp:Panel ID="PlayerListPanel" runat="server"  align="center" 
+    <asp:Panel ID="PlayerListPanel" runat="server"
          BackColor="#CEE8FF">
         <div >
             <table width="100%" >
-                <tr bgcolor="#CC9900">
+                <tr>
                     <td>
                         <asp:Label ID="SelectPlayerLabel" Text="Select Players To Add" Font-Bold="True" Font-Size="Large" runat="server"/>
                     </td>
@@ -54,7 +54,6 @@
             </table>
             <asp:CheckBoxList ID="PlayerListbox" runat="server" Height="288px" 
                         Width="898px" 
-                        SelectionMode="Multiple" 
                         RepeatColumns="4" 
                         RepeatDirection="Horizontal" Font-Size="Medium" Font-Bold="True" TextAlign="Right">
             </asp:CheckBoxList>
@@ -76,12 +75,12 @@
         <table style="width:100%;">
         
         <tr>
-        <td rowspan="6" bgcolor="#99CCFF" class="style12">
+        <td rowspan="6" class="style12">
         <asp:ListBox ID="PoolListbox" runat="server" AutoPostBack="True" Height="178px" 
                          onselectedindexchanged="PoolList_SelectedIndexChanged" style="margin-left: 0px" 
                          Width="86px"></asp:ListBox>
           </td>
-          <td rowspan="6" bgcolor="#99CCFF" class="style9">
+          <td rowspan="6" class="style9">
                     <table class="inlineBlock" style="width: 80%; top: inherit;">
                         <tr>
                             <td align="center" class="style6">

@@ -532,9 +532,9 @@ namespace VballManager
             {
                 if (player.IsRegisterdMember)
                 {
-                    String message = "Hi, " + player.Name + ". Welcome to Hitmen Volleyball Club! We are happy to inform you that your membership has been approved! As a registed member, you could become primary member of the pools you attend if your attendance rate is high. And you are allow to make reservation one day before the game. let's play and have great fun!";
+                    String message = " Welcome to Hitmen Volleyball Club! We are happy to inform you that your membership has been approved! As a registed member, you could become primary member of the pools you attend if your attendance rate is high. And you are allow to make reservation one day before the game. let's play and have great fun!";
                     Manager.AddNotifyWechatMessage(player, message);
-                    message = "Hi, " + player.Name + ". Here is your private register link " + Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(player.Id);
+                    message = " Here is your private register link " + Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(player.Id);
                     Manager.AddNotifyWechatMessage(player, message);
                     decimal total = 0;
                     foreach (Fee fee in player.Fees)
@@ -543,13 +543,13 @@ namespace VballManager
                     }
                     if (total > 0)
                     {
-                        message = "You membership fee is " + Manager.RegisterMembeshipFee + ". You unpaid fee is " + total + ". If you would like to pay e-transfer, please send to " + Manager.AdminEmail + ". Thanks";
+                        message = " You membership fee is " + Manager.RegisterMembeshipFee + ". You unpaid fee is " + total + ". If you would like to pay e-transfer, please send to " + Manager.AdminEmail + ". Thanks";
                         Manager.AddNotifyWechatMessage(player, message);
                     }
                 }
                 else
                 {
-                    String message = "Hi, " + player.Name + ". Welcome to Hitmen Volleyball Club! Here is your private register link " + Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(player.Id);
+                    String message = " Welcome to Hitmen Volleyball Club! Here is your private register link " + Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(player.Id);
                     Manager.AddNotifyWechatMessage(player, message);
                 }
             }
@@ -559,27 +559,17 @@ namespace VballManager
         {
             foreach (Pool pool in Manager.Pools)
             {
-                String message = "@All Hi, everyone. We will re-assign primary members as scheduled. Following " + pool.Members.Count + " players are highly rated on their attendance, they will be the primary members for next few months";
+                String message = "Hi, everyone. We will re-assign primary members as scheduled. Following " + pool.Members.Count + " players are highly rated on their attendance, they will be the primary members for next few months";
                 Manager.AddNotifyWechatMessage(pool, message);
                 foreach(Member member in pool.Members)
                 {
                     Player player = Manager.FindPlayerById(member.Id);
-                    message = "Congratus! " + player.Name + ". We are very pleased that you have become 1 of " + pool.Members.Count + " primary members in pool " + pool.Name + ". You deserve this because you attended a lot of games in the post. We will pre-reserve a spot for you for each week in this pool. However, please cancel your reservation if you cannot make it. Thanks";
+                    message = "Congratus!. We are very pleased that you have become 1 of " + pool.Members.Count + " primary members in pool " + pool.Name + ". You deserve this because you attended a lot of games in the post. We will pre-reserve a spot for you for each week in this pool. However, please cancel your reservation if you cannot make it. Thanks";
                     Manager.AddNotifyWechatMessage(player, message);
                     message = "Congratus! You have become the primary member in pool " + pool.Name;
-                    Manager.AddNotifyWechatMessage(pool, WechatAtAndMessage(player, message));
+                    Manager.AddNotifyWechatMessage(pool, player, message);
                 }
             }
-        }
-
-        private String WechatAtAndMessage(Player player, String message)
-        {
-            if (String.IsNullOrEmpty(player.WechatName))
-            {
-                return player.Name + ", " + message;
-            }
-
-            return "@" + player.WechatName + "{ENTER}" + message;
         }
 
         protected void AllWechatNameBtn_Click(object sender, EventArgs e)

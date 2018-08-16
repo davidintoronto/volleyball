@@ -352,9 +352,7 @@ namespace VballManager
         {
             if (!String.IsNullOrEmpty(player.WechatName))
             {
-                WechatMessage wechat = new WechatMessage();
-                wechat.Date = DateTime.Today;
-                wechat.Message = player.WechatName + "|" + message;
+                WechatMessage wechat = new WechatMessage(player.WechatName, player.Name, message);
                 WechatMessages.Add(wechat);
             }
         }
@@ -362,66 +360,77 @@ namespace VballManager
         {
             if (!String.IsNullOrEmpty(pool.WechatGroupName))
             {
-                WechatMessage wechat = new WechatMessage();
-                wechat.Date = DateTime.Today;
-                wechat.Message = pool.WechatGroupName + "|" + message;
+                WechatMessage wechat = new WechatMessage(pool.WechatGroupName, message);
                 WechatMessages.Add(wechat);
             }
         }
 
+        public void AddNotifyWechatMessage(Pool pool, Player player, String message)
+        {
+            if (!String.IsNullOrEmpty(pool.WechatGroupName))
+            {
+                WechatMessage wechat = new WechatMessage(pool.WechatGroupName, player, message);
+                WechatMessages.Add(wechat);
+            }
+        }
         public void AddReservationNotifyWechatMessage(String playerId, String operatorId, String result, Pool pool, Pool originalPool, DateTime gameDate)
         {
             Player player = FindPlayerById(playerId);
             Player user = operatorId == null ? null : FindPlayerById(operatorId);
-            WechatMessage message = new WechatMessage();
-            message.Date = DateTime.Today.Date;
-            String text = null;
+            String message = null;
+                                 int players = pool.GetNumberOfAttendingMembers(gameDate) + pool.GetNumberOfDropins(gameDate);
+
+            String poolAndGameDate = " in pool " + pool.Name + "of " + gameDate.ToString("MM/dd/yyyy") + ". Players: " + players; 
             if (result == Constants.RESERVED || result == Constants.CANCELLED)
             {
                 if (playerId == operatorId)
                 {
-                    text = WechatAt(player) + "You " + result.ToString();
+                    message = "You " + result.ToString();
                 }
                 else
                 {
-                    text = WechatAt(player) + (user == null ? "Admin" : user.Name) + " " + result.ToString() + " for you";
+                    message = (user == null ? "Admin" : user.Name) + " " + result.ToString() + " for you";
                 }
+                AddNotifyWechatMessage(pool, player, message + poolAndGameDate);
             }
             else if (result == Constants.WAITING_TO_RESERVED)
             {
-                text = result.ToString() + " in pool " + pool.Name + GetForDate(gameDate);
-                this.AddNotifyWechatMessage(player, text);
-                text = WechatAt(player) + result.ToString();
-            }
+                message = result.ToString();
+                AddNotifyWechatMessage(player, message + poolAndGameDate);
+                AddNotifyWechatMessage(pool, player, message + poolAndGameDate);
+             }
             else if (result == Constants.MOVED)
             {
-                text = WechatAt(player) + result.ToString() + " " + pool.Name;
+                message = result.ToString() + " " + pool.Name;
+                AddNotifyWechatMessage(player, message + poolAndGameDate);
+                AddNotifyWechatMessage(pool, player, message + poolAndGameDate);
+
             }
             else if (result == Constants.WAITING && playerId != operatorId)
             {
-                text = WechatAt(player) + (user == null ? "Admin" : user.Name) + " " + result.ToString();
+                message = (user == null ? "Admin" : user.Name) + " " + result.ToString();
+                AddNotifyWechatMessage(pool, player, message + poolAndGameDate);
             }
-
-            message.Message = originalPool.WechatGroupName + "|" + text + " in pool " + pool.Name + GetForDate(gameDate);
-
-            this.WechatMessages.Add(message);
         }
 
-        private String WechatAt(Player player)
+        public DateTime EastDateTimeToday
         {
-            if (String.IsNullOrEmpty(player.WechatName))
+            get
             {
-                return player.Name + ", ";
+                TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneName);
+                return TimeZoneInfo.ConvertTime(DateTime.Today, easternZone);
             }
-
-            return "@" + player.WechatName + "{ENTER} ";
         }
 
-        private String GetForDate(DateTime gameDate)
+        public DateTime EastDateTimeNow
         {
-            if (gameDate.Date == DateTime.Today.Date) return " for the volleyball tonight.";
-            return " for the volleyball on " + gameDate.ToString("ddd, MMM d, yyyy");
+            get
+            {
+                TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneName);
+                return TimeZoneInfo.ConvertTime(DateTime.UtcNow, easternZone);
+            }
         }
+
     }
 
     public class Pool
@@ -750,12 +759,67 @@ namespace VballManager
 
     public class WechatMessage
     {
+        public WechatMessage()
+        { }
+
+        public WechatMessage(String wechatName, String message)
+        {
+            this.date = DateTime.Today;
+            this.wechatName = wechatName;
+            this.message = message;
+        }
+
+        public WechatMessage(String wechatName, Player player, String message)
+        {
+            this.date = DateTime.Today;
+            this.wechatName = wechatName;
+            this.message = message;
+            if (String.IsNullOrEmpty(player.WechatName))
+            {
+                this.name = player.Name;
+            }else{
+                this.at = player.WechatName;
+            }
+        }
+
+        public WechatMessage(String wechatName, String name, String message)
+        {
+            this.date = DateTime.Today;
+            this.wechatName = wechatName;
+            this.name = name;
+            this.message = message;
+        }
+        
         private DateTime date;
 
         public DateTime Date
         {
             get { return date; }
             set { date = value; }
+        }
+
+        private String wechatName;
+
+        public String WechatName
+        {
+            get { return wechatName; }
+            set { wechatName = value; }
+        }
+
+        private String at;
+
+        public String At
+        {
+            get { return at; }
+            set { at = value; }
+        }
+
+        private String name;
+
+        public String Name
+        {
+            get { return name; }
+            set { name = value; }
         }
 
         private String message;
