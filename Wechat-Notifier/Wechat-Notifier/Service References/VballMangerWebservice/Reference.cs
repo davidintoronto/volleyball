@@ -15,9 +15,110 @@ namespace Wechat_Notifier.VballMangerWebservice {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ArrayOfString", Namespace="http://tempuri.org/", ItemName="string")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="WechatMessage", Namespace="http://tempuri.org/")]
     [System.SerializableAttribute()]
-    public class ArrayOfString : System.Collections.Generic.List<string> {
+    public partial class WechatMessage : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private System.DateTime DateField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string WechatNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AtField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MessageField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public System.DateTime Date {
+            get {
+                return this.DateField;
+            }
+            set {
+                if ((this.DateField.Equals(value) != true)) {
+                    this.DateField = value;
+                    this.RaisePropertyChanged("Date");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        public string WechatName {
+            get {
+                return this.WechatNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.WechatNameField, value) != true)) {
+                    this.WechatNameField = value;
+                    this.RaisePropertyChanged("WechatName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string At {
+            get {
+                return this.AtField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AtField, value) != true)) {
+                    this.AtField = value;
+                    this.RaisePropertyChanged("At");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
+        public string Message {
+            get {
+                return this.MessageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
+                    this.MessageField = value;
+                    this.RaisePropertyChanged("Message");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -31,11 +132,11 @@ namespace Wechat_Notifier.VballMangerWebservice {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/WechatMessages", ReplyAction="*")]
         System.Threading.Tasks.Task<Wechat_Notifier.VballMangerWebservice.WechatMessagesResponse> WechatMessagesAsync(Wechat_Notifier.VballMangerWebservice.WechatMessagesRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/HomePcIP", ReplyAction="*")]
-        void HomePcIP();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/QueryPublishLink", ReplyAction="*")]
+        void QueryPublishLink(int hours);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/HomePcIP", ReplyAction="*")]
-        System.Threading.Tasks.Task HomePcIPAsync();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/QueryPublishLink", ReplyAction="*")]
+        System.Threading.Tasks.Task QueryPublishLinkAsync(int hours);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -89,12 +190,12 @@ namespace Wechat_Notifier.VballMangerWebservice {
     public partial class WechatMessagesResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public Wechat_Notifier.VballMangerWebservice.ArrayOfString WechatMessagesResult;
+        public Wechat_Notifier.VballMangerWebservice.WechatMessage[] WechatMessagesResult;
         
         public WechatMessagesResponseBody() {
         }
         
-        public WechatMessagesResponseBody(Wechat_Notifier.VballMangerWebservice.ArrayOfString WechatMessagesResult) {
+        public WechatMessagesResponseBody(Wechat_Notifier.VballMangerWebservice.WechatMessage[] WechatMessagesResult) {
             this.WechatMessagesResult = WechatMessagesResult;
         }
     }
@@ -131,7 +232,7 @@ namespace Wechat_Notifier.VballMangerWebservice {
             return base.Channel.WechatMessages(request);
         }
         
-        public Wechat_Notifier.VballMangerWebservice.ArrayOfString WechatMessages() {
+        public Wechat_Notifier.VballMangerWebservice.WechatMessage[] WechatMessages() {
             Wechat_Notifier.VballMangerWebservice.WechatMessagesRequest inValue = new Wechat_Notifier.VballMangerWebservice.WechatMessagesRequest();
             inValue.Body = new Wechat_Notifier.VballMangerWebservice.WechatMessagesRequestBody();
             Wechat_Notifier.VballMangerWebservice.WechatMessagesResponse retVal = ((Wechat_Notifier.VballMangerWebservice.VballWebServiceSoap)(this)).WechatMessages(inValue);
@@ -149,12 +250,12 @@ namespace Wechat_Notifier.VballMangerWebservice {
             return ((Wechat_Notifier.VballMangerWebservice.VballWebServiceSoap)(this)).WechatMessagesAsync(inValue);
         }
         
-        public void HomePcIP() {
-            base.Channel.HomePcIP();
+        public void QueryPublishLink(int hours) {
+            base.Channel.QueryPublishLink(hours);
         }
         
-        public System.Threading.Tasks.Task HomePcIPAsync() {
-            return base.Channel.HomePcIPAsync();
+        public System.Threading.Tasks.Task QueryPublishLinkAsync(int hours) {
+            return base.Channel.QueryPublishLinkAsync(hours);
         }
     }
 }

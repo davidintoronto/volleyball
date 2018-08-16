@@ -8,19 +8,32 @@
       <s:element name="WechatMessagesResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="WechatMessagesResult" type="tns:ArrayOfString" />
+            <s:element minOccurs="0" maxOccurs="1" name="WechatMessagesResult" type="tns:ArrayOfWechatMessage" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:complexType name="ArrayOfString">
+      <s:complexType name="ArrayOfWechatMessage">
         <s:sequence>
-          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="WechatMessage" nillable="true" type="tns:WechatMessage" />
         </s:sequence>
       </s:complexType>
-      <s:element name="HomePcIP">
-        <s:complexType />
+      <s:complexType name="WechatMessage">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Date" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="WechatName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="At" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="QueryPublishLink">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="hours" type="s:int" />
+          </s:sequence>
+        </s:complexType>
       </s:element>
-      <s:element name="HomePcIPResponse">
+      <s:element name="QueryPublishLinkResponse">
         <s:complexType />
       </s:element>
     </s:schema>
@@ -31,20 +44,20 @@
   <wsdl:message name="WechatMessagesSoapOut">
     <wsdl:part name="parameters" element="tns:WechatMessagesResponse" />
   </wsdl:message>
-  <wsdl:message name="HomePcIPSoapIn">
-    <wsdl:part name="parameters" element="tns:HomePcIP" />
+  <wsdl:message name="QueryPublishLinkSoapIn">
+    <wsdl:part name="parameters" element="tns:QueryPublishLink" />
   </wsdl:message>
-  <wsdl:message name="HomePcIPSoapOut">
-    <wsdl:part name="parameters" element="tns:HomePcIPResponse" />
+  <wsdl:message name="QueryPublishLinkSoapOut">
+    <wsdl:part name="parameters" element="tns:QueryPublishLinkResponse" />
   </wsdl:message>
   <wsdl:portType name="VballWebServiceSoap">
     <wsdl:operation name="WechatMessages">
       <wsdl:input message="tns:WechatMessagesSoapIn" />
       <wsdl:output message="tns:WechatMessagesSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="HomePcIP">
-      <wsdl:input message="tns:HomePcIPSoapIn" />
-      <wsdl:output message="tns:HomePcIPSoapOut" />
+    <wsdl:operation name="QueryPublishLink">
+      <wsdl:input message="tns:QueryPublishLinkSoapIn" />
+      <wsdl:output message="tns:QueryPublishLinkSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="VballWebServiceSoap" type="tns:VballWebServiceSoap">
@@ -58,8 +71,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="HomePcIP">
-      <soap:operation soapAction="http://tempuri.org/HomePcIP" style="document" />
+    <wsdl:operation name="QueryPublishLink">
+      <soap:operation soapAction="http://tempuri.org/QueryPublishLink" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -79,8 +92,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="HomePcIP">
-      <soap12:operation soapAction="http://tempuri.org/HomePcIP" style="document" />
+    <wsdl:operation name="QueryPublishLink">
+      <soap12:operation soapAction="http://tempuri.org/QueryPublishLink" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

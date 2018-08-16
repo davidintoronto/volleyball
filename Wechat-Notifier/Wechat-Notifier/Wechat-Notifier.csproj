@@ -81,7 +81,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="Service References\VballMangerWebservice\VballWebService.wsdl" />
-    <None Include="Service References\VballMangerWebservice\Wechat_Notifier.VballMangerWebservice.ArrayOfString.datasource">
+    <None Include="Service References\VballMangerWebservice\Wechat_Notifier.VballMangerWebservice.WechatMessage.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\VballMangerWebservice\Wechat_Notifier.VballMangerWebservice.WechatMessagesResponse.datasource">
