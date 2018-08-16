@@ -46,17 +46,17 @@ namespace VballManager
             }
             if (CurrentPool == null)
             {
-                Response.Redirect("LinkDevice.aspx");
+                Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
                 return;
             }
             //Check to see if user is quilified to view current pool
             if (!Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) && !CurrentPool.Members.Exists(attendee => attendee.Id == currentUser.Id) && !CurrentPool.Dropins.Exists(attendee => attendee.Id == currentUser.Id))
             {
-                Response.Redirect("LinkDevice.aspx");
+                Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
                 return;
             }
             // 
-            DateTime gameDate = DateTime.Today;
+            DateTime gameDate = Manager.EastDateTimeToday;
             String gameDateString = this.Request.Params[Constants.GAME_DATE];
             if (gameDateString != null)
             {
@@ -134,24 +134,6 @@ namespace VballManager
             if (notificationMessage != null) this.ShowMessage(notificationMessage);
         }
 
-        private DateTime EastDateTimeToday
-        {
-            get
-            {
-                TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName);
-                return TimeZoneInfo.ConvertTime(DateTime.Today, easternZone);
-            }
-        }
-
-        private DateTime EastDateTimeNow
-        {
-            get
-            {
-                TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName);
-                return TimeZoneInfo.ConvertTime(DateTime.UtcNow, easternZone);
-            }
-        }
-
         private String GetNotificationMessages()
         {
             if (Request.Cookies[Constants.PRIMARY_USER] == null) return null;
@@ -160,7 +142,7 @@ namespace VballManager
             String messages = null;
             foreach (Notification notificaiton in user.Notifications)
             {
-                if (EastDateTimeToday <= notificaiton.Date) messages += "* " + notificaiton.Text + "\r\n";
+                if (Manager.EastDateTimeToday <= notificaiton.Date) messages += "* " + notificaiton.Text + "\r\n";
             }
             user.Notifications.Clear();
             DataAccess.Save(Manager);
@@ -179,7 +161,7 @@ namespace VballManager
         {
             foreach (Pool pool in Manager.Pools)
             {
-                if (pool.AutoCoopReserve && pool.DayOfWeek == CurrentPool.DayOfWeek && EastDateTimeToday.Date == ComingGameDate.Date && EastDateTimeNow.Hour >= pool.ReservHourForCoop)
+                if (pool.AutoCoopReserve && pool.DayOfWeek == CurrentPool.DayOfWeek && Manager.EastDateTimeToday.Date == ComingGameDate.Date && Manager.EastDateTimeNow.Hour >= pool.ReservHourForCoop)
                 {
                     Game game = pool.FindGameByDate(ComingGameDate);
                     //Check to see if number of reserved coop players already reaches maximum
@@ -282,7 +264,7 @@ namespace VballManager
                 pickup.OperatorId = comingGame.WaitingList[0].OperatorId;
                 comingGame.Pickups.Add(pickup);
             }
-            Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.RESERVED, CurrentPool, CurrentPool, ComingGameDate);
+            Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.WAITING_TO_RESERVED, CurrentPool, CurrentPool, ComingGameDate);
             LogHistory log = new LogHistory(DateTime.Now, comingGame.Date, "System", CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve dropin", Manager.FindPlayerById(comingGame.WaitingList[0].OperatorId).Name);
             Manager.Logs.Add(log);
             comingGame.WaitingList.Remove(playerId);
@@ -337,7 +319,7 @@ namespace VballManager
             IEnumerable<Game> gameQuery = games.OrderByDescending(game => game.Date);
             foreach (Game game in gameQuery)
             {
-                if ((Manager.ActionPermitted(Actions.View_Past_Games, CurrentUser.Role) || game.Date >= DateTime.Today) && game.Date < ComingGameDate)
+                if ((Manager.ActionPermitted(Actions.View_Past_Games, CurrentUser.Role) || game.Date >= Manager.EastDateTimeToday) && game.Date < ComingGameDate)
                 {
                     return game;
                 }
@@ -459,8 +441,13 @@ namespace VballManager
                 lbtn.ID = player.Id + ",MEMEBER";
                 lbtn.Click += new EventHandler(Username_Click);
                 nameCell.Controls.Add(lbtn);
-                 Image stats = new Image();
-                stats.ImageUrl = "~/Icons/number_" + player.TotalPlayedCount.ToString() + ".png";
+                Label stats = new Label();
+                stats.Font.Size = new FontUnit(Constants.STATS_FONTSIZE);
+                stats.ForeColor = System.Drawing.Color.OrangeRed;
+                stats.Text = "   " + player.TotalPlayedCount.ToString();
+                
+                // Image stats = new Image();
+                ////stats.ImageUrl = "~/Icons/number_" + player.TotalPlayedCount.ToString() + ".png";
                 nameCell.Controls.Add(stats);
               if (player.Marked)
                 {
@@ -917,8 +904,10 @@ namespace VballManager
             nameCell.Controls.Add(lbtn);
             if (dropin.IsRegisterdMember)
             {
-                Image stats = new Image();
-                stats.ImageUrl = "~/Icons/number_" + dropin.TotalPlayedCount.ToString() + ".png";
+                Label stats = new Label();
+                stats.Font.Size = new FontUnit(Constants.STATS_FONTSIZE);
+                stats.ForeColor = System.Drawing.Color.OrangeRed;
+                stats.Text = "   " + dropin.TotalPlayedCount.ToString();
                 nameCell.Controls.Add(stats);
             }
             foreach (Fee fee in dropin.Fees)
@@ -1027,7 +1016,22 @@ namespace VballManager
                 ShowMessage("Sorry, But drop-in reservations cannot be made until " + Manager.DropinSpotOpeningHour + " on " + reserveDate.ToLongDateString() + ". Please check back later.");
                 return;
             }
+            if (!player.IsRegisterdMember && IsDropinOwesExceedMax(player))
+            {
+                ShowMessage("According to our records, the total amount you unpaid dropin fee reaches the maximum ($" +  Manager.MaxDropinFeeOwe + "). Please make the payment prior to new reservations. If you would like e-transfer, send to " + Manager.AdminEmail + ". Thanks");
+                return;
+            }
             ShowPopupModal("Are you sure to reserve?");
+        }
+
+        private bool IsDropinOwesExceedMax(Player player)
+        {
+            decimal total = 0;
+            foreach (Fee fee in player.Fees)
+            {
+                if (!fee.IsPaid) total = total + fee.Amount;
+            }
+            return total >= Manager.MaxDropinFeeOwe;
         }
 
         private void ContinueAddDropin_Click(object sender, EventArgs e)
@@ -1048,7 +1052,7 @@ namespace VballManager
                             return;
                         }
                     }
-                    if (EastDateTimeToday.Date < ComingGameDate.Date || EastDateTimeNow.Hour < CurrentPool.ReservHourForCoop)
+                    if (Manager.EastDateTimeToday.Date < ComingGameDate.Date || Manager.EastDateTimeNow.Hour < CurrentPool.ReservHourForCoop)
                     {
                        if (!Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role))
                        {
@@ -1127,8 +1131,9 @@ namespace VballManager
                 pickup.OperatorId = GetOperatorId();
                 game.Pickups.Add(pickup);
                 Manager.AddReservationNotifyWechatMessage(playerId, pickup.OperatorId, Constants.RESERVED, CurrentPool, CurrentPool, ComingGameDate);
-               LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve dropin");
-                 Manager.Logs.Add(log);
+                LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve dropin");
+                Manager.Logs.Add(log);
+
                 //Update last dropin date for coop
                 Dropin dropin = CurrentPool.Dropins.Find(attendee => attendee.Id == playerId);
                 if (dropin.IsCoop)
@@ -1206,6 +1211,12 @@ namespace VballManager
             fee.FeeType = FeeTypeEnum.Dropin.ToString();
             fee.FeeDesc = String.Format(Fee.FEETYPE_DROPIN, CurrentPool.Name);
             player.Fees.Add(fee);
+            //Send wechat reminder if dropin fee reaches the max allow
+            if (!player.IsRegisterdMember && IsDropinOwesExceedMax(player))
+            {
+                String message = "[System Info] According to our records, the total amount you unpaid dropin fee reaches the maximum ($" + Manager.MaxDropinFeeOwe + "). Please make the payment ASAP, in order to continue making reservation in the future.";
+                Manager.AddNotifyWechatMessage(player, message);
+            }
             return new CostReference(CostType.FEE, fee.FeeId);
         }
 
@@ -1363,6 +1374,11 @@ namespace VballManager
             DataAccess.Save(Manager);
             this.PopupModal.Hide();
             Response.Redirect("Default.aspx");
+        }
+
+        private bool isPostCancellation(Game game)
+        {
+            return game.Date < Manager.EastDateTimeToday.Date || (game.Date == Manager.EastDateTimeToday.Date && Manager.EastDateTimeNow.Hour >= Manager.LockReservationHour);                
         }
 
         protected void Username_Click(object sender, EventArgs e)
@@ -1644,7 +1660,7 @@ namespace VballManager
                 {
                     foreach (Game game in pool.Games)
                     {
-                        if (game.Date.Date < DateTime.Today.Date && (game.Reserved.Exists(player.Id) && !game.NoShow.Exists(player.Id) || game.Pickups.Exists(player.Id)))
+                        if (game.Date.Date < Manager.EastDateTimeToday.Date && (game.Reserved.Exists(player.Id) && !game.NoShow.Exists(player.Id) || game.Pickups.Exists(player.Id)))
                         {
                             playedCount++;
                         }

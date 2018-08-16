@@ -17,6 +17,7 @@ namespace VballManager
         public const String MESSAGE = "Message";
         public const String PASSCODE = "Passcode";
         public const String LINKBUTTON_FONTSIZE = "1em";
+        public const String STATS_FONTSIZE = "0.8em";
         public const String CONTROL = "Control";
         public const String ACTION_TYPE = "ActionType";
         public const String ACTION_MEMBER_ATTEND = "MemberAttend";
@@ -41,7 +42,7 @@ namespace VballManager
         public const String ADD_PLAYER_POOL = "AddPlayerToPool";
         public const String PRIMARY_USER = "PrimaryUser";
         public const String CURRENT_USER = "CurrentUser";
-        public const String RESERVED = "reserved a spot", CANCELLED = "cancelled the spot", WAITING = "put you on the waiting list", WAITING_TO_RESERVED = "Congratus! You got a spot", MOVED = "Your spot is moved to pool";
+        public const String RESERVED = "reserved a spot", CANCELLED = "cancelled the spot", WAITING = "put you on the waiting list", WAITING_TO_RESERVED = "Congratus! One spot became available and we reserved it for you", MOVED = "Your spot is moved to pool";
         public const String REQUEST_REGISTER_LINK_PAGE = "RequestRegisterLink.aspx";
         public const String POOL_LINK_LIST_PAGE = "PoolLinkList.aspx";
         public const String AUTHORIZE_USER_PAGE = "Authorize.aspx";

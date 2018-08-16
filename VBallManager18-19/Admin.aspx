@@ -3,28 +3,27 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
-        .style1
-        {
+        .style1 {
             width: 268px;
         }
-        .style4
-        {
+
+        .style4 {
             width: 233px;
         }
-        .style5
-        {
+
+        .style5 {
             width: 105px;
         }
-        .inlineBlock
-        {
+
+        .inlineBlock {
         }
-        .style6
-        {
+
+        .style6 {
             width: 233px;
             height: 24px;
         }
-        .style7
-        {
+
+        .style7 {
             height: 24px;
         }
     </style>
@@ -36,32 +35,28 @@
                 <td align="justify" class="style1">
                     <table style="width: 319px; margin-right: 0px;">
                         <tr>
-                            <td class="style4">
-                                Admin Passcode
+                            <td class="style4">Admin Passcode
                             </td>
                             <td>
                                 <asp:TextBox ID="AdminPasscodeTb" runat="server" TextMode="Password" Width="107px"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
-                            <td class="style4">
-                                Passcode Authentication
+                            <td class="style4">Passcode Authentication
                             </td>
                             <td>
                                 <asp:CheckBox ID="AuthCb" runat="server" />
                             </td>
                         </tr>
                         <tr>
-                            <td class="style4">
-                                Cookie Authentication
+                            <td class="style4">Cookie Authentication
                             </td>
                             <td>
                                 <asp:CheckBox ID="CookieAuthCb" runat="server" />
                             </td>
                         </tr>
                         <tr>
-                            <td class="style4">
-                                Auth Expires On
+                            <td class="style4">Auth Expires On
                             </td>
                             <td>
                                 <asp:TextBox ID="AuthCookieExpireTb" runat="server" Width="115px">07/01/2018</asp:TextBox>
@@ -70,24 +65,21 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="style4">
-                                Time Zone
+                            <td class="style4">Time Zone
                             </td>
                             <td>
                                 <asp:TextBox ID="TimeZoneTb" runat="server" Width="173px">Eastern Standard Time</asp:TextBox>
                             </td>
                         </tr>
                         <tr>
-                            <td class="style4">
-                                System Time
+                            <td class="style4">System Time
                             </td>
                             <td>
                                 <asp:Label ID="SystemTimeLb" runat="server" Width="173px" />
                             </td>
                         </tr>
                         <tr>
-                            <td class="style4">
-                                Time offset (Mins)
+                            <td class="style4">Time offset (Mins)
                             </td>
                             <td>
                                 <asp:TextBox ID="TimeOffsetTb" runat="server" Text="0" Width="45px" />
@@ -98,16 +90,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="style4">
-                                Club Member Mode
+                            <td class="style4">Club Member Mode
                             </td>
                             <td>
                                 <asp:CheckBox ID="ClubRegisterMemberModeCb" runat="server" />
                             </td>
                         </tr>
                         <tr>
-                            <td class="style4">
-                                Dropin spot opening at hour
+                            <td class="style4">Dropin spot opening at hour
                             </td>
                             <td>
                                 <asp:TextBox ID="DropinSpotOpenHourTb" runat="server" Width="47px">0</asp:TextBox>
@@ -117,16 +107,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="style6">
-                                Dropin Fee Capped
+                            <td class="style6">Dropin Fee Capped
                             </td>
                             <td class="style7">
                                 <asp:CheckBox ID="DropinFeeCappedCb" runat="server" />
                             </td>
                         </tr>
                         <tr>
-                            <td class="style4">
-                                Club Membership Fee
+                            <td class="style4">Club Membership Fee
                             </td>
                             <td>
                                 <asp:TextBox ID="MembershipFeeTb" runat="server" Width="47px">0</asp:TextBox>
@@ -136,8 +124,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="style4">
-                                &nbsp;Lock Reservation hour&nbsp;
+                            <td class="style4">&nbsp;Lock Reservation hour&nbsp;
                             </td>
                             <td>
                                 <asp:TextBox ID="LockReservationHourTb" runat="server" Width="29px"></asp:TextBox>
@@ -146,22 +133,42 @@
                                     Type="Integer"></asp:CompareValidator>
                             </td>
                         </tr>
+                        <tr>
+                            <td class="style4">&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
                     </table>
                 </td>
                 <td>
                     <table>
+                        <tr>
+                            <td>&nbsp;Admin email&nbsp;
+
+                            </td>
+                            <td>
+
+                                <asp:TextBox ID="AdminEmailTb" runat="server" Width="167px"></asp:TextBox>
+
+                            </td>
+                            <td>Max dropin fee owe</td>
+                            <td>
+
+                                <asp:TextBox ID="MaxDropinfeeOweTb" runat="server" Width="66px">0</asp:TextBox>
+                                <asp:CompareValidator ID="CompareValidator9" runat="server" ControlToValidate="MaxDropinfeeOweTb" ErrorMessage="Integers only please" ForeColor="#FF3300" Operator="DataTypeCheck" Type="Integer"></asp:CompareValidator>
+
+                            </td>
+                        </tr>
                         <tr>
                             <td colspan="4">
                                 <asp:TextBox ID="ReadmeTb" runat="server" Height="317px" TextMode="MultiLine" Width="550px"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
-                 <td>Home Ip</td>
-                 <td>
-                     <asp:Label ID="HomeIPLb" runat="server" Text="Label"></asp:Label>
-                            </td>
+                            <td>Home Ip</td>
                             <td>
+                                <asp:Label ID="HomeIPLb" runat="server" Text="Label"></asp:Label>
                             </td>
+                            <td></td>
                             <td align="right">
                                 <asp:Button ID="SaveSystemBtn" runat="server" OnClick="SaveSystemBtn_Click" Text="Save Changes" />
                             </td>
@@ -185,30 +192,26 @@
         </table>
     </asp:Panel>
     <br />
-    <table id="SystemTable0" style="width: 100%;" __designer:mapid="3b" bgcolor="#BBCCEC">
-        <tr __designer:mapid="3c">
-             <td>
+    <table id="SystemTable0" style="width: 100%;">
+        <tr>
+            <td>
                 <table class="inlineBlock" style="width: 32%; top: inherit;">
-                      <tr>
-                        <td>
-                            &nbsp;
+                    <tr>
+                        <td>&nbsp;
                             Players</td>
                         <td valign="top">
-                            <asp:ListBox ID="PlayerLb" runat="server" Width="124px" Height="294px" 
-                                onselectedindexchanged="PlayerListBox_SelectedIndexChanged" AutoPostBack="True"></asp:ListBox>
+                            <asp:ListBox ID="PlayerLb" runat="server" Width="124px" Height="294px"
+                                OnSelectedIndexChanged="PlayerListBox_SelectedIndexChanged" AutoPostBack="True"></asp:ListBox>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            &nbsp;
+                        <td>&nbsp;
                         </td>
-                        <td>
-                            &nbsp;
-                            </td>
+                        <td>&nbsp;
+                        </td>
                     </tr>
                     <tr>
-                        <td align="right">
-                            Name
+                        <td align="right">Name
                         </td>
                         <td>
                             <asp:TextBox ID="PlayerNameTb" runat="server"></asp:TextBox>
@@ -216,49 +219,45 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right">
-                            Passcode
+                        <td align="right">Passcode
                         </td>
                         <td>
                             <asp:TextBox ID="PlayerPasscodeTb" runat="server"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
-                        <td align="right">
-                            Role
+                        <td align="right">Role
                         </td>
                         <td>
                             <asp:DropDownList ID="Role" runat="server" Height="16px" Width="124px">
                             </asp:DropDownList>
                         </td>
                     </tr>
-                     <tr>
-                        <td>
-                            &nbsp;
+                    <tr>
+                        <td>&nbsp;
                             Wechat</td>
                         <td>
                             <asp:TextBox ID="WechatNameTb" runat="server"></asp:TextBox>
-                            </td>
+                        </td>
                     </tr>
-                   <tr>
-                        <td align="right">
-                            Mark
+                    <tr>
+                        <td align="right">Mark
                         </td>
                         <td>
                             <asp:CheckBox ID="PlayerMarkCb" runat="server" />
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            Active
+                        <td>Active
                         </td>
                         <td>
                             <asp:CheckBox ID="PlayerActiveCb" runat="server" />
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            &nbsp;
+                        <td>&nbsp;
+                            <asp:Button ID="AllWechatNameBtn" runat="server" OnClick="AllWechatNameBtn_Click" Text="AllWechatName"
+                                Width="80px" />
                         </td>
                         <td align="center">
                             <asp:Button ID="AddPlayerBtn" runat="server" OnClick="AddPlayerBtn_Click" Text="Add"
@@ -266,8 +265,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            &nbsp;
+                        <td>&nbsp;
                         </td>
                         <td align="center">
                             <asp:Button ID="UpdatePlayerBtn" runat="server" OnClick="UpdatePlayerBtn_Click" Text="Update"
@@ -275,22 +273,19 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            &nbsp;
+                        <td>&nbsp;
                         </td>
-                        <td align="center">
-                            &nbsp;
+                        <td align="center">&nbsp;
                             <asp:Button ID="DeletePlayerBtn" runat="server" OnClick="DeletePlayerBtn_Click" Text="Delete"
                                 Width="80px" />
                         </td>
                     </tr>
                 </table>
             </td>
-          <td class="style5">
+            <td class="style5">
                 <table>
                     <tr>
-                        <td>
-                            Registered Members 
+                        <td>Registered Members 
                         
                             Registered Members 
                         </td>
@@ -305,34 +300,35 @@
                     </tr>
                     <tr>
                         <td align="right">
-                 <table>
-                    <tr>
-                        <td align="left">
-                           <asp:Button ID="SendWelcomeWechatMessageBtn" runat="server" Text="Send Welcome Wechat Message" Width="212px" OnClick="SendWelcomeWechatMessageBtn_Click" />
-                        </td>
-                       <td align="left">
-                           <asp:Button ID="SendPrimaryMemberNotificationBtn" runat="server" Text="Send Primary Member Notificatioin" Width="212px" OnClick="SendPrimaryMemberNotificationWechatMessageBtn_Click" />
-                        </td>
-                       <td align="left">
-                          
-                        </td>
-                        <td>
-                           <asp:Button ID="SavePlayersBtn" runat="server" Text="Save" Width="89px" OnClick="SavePlayersBtn_Click" />
+                            <table>
+                                <tr>
+                                    <td align="left">
+                                        <asp:Button ID="SendWelcomeWechatMessageBtn" runat="server" Text="Send Welcome Wechat Message" Width="212px" OnClick="SendWelcomeWechatMessageBtn_Click" />
+                                    </td>
+                                    <td align="left">
+                                        <asp:Button ID="SendPrimaryMemberNotificationBtn" runat="server" Text="Send Primary Member Notificatioin" Width="212px" OnClick="SendPrimaryMemberNotificationWechatMessageBtn_Click" />
+                                    </td>
+                                    <td align="left"></td>
+                                    <td>
+                                        <asp:Button ID="SavePlayersBtn" runat="server" Text="Save" Width="89px" OnClick="SavePlayersBtn_Click" />
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                 </table>
+                <asp:Panel ID="Panel2" runat="server" Style="margin-bottom: 0px">
+                    <asp:CheckBox ID="ClearPoolMemberCb" runat="server" Text="Clear Pool Member/Dropins" />
+                    <asp:CheckBox ID="ClearPoolGamesCb" runat="server" Text="Clear Pool Games" />
+                    <asp:CheckBox ID="ResetPlayerTransferCb" runat="server" Text="Reset Transfer/Free Dropin" />
+                    <asp:CheckBox ID="ResetPlayerMembershipCb" runat="server" Text="Reset Player Membership" />
+                    <asp:CheckBox ID="ResetUserAuthorizationCb" runat="server" Text="Reset User Authorization" />
+                    <asp:CheckBox ID="ClearPlayerFeeCb" runat="server" Text="Clear Player Fees" />
+                    <asp:Button ID="ResetPoolsBtn" runat="server" OnClick="ResetSystemBtn_Click" Text="Reset"
+                        Width="94px" />
+                </asp:Panel>
+                <br />
             </td>
-         </tr>
+        </tr>
     </table>
-    <asp:Panel ID="Panel2" runat="server" Style="margin-bottom: 0px">
-        <asp:CheckBox ID="ClearPoolMemberCb" runat="server" Text="Clear Pool Member/Dropins" />
-        <asp:CheckBox ID="ClearPoolGamesCb" runat="server" Text="Clear Pool Games" />
-        <asp:CheckBox ID="ResetPlayerTransferCb" runat="server" Text="Reset Transfer/Free Dropin" />
-        <asp:CheckBox ID="ResetPlayerMembershipCb" runat="server" Text="Reset Player Membership" />
-        <asp:CheckBox ID="ResetUserAuthorizationCb" runat="server" Text="Reset User Authorization" />
-        <asp:CheckBox ID="ClearPlayerFeeCb" runat="server" Text="Clear Player Fees" />
-        <asp:Button ID="ResetPoolsBtn" runat="server" OnClick="ResetSystemBtn_Click" Text="Reset"
-            Width="94px" />
-    </asp:Panel>
-    <br />
 </asp:Content>
