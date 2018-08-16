@@ -378,9 +378,9 @@ namespace VballManager
             Player player = FindPlayerById(playerId);
             Player user = operatorId == null ? null : FindPlayerById(operatorId);
             String message = null;
-                                 int players = pool.GetNumberOfAttendingMembers(gameDate) + pool.GetNumberOfDropins(gameDate);
+            int players = pool.GetNumberOfAttendingMembers(gameDate) + pool.GetNumberOfDropins(gameDate);
 
-            String poolAndGameDate = " in pool " + pool.Name + "of " + gameDate.ToString("MM/dd/yyyy") + ". Players: " + players; 
+            String poolAndGameDate = " in pool " + pool.Name + " of " + gameDate.ToString("MM/dd/yyyy") + ". Total player number: " + players;
             if (result == Constants.RESERVED || result == Constants.CANCELLED)
             {
                 if (playerId == operatorId)
@@ -398,7 +398,7 @@ namespace VballManager
                 message = result.ToString();
                 AddNotifyWechatMessage(player, message + poolAndGameDate);
                 AddNotifyWechatMessage(pool, player, message + poolAndGameDate);
-             }
+            }
             else if (result == Constants.MOVED)
             {
                 message = result.ToString() + " " + pool.Name;
@@ -749,7 +749,7 @@ namespace VballManager
 
     public enum Actions
     {
-        View_All_Pools, View_Past_Games, Reserve_All_Pools, Reserve_Pool, Power_Reserve, Admin_Management
+        View_All_Pools, View_Past_Games, Reserve_All_Pools, Reserve_Pool, Power_Reserve, Reserve_After_Locked, Admin_Management
     }
 
     public enum StatsTypes
@@ -777,7 +777,9 @@ namespace VballManager
             if (String.IsNullOrEmpty(player.WechatName))
             {
                 this.name = player.Name;
-            }else{
+            }
+            else
+            {
                 this.at = player.WechatName;
             }
         }
@@ -789,7 +791,7 @@ namespace VballManager
             this.name = name;
             this.message = message;
         }
-        
+
         private DateTime date;
 
         public DateTime Date
@@ -829,5 +831,10 @@ namespace VballManager
             get { return message; }
             set { message = value; }
         }
+
+    }
+    public enum PlayerBooleanProperties
+    {
+        IsRegisterMember, IsActive, Marked
     }
 }

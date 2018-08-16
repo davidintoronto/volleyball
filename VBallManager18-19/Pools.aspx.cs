@@ -19,6 +19,8 @@ namespace VballManager
                 {
                     ((TextBox)Master.FindControl("PasscodeTb")).Text = Session[Constants.SUPER_ADMIN].ToString();
                 }
+                this.DeletePoolBtn.OnClientClick = "if ( !confirm('Are you sure to delete this pool?')) return false;";
+                this.DeleteGameBtn.OnClientClick = "if ( !confirm('Are you sure to delete this game?')) return false;";
                 this.SendPrimaryMemberNotificationBtn.OnClientClick = "if ( !confirm('Are you sure to send primary member notification message to the players?')) return false;";
                 //Bind pool list
                 int selectPoolIndex = this.PoolListbox.SelectedIndex;
@@ -107,9 +109,7 @@ namespace VballManager
                         {
                             if (game.Date >= DateTime.Today)
                             {
-                                Identifier id = new Identifier();
-                                id.PlayerId = item.Value;
-                                  game.Reserved.Add(id);
+                               game.Presences.Add(new Presence(item.Value));
                             }
                         }
                         //Change the player to club registered member and create membership fee it is  club member mode
@@ -209,9 +209,9 @@ namespace VballManager
             {
                 if (game.Date >= DateTime.Today)
                 {
-                    if (game.Reserved.Exists(playerId))
+                    if (game.Presences.Exists(playerId))
                     {
-                        game.Reserved.Remove(playerId);
+                        game.Presences.Remove(playerId);
                     }
                     if (game.Absences.Exists(playerId))
                     {
@@ -327,7 +327,7 @@ namespace VballManager
             foreach (String gameDate in gameDates)
             {
                 DateTime date = DateTime.Parse(gameDate);
-                if (date < DateTime.Today)
+                if (date.Date < Manager.EastDateTimeToday.Date)
                 {
                     //continue;
                 }
@@ -336,9 +336,7 @@ namespace VballManager
                 {
                     if (!member.IsCancelled && !member.IsSuspended)
                     {
-                        Identifier id = new Identifier();
-                        id.PlayerId = member.Id;
-                        game.Reserved.Add(id);
+                        game.Presences.Add(new Presence(member.Id));
                     }
                 }
                 CurrentPool.Games.Add(game);
@@ -559,7 +557,7 @@ namespace VballManager
                         Absence absence = new Absence(member.Id, transfer.TransferId);
                         game.Absences.Add(absence);
                         //Remove from reserved list
-                        game.Reserved.Remove(player.Id);
+                        game.Presences.Remove(player.Id);
                     }
                 }
             }
@@ -576,10 +574,8 @@ namespace VballManager
                             player.Transfers.Remove(transfer);
                         }
                         game.Absences.Remove(player.Id);
-                        //Add back to reserved list
-                        Identifier id = new Identifier();
-                        id.PlayerId = player.Id;
-                        game.Reserved.Add(id);
+                        //Add back to Presences list
+                        game.Presences.Add(new Presence(player.Id));
                     }
                 }
  
@@ -614,7 +610,7 @@ namespace VballManager
                 return;
             }
             Pool pool = Manager.FindPoolById(this.PoolListbox.SelectedValue);
-            String message = "Hi, everyone. We will re-assign the primary members as scheduled. Following " + pool.Members.Count + " players are highly rated by their attendances, they will be the primary members for next few months";
+            String message = "Hi, everyone. We will re-assign the primary members as scheduled. Following " + pool.Members.Count + " players are rated high by their attendances, they will become the primary members for next few months";
             Manager.AddNotifyWechatMessage(pool, message);
             foreach (Member member in pool.Members)
             {

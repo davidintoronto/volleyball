@@ -28,6 +28,7 @@ namespace VballManager
         public const String ACTION_DROPIN_ADD = "Drop-inAdd";
         public const String ACTION_POWER_RESERVE = "PowerReserve";
         public const String ACTION_MOVE_RESERVATION = "MoveReservation";
+        public const String ACTION_NO_SHOW = "NoShow";
         public const String SUPER_ADMIN = "SuperAdmin";
         public const String POOL = "Pool";
         public const String POOL_ID = "abcd";
@@ -47,6 +48,7 @@ namespace VballManager
         public const String POOL_LINK_LIST_PAGE = "PoolLinkList.aspx";
         public const String AUTHORIZE_USER_PAGE = "Authorize.aspx";
         public const String REGISTER_DEVICE_PAGE = "RegisterDevice.aspx";
+        public const String DEFAULT_PAGE = "Default.aspx";
         public const String HOME_PC_IP = "HomePcIp";
     }
 }

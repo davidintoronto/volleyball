@@ -108,7 +108,7 @@
                         <tr>
                             <td align="center" class="style6"  >
                                 <asp:Button ID="UpdatePoolBtn" runat="server" onclick="UpdatePoolBtn_Click" 
-                                    Text="Update" Width="80px" />
+                                    Text="Save" Width="80px" />
                             </td>
                         </tr>
                         <tr>
@@ -395,7 +395,7 @@
                         &nbsp;</td>
                     <td align="center">
                         <asp:Button ID="UpdateGameBtn" runat="server" onclick="UpdateGameBtn_Click" 
-                            Text="Update" Width="80px" />
+                            Text="Save" Width="80px" />
                     </td>
                 </tr>
                 <tr>

@@ -31,51 +31,6 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.Label L1;
         
         /// <summary>
-        /// PasscodeAuthPopup control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.ModalPopupExtender PasscodeAuthPopup;
-        
-        /// <summary>
-        /// LoginPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel LoginPanel;
-        
-        /// <summary>
-        /// CancelBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton CancelBtn;
-        
-        /// <summary>
-        /// PasscodeTb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PasscodeTb;
-        
-        /// <summary>
-        /// OkBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton OkBtn;
-        
-        /// <summary>
         /// PopupModal control.
         /// </summary>
         /// <remarks>

@@ -25,13 +25,6 @@ namespace VballManager
         public int MondayPlayedCount;
         public int FridayPlayedCount;
         public int TotalPlayedCount;
-        private int noShowCount;
-
-        public int NoShowCount
-        {
-            get { return noShowCount; }
-            set { noShowCount = value; }
-        }
   
         public String WechatName
         {

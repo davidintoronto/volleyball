@@ -58,7 +58,6 @@ namespace VballManager
                 //
                 this.DeletePlayerBtn.OnClientClick = "if ( !confirm('Are you sure you want to delete this Player?')) return false;";
                 this.SendWelcomeWechatMessageBtn.OnClientClick = "if ( !confirm('Are you sure to send welcome message to all the Players?')) return false;";
-                this.SendPrimaryMemberNotificationBtn.OnClientClick = "if ( !confirm('Are you sure to send primary member notification message to the players?')) return false;";
                 //Update permits
                 UpdatePermits();
             }
@@ -146,7 +145,18 @@ namespace VballManager
             foreach (ListItem playerItem in this.PlayerListbox.Items)
             {
                 Player player = Manager.FindPlayerById(playerItem.Value);
-                playerItem.Selected = player.IsRegisterdMember;
+                if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.IsRegisterMember.ToString())
+                {
+                    playerItem.Selected = player.IsRegisterdMember;
+                }
+                else if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.IsActive.ToString())
+                {
+                    playerItem.Selected = player.IsActive;
+                }
+                else if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.Marked.ToString())
+                {
+                    playerItem.Selected = player.Marked;
+                }
             }
         }
 
@@ -375,14 +385,25 @@ namespace VballManager
                 Player player = Manager.FindPlayerById(playerItem.Value);
                 if (player != null)
                 {
-                    //Create membership fee entry
-                    if (Manager.ClubMemberMode && !player.IsRegisterdMember && playerItem.Selected)
+                    if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.IsRegisterMember.ToString())
                     {
-                        Fee fee = new Fee(Fee.FEETYPE_CLUB_MEMBERSHIP, Manager.RegisterMembeshipFee);
-                        fee.Date = DateTime.Today;
-                        player.Fees.Add(fee);
+                        //Create membership fee entry
+                        if (Manager.ClubMemberMode && !player.IsRegisterdMember && playerItem.Selected)
+                        {
+                            Fee fee = new Fee(Fee.FEETYPE_CLUB_MEMBERSHIP, Manager.RegisterMembeshipFee);
+                            fee.Date = DateTime.Today;
+                            player.Fees.Add(fee);
+                        }
+                        player.IsRegisterdMember = playerItem.Selected;
                     }
-                    player.IsRegisterdMember = playerItem.Selected;
+                    else if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.IsActive.ToString())
+                    {
+                        player.IsActive = playerItem.Selected;
+                    }
+                    else if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.Marked.ToString())
+                    {
+                        player.Marked = playerItem.Selected;
+                    }
                 }
             }
             DataAccess.Save(Manager);
@@ -443,6 +464,7 @@ namespace VballManager
                     pool.Dropins.Clear();
                     foreach (Game game in pool.Games)
                     {
+                        game.Presences.Clear();
                         game.Absences.Clear();
                         game.Pickups.Clear();
                         game.WaitingList.Clear();
@@ -486,7 +508,7 @@ namespace VballManager
                 {
                     player.Transfers.Clear();
                     player.FreeDropin = 0;
-                    player.Role = 0;
+                    player.Role = (int)Roles.Player;
                 }
             }
             DataAccess.Save(Manager);
@@ -579,6 +601,11 @@ namespace VballManager
                 player.WechatName = "";
             }
             DataAccess.Save(Manager);
+        }
+
+        protected void PlayerPropertiesList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RebindPlayerList();
         }
     }
 }
