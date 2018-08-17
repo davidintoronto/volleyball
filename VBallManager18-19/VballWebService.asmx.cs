@@ -64,6 +64,7 @@ namespace VballManager
                      int memberPlayers = pool.GetNumberOfAttendingMembers(comingGameDate);
                      int dropinPlayers = pool.GetNumberOfDropins(comingGameDate);
                      int availableDropinSpots = pool.MaximumPlayerNumber - memberPlayers - dropinPlayers;
+                     if (availableDropinSpots < 0) availableDropinSpots = 0;
                      String message = pool.DayOfWeek.ToString() + " volleyball reservation starts now for " + publishTo + ". Currently, we have " + availableDropinSpots + (availableDropinSpots<2 ? " dropin spot" : " dropin spots") + " available in pool "+ pool.Name +". Click the link to reserve. " + reservationUrl;
                      Manager.AddNotifyWechatMessage(pool, message);
                  }

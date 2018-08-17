@@ -619,7 +619,7 @@ namespace VballManager
         public int GetNumberOfAttendingMembers(DateTime date)
         {
             Game game = FindGameByDate(date);
-            return GetNumberOfAvaliableMembers() - game.Absences.Count;
+            return game.Presences.Count;
         }
 
         //Get number of members who are not cancelled or suspended.

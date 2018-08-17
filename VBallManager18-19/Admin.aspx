@@ -26,6 +26,9 @@
         .style7 {
             height: 24px;
         }
+        .auto-style1 {
+            width: 177px;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -151,7 +154,7 @@
 
                             </td>
                             <td>Max dropin fee owe</td>
-                            <td>
+                            <td class="auto-style1">
 
                                 <asp:TextBox ID="MaxDropinfeeOweTb" runat="server" Width="66px">0</asp:TextBox>
                                 <asp:CompareValidator ID="CompareValidator9" runat="server" ControlToValidate="MaxDropinfeeOweTb" ErrorMessage="Integers only please" ForeColor="#FF3300" Operator="DataTypeCheck" Type="Integer"></asp:CompareValidator>
@@ -169,7 +172,7 @@
                                 <asp:Label ID="HomeIPLb" runat="server" Text="Label"></asp:Label>
                             </td>
                             <td></td>
-                            <td align="right">
+                            <td align="right" class="auto-style1">
                                 <asp:Button ID="SaveSystemBtn" runat="server" OnClick="SaveSystemBtn_Click" Text="Save Changes" />
                             </td>
                         </tr>
@@ -296,7 +299,7 @@
                                 <asp:ListItem Value="IsRegisterMember">Membership</asp:ListItem>
                                 <asp:ListItem Value="IsActive">Active</asp:ListItem>
                                 <asp:ListItem Value="Marked">Mark</asp:ListItem>
-                            </asp:DropDownList> .........................................................................................................................................................
+                            </asp:DropDownList> ..........................................................................................................
                             <asp:Button ID="SendWelcomeWechatMessageBtn" runat="server" Text="Send Welcome Wechat Message" Width="212px" OnClick="SendWelcomeWechatMessageBtn_Click" />
                         </td>
                     </tr>

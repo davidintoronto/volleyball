@@ -105,7 +105,7 @@ namespace VballManager
             Game comingGame = CurrentPool.FindGameByDate(ComingGameDate);
             while (!this.lockReservation && Validation.DropinSpotAvailable(CurrentPool, ComingGameDate) && comingGame.WaitingList.Count > 0)
             {
-                AssignDropinSpotToWaiting(comingGame);
+                AssignDropinSpotToWaiting(CurrentPool, comingGame);
             }
             //Move coop reservation if current pool needs more players
             if (!this.lockReservation)
@@ -245,25 +245,62 @@ namespace VballManager
             return false;
         }
 
-        private void AssignDropinSpotToWaiting(Game comingGame)
+        private void AssignDropinSpotToWaiting(Pool thePool, Game comingGame)
         {
-            String playerId = comingGame.WaitingList[0].PlayerId;// CurrentPool.AssignASpotToWaitingList(ComingGameDate);
-            if (CurrentPool.Members.Exists(member => member.Id == playerId))
+            Waiting waiting = comingGame.WaitingList[0];
+            String playerId = waiting.PlayerId;// CurrentPool.AssignASpotToWaitingList(ComingGameDate);
+            if (thePool.Members.Exists(member => member.Id == playerId) && !comingGame.Presences.Exists(playerId))
             {
                 comingGame.Presences.Add(new Presence(playerId));
                 comingGame.Absences.Remove(playerId);
             }
-            else
+            else if (thePool.Dropins.Exists(dropin => dropin.Id == playerId) && !comingGame.Pickups.Exists(playerId))
             {
                 CostReference reference = CreateDropinFee(playerId);
                 Pickup pickup = new Pickup(playerId, reference);
-                pickup.OperatorId = comingGame.WaitingList[0].OperatorId;
+                pickup.OperatorId = waiting.OperatorId;
                 comingGame.Pickups.Add(pickup);
             }
-            Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.WAITING_TO_RESERVED, CurrentPool, CurrentPool, ComingGameDate);
-            LogHistory log = new LogHistory(DateTime.Now, comingGame.Date, "System", CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve dropin", Manager.FindPlayerById(comingGame.WaitingList[0].OperatorId).Name);
+            else 
+            {
+                return;
+            }
+            Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.WAITING_TO_RESERVED, thePool, thePool, ComingGameDate);
+            LogHistory log = new LogHistory(DateTime.Now, comingGame.Date, "System", thePool.Name, Manager.FindPlayerById(playerId).Name, "Reserve dropin", Manager.FindPlayerById(waiting.OperatorId).Name);
             Manager.Logs.Add(log);
             comingGame.WaitingList.Remove(playerId);
+            //Cancel the member spot in another pool on same day
+            foreach (Pool pool in Manager.Pools)
+            {
+                if (pool.Name != thePool.Name && pool.DayOfWeek == thePool.DayOfWeek && pool.Members.Exists(member => member.Id == playerId))
+                {
+                    Game comingGameOfOtherPool = pool.FindGameByDate(ComingGameDate);
+                    if (comingGameOfOtherPool != null && comingGameOfOtherPool.Presences.Exists(playerId))
+                    {
+                        Absence absence = new Absence(playerId);
+                        if (!Manager.ClubMemberMode)
+                        {
+                            Transfer transfer = new Transfer(ComingGameDate);
+                            Player player = Manager.FindPlayerById(playerId);
+                            player.Transfers.Add(transfer);
+                            absence.TransferId = transfer.TransferId;
+                        }
+                        comingGameOfOtherPool.Absences.Add(absence);
+                        //Remove from reserved list
+                        comingGameOfOtherPool.Presences.Remove(playerId);
+                        //Log and save
+                        Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.CANCELLED, pool, pool, ComingGameDate);
+                        log = new LogHistory(DateTime.Now, comingGame.Date, "System", pool.Name, Manager.FindPlayerById(playerId).Name, "Cancel member", Manager.FindPlayerById(waiting.OperatorId).Name);
+                        Manager.Logs.Add(log);
+                        //Assgin a spot to the first one on waiting list
+                        if (!this.lockReservation && comingGameOfOtherPool.WaitingList.Count > 0 && Validation.DropinSpotAvailable(pool, ComingGameDate))
+                        {
+                            AssignDropinSpotToWaiting(pool, comingGameOfOtherPool);
+                        }
+                    }
+                }
+            }
+            DataAccess.Save(Manager);
         }
 
         private void FillNavTable()
@@ -799,7 +836,7 @@ namespace VballManager
                 //Assgin a spot to the first one on waiting list
                 if (!this.lockReservation && game.WaitingList.Count > 0 && Validation.DropinSpotAvailable(pool, ComingGameDate))
                 {
-                    AssignDropinSpotToWaiting(game);
+                    AssignDropinSpotToWaiting(pool, game);
                 }
                 DataAccess.Save(Manager);
                 if (!isNoShow && this.lockReservation)
@@ -971,8 +1008,9 @@ namespace VballManager
                     {
                         if (pool.Members.Exists(member => member.Id == playerId) && !pool.FindGameByDate(ComingGameDate).Absences.Exists(playerId))
                         {
-                            ShowMessage("Sorry, But you have aleady reserved a spot in pool " + pool.Name + " on the same day. Cancel that spot before adding onto the waiting list");
-                            return;
+                            //Changed to allow holding a member spot in another pool when putting into waiting list  
+                           // ShowMessage("Sorry, But you have aleady reserved a spot in pool " + pool.Name + " on the same day. Cancel that spot before adding onto the waiting list");
+                            //return;
                         }
                         if (pool.Dropins.Exists(dropin => dropin.Id == playerId) && pool.FindGameByDate(ComingGameDate).Pickups.Exists(playerId))
                         {
@@ -1304,6 +1342,7 @@ namespace VballManager
         {
             CancelDropinFee(CurrentPool, pickup);
         }
+
         protected void CancelDropin_Click(object sender, EventArgs e)
         {
             if (lockReservation && !Manager.ActionPermitted(Actions.Reserve_After_Locked, CurrentUser.Role))
@@ -1365,7 +1404,7 @@ namespace VballManager
                 //Move first one in waiting list into dropin list
                 if (!this.lockReservation && game.WaitingList.Count > 0 && Validation.DropinSpotAvailable(CurrentPool, ComingGameDate))
                 {
-                    AssignDropinSpotToWaiting(game);
+                    AssignDropinSpotToWaiting(CurrentPool, game);
                 }
                 DataAccess.Save(Manager);
                 this.PopupModal.Hide();
@@ -1436,7 +1475,8 @@ namespace VballManager
                     //Is pool member
                     if (pool.Members.Exists(attendee => attendee.Id == playerId))
                     {
-                        if (!pool.FindGameByDate(ComingGameDate).Absences.Exists(playerId))
+                        Game gameInAnotherPool = pool.FindGameByDate(ComingGameDate);
+                        if (gameInAnotherPool.Presences.Exists(playerId))
                         {
                             Absence absence = new Absence(playerId);
                             if (!Manager.ClubMemberMode)
@@ -1445,7 +1485,9 @@ namespace VballManager
                                 player.Transfers.Add(transfer);
                                 absence.TransferId = transfer.TransferId;
                             }
-                            pool.FindGameByDate(ComingGameDate).Absences.Add(absence);
+                            gameInAnotherPool.Absences.Add(absence);
+                            //Remove it from presences
+                            gameInAnotherPool.Presences.Remove(playerId);
                             Manager.AddReservationNotifyWechatMessage(playerId, operatorId, Constants.MOVED, destPool, pool, ComingGameDate);
                             Manager.Logs.Add(CreateLog(DateTime.Now, ComingGameDate, GetUserIP(), pool.Name, Manager.FindPlayerById(playerId).Name, "Cancel member", "System"));
                             break;
@@ -1484,6 +1526,8 @@ namespace VballManager
                     if (!transfer.IsUsed) player.Transfers.Remove(transfer);
                 }
                 game.Absences.Remove(playerId);
+                //Add into presences
+                game.Presences.Add(new Presence(playerId));
                 Manager.AddReservationNotifyWechatMessage(playerId, playerId, Constants.RESERVED, destPool, destPool, ComingGameDate);
                 Manager.Logs.Add(CreateLog(DateTime.Now, game.Date, GetUserIP(), destPool.Name, Manager.FindPlayerById(playerId).Name, "Reserve member", "System"));
             }
