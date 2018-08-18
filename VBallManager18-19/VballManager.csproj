@@ -72,78 +72,9 @@
     <Content Include="BillingDetail.aspx" />
     <Content Include="Authen.aspx" />
     <Content Include="Authorize.aspx" />
+    <Content Include="Icons\noShow.png" />
+    <Content Include="Icons\toConfirm.png" />
     <Content Include="RegisterDevice.aspx" />
-    <Content Include="Icons\number_0.png" />
-    <Content Include="Icons\number_1.png" />
-    <Content Include="Icons\number_10.png" />
-    <Content Include="Icons\number_11.png" />
-    <Content Include="Icons\number_12.png" />
-    <Content Include="Icons\number_13.png" />
-    <Content Include="Icons\number_14.png" />
-    <Content Include="Icons\number_15.png" />
-    <Content Include="Icons\number_16.png" />
-    <Content Include="Icons\number_17.png" />
-    <Content Include="Icons\number_18.png" />
-    <Content Include="Icons\number_19.png" />
-    <Content Include="Icons\number_2.png" />
-    <Content Include="Icons\number_20.png" />
-    <Content Include="Icons\number_21.png" />
-    <Content Include="Icons\number_22.png" />
-    <Content Include="Icons\number_23.png" />
-    <Content Include="Icons\number_24.png" />
-    <Content Include="Icons\number_25.png" />
-    <Content Include="Icons\number_26.png" />
-    <Content Include="Icons\number_27.png" />
-    <Content Include="Icons\number_28.png" />
-    <Content Include="Icons\number_29.png" />
-    <Content Include="Icons\number_3.png" />
-    <Content Include="Icons\number_30.png" />
-    <Content Include="Icons\number_31.png" />
-    <Content Include="Icons\number_32.png" />
-    <Content Include="Icons\number_33.png" />
-    <Content Include="Icons\number_34.png" />
-    <Content Include="Icons\number_35.png" />
-    <Content Include="Icons\number_36.png" />
-    <Content Include="Icons\number_37.png" />
-    <Content Include="Icons\number_38.png" />
-    <Content Include="Icons\number_39.png" />
-    <Content Include="Icons\number_4.png" />
-    <Content Include="Icons\number_40.png" />
-    <Content Include="Icons\number_41.png" />
-    <Content Include="Icons\number_42.png" />
-    <Content Include="Icons\number_43.png" />
-    <Content Include="Icons\number_44.png" />
-    <Content Include="Icons\number_45.png" />
-    <Content Include="Icons\number_46.png" />
-    <Content Include="Icons\number_47.png" />
-    <Content Include="Icons\number_48.png" />
-    <Content Include="Icons\number_49.png" />
-    <Content Include="Icons\number_5.png" />
-    <Content Include="Icons\number_50.png" />
-    <Content Include="Icons\number_51.png" />
-    <Content Include="Icons\number_52.png" />
-    <Content Include="Icons\number_53.png" />
-    <Content Include="Icons\number_54.png" />
-    <Content Include="Icons\number_55.png" />
-    <Content Include="Icons\number_56.png" />
-    <Content Include="Icons\number_57.png" />
-    <Content Include="Icons\number_58.png" />
-    <Content Include="Icons\number_59.png" />
-    <Content Include="Icons\number_6.png" />
-    <Content Include="Icons\number_60.png" />
-    <Content Include="Icons\number_61.png" />
-    <Content Include="Icons\number_62.png" />
-    <Content Include="Icons\number_63.png" />
-    <Content Include="Icons\number_64.png" />
-    <Content Include="Icons\number_65.png" />
-    <Content Include="Icons\number_66.png" />
-    <Content Include="Icons\number_67.png" />
-    <Content Include="Icons\number_68.png" />
-    <Content Include="Icons\number_69.png" />
-    <Content Include="Icons\number_7.png" />
-    <Content Include="Icons\number_70.png" />
-    <Content Include="Icons\number_8.png" />
-    <Content Include="Icons\number_9.png" />
     <Content Include="IPWebservice.asmx" />
     <Content Include="PoolStatistics.aspx" />
     <Content Include="RequestRegisterLink.aspx" />
@@ -166,7 +97,6 @@
     <Content Include="Icons\login.png" />
     <Content Include="Icons\Blackball.png" />
     <Content Include="Icons\Newbie.png" />
-    <Content Include="Icons\Out.png" />
     <Content Include="Icons\Remove.png" />
     <Content Include="Icons\Save.png" />
     <Content Include="Icons\Colorball.png" />
@@ -413,7 +343,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>52870</DevelopmentServerPort>
+          <DevelopmentServerPort>19040</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/VBallManager</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

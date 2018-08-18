@@ -26,6 +26,9 @@
         .style7 {
             height: 24px;
         }
+        .auto-style1 {
+            width: 177px;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -151,7 +154,7 @@
 
                             </td>
                             <td>Max dropin fee owe</td>
-                            <td>
+                            <td class="auto-style1">
 
                                 <asp:TextBox ID="MaxDropinfeeOweTb" runat="server" Width="66px">0</asp:TextBox>
                                 <asp:CompareValidator ID="CompareValidator9" runat="server" ControlToValidate="MaxDropinfeeOweTb" ErrorMessage="Integers only please" ForeColor="#FF3300" Operator="DataTypeCheck" Type="Integer"></asp:CompareValidator>
@@ -169,7 +172,7 @@
                                 <asp:Label ID="HomeIPLb" runat="server" Text="Label"></asp:Label>
                             </td>
                             <td></td>
-                            <td align="right">
+                            <td align="right" class="auto-style1">
                                 <asp:Button ID="SaveSystemBtn" runat="server" OnClick="SaveSystemBtn_Click" Text="Save Changes" />
                             </td>
                         </tr>
@@ -200,7 +203,7 @@
                         <td>&nbsp;
                             Players</td>
                         <td valign="top">
-                            <asp:ListBox ID="PlayerLb" runat="server" Width="124px" Height="294px"
+                            <asp:ListBox ID="PlayerLb" runat="server" Width="124px" Height="332px"
                                 OnSelectedIndexChanged="PlayerListBox_SelectedIndexChanged" AutoPostBack="True"></asp:ListBox>
                         </td>
                     </tr>
@@ -256,8 +259,6 @@
                     </tr>
                     <tr>
                         <td>&nbsp;
-                            <asp:Button ID="AllWechatNameBtn" runat="server" OnClick="AllWechatNameBtn_Click" Text="AllWechatName"
-                                Width="80px" />
                         </td>
                         <td align="center">
                             <asp:Button ID="AddPlayerBtn" runat="server" OnClick="AddPlayerBtn_Click" Text="Add"
@@ -268,7 +269,7 @@
                         <td>&nbsp;
                         </td>
                         <td align="center">
-                            <asp:Button ID="UpdatePlayerBtn" runat="server" OnClick="UpdatePlayerBtn_Click" Text="Update"
+                            <asp:Button ID="UpdatePlayerBtn" runat="server" OnClick="UpdatePlayerBtn_Click" Text="Save"
                                 Width="80px" />
                         </td>
                     </tr>
@@ -280,14 +281,26 @@
                                 Width="80px" />
                         </td>
                     </tr>
+                    <tr>
+                        <td>&nbsp;
+                        </td>
+                        <td align="center">
+                            <asp:Button ID="AllWechatNameBtn" runat="server" OnClick="AllWechatNameBtn_Click" Text="Reset Wechat"
+                                Width="108px" Visible="False" />
+                        </td>
+                    </tr>
                 </table>
             </td>
             <td class="style5">
                 <table>
                     <tr>
-                        <td>Registered Members 
-                        
-                            Registered Members 
+                        <td>
+                            <asp:DropDownList ID="PlayerPropertiesList" runat="server" AutoPostBack="True" OnSelectedIndexChanged="PlayerPropertiesList_SelectedIndexChanged" Width="194px">
+                                <asp:ListItem Value="IsRegisterMember">Membership</asp:ListItem>
+                                <asp:ListItem Value="IsActive">Active</asp:ListItem>
+                                <asp:ListItem Value="Marked">Mark</asp:ListItem>
+                            </asp:DropDownList> ..........................................................................................................
+                            <asp:Button ID="SendWelcomeWechatMessageBtn" runat="server" Text="Send Welcome Wechat Message" Width="212px" OnClick="SendWelcomeWechatMessageBtn_Click" />
                         </td>
                     </tr>
                     <tr>
@@ -300,35 +313,35 @@
                     </tr>
                     <tr>
                         <td align="right">
-                            <table>
-                                <tr>
-                                    <td align="left">
-                                        <asp:Button ID="SendWelcomeWechatMessageBtn" runat="server" Text="Send Welcome Wechat Message" Width="212px" OnClick="SendWelcomeWechatMessageBtn_Click" />
-                                    </td>
-                                    <td align="left">
-                                        <asp:Button ID="SendPrimaryMemberNotificationBtn" runat="server" Text="Send Primary Member Notificatioin" Width="212px" OnClick="SendPrimaryMemberNotificationWechatMessageBtn_Click" />
-                                    </td>
-                                    <td align="left"></td>
-                                    <td>
-                                        <asp:Button ID="SavePlayersBtn" runat="server" Text="Save" Width="89px" OnClick="SavePlayersBtn_Click" />
-                                    </td>
-                                </tr>
-                            </table>
+                            <asp:Button ID="SavePlayersBtn" runat="server" Text="Save" Width="89px" OnClick="SavePlayersBtn_Click" />
+                        </td>
+                    </tr>
+                     <tr>
+                        <td align="right">
+                         </td>
+                    </tr>
+                    <tr>
+                        <td align="right">
+                            &nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:Panel ID="Panel2" runat="server" Style="margin-bottom: 0px">
+                                <asp:CheckBox ID="ClearPoolMemberCb" runat="server" Text="Clear Pool Member/Dropins" />
+                                <asp:CheckBox ID="ClearPoolGamesCb" runat="server" Text="Clear Pool Games" />
+                                <asp:CheckBox ID="ResetPlayerTransferCb" runat="server" Text="Reset Transfer/Free Dropin/Role" />
+                                <asp:CheckBox ID="ResetPlayerMembershipCb" runat="server" Text="Reset Player Membership" />
+                                <asp:CheckBox ID="ResetUserAuthorizationCb" runat="server" Text="Reset User Authorization" />
+                                <asp:CheckBox ID="ClearPlayerFeeCb" runat="server" Text="Clear Player Fees" />
+                                <asp:Button ID="ResetPoolsBtn" runat="server" OnClick="ResetSystemBtn_Click" Text="Reset"
+                                    Width="94px" />
+                            </asp:Panel>
+                            <br />
                         </td>
                     </tr>
                 </table>
-                <asp:Panel ID="Panel2" runat="server" Style="margin-bottom: 0px">
-                    <asp:CheckBox ID="ClearPoolMemberCb" runat="server" Text="Clear Pool Member/Dropins" />
-                    <asp:CheckBox ID="ClearPoolGamesCb" runat="server" Text="Clear Pool Games" />
-                    <asp:CheckBox ID="ResetPlayerTransferCb" runat="server" Text="Reset Transfer/Free Dropin" />
-                    <asp:CheckBox ID="ResetPlayerMembershipCb" runat="server" Text="Reset Player Membership" />
-                    <asp:CheckBox ID="ResetUserAuthorizationCb" runat="server" Text="Reset User Authorization" />
-                    <asp:CheckBox ID="ClearPlayerFeeCb" runat="server" Text="Clear Player Fees" />
-                    <asp:Button ID="ResetPoolsBtn" runat="server" OnClick="ResetSystemBtn_Click" Text="Reset"
-                        Width="94px" />
-                </asp:Panel>
-                <br />
             </td>
+
         </tr>
     </table>
 </asp:Content>

@@ -452,9 +452,9 @@ namespace VballManager
                 {
                     Transfer transfer = player.FindTransferById(absence.TransferId);
                     player.Transfers.Remove(transfer);
-                    //Add to reserved list
-                    game.Reserved.Add(new Identifier(playerId));
                 }
+                //Add to reserved list
+                game.Presences.Add(new Presence(playerId));
                 game.Absences.Remove(absence);
             }
             else
@@ -484,7 +484,7 @@ namespace VballManager
                 }
                 game.Absences.Add(absence);
                 //Remove from reserved list
-                game.Reserved.Remove(playerId);
+                game.Presences.Remove(playerId);
             }
             DataAccess.Save(Manager);
             Response.Redirect(Request.RawUrl);

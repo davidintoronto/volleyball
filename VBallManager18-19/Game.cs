@@ -5,32 +5,21 @@ using System.Web;
 
 namespace VballManager
 {
-
-
- 
-
     public class Game
     {
         private DateTime date;
-        private VList<Identifier> reserved = new VList<Identifier>();
+        private VList<Presence> presences = new VList<Presence>();
         private VList<Absence> absences = new VList<Absence>();
         private VList<Pickup> pickups = new VList<Pickup>();
         private VList<Waiting> waitingList = new VList<Waiting>();
-        private VList<Identifier> noShow = new VList<Identifier>();
 
         public Game()
         { }
 
-      public VList<Identifier> NoShow
+       public VList<Presence> Presences
         {
-            get { return noShow; }
-            set { noShow = value; }
-        }
-
-       public VList<Identifier> Reserved
-        {
-            get { return reserved; }
-            set { reserved = value; }
+            get { return presences; }
+            set { presences = value; }
         }
        public VList<Waiting> WaitingList
         {
@@ -212,6 +201,23 @@ namespace VballManager
         }
     }
 
+    public class Presence : Identifier
+    {
+        public Presence() { }
+        public Presence(String playerId)
+        {
+            this.playerId = playerId;
+        }
+ 
+         private bool isNoShow;
+
+         public bool IsNoShow
+        {
+            get { return isNoShow; }
+            set { isNoShow = value; }
+        }
+    }
+
     public class Pickup : Waiting
     {
         public Pickup() { }
@@ -222,7 +228,14 @@ namespace VballManager
             this.costReference = costReference;
         }
 
+        private bool isNoShow;
 
+        public bool IsNoShow
+        {
+            get { return isNoShow; }
+            set { isNoShow = value; }
+        }
+ 
         public CostReference CostReference
         {
             get { return costReference; }

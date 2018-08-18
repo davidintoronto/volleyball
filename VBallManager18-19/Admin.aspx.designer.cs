@@ -355,15 +355,6 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.CheckBox PlayerActiveCb;
         
         /// <summary>
-        /// AllWechatNameBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button AllWechatNameBtn;
-        
-        /// <summary>
         /// AddPlayerBtn control.
         /// </summary>
         /// <remarks>
@@ -391,13 +382,22 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.Button DeletePlayerBtn;
         
         /// <summary>
-        /// PlayerListbox control.
+        /// AllWechatNameBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList PlayerListbox;
+        protected global::System.Web.UI.WebControls.Button AllWechatNameBtn;
+        
+        /// <summary>
+        /// PlayerPropertiesList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList PlayerPropertiesList;
         
         /// <summary>
         /// SendWelcomeWechatMessageBtn control.
@@ -409,13 +409,13 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.Button SendWelcomeWechatMessageBtn;
         
         /// <summary>
-        /// SendPrimaryMemberNotificationBtn control.
+        /// PlayerListbox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SendPrimaryMemberNotificationBtn;
+        protected global::System.Web.UI.WebControls.CheckBoxList PlayerListbox;
         
         /// <summary>
         /// SavePlayersBtn control.

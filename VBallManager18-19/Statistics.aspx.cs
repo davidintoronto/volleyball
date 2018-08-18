@@ -128,7 +128,7 @@ namespace VballManager
                     {
                         foreach (Game game in pool.Games)
                         {
-                            if (game.Date < DateTime.Today && game.Reserved.Exists(player.Id) && !game.NoShow.Exists(player.Id))
+                            if (game.Date < DateTime.Today && game.Presences.Items.Exists(presence => presence.PlayerId==player.Id && !presence.IsNoShow))
                             {
                                 playedCount++;
                             }
@@ -138,7 +138,7 @@ namespace VballManager
                     {
                         foreach (Game game in pool.Games)
                         {
-                            if (game.Pickups.Exists(player.Id))
+                            if (game.Pickups.Items.Exists(pickup=>pickup.PlayerId==player.Id &&!pickup.IsNoShow))
                             {
                                 playedCount++;
                             }
