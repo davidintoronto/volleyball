@@ -13,7 +13,7 @@ namespace VballManager
         {
             if (Request.Cookies[Constants.PRIMARY_USER] != null)
             {
-                String existingUserId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                String existingUserId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
                 Player user = Manager.FindPlayerById(existingUserId);
                 if (user != null)
                 {
@@ -44,7 +44,7 @@ namespace VballManager
             this.ReserveLinkTable.Rows.Clear();
             foreach (Pool pool in Manager.Pools)
             {
-                if (Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) || pool.Members.Exists(attendee => attendee.Id == currentUser.Id) || pool.Dropins.Exists(attendee => attendee.Id == currentUser.Id))
+                if (Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) || pool.Members.Exists(attendee => attendee.PlayerId == currentUser.Id) || pool.Dropins.Exists(attendee => attendee.PlayerId == currentUser.Id))
                 {
                     TableRow row = new TableRow();
                     TableCell cell = new TableCell();

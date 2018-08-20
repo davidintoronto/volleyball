@@ -239,7 +239,7 @@ namespace VballManager
                     if (!player.IsActive) continue;
                     foreach (Pool pool in Pools)
                     {
-                        if (pool.Members.Exists(attendee => attendee.Id == player.Id) || pool.Dropins.Exists(attendee => attendee.Id == player.Id))
+                        if (pool.Members.Exists(attendee => attendee.PlayerId == player.Id) || pool.Dropins.Exists(attendee => attendee.PlayerId == player.Id))
                         {
                             activePlayers.Add(player);
                             break;
@@ -277,9 +277,9 @@ namespace VballManager
         public List<Player> FindPlayersByAttendees(List<Member> attendees)
         {
             List<Player> poolPlayers = new List<Player>();
-            foreach (Attendee attendee in attendees)
+            foreach (Person attendee in attendees)
             {
-                Player player = FindPlayerById(attendee.Id);
+                Player player = FindPlayerById(attendee.PlayerId);
                 if (player != null)
                 {
                     poolPlayers.Add(player);
@@ -291,9 +291,9 @@ namespace VballManager
         public List<Player> FindPlayersByAttendees(List<Dropin> attendees)
         {
             List<Player> poolPlayers = new List<Player>();
-            foreach (Attendee attendee in attendees)
+            foreach (Person attendee in attendees)
             {
-                Player player = FindPlayerById(attendee.Id);
+                Player player = FindPlayerById(attendee.PlayerId);
                 poolPlayers.Add(player);
             }
             return poolPlayers;
@@ -318,6 +318,13 @@ namespace VballManager
             {
                 pool.RemoveDropin(id);
                 pool.RemoveMember(id);
+                foreach (Game game in pool.Games)
+                {
+                    game.Absences.Remove(player.Id);
+                    game.Presences.Remove(player.Id);
+                    game.Pickups.Remove(player.Id);
+                    game.WaitingList.Remove(player.Id);
+                }
             }
             players.Remove(player);
         }
@@ -448,8 +455,8 @@ namespace VballManager
         private int daysToReserve = 0;
         // private List<String> members = new List<String>();
         // private List<String> dropins = new List<String>();
-        private List<Member> members = new List<Member>();
-        private List<Dropin> dropins = new List<Dropin>();
+        private VList<Member> members = new VList<Member>();
+        private VList<Dropin> dropins = new VList<Dropin>();
         private String wildcardPlayer;
 
         private List<Game> games = new List<Game>();
@@ -553,7 +560,7 @@ namespace VballManager
             set { scheduledGameTime = value; }
         }
 
-        public List<Dropin> Dropins
+        public VList<Dropin> Dropins
         {
             get { return dropins; }
             set { dropins = value; }
@@ -585,7 +592,7 @@ namespace VballManager
         }
 
 
-        public List<Member> Members
+        public VList<Member> Members
         {
             get { return members; }
             set { members = value; }
@@ -623,17 +630,10 @@ namespace VballManager
         }
 
         //Get number of members who are not cancelled or suspended.
-        public int GetNumberOfAvaliableMembers()
+        public int GetNumberOfActiveMembers()
         {
-            int count = members.Count;
-            foreach (Member member in Members)
-            {
-                if (member.IsCancelled)// || member.IsSuspended)
-                {
-                    count--;
-                }
-            }
-            return count;
+            return members.Items.FindAll(member => !member.IsCancelled).Count;
+ 
         }
 
         public int GetNumberOfOnHoldMemberSpots(DateTime date)
@@ -663,7 +663,7 @@ namespace VballManager
             int coop = 0;
             foreach (Pickup pickup in game.Pickups.Items)
             {
-                Dropin dropin = this.Dropins.Find(drop_in => drop_in.Id == pickup.PlayerId);
+                Dropin dropin = this.Dropins.Find(drop_in => drop_in.PlayerId == pickup.PlayerId);
                 if (dropin != null && dropin.IsCoop) coop++;
             }
             return coop;
@@ -677,16 +677,16 @@ namespace VballManager
 
         public void RemoveMember(String id)
         {
-            if (Members.Exists(member => member.Id == id))
+            if (Members.Exists(member => member.PlayerId == id))
             {
-                Members.Remove(Members.Find(member => member.Id == id));
+                Members.Remove(Members.Find(member => member.PlayerId == id));
             }
         }
         public void RemoveDropin(String id)
         {
-            if (Dropins.Exists(dropin => dropin.Id == id))
+            if (Dropins.Exists(dropin => dropin.PlayerId == id))
             {
-                Dropins.Remove(Dropins.Find(dropin => dropin.Id == id));
+                Dropins.Remove(Dropins.Find(dropin => dropin.PlayerId == id));
             }
         }
 
@@ -749,7 +749,7 @@ namespace VballManager
 
     public enum Actions
     {
-        View_All_Pools, View_Past_Games, Reserve_All_Pools, Reserve_Pool, Power_Reserve, Reserve_After_Locked, Admin_Management
+        View_All_Pools, View_Past_Games, View_Future_Games, Add_New_Player, Reserve_All_Pools, Reserve_Pool, Reserve_Player, Power_Reserve, Reserve_After_Locked, Admin_Management
     }
 
     public enum StatsTypes

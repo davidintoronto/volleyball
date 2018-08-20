@@ -69,13 +69,13 @@ namespace VballManager
                     fridayCell.Text = player.FridayPlayedCount.ToString();
                     row.Cells.Add(fridayCell);
                     //
-                    if (Manager.FindPoolByName("D").Members.Exists(member => member.Id == player.Id) || Manager.FindPoolByName("D").Dropins.Exists(dropin => dropin.Id == player.Id))
+                    if (Manager.FindPoolByName("D").Members.Exists(member => member.PlayerId == player.Id) || Manager.FindPoolByName("D").Dropins.Exists(dropin => dropin.PlayerId == player.Id))
                     {
                         orderCell.Text = (dorder++).ToString();
                        this.DPoolTable.Rows.Add(row);
  
                     }
-                    else if (Manager.FindPoolByName("C").Members.Exists(member => member.Id == player.Id) || Manager.FindPoolByName("C").Dropins.Exists(dropin => dropin.Id == player.Id))
+                    else if (Manager.FindPoolByName("C").Members.Exists(member => member.PlayerId == player.Id) || Manager.FindPoolByName("C").Dropins.Exists(dropin => dropin.PlayerId == player.Id))
                     {
                         orderCell.Text = (corder++).ToString();
                         this.CPoolTable.Rows.Add(row);
@@ -101,13 +101,13 @@ namespace VballManager
                     fridayCell.Text = player.TotalPlayedCount.ToString();
                     row.Cells.Add(fridayCell);
                     //
-                    if (Manager.FindPoolByName("D").Members.Exists(member => member.Id == player.Id) || Manager.FindPoolByName("D").Dropins.Exists(dropin => dropin.Id == player.Id))
+                    if (Manager.FindPoolByName("D").Members.Exists(member => member.PlayerId == player.Id) || Manager.FindPoolByName("D").Dropins.Exists(dropin => dropin.PlayerId == player.Id))
                     {
                         orderCell.Text = (dorder++).ToString();
                         this.DPoolTotalTable.Rows.Add(row);
 
                     }
-                    else if (Manager.FindPoolByName("C").Members.Exists(member => member.Id == player.Id) || Manager.FindPoolByName("C").Dropins.Exists(dropin => dropin.Id == player.Id))
+                    else if (Manager.FindPoolByName("C").Members.Exists(member => member.PlayerId == player.Id) || Manager.FindPoolByName("C").Dropins.Exists(dropin => dropin.PlayerId == player.Id))
                     {
                         orderCell.Text = (corder++).ToString();
                         this.CPoolTotalTable.Rows.Add(row);
@@ -124,7 +124,7 @@ namespace VballManager
             {
                 if (pool.DayOfWeek == day)
                 {
-                    if (pool.Members.Exists(member => member.Id == player.Id))
+                    if (pool.Members.Exists(member => member.PlayerId == player.Id))
                     {
                         foreach (Game game in pool.Games)
                         {

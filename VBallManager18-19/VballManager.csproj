@@ -173,6 +173,18 @@
     <Compile Include="Authorize.aspx.designer.cs">
       <DependentUpon>Authorize.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Reserve.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Cancel.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Handler.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.Core.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="RegisterDevice.aspx.cs">
       <DependentUpon>RegisterDevice.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -326,7 +338,9 @@
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Reserve.dgml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Site.Master" />
   </ItemGroup>

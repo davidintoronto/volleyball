@@ -8,15 +8,29 @@ namespace VballManager
     public class Game
     {
         private DateTime date;
-        private VList<Presence> presences = new VList<Presence>();
-        private VList<Absence> absences = new VList<Absence>();
-        private VList<Pickup> pickups = new VList<Pickup>();
+        private VList<Attendee> members = new VList<Attendee>();
+       private VList<Attendee> dropins = new VList<Attendee>();
+      // private VList<Presence> presences = new VList<Presence>();
+      //  private VList<Absence> absences = new VList<Absence>();
+      //  private VList<Pickup> pickups = new VList<Pickup>();
         private VList<Waiting> waitingList = new VList<Waiting>();
 
         public Game()
         { }
 
-       public VList<Presence> Presences
+        public VList<Attendee> Members
+        {
+            get { return members; }
+            set { members = value; }
+        }
+ 
+        public VList<Attendee> Dropins
+        {
+            get { return dropins; }
+            set { dropins = value; }
+        }
+ 
+        public VList<Presence> Presences
         {
             get { return presences; }
             set { presences = value; }
@@ -178,14 +192,14 @@ namespace VballManager
         }
     }
 
-    public class Absence : Identifier
+    public class iAbsence : Identifier
     {
-        public Absence() { }
-        public Absence(String playerId)
+        public iAbsence() { }
+        public iAbsence(String playerId)
         {
             this.playerId = playerId;
          }
-        public Absence(String playerId, String transferId)
+        public iAbsence(String playerId, String transferId)
         {
             this.playerId = playerId;
             this.transferId = transferId;
@@ -201,10 +215,43 @@ namespace VballManager
         }
     }
 
-    public class Presence : Identifier
+    public enum InOutNoshow
     {
-        public Presence() { }
-        public Presence(String playerId)
+        In, Out, NoShow
+    }
+
+    public class Attendee : Waiting
+    {
+        private InOutNoshow status = InOutNoshow.Out;
+        private CostReference costReference;
+
+        public Attendee() { }
+        public Attendee(String playerId)
+        {
+            this.playerId = playerId;
+        }
+        public Attendee(String playerId, InOutNoshow status)
+        {
+            this.playerId = playerId;
+            this.status = status;
+        }
+
+        public InOutNoshow Status
+        {
+            get { return status; }
+            set { status = value; }
+        }
+
+        public CostReference CostReference
+        {
+            get { return costReference; }
+            set { costReference = value; }
+        }
+    }
+    public class iPresence : Identifier
+    {
+        public iPresence() { }
+        public iPresence(String playerId)
         {
             this.playerId = playerId;
         }
@@ -218,11 +265,11 @@ namespace VballManager
         }
     }
 
-    public class Pickup : Waiting
+    public class iPickup : Waiting
     {
-        public Pickup() { }
+        public iPickup() { }
         private CostReference costReference;
-        public Pickup(String playerId, CostReference costReference)
+        public iPickup(String playerId, CostReference costReference)
         {
             this.playerId = playerId;
             this.costReference = costReference;

@@ -28,6 +28,8 @@ namespace VballManager
         public const String ACTION_DROPIN_ADD = "Drop-inAdd";
         public const String ACTION_POWER_RESERVE = "PowerReserve";
         public const String ACTION_MOVE_RESERVATION = "MoveReservation";
+        public const String ACTION_RESERVE= "Reserve";
+        public const String ACTION_CANCEL = "Cancel";
         public const String ACTION_NO_SHOW = "NoShow";
         public const String SUPER_ADMIN = "SuperAdmin";
         public const String POOL = "Pool";

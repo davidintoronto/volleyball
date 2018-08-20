@@ -34,11 +34,11 @@ namespace VballManager
             List<Game> fullGames = new List<Game>();
             foreach (Game game in CurrentPool.Games)
             {
-                if (CurrentPool.GetNumberOfAvaliableMembers() - game.Absences.Count + game.Pickups.Count < 12)
+                if (CurrentPool.GetNumberOfActiveMembers() - game.Absences.Count + game.Pickups.Count < 12)
                 {
                     less12++;
                 }
-                if (CurrentPool.GetNumberOfAvaliableMembers() - game.Absences.Count + game.Pickups.Count < 14)
+                if (CurrentPool.GetNumberOfActiveMembers() - game.Absences.Count + game.Pickups.Count < 14)
                 {
                     less14++;
                 }
@@ -57,16 +57,16 @@ namespace VballManager
                 int pickups = 0;
                 foreach (Pickup pickup in game.Pickups.Items)
                 {
-                    Dropin dropin = CurrentPool.Dropins.Find(player => player.Id == pickup.PlayerId);
+                    Dropin dropin = CurrentPool.Dropins.Find(player => player.PlayerId == pickup.PlayerId);
                     if (dropin==null || !dropin.IsCoop) pickups++;
                 }
 
-                if (CurrentPool.GetNumberOfAvaliableMembers() - game.Absences.Count + pickups < 12)
+                if (CurrentPool.GetNumberOfActiveMembers() - game.Absences.Count + pickups < 12)
                 {
                     less12WithoutCoop++;
                 }
 
-                if (CurrentPool.GetNumberOfAvaliableMembers() - game.Absences.Count + pickups <14)
+                if (CurrentPool.GetNumberOfActiveMembers() - game.Absences.Count + pickups <14)
                 {
                     less14WithoutCoop++;
                 }
@@ -76,7 +76,7 @@ namespace VballManager
                     fullGames.Add(game);
                     foreach (Waiting waiting in game.WaitingList.Items)
                     {
-                        Dropin dropin = CurrentPool.Dropins.Find(player => player.Id == waiting.PlayerId);
+                        Dropin dropin = CurrentPool.Dropins.Find(player => player.PlayerId == waiting.PlayerId);
                         if (dropin ==null || !dropin.IsCoop)
                         {
                             fullAndWaitingWithoutCoop++;

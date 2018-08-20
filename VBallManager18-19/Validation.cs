@@ -28,7 +28,7 @@ namespace VballManager
             DateTime now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(manager.TimeZoneName));
             return now >= lockDate;
         }
-        public static bool DropinSpotAvailable(Pool pool, DateTime date)
+        public static bool IsSpotAvailable(Pool pool, DateTime date)
         {
             if (!pool.HasCap)
             {
@@ -53,23 +53,6 @@ namespace VballManager
             int memberPlayers = pool.GetNumberOfAttendingMembers(date);
             int dropinPlayers = pool.GetNumberOfDropins(date);
             return memberPlayers + dropinPlayers <pool.LessThanPayersForCoop;
-        }
-        public static bool MemberSpotAvailable(Pool pool, DateTime date)
-        {
-            if (!pool.HasCap)
-            {
-                return true;
-            }
-            int memberPlayers = pool.GetNumberOfAttendingMembers(date);
-            int dropinPlayers = pool.GetNumberOfDropins(date);
-            if (pool.MaximumPlayerNumber > pool.Members.Count)
-            {
-                return memberPlayers + dropinPlayers < pool.MaximumPlayerNumber;
-            }
-            else
-            {
-                return memberPlayers + dropinPlayers < pool.Members.Count;
-            }
         }
     }
 }

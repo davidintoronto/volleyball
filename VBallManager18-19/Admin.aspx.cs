@@ -209,7 +209,7 @@ namespace VballManager
         {
             if (Request.Cookies[Constants.PRIMARY_USER] != null)
             {
-                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
                 Player player = Manager.FindPlayerById(userId);
                 if (Manager.ActionPermitted(Actions.Admin_Management, player.Role))
                 {
@@ -344,7 +344,7 @@ namespace VballManager
             List<Player> players = new List<Player>();
             foreach (Member member in members)
             {
-                players.Add(Manager.FindPlayerById(member.Id));
+                players.Add(Manager.FindPlayerById(member.PlayerId));
             }
             return players.OrderBy(p => p.Name);
         }
@@ -353,7 +353,7 @@ namespace VballManager
             List<Player> players = new List<Player>();
             foreach (Dropin dropin in dropins)
             {
-                players.Add(Manager.FindPlayerById(dropin.Id));
+                players.Add(Manager.FindPlayerById(dropin.PlayerId));
             }
             return players.OrderBy(p => p.Name);
         }
@@ -585,7 +585,7 @@ namespace VballManager
                 Manager.AddNotifyWechatMessage(pool, message);
                 foreach(Member member in pool.Members)
                 {
-                    Player player = Manager.FindPlayerById(member.Id);
+                    Player player = Manager.FindPlayerById(member.PlayerId);
                     message = "Congratus!. We are very pleased that you have become 1 of " + pool.Members.Count + " primary members in pool " + pool.Name + ". You deserve this because you attended a lot of games in the post. We will pre-reserve a spot for you for each week in this pool. However, please cancel your reservation if you cannot make it. Thanks";
                     Manager.AddNotifyWechatMessage(player, message);
                     message = "Congratus! You have become the primary member in pool " + pool.Name;

@@ -161,7 +161,7 @@ namespace VballManager
             row.Cells.Add(saveCell);
             //this.DetailTable.Rows.Add(row);
             FillFeeAndPaymentTable(player);
-            if (CurrentPool.Members.Exists(attendee => attendee.Id == player.Id))
+            if (CurrentPool.Members.Exists(attendee => attendee.PlayerId == player.Id))
             {
                 FillGameTable(player);
             }
@@ -214,7 +214,7 @@ namespace VballManager
         {
             get
             {
-                String operatorId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                String operatorId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
                 if (Manager.FindPlayerById(operatorId).Role >= (int)Roles.Admin)
                 {
                     return true;
@@ -468,7 +468,7 @@ namespace VballManager
                         return;
                     }
 
-                    String operatorId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                    String operatorId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
                     if (operatorId != player.Id && !player.AuthorizedUsers.Contains(operatorId))
                     {
                         ShowMessage("Sorry, but you are not authorized to make the cancellation for " + player.Name + ", Please contact admin for advice");

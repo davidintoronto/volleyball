@@ -85,7 +85,7 @@ namespace VballManager
         {
             if (Request.Cookies[Constants.PRIMARY_USER] != null)
             {
-                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
                 Player player = Manager.FindPlayerById(userId);
                 if (Manager.ActionPermitted(Actions.Admin_Management, player.Role))
                 {
@@ -320,7 +320,7 @@ namespace VballManager
             {
                 foreach (Member member in pool.Members)
                 {
-                    Player player = Manager.FindPlayerById(member.Id);
+                    Player player = Manager.FindPlayerById(member.PlayerId);
                     player.Fees.Add(new Fee(String.Format(Fee.FEETYPE_MEMBERSHIP, pool.Name), pool.MembershipFee));
                 }
             }

@@ -211,25 +211,18 @@ namespace VballManager
         }
     }
 
-    public class Attendee
+    public class Person : Identifier
     {
-        private String id;
-        private bool isSuspended;
+         private bool isSuspended;
 
-        public Attendee() { }
+        public Person() { }
 
-        public Attendee(String id)
+        public Person(String playerId)
         {
-            this.id = id;
+            this.playerId = playerId;
         }
 
-        public String Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
-
-        public bool IsSuspended
+         public bool IsSuspended
         {
             get { return isSuspended; }
             set { isSuspended = value; }
@@ -250,7 +243,7 @@ namespace VballManager
         }
 
     }
-    public class Dropin : Attendee
+    public class Dropin : Person
     {
         private bool isCoop;
         private DateTime lastCoopDate;
@@ -266,7 +259,7 @@ namespace VballManager
 
         public Dropin(String id)
         {
-            this.Id = id;
+            this.PlayerId = id;
         }
 
         public bool IsCoop
@@ -286,7 +279,7 @@ namespace VballManager
         }
     }
 
-    public class Member : Attendee
+    public class Member : Person
     {
         private DateTime joinDate;
         private DateTime cancelDate;
@@ -295,7 +288,7 @@ namespace VballManager
         public Member() { }
         public Member(String id)
         {
-            this.Id = id;
+            this.PlayerId = id;
             this.joinDate = DateTime.Today;
         }
 

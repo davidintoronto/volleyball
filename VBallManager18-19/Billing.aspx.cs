@@ -80,7 +80,7 @@ namespace VballManager
         {
             if (Request.Cookies[Constants.PRIMARY_USER] != null)
             {
-                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
                  Player player = Manager.FindPlayerById(userId);
                 if (Manager.ActionPermitted(Actions.Admin_Management, player.Role))
                 {

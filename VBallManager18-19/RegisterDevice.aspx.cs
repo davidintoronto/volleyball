@@ -30,7 +30,7 @@ namespace VballManager
                 Player user = Manager.FindPlayerById(userId);
                 if (Request.Cookies[Constants.PRIMARY_USER] != null)
                 {
-                    String existingUserId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                    String existingUserId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
                     Player existingUser = Manager.FindPlayerById(existingUserId);
                     if (existingUser != null && existingUser.Id != userId)
                     {
@@ -47,7 +47,7 @@ namespace VballManager
             }
             else if (Request.Cookies[Constants.PRIMARY_USER] != null)
             {
-                String existingUserId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                String existingUserId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
                 Player existingUser = Manager.FindPlayerById(existingUserId);
                 this.PromptLb.Text = "Your device has registered as [" + existingUser.Name + "]. Would you like to authorize someone else to help you with reservations?";
             }

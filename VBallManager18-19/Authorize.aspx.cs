@@ -13,7 +13,7 @@ namespace VballManager
         {
              if (Request.Cookies[Constants.PRIMARY_USER] != null)
             {
-                String existingUserId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
+                String existingUserId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
                 Player user = Manager.FindPlayerById(existingUserId);
                 if (user != null)
                 {
@@ -85,7 +85,7 @@ namespace VballManager
         {
             ImageButton lbtn = (ImageButton)sender;
             String userid = lbtn.ID;
-            Player currentUser = Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID]);
+            Player currentUser = Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID]);
             if (currentUser.AuthorizedUsers.Contains(userid))
             {
                 currentUser.AuthorizedUsers.Remove(userid);
