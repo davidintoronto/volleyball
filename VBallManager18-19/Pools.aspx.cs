@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace VballManager
 {
-    public partial class Pools : System.Web.UI.Page
+    public partial class Pools : AdminBase
     {
        protected void Page_Load(object sender, EventArgs e)
         {
@@ -176,47 +176,6 @@ namespace VballManager
                }
            }
        }
-   
-        private bool IsSuperAdmin()
-        {
-            if (Request.Cookies[Constants.PRIMARY_USER] != null)
-            {
-                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
-                Player player = Manager.FindPlayerById(userId);
-                if (Manager.ActionPermitted(Actions.Admin_Management, player.Role))
-                {
-                    return true;
-                }
-            }
-            TextBox passcodeTb = (TextBox)Master.FindControl("PasscodeTb");
-            if (Manager.SuperAdmin != passcodeTb.Text)
-            {
-                ClientScript.RegisterStartupScript(Page.GetType(), "msgid", "alert('Wrong passcode! Re-enter your passcode and try again')", true);
-                return false;
-            }
-            Session[Constants.SUPER_ADMIN] = passcodeTb.Text;
-            return true;
-        }
-
-        private VolleyballClub Manager
-        {
-            get
-            {
-                return (VolleyballClub)Application[Constants.DATA];
-
-            }
-            set { }
-        }
-
-        private Pool CurrentPool
-        {
-            get
-            {
-                String poolName = (String)Session[Constants.POOL];
-                return Manager.FindPoolByName(poolName);
-            }
-            set { }
-        }
  
         protected void RemoveMemberBtn_Click(object sender, EventArgs e)
         {
@@ -365,15 +324,12 @@ namespace VballManager
                 DateTime date = DateTime.Parse(gameDate);
                 if (date.Date < Manager.EastDateTimeToday.Date)
                 {
-                    //continue;
+                    continue;
                 }
                 Game game = new Game(date);
                 foreach (Member member in CurrentPool.Members.Items)
                 {
-                    if (!member.IsCancelled && !member.IsSuspended)
-                    {
-                        game.Members.Add(new Attendee(member.PlayerId, InOutNoshow.In));
-                    }
+                    game.Members.Add(new Attendee(member.PlayerId, InOutNoshow.In));
                 }
                 foreach (Dropin dropin in CurrentPool.Dropins.Items)
                 {
@@ -501,7 +457,11 @@ namespace VballManager
             {
                 if (game.Date >= DateTime.Today)
                 {
-                    game.Pickups.Clear();
+                    foreach (Attendee attendee in game.Dropins.Items)
+                    {
+                        attendee.Status = InOutNoshow.Out;
+                    }
+                    game.WaitingList.Clear();
                     DataAccess.Save(Manager);
                     break;
                 }
@@ -567,70 +527,42 @@ namespace VballManager
 
         protected void MemberListbox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Member member = CurrentPool.Members.Find(attendee => attendee.PlayerId == MemberListbox.SelectedValue);
-            this.MemberCancelledCb.Checked = member.IsCancelled;
-            this.MemberSuspendedCb.Checked = member.IsSuspended;
+            Member member = CurrentPool.Members.FindByPlayerId(MemberListbox.SelectedValue);
+            //this.MemberCancelledCb.Checked = member.IsCancelled;
             //Response.Redirect(Request.RawUrl);
         }
 
         protected void DropinListbox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Dropin dropin = CurrentPool.Dropins.Find(attendee => attendee.PlayerId == DropinListbox.SelectedValue);
+            Dropin dropin = CurrentPool.Dropins.FindByPlayerId(DropinListbox.SelectedValue);
             this.DropinCoopCb.Checked = dropin.IsCoop;
-            this.DropinSuspendedCb.Checked = dropin.IsSuspended;
             //Response.Redirect(Request.RawUrl);
         }
 
         protected void SaveMemberBtn_Click(object sender, EventArgs e)
         {
-            Member member = CurrentPool.Members.Find(attendee => attendee.PlayerId == MemberListbox.SelectedValue);
+            Member member = CurrentPool.Members.FindByPlayerId(MemberListbox.SelectedValue);
             Player player = Manager.FindPlayerById(member.PlayerId);
-            //Mark as absent for rest of games if a member is suspended
-            if (!member.IsSuspended && this.MemberSuspendedCb.Checked)
-            {
-                foreach (Game game in CurrentPool.Games)
-                {
-                    if (game.Date >= DateTime.Today)
-                    {
-                        Transfer transfer = new Transfer(game.Date);
-                        player.Transfers.Add(transfer);
-                        Absence absence = new Absence(member.PlayerId, transfer.TransferId);
-                        game.Absences.Add(absence);
-                        //Remove from reserved list
-                        game.Presences.Remove(player.Id);
-                    }
-                }
-            }
-            //Remove the absence for the rest of games if the member is unsuspended.
-            else if (member.IsSuspended && !this.MemberSuspendedCb.Checked)
-            {
-                foreach (Game game in CurrentPool.Games)
-                {
-                    if (game.Date >= DateTime.Today)
-                    {
-                        Transfer transfer = player.FindTransferByGameDate(game.Date);
-                        if (transfer != null)
-                        {
-                            player.Transfers.Remove(transfer);
-                        }
-                        game.Absences.Remove(player.Id);
-                        //Add back to Presences list
-                        game.Presences.Add(new Presence(player.Id));
-                    }
-                }
- 
-            }
-            member.IsCancelled = this.MemberCancelledCb.Checked;
-            member.IsSuspended = this.MemberSuspendedCb.Checked;
-            DataAccess.Save(Manager);
+            //member.IsCancelled = this.MemberCancelledCb.Checked;
+             DataAccess.Save(Manager);
            // Response.Redirect(Request.RawUrl);
         }
 
         protected void SaveDropinBtn_Click(object sender, EventArgs e)
         {
-            Dropin dropin = CurrentPool.Dropins.Find(attendee => attendee.PlayerId == DropinListbox.SelectedValue);
+            Dropin dropin = CurrentPool.Dropins.FindByPlayerId(DropinListbox.SelectedValue);
             dropin.IsCoop = this.DropinCoopCb.Checked;
-            dropin.IsSuspended = this.DropinSuspendedCb.Checked;
+            //dropin.IsSuspended = this.DropinSuspendedCb.Checked;
+            //Update future game 
+            foreach (Game game in CurrentPool.Games)
+            {
+                if (game.Date >= DateTime.Today)
+                {
+                    Attendee attendee = game.Dropins.FindByPlayerId(dropin.PlayerId);
+                    if (attendee != null) attendee.IsCoop = dropin.IsCoop;
+                }
+            }
+
             DataAccess.Save(Manager);
            // Response.Redirect(Request.RawUrl);
         }
@@ -652,7 +584,7 @@ namespace VballManager
             Pool pool = Manager.FindPoolById(this.PoolListbox.SelectedValue);
             String message = "Hi, everyone. We will re-assign the primary members as scheduled. Following " + pool.Members.Count + " players are rated high by their attendances, they will become the primary members for next few months";
             Manager.AddNotifyWechatMessage(pool, message);
-            foreach (Member member in pool.Members)
+            foreach (Member member in pool.Members.Items)
             {
                 Player player = Manager.FindPlayerById(member.PlayerId);
                 message = "Congratus! " + player.Name + ". We are very pleased that you have become 1 of " + pool.Members.Count + " primary members in pool " + pool.Name + ". You deserve this because you attended a lot of games in the post. We will pre-reserve a spot for you for each week in this pool. However, please cancel your reservation if you cannot make it. Thanks";

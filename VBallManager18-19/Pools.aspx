@@ -282,14 +282,10 @@
                     </td>
                 </tr>
                  <tr>
-                    <td align="center" class="style8">Cancelled
-                    <asp:CheckBox ID="MemberCancelledCb" runat="server" />
-                    </td>
+                    <td align="center" class="style8">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td align="center" class="style8">Suspended
-                    <asp:CheckBox ID="MemberSuspendedCb" runat="server" />
-                    </td>
+                    <td align="center" class="style8">&nbsp;</td>
                  </tr>
                 <tr>
                     <td align="center" class="style8">
@@ -339,9 +335,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td align="center">Suspended
-                    <asp:CheckBox ID="DropinSuspendedCb" runat="server" />
-                    </td>
+                    <td align="center">&nbsp;</td>
                  </tr>
                  <tr>
                     <td align="center">

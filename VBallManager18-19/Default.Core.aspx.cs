@@ -9,10 +9,10 @@ using System.Net;
 
 namespace VballManager
 {
-    public partial class Default : System.Web.UI.Page
+    public class BasePage : System.Web.UI.Page
     {
 
-        private VolleyballClub Manager
+        protected VolleyballClub Manager
         {
             get
             {
@@ -21,7 +21,7 @@ namespace VballManager
             }
             set { }
         }
-        private Pool CurrentPool
+        protected Pool CurrentPool
         {
             get
             {
@@ -31,7 +31,7 @@ namespace VballManager
             set { }
         }
 
-        private Player CurrentUser
+        protected Player CurrentUser
         {
             get
             {
@@ -40,7 +40,7 @@ namespace VballManager
             set { }
         }
 
-        private DateTime ComingGameDate
+        protected DateTime ComingGameDate
         {
             get
             {
@@ -50,7 +50,7 @@ namespace VballManager
             set { }
         }
 
-        private bool IsPermitted(Actions action, Player player)
+        protected bool IsPermitted(Actions action, Player player)
         {
             if (Manager.ActionPermitted(action, CurrentUser.Role) || CurrentUser.Id == player.Id || player.AuthorizedUsers.Contains(CurrentUser.Id))
             {
@@ -59,7 +59,7 @@ namespace VballManager
             return false;
         }
 
-        private String GetOperatorId()
+        protected String GetOperatorId()
         {
             if (Request.Cookies[Constants.PRIMARY_USER] != null && Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID]) != null)
             {
@@ -67,7 +67,7 @@ namespace VballManager
             }
             return null;
         }
-        private LogHistory CreateLog(DateTime date, DateTime gameDate, String userInfo, String poolName, String playerName, String type)
+        protected LogHistory CreateLog(DateTime date, DateTime gameDate, String userInfo, String poolName, String playerName, String type)
         {
             if (Request.Cookies[Constants.PRIMARY_USER] != null && Manager.FindPlayerById(Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID]) != null)
             {
@@ -76,9 +76,59 @@ namespace VballManager
             return new LogHistory(date, gameDate, userInfo, poolName, playerName, type, "Unknown");
         }
 
-        private LogHistory CreateLog(DateTime date, DateTime gameDate, String userInfo, String poolName, String playerName, String type, String operater)
+        protected LogHistory CreateLog(DateTime date, DateTime gameDate, String userInfo, String poolName, String playerName, String type, String operater)
         {
             return new LogHistory(date, gameDate, userInfo, poolName, playerName, type, operater);
         }
+        public string GetUserIP()
+        {
+            string strIP = String.Empty;
+            HttpRequest httpReq = HttpContext.Current.Request;
+
+            //test for non-standard proxy server designations of client's IP
+            if (httpReq.ServerVariables["HTTP_CLIENT_IP"] != null)
+            {
+                strIP = httpReq.ServerVariables["HTTP_CLIENT_IP"].ToString();
+            }
+            else if (httpReq.ServerVariables["HTTP_X_FORWARDED_FOR"] != null)
+            {
+                strIP = httpReq.ServerVariables["HTTP_X_FORWARDED_FOR"].ToString();
+            }
+            //test for host address reported by the server
+            else if
+            (
+                //if exists
+                (httpReq.UserHostAddress.Length != 0)
+                &&
+                //and if not localhost IPV6 or localhost name
+                ((httpReq.UserHostAddress != "::1") || (httpReq.UserHostAddress != "localhost"))
+            )
+            {
+                strIP = httpReq.UserHostAddress;
+            }
+            //finally, if all else fails, get the IP from a web scrape of another server
+            else
+            {
+                WebRequest request = WebRequest.Create("http://checkip.dyndns.org/");
+                using (WebResponse response = request.GetResponse())
+                using (StreamReader sr = new StreamReader(response.GetResponseStream()))
+                {
+                    strIP = sr.ReadToEnd();
+                }
+                //scrape ip from the html
+                int i1 = strIP.IndexOf("Address: ") + 9;
+                int i2 = strIP.LastIndexOf("</body>");
+                strIP = strIP.Substring(i1, i2 - i1);
+            }
+            return strIP;
+        }
+
+        protected String GetStatusImageUrl(InOutNoshow status)
+        {
+            if (status == InOutNoshow.In) return "~/Icons/In.png";
+            else if (status == InOutNoshow.Out) return "~/Icons/Out.png";
+            else return "~/Icons/noShow.png";
+        }
+
     }
 }

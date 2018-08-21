@@ -137,6 +137,9 @@
     <Compile Include="Admin.aspx.designer.cs">
       <DependentUpon>Admin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin.Base.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Checker.aspx.cs">
       <DependentUpon>Checker.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

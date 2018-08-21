@@ -239,7 +239,7 @@ namespace VballManager
                     if (!player.IsActive) continue;
                     foreach (Pool pool in Pools)
                     {
-                        if (pool.Members.Exists(attendee => attendee.PlayerId == player.Id) || pool.Dropins.Exists(attendee => attendee.PlayerId == player.Id))
+                        if (pool.AllPlayers.Exists(player.Id))
                         {
                             activePlayers.Add(player);
                             break;
@@ -320,9 +320,8 @@ namespace VballManager
                 pool.RemoveMember(id);
                 foreach (Game game in pool.Games)
                 {
-                    game.Absences.Remove(player.Id);
-                    game.Presences.Remove(player.Id);
-                    game.Pickups.Remove(player.Id);
+                    game.Members.Remove(player.Id);
+                    game.Dropins.Remove(player.Id);
                     game.WaitingList.Remove(player.Id);
                 }
             }
@@ -604,6 +603,16 @@ namespace VballManager
             set { games = value; }
         }
 
+        public VList<Person> AllPlayers
+        {
+            get
+            {
+                VList<Person> allPlayers = new VList<Person>();
+                allPlayers.Items.AddRange(this.members.Items);
+                allPlayers.Items.AddRange(this.dropins.Items);
+                return allPlayers;
+            }
+        }
 
         //Find game by date
         public Game FindGameByDate(DateTime date)
@@ -619,33 +628,20 @@ namespace VballManager
         public bool IsDropinReserved(DateTime date, String id)
         {
             Game game = FindGameByDate(date);
-            return game.Pickups.Exists(id);
+            return game.Dropins.Items.Exists(dropin=>dropin.PlayerId==id && dropin.Status==InOutNoshow.In);
         }
 
         //Get number of members who are in for the date
         public int GetNumberOfAttendingMembers(DateTime date)
         {
             Game game = FindGameByDate(date);
-            return game.Presences.Count;
-        }
-
-        //Get number of members who are not cancelled or suspended.
-        public int GetNumberOfActiveMembers()
-        {
-            return members.Items.FindAll(member => !member.IsCancelled).Count;
- 
-        }
-
-        public int GetNumberOfOnHoldMemberSpots(DateTime date)
-        {
-            Game game = FindGameByDate(date);
-            return game.Absences.Count;
+            return game.Members.Items.FindAll(member=>member.Status==InOutNoshow.In).ToArray().Length;
         }
 
         public int GetNumberOfAvailableDropinSpots(DateTime date)
         {
             Game game = FindGameByDate(date);
-            int availableSpot = MaximumPlayerNumber - (members.Count - game.Absences.Count);
+            int availableSpot = MaximumPlayerNumber - game.AllPlayers.Items.FindAll(player=>player.Status == InOutNoshow.In).ToArray().Length;
             return availableSpot > 0 ? availableSpot : 0;
         }
 
@@ -653,20 +649,14 @@ namespace VballManager
         public int GetNumberOfDropins(DateTime date)
         {
             Game game = FindGameByDate(date);
-            return game.Pickups.Count;
+            return game.Dropins.Items.FindAll(player => player.Status == InOutNoshow.In).ToArray().Length;
         }
 
         //Get number of coop for the date
         public int GetNumberOfReservedCoops(DateTime date)
         {
             Game game = FindGameByDate(date);
-            int coop = 0;
-            foreach (Pickup pickup in game.Pickups.Items)
-            {
-                Dropin dropin = this.Dropins.Find(drop_in => drop_in.PlayerId == pickup.PlayerId);
-                if (dropin != null && dropin.IsCoop) coop++;
-            }
-            return coop;
+            return game.Dropins.Items.FindAll(player => player.IsCoop && player.Status == InOutNoshow.In).ToArray().Length;
         }
 
         public void AddDropin(Player player)
@@ -677,16 +667,16 @@ namespace VballManager
 
         public void RemoveMember(String id)
         {
-            if (Members.Exists(member => member.PlayerId == id))
+            if (Members.Exists(id))
             {
-                Members.Remove(Members.Find(member => member.PlayerId == id));
+                Members.Remove(id);
             }
         }
         public void RemoveDropin(String id)
         {
-            if (Dropins.Exists(dropin => dropin.PlayerId == id))
+            if (Dropins.Exists(id))
             {
-                Dropins.Remove(Dropins.Find(dropin => dropin.PlayerId == id));
+                Dropins.Remove(id);
             }
         }
 
@@ -710,22 +700,7 @@ namespace VballManager
         public bool GetMemberAttendance(String playerId, DateTime date)
         {
             Game game = FindGameByDate(date);
-            return !game.Absences.Exists(playerId);
-        }
-
-        //Reverse member attendance
-        public bool ReverseMemberAttendance(String id, DateTime date, String transferId)
-        {
-            Game game = FindGameByDate(date);
-            Absence absence = (Absence)game.Absences.FindByPlayerId(id);
-            if (absence != null)
-            {
-                game.Absences.Remove(absence);
-                return true;
-            }
-            absence = new Absence(id, transferId);
-            game.Absences.Add(absence);
-            return false;
+            return game.Members.Items.Exists(member=>member.PlayerId==playerId && member.Status==InOutNoshow.In);
         }
     }
 
@@ -749,7 +724,7 @@ namespace VballManager
 
     public enum Actions
     {
-        View_All_Pools, View_Past_Games, View_Future_Games, Add_New_Player, Reserve_All_Pools, Reserve_Pool, Reserve_Player, Power_Reserve, Reserve_After_Locked, Admin_Management
+        View_Player_Details, View_All_Pools, View_Past_Games, View_Future_Games, Edit_Past_Games, Add_New_Player, Reserve_All_Pools, Reserve_Pool, Reserve_Player, Power_Reserve, Reserve_After_Locked, Admin_Management
     }
 
     public enum StatsTypes

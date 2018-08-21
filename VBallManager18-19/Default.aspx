@@ -84,7 +84,7 @@
                 <tr>
                     <td align="center">
                         <asp:Button ID="PreRegisterBtn" Text="2017-2018 Pre-Register" runat="server"
-                            Style="font-size: 5em;" OnClick="PreRegisterBtn_Click"
+                            Style="font-size: 5em;" 
                             BackColor="#52A8AA" ForeColor="Red" Font-Bold="True"
                             BorderStyle="Groove" Visible="False" />
                     </td>

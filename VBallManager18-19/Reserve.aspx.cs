@@ -9,7 +9,7 @@ using System.Net;
 
 namespace VballManager
 {
-    public partial class Default : System.Web.UI.Page
+    public partial class Default : BasePage
     {
         #region Reserve
         private void ReserveSpot(Pool pool, Game game, Player player)
@@ -64,6 +64,22 @@ namespace VballManager
                // this.PopupModal.Hide();
             }
           // Response.Redirect(Constants.DEFAULT_PAGE);
+        }
+
+        private void MoveReservation(Pool pool, Game game, Player player)
+        {
+            ReserveSpot(pool, game, player);
+            //Cancel the spot in other pool
+            Pool sameDayPool = Manager.Pools.Find(p => pool.Name != pool.Name && p.DayOfWeek == pool.DayOfWeek);
+            if (CancelSpot(sameDayPool, sameDayPool.FindGameByDate(ComingGameDate), player))
+            {
+                Manager.AddReservationNotifyWechatMessage(player.Id, pool.Id, Constants.MOVED, sameDayPool, pool, ComingGameDate);
+            }
+            else
+            {
+                Manager.AddReservationNotifyWechatMessage(player.Id, pool.Id, Constants.RESERVED, sameDayPool, pool, ComingGameDate);
+            }
+            DataAccess.Save(Manager);
         }
         #endregion
 
@@ -169,6 +185,16 @@ namespace VballManager
             return new CostReference(CostType.FEE, fee.FeeId);
         }
 
+        private bool IsDropinOwesExceedMax(Player player)
+        {
+            decimal total = 0;
+            foreach (Fee fee in player.Fees)
+            {
+                if (!fee.IsPaid) total = total + fee.Amount;
+            }
+            return total >= Manager.MaxDropinFeeOwe;
+        }
+
         private bool ReachMaxDropinFeePaid(Player player)
         {
             //No dropin fee cap
@@ -184,7 +210,7 @@ namespace VballManager
                 {
                     foreach (Game game in pool.Games)
                     {
-                        if (game.Pickups.Exists(player.Id))
+                        if (game.Dropins.Items.Exists(dropin => dropin.PlayerId == player.Id && dropin.Status == InOutNoshow.In))
                         {
                             foreach (Fee fee in player.Fees)
                             {
@@ -258,11 +284,8 @@ namespace VballManager
                         {
                             break;
                         }
-                        //Send the notification to the coop player
-                        Player coopPlayer = Manager.FindPlayerById(coopCandidate.PlayerId);
-                        //coopPlayer.Notifications.Add(new Notification(DateTime.Today, "You are selected by system to play at Pool " + pool.Name + " on " + game.Date.ToShortDateString() + ". Your reservation has been moved to Pool " + pool.Name));
-                        //Move reservation to current pool for coming game
-                        MoveReservatioin(coopCandidate.PlayerId, pool, null);
+                         Player coopPlayer = Manager.FindPlayerById(coopCandidate.PlayerId);
+                        MoveReservation(CurrentPool, game, coopPlayer);
                     }
                 }
             }
@@ -307,6 +330,7 @@ namespace VballManager
             }
             return false;
         }
+
 
         #endregion
 

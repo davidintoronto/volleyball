@@ -9,7 +9,7 @@ using System.Net;
 
 namespace VballManager
 {
-    public partial class Default : System.Web.UI.Page
+    public partial class Default : BasePage
     {
 
         private void CancelPromarySpot(Pool pool, Game game, Player player)
@@ -112,18 +112,17 @@ namespace VballManager
        {
            if (pool == null) return false;
 
-           Game gameInOtherPool = pool.FindGameByDate(ComingGameDate);
-           if (gameInOtherPool.Members.Items.Exists(member => member.PlayerId == player.Id && member.Status != InOutNoshow.Out))
+           if (game.Members.Items.Exists(member => member.PlayerId == player.Id && member.Status != InOutNoshow.Out))
            {
-               CancelPromarySpot(pool, gameInOtherPool, player);
+               CancelPromarySpot(pool, game, player);
            }
-           else if (gameInOtherPool.Dropins.Items.Exists(dropin => dropin.PlayerId == player.Id && dropin.Status != InOutNoshow.Out))
+           else if (game.Dropins.Items.Exists(dropin => dropin.PlayerId == player.Id && dropin.Status != InOutNoshow.Out))
            {
-               CancelDropinSpot(pool, gameInOtherPool, player);
+               CancelDropinSpot(pool, game, player);
            }
-           else if (gameInOtherPool.WaitingList.Exists(player.Id))
+           else if (game.WaitingList.Exists(player.Id))
            {
-               gameInOtherPool.WaitingList.Remove(player.Id);
+               game.WaitingList.Remove(player.Id);
                return false;
            }
            return true;

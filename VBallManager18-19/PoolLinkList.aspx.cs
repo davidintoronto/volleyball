@@ -44,7 +44,7 @@ namespace VballManager
             this.ReserveLinkTable.Rows.Clear();
             foreach (Pool pool in Manager.Pools)
             {
-                if (Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) || pool.Members.Exists(attendee => attendee.PlayerId == currentUser.Id) || pool.Dropins.Exists(attendee => attendee.PlayerId == currentUser.Id))
+                if (Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) || pool.Members.Exists(currentUser.Id) || pool.Dropins.Exists(currentUser.Id))
                 {
                     TableRow row = new TableRow();
                     TableCell cell = new TableCell();

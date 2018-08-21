@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace VballManager
 {
-    public partial class Fees : System.Web.UI.Page
+    public partial class Fees : AdminBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -34,7 +34,7 @@ namespace VballManager
                 }
             }
             //
-            this.ResetFeeBtn.OnClientClick = "if ( !confirm('Are you sure you want to delete this fee?')) return false;";
+            this.ResetFeeBtn.OnClientClick = "if ( !confirm('Are you sure you want to do this?')) return false;";
             if (Convert.ToString(ViewState["Generated"]) == "true")
             {
                 ShowFees();
@@ -80,39 +80,6 @@ namespace VballManager
             this.TransferTable.Rows.Add(totalRow);
 
         }
-
-        private bool IsSuperAdmin()
-        {
-            if (Request.Cookies[Constants.PRIMARY_USER] != null)
-            {
-                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
-                Player player = Manager.FindPlayerById(userId);
-                if (Manager.ActionPermitted(Actions.Admin_Management, player.Role))
-                {
-                    return true;
-                }
-            }
-            TextBox passcodeTb = (TextBox)Master.FindControl("PasscodeTb");
-            if (Manager.SuperAdmin != passcodeTb.Text)
-            {
-                ClientScript.RegisterStartupScript(Page.GetType(), "msgid", "alert('Wrong passcode! Re-enter your passcode and try again')", true);
-                return false;
-            }
-            Session[Constants.SUPER_ADMIN] = passcodeTb.Text;
-            return true;
-        }
-
-
-        private VolleyballClub Manager
-        {
-            get
-            {
-                return (VolleyballClub)Application[Constants.DATA];
-
-            }
-            set { }
-        }
-
 
 
         private void ShowFees()
@@ -318,7 +285,7 @@ namespace VballManager
             }
             foreach (Pool pool in Manager.Pools)
             {
-                foreach (Member member in pool.Members)
+                foreach (Member member in pool.Members.Items)
                 {
                     Player player = Manager.FindPlayerById(member.PlayerId);
                     player.Fees.Add(new Fee(String.Format(Fee.FEETYPE_MEMBERSHIP, pool.Name), pool.MembershipFee));
@@ -328,13 +295,34 @@ namespace VballManager
             Response.Redirect(Request.RawUrl);
         }
 
-        protected void ReverseAllFeeBtn_Click(object sender, EventArgs e)
+        protected void CreateAllMembershipFeeBtn_Click(object sender, EventArgs e)
         {
-            foreach (Player player in Manager.Players)
+            if (Manager.ClubMemberMode)
             {
-                foreach (Fee fee in player.Fees)
+                foreach (Player player in Manager.Players)
                 {
-                    fee.Amount = -1 * fee.Amount;
+                    if (player.IsRegisterdMember)
+                    {
+                        Fee fee = new Fee(Fee.FEETYPE_CLUB_MEMBERSHIP, Manager.RegisterMembeshipFee);
+                        fee.FeeType = FeeTypeEnum.Membership.ToString();
+                        fee.Date = DateTime.Today;
+                        player.Fees.Add(fee);
+                    }
+                }
+            }
+            else
+            {
+                foreach (Pool pool in Manager.Pools)
+                {
+                    foreach (Member member in pool.Members.Items)
+                    {
+                        Fee fee = new Fee(pool.MembershipFee);
+                        fee.FeeType = FeeTypeEnum.Membership.ToString();
+                        fee.FeeDesc = String.Format(Fee.FEETYPE_MEMBERSHIP, pool.Name);
+                        fee.Date = DateTime.Today;
+                        Player player = Manager.FindPlayerById(member.PlayerId);
+                        player.Fees.Add(fee);
+                    }
                 }
             }
             DataAccess.Save(Manager);

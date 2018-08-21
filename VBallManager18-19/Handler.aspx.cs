@@ -9,7 +9,7 @@ using System.Net;
 
 namespace VballManager
 {
-    public partial class Default : System.Web.UI.Page
+    public partial class Default : BasePage
     {
 
         #region Reserve or cancel click
@@ -98,6 +98,7 @@ namespace VballManager
             Session[Constants.CONTROL] = sender;
             Player player = Manager.FindPlayerById(lbtn.ID);
             ShowPopupModal("Are you sure to cancel?");
+            Response.Redirect(Constants.DEFAULT_PAGE);
         }
 
         //Cancel waiting
@@ -116,7 +117,50 @@ namespace VballManager
             Manager.Logs.Add(log);
             DataAccess.Save(Manager);
             this.PopupModal.Hide();
+            Response.Redirect(Constants.DEFAULT_PAGE);
         }
+
+        private void Coop_Reserve_Click(object sender, EventArgs e)
+        {
+            if (lockReservation && !Manager.ActionPermitted(Actions.Reserve_After_Locked, CurrentUser.Role))
+            {
+                ShowMessage(appLockedMessage);
+                return;
+            }
+            ImageButton lbtn = (ImageButton)sender;
+            Session[Constants.CURRENT_PLAYER_ID] = lbtn.ID;
+            String playerId = lbtn.ID;
+            Player player = Manager.FindPlayerById(playerId);
+            if (Manager.EastDateTimeToday.Date < ComingGameDate.Date || Manager.EastDateTimeNow.Hour < CurrentPool.ReservHourForCoop)
+            {
+                if (!Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role))
+                {
+                    ShowMessage("Sorry, but Pool " + CurrentPool.Name + " reservation starts at  " + CurrentPool.ReservHourForCoop + " O'clock on game day for co-op players. Check back later");
+                    return;
+                }
+            }
+            if (!Validation.DropinSpotAvailableForCoop(CurrentPool, ComingGameDate))
+            {
+                if (!Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role))
+                {
+                    ShowMessage("Sorry, but Pool " + CurrentPool.Name + " has got enought players to start games. Please check back later.");
+                    return;
+                }
+            }
+            if (!Validation.IsSpotAvailable(CurrentPool, ComingGameDate))
+            {
+                Session[Constants.ACTION_TYPE] = Constants.ACTION_POWER_RESERVE;
+                ShowPopupModal("All spots are already filled up. Would you like to reserve an EXTRA spot?");
+                return;
+            }
+
+            //Make reservation
+            ReserveDropinSpot(CurrentPool, CurrentPool.FindGameByDate(ComingGameDate), player);
+            Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, ComingGameDate);
+            DataAccess.Save(Manager);
+            Response.Redirect(Constants.DEFAULT_PAGE);
+        }
+
         #endregion
 
         #region Confirmed click
@@ -144,32 +188,24 @@ namespace VballManager
             String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
             Player player = Manager.FindPlayerById(playerId);
             Game game = CurrentPool.FindGameByDate(ComingGameDate);
-            CancelSpot(CurrentPool, game, player);
-            Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.CANCELLED, CurrentPool, CurrentPool, ComingGameDate);
+            if (CancelSpot(CurrentPool, game, player))
+            {
+                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.CANCELLED, CurrentPool, CurrentPool, ComingGameDate);
+            }
             AssignDropinSpotToWaiting(CurrentPool, game);
             DataAccess.Save(Manager);
             Response.Redirect(Constants.DEFAULT_PAGE);
        }
 
-       protected void Move_Confirm_Click(object sender, EventArgs e)
+        protected void Move_Confirm_Click(object sender, EventArgs e)
         {
             Game game = CurrentPool.FindGameByDate(ComingGameDate);
             String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
             Player player = Manager.FindPlayerById(playerId);
-            ReserveSpot(CurrentPool, game, player);
-            //Cancel the spot in other pool
-            Pool sameDayPool = Manager.Pools.Find(pool => pool.Name != CurrentPool.Name && pool.DayOfWeek == CurrentPool.DayOfWeek);
-            if (CancelSpot(sameDayPool, sameDayPool.FindGameByDate(ComingGameDate), player))
-            {
-                Manager.AddReservationNotifyWechatMessage(playerId, CurrentPool.Id, Constants.MOVED, sameDayPool, CurrentPool, ComingGameDate);
-            }
-            else
-            {
-                Manager.AddReservationNotifyWechatMessage(playerId, CurrentPool.Id, Constants.RESERVED, sameDayPool, CurrentPool, ComingGameDate);
-            }
-             DataAccess.Save(Manager);
+            MoveReservation(CurrentPool, game, player);
+            DataAccess.Save(Manager);
             Response.Redirect(Constants.DEFAULT_PAGE);
-       }
+        }
 
        private void No_Show_Confirm_Click(object sender, EventArgs e)
        {
@@ -213,6 +249,23 @@ namespace VballManager
            DataAccess.Save(Manager);
            Response.Redirect(Constants.DEFAULT_PAGE);
        }
+
+       protected void InquireAddingToWaitingList_Click(object sender, ImageClickEventArgs e)
+       {
+           if (Session[Constants.ACTION_TYPE].ToString() == Constants.ACTION_POWER_RESERVE)
+           {
+               String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
+               Game game = CurrentPool.FindGameByDate(ComingGameDate);
+               Attendee attendee = game.Dropins.FindByPlayerId(playerId);
+               //Do not add coop into waiting list
+               if (attendee == null || !attendee.IsCoop)
+               {
+                   Session[Constants.ACTION_TYPE] = Constants.ACTION_ADD_WAITING_LIST;
+                   ShowPopupModal("Would you like to put onto the waiting list?");
+               }
+           }
+       }
+
         #endregion
 
        #region Add new dropin 
@@ -278,5 +331,11 @@ namespace VballManager
        }
        #endregion
 
+        #region Others
+       protected void ToReadmeBtn_Click(object sender, EventArgs e)
+       {
+           Response.Redirect("Readme.aspx");
+       }
+        #endregion
     }
  }

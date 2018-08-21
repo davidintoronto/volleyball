@@ -213,8 +213,6 @@ namespace VballManager
 
     public class Person : Identifier
     {
-         private bool isSuspended;
-
         public Person() { }
 
         public Person(String playerId)
@@ -222,11 +220,6 @@ namespace VballManager
             this.playerId = playerId;
         }
 
-         public bool IsSuspended
-        {
-            get { return isSuspended; }
-            set { isSuspended = value; }
-        }
         private bool preRegistered = false;
 
         public bool PreRegistered
@@ -267,23 +260,11 @@ namespace VballManager
             get { return isCoop; }
             set { isCoop = value; }
         }
-
-        public void DropinSuspend()
-        {
-            this.IsSuspended = true;
-        }
-
-        public void ResumeSuspend()
-        {
-            this.IsSuspended = false;
-        }
     }
 
     public class Member : Person
     {
         private DateTime joinDate;
-        private DateTime cancelDate;
-        private bool isCancelled;
 
         public Member() { }
         public Member(String id)
@@ -292,40 +273,13 @@ namespace VballManager
             this.joinDate = DateTime.Today;
         }
 
-        public void CancelMember()
-        {
-            this.isCancelled = true;
-            this.cancelDate = DateTime.Today;
-        }
-        public void SuspendMember()
-        {
-            this.IsSuspended = true;
-        }
-        public void ResumeMember()
-        {
-            this.isCancelled = false;
-            this.IsSuspended = false;
-            this.cancelDate = DateTime.MinValue;
-        }
-
         public DateTime JoinDate
         {
             get { return joinDate; }
             set { joinDate = value; }
         }
 
-        public DateTime CancelDate
-        {
-            get { return cancelDate; }
-            set { cancelDate = value; }
-        }
-
-        public bool IsCancelled
-        {
-            get { return isCancelled; }
-            set { isCancelled = value; }
-        }
-    }
+       }
 
     public class Notification
     {

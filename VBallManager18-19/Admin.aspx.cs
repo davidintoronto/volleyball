@@ -8,7 +8,7 @@ using System.IO;
 
 namespace VballManager
 {
-    public partial class Admin : System.Web.UI.Page
+    public partial class Admin : AdminBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -205,47 +205,6 @@ namespace VballManager
             //Response.Redirect(Request.RawUrl);
         }
 
-        private bool IsSuperAdmin()
-        {
-            if (Request.Cookies[Constants.PRIMARY_USER] != null)
-            {
-                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
-                Player player = Manager.FindPlayerById(userId);
-                if (Manager.ActionPermitted(Actions.Admin_Management, player.Role))
-                {
-                    return true;
-                }
-            }
-            TextBox passcodeTb = (TextBox)Master.FindControl("PasscodeTb");
-            if (Manager.SuperAdmin != passcodeTb.Text)
-            {
-                ClientScript.RegisterStartupScript(Page.GetType(), "msgid", "alert('Wrong passcode! Re-enter your passcode and try again')", true);
-                return false;
-            }
-            Session[Constants.SUPER_ADMIN] = passcodeTb.Text;
-            return true;
-        }
-
-
-        private VolleyballClub Manager
-        {
-            get
-            {
-                return (VolleyballClub)Application[Constants.DATA];
-
-            }
-            set { }
-        }
-
-        private Pool CurrentPool
-        {
-            get
-            {
-                String poolName = (String)Session[Constants.POOL];
-                return Manager.FindPoolByName(poolName);
-            }
-            set { }
-        }
         protected void DeletePlayerBtn_Click(object sender, EventArgs e)
         {
             if (!IsSuperAdmin())
@@ -439,9 +398,9 @@ namespace VballManager
                 //Delete games
                 pool.Games = new List<Game>();
                 //Delete Dropins
-                pool.Dropins = new List<Dropin>();
+                pool.Dropins = new VList<Dropin>();
                 //Delete member
-                pool.Members = new List<Member>();
+                pool.Members = new VList<Member>();
             }
             foreach (Player player in Manager.Players)
             {
@@ -464,9 +423,8 @@ namespace VballManager
                     pool.Dropins.Clear();
                     foreach (Game game in pool.Games)
                     {
-                        game.Presences.Clear();
-                        game.Absences.Clear();
-                        game.Pickups.Clear();
+                        game.Members.Clear();
+                        game.Dropins.Clear();
                         game.WaitingList.Clear();
                     }
                 }
@@ -583,7 +541,7 @@ namespace VballManager
             {
                 String message = "Hi, everyone. We will re-assign primary members as scheduled. Following " + pool.Members.Count + " players are highly rated on their attendance, they will be the primary members for next few months";
                 Manager.AddNotifyWechatMessage(pool, message);
-                foreach(Member member in pool.Members)
+                foreach(Member member in pool.Members.Items)
                 {
                     Player player = Manager.FindPlayerById(member.PlayerId);
                     message = "Congratus!. We are very pleased that you have become 1 of " + pool.Members.Count + " primary members in pool " + pool.Name + ". You deserve this because you attended a lot of games in the post. We will pre-reserve a spot for you for each week in this pool. However, please cancel your reservation if you cannot make it. Thanks";
@@ -598,7 +556,7 @@ namespace VballManager
         {
             foreach (Player player in Manager.Players)
             {
-                player.WechatName = "";
+               // player.WechatName = "";
             }
             DataAccess.Save(Manager);
         }
@@ -607,5 +565,19 @@ namespace VballManager
         {
             RebindPlayerList();
         }
+
+        protected void SetMembershipBtn_Click(object sender, EventArgs e)
+        {
+            foreach (Pool pool in Manager.Pools)
+            {
+                foreach (Member member in pool.Members.Items)
+                {
+                    Player player = Manager.FindPlayerById(member.PlayerId);
+                    player.IsRegisterdMember = true;
+                }
+            }
+            DataAccess.Save(Manager);
+        }
+
     }
 }

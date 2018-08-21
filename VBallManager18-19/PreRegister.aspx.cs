@@ -38,7 +38,7 @@ namespace VballManager
                 if (pool != null)
                 {
                     day = pool.DayOfWeek;
-                    foreach(Person member in pool.Members)
+                    foreach(Person member in pool.Members.Items)
                     {
                         bool included = false;
                         foreach(Person attendee in allAttendees)
@@ -55,7 +55,7 @@ namespace VballManager
                             allAttendees.Add(member);
                         }
                     }
-                    foreach(Person dropin in pool.Dropins)
+                    foreach(Person dropin in pool.Dropins.Items)
                     {
                         bool included = false;
                         foreach (Person attendee in allAttendees)
@@ -93,26 +93,10 @@ namespace VballManager
             {
                 if (pool.DayOfWeek == day)
                 {
-                    if (pool.Members.Exists(member => member.PlayerId == player.Id))
+                    foreach (Game game in pool.Games)
                     {
-                        foreach (Game game in pool.Games)
-                        {
-                            if (game.Absences.Exists(player.Id))
-                            {
-                                continue;
-                            }
-                            playedCount++;
-                        }
-                    }
-                    else
-                    {
-                        foreach (Game game in pool.Games)
-                        {
-                            if (game.Pickups.Exists(player.Id))
-                            {
-                                playedCount++;
-                            }
-                        }
+                        if (game.AllPlayers.Items.Exists(p => p.PlayerId == player.Id && p.Status == InOutNoshow.In))
+                             playedCount++;
                     }
                 }
             }
@@ -180,10 +164,10 @@ namespace VballManager
             String idString = Session[Constants.CURRENT_PLAYER_ID].ToString();
             String id = idString.Split(',')[0];
             Player player = Manager.FindPlayerById(id);
-            Person attendee = CurrentPool.Members.Find(member => member.PlayerId == id);
+            Person attendee = CurrentPool.Members.FindByPlayerId(id);
             if (attendee == null)
             {
-                attendee = CurrentPool.Dropins.Find(dropin => dropin.PlayerId == id);
+                attendee = CurrentPool.Dropins.FindByPlayerId(id);
             }
             attendee.PreRegistered = !attendee.PreRegistered;
              DataAccess.Save(Manager);

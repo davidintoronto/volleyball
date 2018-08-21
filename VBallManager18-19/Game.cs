@@ -9,10 +9,7 @@ namespace VballManager
     {
         private DateTime date;
         private VList<Attendee> members = new VList<Attendee>();
-       private VList<Attendee> dropins = new VList<Attendee>();
-      // private VList<Presence> presences = new VList<Presence>();
-      //  private VList<Absence> absences = new VList<Absence>();
-      //  private VList<Pickup> pickups = new VList<Pickup>();
+        private VList<Attendee> dropins = new VList<Attendee>();
         private VList<Waiting> waitingList = new VList<Waiting>();
 
         public Game()
@@ -30,11 +27,6 @@ namespace VballManager
             set { dropins = value; }
         }
  
-        public VList<Presence> Presences
-        {
-            get { return presences; }
-            set { presences = value; }
-        }
        public VList<Waiting> WaitingList
         {
             get { return waitingList; }
@@ -51,18 +43,18 @@ namespace VballManager
             get { return date; }
             set { date = value; }
         }
-        public VList<Pickup> Pickups
-        {
-            get { return pickups; }
-            set { pickups = value; }
-        }
 
-        public VList<Absence> Absences
+        public VList<Attendee> AllPlayers
         {
-            get { return absences; }
-            set { absences = value; }
+            get
+            {
+                VList<Attendee> allPlayers = new VList<Attendee>();
+                allPlayers.Items.AddRange(this.members.Items);
+                allPlayers.Items.AddRange(this.dropins.Items);
+                return allPlayers;
+            }
         }
-    }
+     }
 
     public class Payment : Identifier
     {
@@ -119,7 +111,7 @@ namespace VballManager
     {
         public static string FEETYPE_DROPIN = "Dropin fee ({0})";
         public static string FEETYPE_MEMBERSHIP = "Membership fee ({0})";
-        public static string FEETYPE_CLUB_MEMBERSHIP = "Club Membership Fee";
+        public static string FEETYPE_CLUB_MEMBERSHIP = "Membership Fee";
         public static string FEETYPE_DROPIN_PRE_PAID = "Dropin pre-paid";
 
         public Fee()
@@ -224,6 +216,13 @@ namespace VballManager
     {
         private InOutNoshow status = InOutNoshow.Out;
         private CostReference costReference;
+        private bool isCoop;
+
+        public bool IsCoop
+        {
+            get { return isCoop; }
+            set { isCoop = value; }
+        }
 
         public Attendee() { }
         public Attendee(String playerId)
@@ -431,6 +430,7 @@ namespace VballManager
 
         public void Add(T iden)
         {
+            if (this.items.Exists(item => item.PlayerId == iden.PlayerId)) return;
             this.items.Add(iden);
         }
 

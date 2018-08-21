@@ -34,11 +34,12 @@ namespace VballManager
             List<Game> fullGames = new List<Game>();
             foreach (Game game in CurrentPool.Games)
             {
-                if (CurrentPool.GetNumberOfActiveMembers() - game.Absences.Count + game.Pickups.Count < 12)
+                int attended = game.Members.Items.FindAll(member => member.Status != InOutNoshow.Out).ToArray().Length + game.Dropins.Items.FindAll(dropin => dropin.Status != InOutNoshow.Out).ToArray().Length;
+                if (attended < 12)
                 {
                     less12++;
                 }
-                if (CurrentPool.GetNumberOfActiveMembers() - game.Absences.Count + game.Pickups.Count < 14)
+                if (attended < 14)
                 {
                     less14++;
                 }
@@ -54,19 +55,13 @@ namespace VballManager
             }
             foreach (Game game in CurrentPool.Games)
             {
-                int pickups = 0;
-                foreach (Pickup pickup in game.Pickups.Items)
-                {
-                    Dropin dropin = CurrentPool.Dropins.Find(player => player.PlayerId == pickup.PlayerId);
-                    if (dropin==null || !dropin.IsCoop) pickups++;
-                }
-
-                if (CurrentPool.GetNumberOfActiveMembers() - game.Absences.Count + pickups < 12)
+                int attendedWithoutCoop = game.Members.Items.FindAll(member => member.Status != InOutNoshow.Out).ToArray().Length + game.Dropins.Items.FindAll(dropin => !dropin.IsCoop && dropin.Status != InOutNoshow.Out).ToArray().Length;
+                if (attendedWithoutCoop < 12)
                 {
                     less12WithoutCoop++;
                 }
 
-                if (CurrentPool.GetNumberOfActiveMembers() - game.Absences.Count + pickups <14)
+                if (attendedWithoutCoop < 14)
                 {
                     less14WithoutCoop++;
                 }
@@ -74,15 +69,16 @@ namespace VballManager
                 {
                     fullWithoutCoop++;
                     fullGames.Add(game);
-                    foreach (Waiting waiting in game.WaitingList.Items)
+                    bool coopWaiting = false;
+                     foreach (Waiting waiting in game.WaitingList.Items)
                     {
-                        Dropin dropin = CurrentPool.Dropins.Find(player => player.PlayerId == waiting.PlayerId);
-                        if (dropin ==null || !dropin.IsCoop)
+                        if (game.Dropins.Items.Find(dropin => dropin.PlayerId == waiting.PlayerId).IsCoop)
                         {
-                            fullAndWaitingWithoutCoop++;
+                            coopWaiting = true;
                             break;
                         }
                     }
+                     if (!coopWaiting) fullAndWaitingWithoutCoop++;
                 }
             }
             TableRow row = new TableRow();

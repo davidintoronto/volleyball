@@ -313,7 +313,8 @@
                     </tr>
                     <tr>
                         <td align="right">
-                            <asp:Button ID="SavePlayersBtn" runat="server" Text="Save" Width="89px" OnClick="SavePlayersBtn_Click" />
+                            <asp:Button ID="SetMembershipBtn" runat="server" Text="Set Club Memberships" Width="141px" OnClick="SetMembershipBtn_Click" style="margin-left: 0px" />
+                            .....................................................................<asp:Button ID="SavePlayersBtn" runat="server" Text="Save" Width="89px" OnClick="SavePlayersBtn_Click" />
                         </td>
                     </tr>
                      <tr>

@@ -57,8 +57,7 @@ namespace VballManager
         private void ResetCookie()
         {
             HttpCookie appCookie = new HttpCookie(Constants.PRIMARY_USER);
-            appCookie[Constants.PLAYER_ID] = "";
-            appCookie[Constants.PASSCODE] = "";
+            appCookie[Constants.USER_ID] = "";
             appCookie.Expires = DateTime.Now.AddDays(-1);
             Response.Cookies.Add(appCookie);
         }
@@ -78,7 +77,7 @@ namespace VballManager
         {
               HttpCookie appCookie = new HttpCookie(Constants.PRIMARY_USER);
             //appCookie.Domain = "volleyball.gear.host"; 
-            appCookie[Constants.PLAYER_ID] = user.Id;
+            appCookie[Constants.USER_ID] = user.Id;
             //appCookie[Constants.PASSCODE] = user.Passcode;
             appCookie.Expires = Manager.CookieExpire;
             Response.Cookies.Add(appCookie);

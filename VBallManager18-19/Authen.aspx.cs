@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace VballManager
 {
-    public partial class Authen : System.Web.UI.Page
+    public partial class Authen : AdminBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -42,38 +42,6 @@ namespace VballManager
             }
             //
          }
-
-        private bool IsSuperAdmin()
-        {
-            if (Request.Cookies[Constants.PRIMARY_USER] != null)
-            {
-                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
-                Player player = Manager.FindPlayerById(userId);
-                if (Manager.ActionPermitted(Actions.Admin_Management, player.Role))
-                {
-                    return true;
-                }
-            }
-            TextBox passcodeTb = (TextBox)Master.FindControl("PasscodeTb");
-            if (Manager.SuperAdmin != passcodeTb.Text)
-            {
-                ClientScript.RegisterStartupScript(Page.GetType(), "msgid", "alert('Wrong passcode! Re-enter your passcode and try again')", true);
-                return false;
-            }
-            Session[Constants.SUPER_ADMIN] = passcodeTb.Text;
-            return true;
-        }
-
-
-        private VolleyballClub Manager
-        {
-            get
-            {
-                return (VolleyballClub)Application[Constants.DATA];
-
-            }
-            set { }
-        }
 
         protected void PlayerList_SelectedIndexChanged(object sender, EventArgs e)
         {
