@@ -9,10 +9,10 @@ using System.Net;
 
 namespace VballManager
 {
-    public partial class Default : BasePage
+    public partial class BasePage
     {
 
-        private void CancelPromarySpot(Pool pool, Game game, Player player)
+        protected void CancelPromarySpot(Pool pool, Game game, Player player)
         {
             Attendee attendee = game.Members.FindByPlayerId(player.Id);
             //Cancel spots for members
@@ -30,7 +30,7 @@ namespace VballManager
                 LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Cancel member");
                 Manager.Logs.Add(log);
                 //Assgin a spot to the first one on waiting list
-                if (!this.lockReservation && game.WaitingList.Count > 0 && Validation.IsSpotAvailable(pool, ComingGameDate))
+                if (!IsReservationLocked(game.Date) && game.WaitingList.Count > 0 && IsSpotAvailable(pool, game.Date))
                 {
                     AssignDropinSpotToWaiting(pool, game);
                 }
@@ -39,7 +39,7 @@ namespace VballManager
             }
         }
 
-        private void CancelDropinSpot(Pool pool, Game game, Player player)
+        protected void CancelDropinSpot(Pool pool, Game game, Player player)
         {
             //Cancel spots for dropin
             Attendee attendee = game.Dropins.FindByPlayerId(player.Id);
@@ -55,7 +55,7 @@ namespace VballManager
                 Dropin dropin = pool.Dropins.FindByPlayerId(player.Id);
                 if (dropin.IsCoop) dropin.LastCoopDate = new DateTime();
                 //Move first one in waiting list into dropin list
-                if (!this.lockReservation && game.WaitingList.Count > 0 && Validation.IsSpotAvailable(pool, ComingGameDate))
+                if (!IsReservationLocked(game.Date) && game.WaitingList.Count > 0 && IsSpotAvailable(pool, game.Date))
                 {
                     AssignDropinSpotToWaiting(pool, game);
                 }
@@ -108,7 +108,7 @@ namespace VballManager
             }
         }
 
-       private bool CancelSpot(Pool pool, Game game, Player player)
+       protected bool CancelSpot(Pool pool, Game game, Player player)
        {
            if (pool == null) return false;
 

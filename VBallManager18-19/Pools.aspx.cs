@@ -21,7 +21,6 @@ namespace VballManager
                 }
                 this.DeletePoolBtn.OnClientClick = "if ( !confirm('Are you sure to delete this pool?')) return false;";
                 this.DeleteGameBtn.OnClientClick = "if ( !confirm('Are you sure to delete this game?')) return false;";
-                this.SendPrimaryMemberNotificationBtn.OnClientClick = "if ( !confirm('Are you sure to send primary member notification message to the players?')) return false;";
                 //Bind pool list
                 int selectPoolIndex = this.PoolListbox.SelectedIndex;
                 this.PoolListbox.DataSource = Manager.Pools;
@@ -574,36 +573,5 @@ namespace VballManager
                 Response.Redirect("Default.aspx?abcd=" + this.PoolListbox.SelectedValue + "&GameDate=" + this.GameListbox.SelectedItem.Text + "&Admin=1");
             }
         }
-
-        protected void SendPrimaryMemberNotificationWechatMessageBtn_Click(object sender, EventArgs e)
-        {
-            if (!IsSuperAdmin() || this.PoolListbox.SelectedIndex == -1)
-            {
-                return;
-            }
-            Pool pool = Manager.FindPoolById(this.PoolListbox.SelectedValue);
-            String message = "Hi, everyone. We will re-assign the primary members as scheduled. Following " + pool.Members.Count + " players are rated high by their attendances, they will become the primary members for next few months";
-            Manager.AddNotifyWechatMessage(pool, message);
-            foreach (Member member in pool.Members.Items)
-            {
-                Player player = Manager.FindPlayerById(member.PlayerId);
-                message = "Congratus! " + player.Name + ". We are very pleased that you have become 1 of " + pool.Members.Count + " primary members in pool " + pool.Name + ". You deserve this because you attended a lot of games in the post. We will pre-reserve a spot for you for each week in this pool. However, please cancel your reservation if you cannot make it. Thanks";
-                Manager.AddNotifyWechatMessage(player, message);
-                message = "Congratus! You have become the primary member in pool " + pool.Name;
-                Manager.AddNotifyWechatMessage(pool, WechatAtAndMessage(player, message));
-            }
-        }
-
-        private String WechatAtAndMessage(Player player, String message)
-        {
-            if (String.IsNullOrEmpty(player.WechatName))
-            {
-                return player.Name + ", " + message;
-            }
-
-            return "@" + player.WechatName + "{ENTER}" + message;
-        }
-
-
      }
 }

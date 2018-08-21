@@ -30,9 +30,36 @@ namespace VballManager
         private String timeZoneName = "Eastern Standard Time";
         private List<Permit> permits = new List<Permit>();
         private List<WechatMessage> wechatMessages = new List<WechatMessage>();
+        private String wechatMemberWelcomeMessage;
+        private String wechatDropinWelcomeMessage;
+        private String wechatPoolMessage;
+        private String wechatPrimaryMemberMessage;
         private int maxDropinFeeOwe = 20;
 
-        public int MaxDropinFeeOwe
+        public String WechatMemberWelcomeMessage
+        {
+            get { return wechatMemberWelcomeMessage; }
+            set { wechatMemberWelcomeMessage = value; }
+        }
+
+        public String WechatDropinWelcomeMessage
+        {
+            get { return wechatDropinWelcomeMessage; }
+            set { wechatDropinWelcomeMessage = value; }
+        }
+
+        public String WechatPoolMessage
+        {
+            get { return wechatPoolMessage; }
+            set { wechatPoolMessage = value; }
+        }
+
+        public String WechatPrimaryMemberMessage
+        {
+            get { return wechatPrimaryMemberMessage; }
+            set { wechatPrimaryMemberMessage = value; }
+        }
+       public int MaxDropinFeeOwe
         {
             get { return maxDropinFeeOwe; }
             set { maxDropinFeeOwe = value; }

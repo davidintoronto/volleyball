@@ -15,7 +15,7 @@ namespace VballManager
         #region Reserve or cancel click
         protected void Reserve_Click(object sender, EventArgs e)
         {
-            if (lockReservation && !Manager.ActionPermitted(Actions.Reserve_After_Locked, CurrentUser.Role))
+            if (IsReservationLocked(ComingGameDate) && !Manager.ActionPermitted(Actions.Reserve_After_Locked, CurrentUser.Role))
             {
                 ShowMessage(appLockedMessage);
                 return;
@@ -27,7 +27,7 @@ namespace VballManager
             //Handle dropin
             if (CurrentPool.Dropins.Exists(playerId))
             {
-                if (!Validation.IsDropinSpotOpening(player.IsRegisterdMember, ComingGameDate, CurrentPool, Manager))
+                if (!IsDropinSpotOpening(CurrentPool, ComingGameDate, player))
                 {
                     DateTime reserveDate = ComingGameDate.AddDays(-1 * CurrentPool.DaysToReserve4Member);
                     if (!player.IsRegisterdMember)
@@ -62,7 +62,7 @@ namespace VballManager
                 }
             }
 
-            if (!Validation.IsSpotAvailable(CurrentPool, ComingGameDate))
+            if (!IsSpotAvailable(CurrentPool, ComingGameDate))
             {
                 //Power reserve
                 if (Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role))
@@ -87,7 +87,7 @@ namespace VballManager
         //Cancel primary members and dropn pickup, not for waiting list
         protected void Cancel_Click(object sender, EventArgs e)
         {
-            if (lockReservation && !Manager.ActionPermitted(Actions.Reserve_After_Locked, CurrentUser.Role))
+            if (IsReservationLocked(ComingGameDate) && !Manager.ActionPermitted(Actions.Reserve_After_Locked, CurrentUser.Role))
             {
                 ShowMessage(appLockedMessage);
                 return;
@@ -104,7 +104,7 @@ namespace VballManager
         //Cancel waiting
         protected void Cancel_Waiting_Click(object sender, EventArgs e)
         {
-            if (lockReservation && !Manager.ActionPermitted(Actions.Reserve_After_Locked, CurrentUser.Role))
+            if (IsReservationLocked(ComingGameDate) && !Manager.ActionPermitted(Actions.Reserve_After_Locked, CurrentUser.Role))
             {
                 ShowMessage(appLockedMessage);
                 return;
@@ -122,7 +122,7 @@ namespace VballManager
 
         private void Coop_Reserve_Click(object sender, EventArgs e)
         {
-            if (lockReservation && !Manager.ActionPermitted(Actions.Reserve_After_Locked, CurrentUser.Role))
+            if (IsReservationLocked(ComingGameDate) && !Manager.ActionPermitted(Actions.Reserve_After_Locked, CurrentUser.Role))
             {
                 ShowMessage(appLockedMessage);
                 return;
@@ -139,7 +139,7 @@ namespace VballManager
                     return;
                 }
             }
-            if (!Validation.DropinSpotAvailableForCoop(CurrentPool, ComingGameDate))
+            if (!DropinSpotAvailableForCoop(CurrentPool, ComingGameDate))
             {
                 if (!Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role))
                 {
@@ -147,7 +147,7 @@ namespace VballManager
                     return;
                 }
             }
-            if (!Validation.IsSpotAvailable(CurrentPool, ComingGameDate))
+            if (!IsSpotAvailable(CurrentPool, ComingGameDate))
             {
                 Session[Constants.ACTION_TYPE] = Constants.ACTION_POWER_RESERVE;
                 ShowPopupModal("All spots are already filled up. Would you like to reserve an EXTRA spot?");
@@ -178,7 +178,7 @@ namespace VballManager
 
         protected void Cancel_Confirm_Click(object sender, EventArgs e)
         {
-            if (lockReservation)
+            if (IsReservationLocked(ComingGameDate))
             {
                 Session[Constants.ACTION_TYPE] = Constants.ACTION_NO_SHOW;
                 Session[Constants.CONTROL] = sender;
@@ -213,7 +213,7 @@ namespace VballManager
            Game game = CurrentPool.FindGameByDate(ComingGameDate);
            Player player = Manager.FindPlayerById(playerId);
            MarkNoShow(CurrentPool, game, player);
-           String message = String.Format("Hi, {0}. [System Info] Admin marked you as no-show on the reservation of {1}. If you have any question, contact the admin", player.Name, game.Date.ToString("MM/dd/yyyy"));
+           String message = String.Format("[System Info] Hi, {0}. Admin marked you as no-show on the reservation of {1}. If you have any question, contact the admin", player.Name, game.Date.ToString("MM/dd/yyyy"));
            Manager.AddNotifyWechatMessage(player, message);
            DataAccess.Save(Manager);
            Response.Redirect(Constants.DEFAULT_PAGE);

@@ -29,6 +29,7 @@
                     <Items>
                         <asp:MenuItem NavigateUrl="~/Admin.aspx" Text="Admin / Players"/>
                         <asp:MenuItem NavigateUrl="~/Pools.aspx" Text="Pool Settings"/>
+                        <asp:MenuItem NavigateUrl="~/Wechat.aspx" Text="Wechat"/>
                         <asp:MenuItem NavigateUrl="~/Fees.aspx" Text="Fees"/>
                         <asp:MenuItem NavigateUrl="~/Authen.aspx" Text="Authentication"/>
                        <asp:MenuItem NavigateUrl="~/LogHistories.aspx" Text="Log Histories"/>

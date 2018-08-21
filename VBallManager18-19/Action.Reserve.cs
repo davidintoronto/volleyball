@@ -9,10 +9,10 @@ using System.Net;
 
 namespace VballManager
 {
-    public partial class Default : BasePage
+    public partial class BasePage
     {
         #region Reserve
-        private void ReserveSpot(Pool pool, Game game, Player player)
+        protected void ReserveSpot(Pool pool, Game game, Player player)
         {
             if (game.Members.Exists(player.Id))
             {
@@ -25,7 +25,7 @@ namespace VballManager
         }
 
 
-        private void ReservePromarySpot(Pool pool, Game game, Player player)
+        protected void ReservePromarySpot(Pool pool, Game game, Player player)
         {
             Attendee attendee = game.Members.FindByPlayerId(player.Id);
             //Cancel spots for members
@@ -47,7 +47,7 @@ namespace VballManager
              }
         }
 
-        private void ReserveDropinSpot(Pool pool, Game game, Player player)
+        protected void ReserveDropinSpot(Pool pool, Game game, Player player)
         {
             //Cancel spots for dropin
             Attendee attendee = game.Dropins.FindByPlayerId(player.Id);
@@ -56,7 +56,7 @@ namespace VballManager
             {
                 attendee.Status = InOutNoshow.In;
                 //Create fee
-                CostReference reference = CreateDropinFee(pool, player.Id);
+                CostReference reference = CreateDropinFee(pool, game.Date, player.Id);
                 attendee.CostReference = reference;
                 attendee.OperatorId = CurrentUser.Id;
                 LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), pool.Name, player.Name, "Reserve dropin");
@@ -66,18 +66,18 @@ namespace VballManager
           // Response.Redirect(Constants.DEFAULT_PAGE);
         }
 
-        private void MoveReservation(Pool pool, Game game, Player player)
+        protected void MoveReservation(Pool pool, Game game, Player player)
         {
             ReserveSpot(pool, game, player);
             //Cancel the spot in other pool
             Pool sameDayPool = Manager.Pools.Find(p => pool.Name != pool.Name && p.DayOfWeek == pool.DayOfWeek);
-            if (CancelSpot(sameDayPool, sameDayPool.FindGameByDate(ComingGameDate), player))
+            if (CancelSpot(sameDayPool, sameDayPool.FindGameByDate(game.Date), player))
             {
-                Manager.AddReservationNotifyWechatMessage(player.Id, pool.Id, Constants.MOVED, sameDayPool, pool, ComingGameDate);
+                Manager.AddReservationNotifyWechatMessage(player.Id, pool.Id, Constants.MOVED, sameDayPool, pool, game.Date);
             }
             else
             {
-                Manager.AddReservationNotifyWechatMessage(player.Id, pool.Id, Constants.RESERVED, sameDayPool, pool, ComingGameDate);
+                Manager.AddReservationNotifyWechatMessage(player.Id, pool.Id, Constants.RESERVED, sameDayPool, pool, game.Date);
             }
             DataAccess.Save(Manager);
         }
@@ -89,14 +89,14 @@ namespace VballManager
             Waiting waiting = new Waiting(player.Id);
             waiting.OperatorId = GetOperatorId();
             game.WaitingList.Add(waiting);
-            Manager.AddReservationNotifyWechatMessage(player.Id, waiting.OperatorId, Constants.WAITING, pool, pool, ComingGameDate);
+            Manager.AddReservationNotifyWechatMessage(player.Id, waiting.OperatorId, Constants.WAITING, pool, pool, game.Date);
             LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), pool.Name, player.Name, "Add to Waiting List");
             Manager.Logs.Add(log);
         }
 
-        private void AssignDropinSpotToWaiting(Pool thePool, Game comingGame)
+        protected void AssignDropinSpotToWaiting(Pool thePool, Game comingGame)
         {
-            if (this.lockReservation || comingGame.WaitingList.Count == 0 || !Validation.IsSpotAvailable(thePool, ComingGameDate))
+            if (IsReservationLocked(comingGame.Date) || comingGame.WaitingList.Count == 0 || !IsSpotAvailable(thePool, comingGame.Date))
             {
                 return;
             }
@@ -105,14 +105,14 @@ namespace VballManager
             Player player = Manager.FindPlayerById(playerId);
             ReserveSpot(thePool, comingGame, player);
             comingGame.WaitingList.Remove(playerId);
-            Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.WAITING_TO_RESERVED, thePool, thePool, ComingGameDate);
+            Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.WAITING_TO_RESERVED, thePool, thePool, comingGame.Date);
             comingGame.WaitingList.Remove(playerId);
             //Cancel the member spot in another pool on same day
             Pool sameDayPool = Manager.Pools.Find(pool => pool.Name != CurrentPool.Name && pool.DayOfWeek == CurrentPool.DayOfWeek);
-            if (CancelSpot(sameDayPool, sameDayPool.FindGameByDate(ComingGameDate), player))
+            if (CancelSpot(sameDayPool, sameDayPool.FindGameByDate(comingGame.Date), player))
             {
-                Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.CANCELLED, sameDayPool, sameDayPool, ComingGameDate);
-                AssignDropinSpotToWaiting(sameDayPool, sameDayPool.FindGameByDate(ComingGameDate));
+                Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.CANCELLED, sameDayPool, sameDayPool, comingGame.Date);
+                AssignDropinSpotToWaiting(sameDayPool, sameDayPool.FindGameByDate(comingGame.Date));
             }
         }
 
@@ -121,7 +121,7 @@ namespace VballManager
 
         #region Fee
 
-        private CostReference CreateDropinFee(Pool pool, String playerId)
+        private CostReference CreateDropinFee(Pool pool, DateTime gameDate, String playerId)
         {
             Player player = Manager.FindPlayerById(playerId);
             //No cost if clust member mode and the player is the registered member
@@ -134,7 +134,7 @@ namespace VballManager
             {
                 if (thePool.Name != thePool.Name && thePool.DayOfWeek == thePool.DayOfWeek && thePool.Members.Exists(playerId))
                 {
-                    player.RemoveTransferByGameDate(ComingGameDate);
+                    player.RemoveTransferByGameDate(gameDate);
                     return new CostReference(CostType.TRANSFER, null);
                 }
             }
@@ -143,7 +143,7 @@ namespace VballManager
             {
                 player.FreeDropin--;
                 /*Fee fee = new Fee(0);
-                fee.Date = ComingGameDate;
+                fee.Date = gameDate;
                 fee.FeeType = "Free -" + String.Format(Fee.FEETYPE_DROPIN, pool.Name);
                 fee.IsPaid = false;
                 player.Fees.Add(fee);*/
@@ -156,11 +156,11 @@ namespace VballManager
             }
             if (player.TransferUsed < Manager.MaxTransfers)
             {
-                Transfer transfer = player.GetAvailableTransfer(ComingGameDate);
+                Transfer transfer = player.GetAvailableTransfer(gameDate);
                 if (transfer != null)
                 {
                     transfer.IsUsed = true;
-                    transfer.ApplyGameDate = ComingGameDate;
+                    transfer.ApplyGameDate = gameDate;
                     return new CostReference(CostType.TRANSFER, transfer.TransferId);
                 }
             }
@@ -172,20 +172,20 @@ namespace VballManager
             }
             //last case is to create dropin fee
             Fee fee = new Fee(Manager.DropinFee);
-            fee.Date = ComingGameDate;
+            fee.Date = gameDate;
             fee.FeeType = FeeTypeEnum.Dropin.ToString();
             fee.FeeDesc = String.Format(Fee.FEETYPE_DROPIN, pool.Name);
             player.Fees.Add(fee);
             //Send wechat reminder if dropin fee reaches the max allow
             if (!player.IsRegisterdMember && IsDropinOwesExceedMax(player))
             {
-                String message = "[System Info] According to our records, the total amount you unpaid dropin fee reaches the maximum ($" + Manager.MaxDropinFeeOwe + "). Please make the payment ASAP, in order to continue making reservation in the future.";
+                String message = "[System Info] Hi, " + player.Name + ". According to our records, the total amount you unpaid dropin fee reaches the maximum ($" + Manager.MaxDropinFeeOwe + "). Please make the payment ASAP, in order to continue making reservation in the future.";
                 Manager.AddNotifyWechatMessage(player, message);
             }
             return new CostReference(CostType.FEE, fee.FeeId);
         }
 
-        private bool IsDropinOwesExceedMax(Player player)
+        protected bool IsDropinOwesExceedMax(Player player)
         {
             decimal total = 0;
             foreach (Fee fee in player.Fees)
@@ -227,7 +227,7 @@ namespace VballManager
         }
         #endregion
 
-         private void MarkNoShow(Pool pool, Game game, Player player)
+         protected void MarkNoShow(Pool pool, Game game, Player player)
         {
             Attendee attendee = game.Members.Items.Find(member => member.PlayerId == player.Id && member.Status == InOutNoshow.In);
             if (attendee != null)
@@ -247,15 +247,15 @@ namespace VballManager
         }
 
          #region Auto reserve
-         private void AutoReserveCoopPlayers()
+         protected void AutoReserveCoopPlayers(Pool thePool, DateTime gameDate)
         {
             foreach (Pool pool in Manager.Pools)
             {
-                if (pool.AutoCoopReserve && pool.DayOfWeek == CurrentPool.DayOfWeek && Manager.EastDateTimeToday.Date == ComingGameDate.Date && Manager.EastDateTimeNow.Hour >= pool.ReservHourForCoop)
+                if (pool.AutoCoopReserve && pool.DayOfWeek == thePool.DayOfWeek && Manager.EastDateTimeToday.Date == gameDate.Date && Manager.EastDateTimeNow.Hour >= pool.ReservHourForCoop)
                 {
-                    Game game = pool.FindGameByDate(ComingGameDate);
+                    Game game = pool.FindGameByDate(gameDate);
                     //Check to see if number of reserved coop players already reaches maximum
-                    while (Validation.DropinSpotAvailableForCoop(pool, ComingGameDate))
+                    while (DropinSpotAvailableForCoop(pool, gameDate))
                     {
                         Dropin coopCandidate = null;
                         //Find the best candidate of coop
@@ -264,12 +264,12 @@ namespace VballManager
                             if (dropin.IsCoop && !game.Dropins.Exists(dropin.PlayerId) && PlayerAttendedLastWeekGame(dropin.PlayerId))
                             {
                                 //find it if it is member and reserved in another pool on same day
-                                Pool otherPool = Manager.Pools.Find(p => pool.Name != CurrentPool.Name && p.DayOfWeek == CurrentPool.DayOfWeek);
+                                Pool otherPool = Manager.Pools.Find(p => pool.Name != thePool.Name && p.DayOfWeek == thePool.DayOfWeek);
                                 //If number of attedning players in other pool is not enough, then stop moving coop
-                                if (otherPool != null && otherPool.GetNumberOfAttendingMembers(ComingGameDate) + otherPool.GetNumberOfDropins(ComingGameDate) > otherPool.LessThanPayersForCoop)
+                                if (otherPool != null && otherPool.GetNumberOfAttendingMembers(gameDate) + otherPool.GetNumberOfDropins(gameDate) > otherPool.LessThanPayersForCoop)
                                 {
                                     //Is pool member and reserved for game day
-                                    if (otherPool.Members.Exists(dropin.PlayerId) && otherPool.FindGameByDate(ComingGameDate).Members.Items.Exists(m => m.PlayerId == dropin.PlayerId && m.Status == InOutNoshow.In))
+                                    if (otherPool.Members.Exists(dropin.PlayerId) && otherPool.FindGameByDate(gameDate).Members.Items.Exists(m => m.PlayerId == dropin.PlayerId && m.Status == InOutNoshow.In))
                                     {
                                         if (coopCandidate == null || coopCandidate.LastCoopDate > dropin.LastCoopDate)
                                         {

@@ -31,15 +31,6 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.TextBox AdminPasscodeTb;
         
         /// <summary>
-        /// AuthCb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox AuthCb;
-        
-        /// <summary>
         /// CookieAuthCb control.
         /// </summary>
         /// <remarks>
@@ -283,6 +274,15 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell6;
         
         /// <summary>
+        /// PlayerPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PlayerPanel;
+        
+        /// <summary>
         /// PlayerLb control.
         /// </summary>
         /// <remarks>
@@ -400,13 +400,13 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.DropDownList PlayerPropertiesList;
         
         /// <summary>
-        /// SendWelcomeWechatMessageBtn control.
+        /// SetMembershipBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SendWelcomeWechatMessageBtn;
+        protected global::System.Web.UI.WebControls.Button SetMembershipBtn;
         
         /// <summary>
         /// PlayerListbox control.
@@ -416,15 +416,6 @@ namespace VballManager {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList PlayerListbox;
-        
-        /// <summary>
-        /// SetMembershipBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SetMembershipBtn;
         
         /// <summary>
         /// SavePlayersBtn control.

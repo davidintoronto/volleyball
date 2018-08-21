@@ -11,7 +11,6 @@ namespace VballManager
 {
     public partial class Default : BasePage
     {
-        private bool lockReservation = false;
         private String appLockedMessage = "Reservation system is locked at this moment, please contact admin";
  
         protected void Page_Load(object sender, EventArgs e)
@@ -100,17 +99,15 @@ namespace VballManager
                 this.DropinPanel.Visible = false;
                 return;
             }
-            this.lockReservation = Validation.IsReservationLocked(ComingGameDate, Manager);
             //Check if there is dropin spots available for the players on waiting list
             Game comingGame = CurrentPool.FindGameByDate(ComingGameDate);
-            while (!this.lockReservation && Validation.IsSpotAvailable(CurrentPool, ComingGameDate) && comingGame.WaitingList.Count > 0)
+            while (!IsReservationLocked(gameDate))
             {
-                AssignDropinSpotToWaiting(CurrentPool, comingGame);
-            }
-            //Move coop reservation if current pool needs more players
-            if (!this.lockReservation)
-            {
-                AutoReserveCoopPlayers();
+                if (IsSpotAvailable(CurrentPool, ComingGameDate) && comingGame.WaitingList.Count > 0)
+                {
+                    AssignDropinSpotToWaiting(CurrentPool, comingGame);
+                }
+                AutoReserveCoopPlayers(CurrentPool, ComingGameDate);
             }
             //Fill game information
             FillGameInfoTable(CurrentPool, ComingGameDate);
@@ -281,7 +278,7 @@ namespace VballManager
         private void FillMemberTable(Pool pool, DateTime date)
         {
             IEnumerable<Player> playerQuery = OrderMembersByStats(pool, date);
-            bool spotsFilledup = !Validation.IsSpotAvailable(pool, date);
+            bool spotsFilledup = !IsSpotAvailable(pool, date);
             bool alterbackcolor = false;
             foreach (Player player in playerQuery)
             {
@@ -375,7 +372,7 @@ namespace VballManager
             //Calcuate stats for dropins
             List<Player> players = CalculateDropinStats();
             Game game = pool.FindGameByDate(date);
-            bool dropinSpotAvailable = Validation.IsSpotAvailable(pool, date);
+            bool dropinSpotAvailable = IsSpotAvailable(pool, date);
             foreach (Player player in players)
             {
                 Attendee attdenee = game.Dropins.FindByPlayerId(player.Id);

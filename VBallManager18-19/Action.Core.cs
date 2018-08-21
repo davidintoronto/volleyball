@@ -9,7 +9,7 @@ using System.Net;
 
 namespace VballManager
 {
-    public class BasePage : System.Web.UI.Page
+    public partial class BasePage : System.Web.UI.Page
     {
 
         protected VolleyballClub Manager
@@ -21,6 +21,7 @@ namespace VballManager
             }
             set { }
         }
+
         protected Pool CurrentPool
         {
             get
@@ -128,6 +129,56 @@ namespace VballManager
             if (status == InOutNoshow.In) return "~/Icons/In.png";
             else if (status == InOutNoshow.Out) return "~/Icons/Out.png";
             else return "~/Icons/noShow.png";
+        }
+
+        protected bool IsReservationLocked(DateTime gameDate)
+        {
+            DateTime lockDate = TimeZoneInfo.ConvertTimeFromUtc(gameDate, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
+            lockDate = lockDate.AddHours(-1 * lockDate.Hour + Manager.LockReservationHour);
+            DateTime now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
+            return now >= lockDate;
+        }
+
+        protected bool IsDropinSpotOpening(Pool pool, DateTime gameDate, Player player)
+        {
+            DateTime reserveDate = TimeZoneInfo.ConvertTimeFromUtc(gameDate, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
+            if (player.IsRegisterdMember)
+            {
+                reserveDate = reserveDate.AddDays(-1 * pool.DaysToReserve4Member).AddHours(-1 * reserveDate.Hour + Manager.DropinSpotOpeningHour);
+            }
+            else
+            {
+                reserveDate = reserveDate.AddDays(-1 * pool.DaysToReserve).AddHours(-1 * reserveDate.Hour + Manager.DropinSpotOpeningHour);
+            }
+            DateTime now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
+            return now >= reserveDate;
+        }
+
+        protected bool IsSpotAvailable(Pool pool, DateTime gameDate)
+        {
+            if (!pool.HasCap)
+            {
+                return true;
+            }
+            int memberPlayers = pool.GetNumberOfAttendingMembers(gameDate);
+            int dropinPlayers = pool.GetNumberOfDropins(gameDate);
+            return memberPlayers + dropinPlayers < pool.MaximumPlayerNumber;
+        }
+
+        protected static bool DropinSpotAvailableForCoop(Pool pool, DateTime gameDate)
+        {
+            if (!pool.HasCap)
+            {
+                return true;
+            }
+            int reservedCoop = pool.GetNumberOfReservedCoops(gameDate);
+            if (reservedCoop >= pool.MaxCoopPlayers)
+            {
+                return false;
+            }
+            int memberPlayers = pool.GetNumberOfAttendingMembers(gameDate);
+            int dropinPlayers = pool.GetNumberOfDropins(gameDate);
+            return memberPlayers + dropinPlayers < pool.LessThanPayersForCoop;
         }
 
     }

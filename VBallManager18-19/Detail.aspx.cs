@@ -186,7 +186,7 @@ namespace VballManager
             }
              foreach (Game game in query)
             {
-                if (game.Members.Items.Exists(member => member.PlayerId == player.Id && member.Status != InOutNoshow.Out))
+                 if (game.Members.Items.Exists(member => member.PlayerId == player.Id))
                 {
                     Attendee attendee = game.Members.FindByPlayerId(player.Id);
                     TableRow row = new TableRow();
@@ -200,11 +200,15 @@ namespace VballManager
                     imageBtn.ImageUrl = GetStatusImageUrl(attendee.Status);
                     imageBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
                     imageBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
-                    if (game.Date > comingGameDate)
+                    if (IsReservationLocked(game.Date))
+                    {
+                        imageBtn.Enabled = false;
+                    }
+                    else
                     {
                         imageBtn.Click += new ImageClickEventHandler(MemberChangeAttendance_Click);
+                        row.BackColor = System.Drawing.Color.Aqua;
                     }
-
                     //  imageBtn.CssClass = "imageBtn";
                     statusCell.Controls.Add(imageBtn);
                     row.Cells.Add(statusCell);
@@ -220,7 +224,8 @@ namespace VballManager
                     TableCell statusCell = new TableCell();
                     statusCell.HorizontalAlign = HorizontalAlign.Right;
                     Image imageBtn = new Image();
-                    imageBtn.ID = GetStatusImageUrl(pickup.Status);
+                    imageBtn.ID = player.Id + "," + game.Date.ToShortDateString();
+                    imageBtn.ImageUrl = GetStatusImageUrl(pickup.Status);
                     imageBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
                     imageBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
                     //  imageBtn.CssClass = "imageBtn";
@@ -342,32 +347,22 @@ namespace VballManager
             Attendee attendee = game.Members.FindByPlayerId(playerId);
             if (attendee.Status == InOutNoshow.Out)
             {
-                if (attendee.CostReference != null && attendee.CostReference.CostType == CostType.TRANSFER && attendee.CostReference.ReferenceId != null)
+                if (IsSpotAvailable(CurrentPool, game.Date))
                 {
-                    Transfer transfer = player.FindTransferById(attendee.CostReference.ReferenceId);
-                    player.Transfers.Remove(transfer);
+                    ReservePromarySpot(CurrentPool, game, player);
+                    Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, ComingGameDate);
                 }
-                //Add to reserved list
-                attendee.Status = InOutNoshow.In;
-                attendee.CostReference = null;
-                //Log and save
-                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, player.Name, "Reserve member");
-                Manager.Logs.Add(log);
+                else
+                {
+                    ShowMessage("Pool " + CurrentPool.Name + " is full. If you would like to add to waiting list, use the pool reservation page");
+                    return;
+                }
+                return;
             }
             else if (attendee.Status == InOutNoshow.In)
             {
-                attendee.Status = InOutNoshow.Out;
-                if (!Manager.ClubMemberMode)
-                {
-                    Transfer transfer = new Transfer(game.Date);
-                    player.Transfers.Add(transfer);
-                    CostReference costRef = new CostReference(CostType.TRANSFER, transfer.TransferId);
-                    attendee.CostReference = costRef;
-                }
-                //Log and save
-                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, player.Name, "Cancel member");
-                Manager.Logs.Add(log);
-
+                CancelPromarySpot(CurrentPool, game, player);
+                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.CANCELLED, CurrentPool, CurrentPool, ComingGameDate);
             }
             DataAccess.Save(Manager);
             Response.Redirect(Request.RawUrl);

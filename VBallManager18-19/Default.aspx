@@ -10,7 +10,7 @@
     <asp:Label ID="L1" runat="server" Text="" />
 
 
-    <cc1:ModalPopupExtender ID="PopupModal" runat="server" CancelControlID="" Y="300"
+    <cc1:ModalPopupExtender ID="PopupModal" runat="server" CancelControlID=""
         OkControlID="" TargetControlID="L1" PopupControlID="ConfirmPanel" PopupDragHandleControlID="PopupHeader"
         Drag="true" BackgroundCssClass="modalBackground">
     </cc1:ModalPopupExtender>

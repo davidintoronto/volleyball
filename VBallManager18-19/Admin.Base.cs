@@ -10,11 +10,6 @@ namespace VballManager
 {
     public partial class AdminBase : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
- 
-        }
-
         protected bool IsSuperAdmin()
         {
             if (Request.Cookies[Constants.PRIMARY_USER] != null)
