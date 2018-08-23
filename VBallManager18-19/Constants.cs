@@ -50,7 +50,9 @@ namespace VballManager
         public const String POOL_LINK_LIST_PAGE = "PoolLinkList.aspx";
         public const String AUTHORIZE_USER_PAGE = "Authorize.aspx";
         public const String REGISTER_DEVICE_PAGE = "RegisterDevice.aspx";
+        public const String AUTO_RESERVE = "AutoReserve.aspx";
         public const String DEFAULT_PAGE = "Default.aspx";
         public const String HOME_PC_IP = "HomePcIp";
+        public const String HOUR = "Hour";
     }
 }

@@ -67,6 +67,7 @@
     <Content Include="About.aspx" />
     <Content Include="Admin.aspx" />
     <Content Include="App_Data\xslt.xml" />
+    <Content Include="AutoReserve.aspx" />
     <Content Include="Checker.aspx" />
     <Content Include="Billing.aspx" />
     <Content Include="BillingDetail.aspx" />
@@ -140,6 +141,13 @@
     </Compile>
     <Compile Include="Admin.Base.cs">
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AutoReserve.aspx.cs">
+      <DependentUpon>AutoReserve.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AutoReserve.aspx.designer.cs">
+      <DependentUpon>AutoReserve.aspx</DependentUpon>
     </Compile>
     <Compile Include="Checker.aspx.cs">
       <DependentUpon>Checker.aspx</DependentUpon>

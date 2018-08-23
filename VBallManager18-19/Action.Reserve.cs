@@ -58,7 +58,7 @@ namespace VballManager
                 //Create fee
                 CostReference reference = CreateDropinFee(pool, game.Date, player.Id);
                 dropin.CostReference = reference;
-                dropin.OperatorId = CurrentUser.Id;
+                if (CurrentUser != null ) dropin.OperatorId = CurrentUser.Id;
                 if (dropin.IsCoop) 
                 {
                     dropin.LastCoopDate = game.Date;
@@ -286,7 +286,7 @@ namespace VballManager
                      }
                      Player coopPlayer = Manager.FindPlayerById(coopCandidate.PlayerId);
                      MoveReservation(thePool, game, coopPlayer);
-                     Manager.AddReservationNotifyWechatMessage(coopPlayer.Id, CurrentUser.Id, Constants.MOVED, thePool, originalPool, ComingGameDate);
+                     Manager.AddReservationNotifyWechatMessage(coopPlayer.Id, (CurrentUser == null ? null : CurrentUser.Id), Constants.MOVED, thePool, originalPool, gameDate);
                      DataAccess.Save(Manager);
                  }
              }

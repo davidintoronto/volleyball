@@ -381,7 +381,7 @@ namespace VballManager
             String message = null;
             int numberOfReservedPlayerInTargetPool = targetPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
 
-            String poolAndGameDate = " in pool " + targetPool.Name + " for " + gameDate.ToString("MM/dd/yyyy") + ". Total player number in pool " + targetPool.Name + ": " + numberOfReservedPlayerInTargetPool;
+            String poolAndGameDate = " in pool " + targetPool.Name + " for the " + targetPool.DayOfWeek + " volleyball on " + gameDate.ToString("MM/dd/yyyy") + ". Total player number in pool " + targetPool.Name + ": " + numberOfReservedPlayerInTargetPool;
             if (result == Constants.RESERVED || result == Constants.CANCELLED)
             {
                 if (playerId == operatorId)
@@ -402,11 +402,11 @@ namespace VballManager
             }
             else if (result == Constants.MOVED)
             {
-                message = result.ToString() + " from pool " + originalPool.Name + " to pool " + targetPool.Name + " for " + gameDate.ToString("MM/dd/yyyy");
+                message = result.ToString() + " from pool " + originalPool.Name + " to pool " + targetPool.Name + " for the " + targetPool.DayOfWeek + " volleyball on " + gameDate.ToString("MM/dd/yyyy");
                 WechatNotifier.AddNotifyWechatMessage(player, message);
-                message = result.ToString() + " from pool " + originalPool.Name + " for " + gameDate.ToString("MM/dd/yyyy") + ". Total player number in pool " + originalPool.Name + ": " + originalPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
+                message = message + ". Total player number in pool " + originalPool.Name + ": " + originalPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
                 WechatNotifier.AddNotifyWechatMessage(originalPool, player, message);
-                message = result.ToString() + " to pool " + targetPool.Name + " for " + gameDate.ToString("MM/dd/yyyy") + ". Total player number in pool " + targetPool.Name + ": " + numberOfReservedPlayerInTargetPool;
+                message = message + ". Total player number in pool " + targetPool.Name + ": " + numberOfReservedPlayerInTargetPool;
                 WechatNotifier.AddNotifyWechatMessage(player, message);
                 WechatNotifier.AddNotifyWechatMessage(targetPool, player, message);
             }

@@ -39,15 +39,12 @@ namespace VballManager
 
         private void AutoAssignCoopSpots(int hour)
         {
-            foreach (Pool pool in Manager.Pools)
-            {
-                DateTime comingGameDate = FindComingGameDate(pool);
-                if (pool.AutoCoopReserve && hour == pool.ReservHourForCoop && Manager.EastDateTimeToday.AddDays(pool.DaysToReserve).Date == comingGameDate.Date)
-                {
-                    BasePage page = new BasePage();
-                    page.AutoReserveCoopPlayers(pool, comingGameDate);
-                }
-            }
+            String slash = "/";
+            String autoReserveUrl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.PathAndQuery, HttpContext.Current.Request.ApplicationPath);
+            if (!autoReserveUrl.EndsWith(slash)) autoReserveUrl = autoReserveUrl + slash;
+            autoReserveUrl = autoReserveUrl + Constants.AUTO_RESERVE + "?hour=" + hour;
+            var http = (HttpWebRequest)WebRequest.Create(autoReserveUrl);
+            var response = http.GetResponse();
         }
 
         private void QueryPublishLinks(int hour)
@@ -88,18 +85,14 @@ namespace VballManager
                  }
              }
         }
-    
 
         private DateTime FindComingGameDate(Pool pool)
         {
             DateTime gameDate = Manager.EastDateTimeToday;
-            IEnumerable<Game> gameQuery = pool.Games.OrderBy(game => game.Date);
-            foreach (Game game in gameQuery)
+            Game targetGame = pool.Games.OrderBy(game => game.Date).ToList<Game>().Find(game => game.Date >= gameDate);
+            if (targetGame != null)
             {
-                if (game.Date >= gameDate)
-                {
-                    return game.Date;
-                }
+                return targetGame.Date;
             }
             return DateTime.MaxValue;
         }

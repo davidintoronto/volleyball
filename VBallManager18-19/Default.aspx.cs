@@ -51,7 +51,6 @@ namespace VballManager
                 Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
                 return;
             }
-            this.Page.Title = CurrentPool.Title;
             //Check to see if user is quilified to view current pool
             if (!Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) && !CurrentPool.Members.Exists(currentUser.Id) && !CurrentPool.Dropins.Exists(currentUser.Id))
             {
@@ -153,7 +152,7 @@ namespace VballManager
             navRow.Cells.Add(prevCell);
             //GameInfo text
             TableCell gameinfoCell = new TableCell();
-            gameinfoCell.Text = "Game Info";
+            gameinfoCell.Text = CurrentPool.DayOfWeek + " Pool " + CurrentPool.Name;
             gameinfoCell.HorizontalAlign = HorizontalAlign.Center;
             navRow.Cells.Add(gameinfoCell);
             //Next

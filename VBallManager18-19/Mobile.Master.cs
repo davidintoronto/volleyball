@@ -32,7 +32,7 @@ namespace VballManager
         }
         private String GetTitleOfCurrentPool()
         {
-            String poolName = this.Request.Params[Constants.POOL];
+           /* String poolName = this.Request.Params[Constants.POOL];
             if (poolName != null)
             {
                 Pool currentPool = Reservations.FindPoolByName(poolName);
@@ -40,7 +40,7 @@ namespace VballManager
                 {
                     return currentPool.Title;
                 }
-            }
+            }*/
             return "Hitmen Volleyball Club";
 
         }
