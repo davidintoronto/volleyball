@@ -33,6 +33,7 @@
             this.MessageLb = new System.Windows.Forms.Label();
             this.HourSharpTimer = new System.Windows.Forms.Timer(this.components);
             this.WechatTimer = new System.Windows.Forms.Timer(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // StartBtn
@@ -53,21 +54,32 @@
             this.MessageLb.Size = new System.Drawing.Size(0, 13);
             this.MessageLb.TabIndex = 2;
             // 
-            // HomePcIpTimer
+            // HourSharpTimer
             // 
             this.HourSharpTimer.Interval = 3600000;
-            this.HourSharpTimer.Tick += new System.EventHandler(this.HomePcIpTimer_Tick);
+            this.HourSharpTimer.Tick += new System.EventHandler(this.ScheduleTaskTimer_Tick);
             // 
             // WechatTimer
             // 
             this.WechatTimer.Interval = 60000;
             this.WechatTimer.Tick += new System.EventHandler(this.WechatTimer_Tick);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(953, 6);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "HourSharp";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Notifier
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(307, 32);
+            this.ClientSize = new System.Drawing.Size(1040, 32);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.MessageLb);
             this.Controls.Add(this.StartBtn);
             this.Name = "Notifier";
@@ -83,6 +95,7 @@
         private System.Windows.Forms.Label MessageLb;
         private System.Windows.Forms.Timer HourSharpTimer;
         private System.Windows.Forms.Timer WechatTimer;
+        private System.Windows.Forms.Button button1;
     }
 }
 

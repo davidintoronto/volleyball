@@ -132,11 +132,11 @@ namespace Wechat_Notifier.VballMangerWebservice {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/WechatMessages", ReplyAction="*")]
         System.Threading.Tasks.Task<Wechat_Notifier.VballMangerWebservice.WechatMessagesResponse> WechatMessagesAsync(Wechat_Notifier.VballMangerWebservice.WechatMessagesRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/QueryPublishLink", ReplyAction="*")]
-        void QueryPublishLink(int hours);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/RunScheduleTasks", ReplyAction="*")]
+        void RunScheduleTasks(int hour);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/QueryPublishLink", ReplyAction="*")]
-        System.Threading.Tasks.Task QueryPublishLinkAsync(int hours);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/RunScheduleTasks", ReplyAction="*")]
+        System.Threading.Tasks.Task RunScheduleTasksAsync(int hour);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -250,12 +250,12 @@ namespace Wechat_Notifier.VballMangerWebservice {
             return ((Wechat_Notifier.VballMangerWebservice.VballWebServiceSoap)(this)).WechatMessagesAsync(inValue);
         }
         
-        public void QueryPublishLink(int hours) {
-            base.Channel.QueryPublishLink(hours);
+        public void RunScheduleTasks(int hour) {
+            base.Channel.RunScheduleTasks(hour);
         }
         
-        public System.Threading.Tasks.Task QueryPublishLinkAsync(int hours) {
-            return base.Channel.QueryPublishLinkAsync(hours);
+        public System.Threading.Tasks.Task RunScheduleTasksAsync(int hour) {
+            return base.Channel.RunScheduleTasksAsync(hour);
         }
     }
 }

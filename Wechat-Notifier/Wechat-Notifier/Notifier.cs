@@ -75,7 +75,7 @@ namespace Wechat_Notifier
 
         private void StartBtn_Click(object sender, EventArgs e)
         {
-            HomePcIpTimer_Tick(sender, e);
+            ScheduleTaskTimer_Tick(sender, e);
             SendMessagesToWechat();
         }
 
@@ -194,13 +194,14 @@ namespace Wechat_Notifier
 
         }
 
-        private void HomePcIpTimer_Tick(object sender, EventArgs e)
+        private void ScheduleTaskTimer_Tick(object sender, EventArgs e)
         {
             try
             {
                 VballMangerWebservice.VballWebServiceSoapClient client = new VballMangerWebservice.VballWebServiceSoapClient();
-                client.QueryPublishLink(DateTime.Now.Hour);
-            }catch(Exception){}
+                client.RunScheduleTasks(DateTime.Now.Hour);
+            }catch(Exception){
+            }
             ResetHourSharpTimer();
         }
 
@@ -208,6 +209,19 @@ namespace Wechat_Notifier
         {
             SendMessagesToWechat();
             WechatTimer.Start();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                VballMangerWebservice.VballWebServiceSoapClient client = new VballMangerWebservice.VballWebServiceSoapClient();
+                client.RunScheduleTasks(DateTime.Now.Hour);
+            }
+            catch (Exception ex)
+            {
+                this.MessageLb.Text = ex.Message;
+            }
         }
     }
 }
