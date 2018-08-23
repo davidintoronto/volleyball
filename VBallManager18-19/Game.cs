@@ -8,19 +8,25 @@ namespace VballManager
     public class Game
     {
         private DateTime date;
-        private VList<Presence> presences = new VList<Presence>();
-        private VList<Absence> absences = new VList<Absence>();
-        private VList<Pickup> pickups = new VList<Pickup>();
+        private VList<Attendee> members = new VList<Attendee>();
+        private VList<Pickup> dropins = new VList<Pickup>();
         private VList<Waiting> waitingList = new VList<Waiting>();
 
         public Game()
         { }
 
-       public VList<Presence> Presences
+        public VList<Attendee> Members
         {
-            get { return presences; }
-            set { presences = value; }
+            get { return members; }
+            set { members = value; }
         }
+
+        public VList<Pickup> Dropins
+        {
+            get { return dropins; }
+            set { dropins = value; }
+        }
+ 
        public VList<Waiting> WaitingList
         {
             get { return waitingList; }
@@ -37,18 +43,23 @@ namespace VballManager
             get { return date; }
             set { date = value; }
         }
-        public VList<Pickup> Pickups
+
+        public VList<Attendee> AllPlayers
         {
-            get { return pickups; }
-            set { pickups = value; }
+            get
+            {
+                VList<Attendee> allPlayers = new VList<Attendee>();
+                allPlayers.Items.AddRange(this.members.Items);
+                allPlayers.Items.AddRange(this.dropins.Items);
+                return allPlayers;
+            }
         }
 
-        public VList<Absence> Absences
+        public int NumberOfReservedPlayers
         {
-            get { return absences; }
-            set { absences = value; }
+            get { return AllPlayers.Items.FindAll(player => player.Status == InOutNoshow.In).ToArray().Length; }
         }
-    }
+     }
 
     public class Payment : Identifier
     {
@@ -105,7 +116,7 @@ namespace VballManager
     {
         public static string FEETYPE_DROPIN = "Dropin fee ({0})";
         public static string FEETYPE_MEMBERSHIP = "Membership fee ({0})";
-        public static string FEETYPE_CLUB_MEMBERSHIP = "Club Membership Fee";
+        public static string FEETYPE_CLUB_MEMBERSHIP = "Membership Fee";
         public static string FEETYPE_DROPIN_PRE_PAID = "Dropin pre-paid";
 
         public Fee()
@@ -178,14 +189,14 @@ namespace VballManager
         }
     }
 
-    public class Absence : Identifier
+    public class iAbsence : Identifier
     {
-        public Absence() { }
-        public Absence(String playerId)
+        public iAbsence() { }
+        public iAbsence(String playerId)
         {
             this.playerId = playerId;
          }
-        public Absence(String playerId, String transferId)
+        public iAbsence(String playerId, String transferId)
         {
             this.playerId = playerId;
             this.transferId = transferId;
@@ -201,48 +212,40 @@ namespace VballManager
         }
     }
 
-    public class Presence : Identifier
+    public enum InOutNoshow
     {
-        public Presence() { }
-        public Presence(String playerId)
-        {
-            this.playerId = playerId;
-        }
- 
-         private bool isNoShow;
-
-         public bool IsNoShow
-        {
-            get { return isNoShow; }
-            set { isNoShow = value; }
-        }
+        In, Out, NoShow
     }
 
-    public class Pickup : Waiting
+    public class Attendee : Waiting
     {
-        public Pickup() { }
+        private InOutNoshow status = InOutNoshow.Out;
         private CostReference costReference;
-        public Pickup(String playerId, CostReference costReference)
+   
+        public Attendee() { }
+        public Attendee(String playerId)
         {
             this.playerId = playerId;
-            this.costReference = costReference;
         }
-
-        private bool isNoShow;
-
-        public bool IsNoShow
+        public Attendee(String playerId, InOutNoshow status)
         {
-            get { return isNoShow; }
-            set { isNoShow = value; }
+            this.playerId = playerId;
+            this.status = status;
         }
- 
+
+        public InOutNoshow Status
+        {
+            get { return status; }
+            set { status = value; }
+        }
+
         public CostReference CostReference
         {
             get { return costReference; }
             set { costReference = value; }
         }
-
     }
+
 
     public enum CostType
     {
@@ -272,6 +275,31 @@ namespace VballManager
             get { return referenceId; }
             set { referenceId = value; }
         }
+    }
+    public class Pickup : Attendee
+    {
+       private bool isCoop;
+       private DateTime lastCoopDate;
+
+       public Pickup() { }
+
+              public Pickup(String playerId)
+        {
+            this.playerId = playerId;
+        }
+         
+        public DateTime LastCoopDate
+        {
+            get { return lastCoopDate; }
+            set { lastCoopDate = value; }
+        }
+
+        public bool IsCoop
+        {
+            get { return isCoop; }
+            set { isCoop = value; }
+        }
+ 
     }
 
     public class Transfer
@@ -384,6 +412,7 @@ namespace VballManager
 
         public void Add(T iden)
         {
+            if (this.items.Exists(item => item.PlayerId == iden.PlayerId)) return;
             this.items.Add(iden);
         }
 

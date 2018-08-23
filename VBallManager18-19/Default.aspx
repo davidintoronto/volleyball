@@ -10,7 +10,7 @@
     <asp:Label ID="L1" runat="server" Text="" />
 
 
-    <cc1:ModalPopupExtender ID="PopupModal" runat="server" CancelControlID="" Y="300"
+    <cc1:ModalPopupExtender ID="PopupModal" runat="server" CancelControlID=""
         OkControlID="" TargetControlID="L1" PopupControlID="ConfirmPanel" PopupDragHandleControlID="PopupHeader"
         Drag="true" BackgroundCssClass="modalBackground">
     </cc1:ModalPopupExtender>
@@ -84,7 +84,7 @@
                 <tr>
                     <td align="center">
                         <asp:Button ID="PreRegisterBtn" Text="2017-2018 Pre-Register" runat="server"
-                            Style="font-size: 5em;" OnClick="PreRegisterBtn_Click"
+                            Style="font-size: 5em;" 
                             BackColor="#52A8AA" ForeColor="Red" Font-Bold="True"
                             BorderStyle="Groove" Visible="False" />
                     </td>

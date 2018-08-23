@@ -7,22 +7,27 @@ using System.Web.UI.WebControls;
 
 namespace VballManager
 {
-    public partial class Detail : System.Web.UI.Page
+    public partial class Detail : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Manager.CookieAuthRequired && Request.Cookies[Constants.PRIMARY_USER] == null)
             {
-                Response.Redirect(Constants.REQUEST_REGISTER_LINK_PAGE);
+                Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
                 return;
             }
             if (Request.Params["id"] == null)
             {
-                Response.Redirect("Default.aspx");
-                return; ;
+                Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
+                return;
             }
             String id = Request.Params["id"].ToString();
             Player player = Manager.FindPlayerById(id);
+            if (!IsPermitted(Actions.View_Player_Details, player))
+            {
+                Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
+                return;
+            }
             bool mark = false;
             this.DetailTable.Caption = player.Name;
             if (!IsPostBack)
@@ -48,7 +53,7 @@ namespace VballManager
             imageBtn.ImageUrl = "~/Icons/Save.png";
             imageBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
             imageBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
-            imageBtn.Click += new ImageClickEventHandler(SaveName_Click);
+            //imageBtn.Click += new ImageClickEventHandler(SaveName_Click);
             saveCell.Controls.Add(imageBtn);
             row.Cells.Add(saveCell);
             //this.DetailTable.Rows.Add(row);
@@ -70,7 +75,7 @@ namespace VballManager
             imageBtn.ImageUrl = "~/Icons/Save.png";
             imageBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
             imageBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
-            imageBtn.Click += new ImageClickEventHandler(SavePasscode_Click);
+            //imageBtn.Click += new ImageClickEventHandler(SavePasscode_Click);
             saveCell.Controls.Add(imageBtn);
             row.Cells.Add(saveCell);
             //this.DetailTable.Rows.Add(row);
@@ -156,19 +161,12 @@ namespace VballManager
             }
             imageBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
             imageBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
-            imageBtn.Click += new ImageClickEventHandler(Mark_Click);
+            //imageBtn.Click += new ImageClickEventHandler(Mark_Click);
             saveCell.Controls.Add(imageBtn);
             row.Cells.Add(saveCell);
             //this.DetailTable.Rows.Add(row);
             FillFeeAndPaymentTable(player);
-            if (CurrentPool.Members.Exists(attendee => attendee.Id == player.Id))
-            {
-                FillGameTable(player);
-            }
-            else
-            {
-                FillDropinAttendedGameTable(player);
-            }
+            FillGameTable(player);
         }
 
         protected void Message_Click(object sender, EventArgs e)
@@ -178,7 +176,7 @@ namespace VballManager
 
         }
 
-        private void FillGameTable(Player member)
+        private void FillGameTable(Player player)
         {
             IEnumerable<Game> query = CurrentPool.Games.OrderBy(game => game.Date);
             DateTime comingGameDate = (DateTime)Session[Constants.GAME_DATE];
@@ -188,59 +186,37 @@ namespace VballManager
             }
              foreach (Game game in query)
             {
-                if (!IsAdmin && game.Date <= comingGameDate)
+                 if (game.Members.Items.Exists(member => member.PlayerId == player.Id))
                 {
-                    continue;
+                    Attendee attendee = game.Members.FindByPlayerId(player.Id);
+                    TableRow row = new TableRow();
+                    TableCell dateCell = new TableCell();
+                    dateCell.Text = game.Date.ToString("ddd, MMM d, yyyy");
+                    row.Cells.Add(dateCell);
+                    TableCell statusCell = new TableCell();
+                    statusCell.HorizontalAlign = HorizontalAlign.Right;
+                    ImageButton imageBtn = new ImageButton();
+                    imageBtn.ID = player.Id + "," + game.Date.ToShortDateString();
+                    imageBtn.ImageUrl = GetStatusImageUrl(attendee.Status);
+                    imageBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
+                    imageBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
+                    if (IsReservationLocked(game.Date))
+                    {
+                        imageBtn.Enabled = false;
+                    }
+                    else
+                    {
+                        imageBtn.Click += new ImageClickEventHandler(MemberChangeAttendance_Click);
+                        row.BackColor = System.Drawing.Color.Aqua;
+                    }
+                    //  imageBtn.CssClass = "imageBtn";
+                    statusCell.Controls.Add(imageBtn);
+                    row.Cells.Add(statusCell);
+                    this.GameTable.Rows.Add(row);
                 }
-                TableRow row = new TableRow();
-                TableCell dateCell = new TableCell();
-                dateCell.Text = game.Date.ToString("ddd, MMM d, yyyy");
-                row.Cells.Add(dateCell);
-                TableCell statusCell = new TableCell();
-                statusCell.HorizontalAlign = HorizontalAlign.Right;
-                ImageButton imageBtn = new ImageButton();
-                imageBtn.ID = member.Id + "," + game.Date.ToShortDateString();
-                imageBtn.ImageUrl = CurrentPool.GetMemberAttendance(member.Id, game.Date) ? "~/Icons/In.png" : "~/Icons/Out.png";
-                imageBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
-                imageBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
-                imageBtn.Click += new ImageClickEventHandler(MemberChangeAttendance_Click);
-                //  imageBtn.CssClass = "imageBtn";
-                statusCell.Controls.Add(imageBtn);
-                row.Cells.Add(statusCell);
-                this.GameTable.Rows.Add(row);
-            }
-        }
-        private bool IsAdmin
-        {
-            get
-            {
-                String operatorId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
-                if (Manager.FindPlayerById(operatorId).Role >= (int)Roles.Admin)
+                else if (game.Dropins.Items.Exists(dropin => dropin.PlayerId == player.Id && dropin.Status != InOutNoshow.Out))
                 {
-                    return true;
-                }
-                return false;
-            }
-        }
-
-        private void FillDropinAttendedGameTable(Player dropin)
-        {
-            IEnumerable<Game> query = CurrentPool.Games.OrderBy(game => game.Date);
-            DateTime comingGameDate = (DateTime)Session[Constants.GAME_DATE];
-              if (!IsAdmin)
-            {
-                this.GameTable.Visible = false;
-                return;
-            }
-            this.GameTable.Caption = "Games Played";
-            foreach (Game game in query)
-            {
-                if (game.Date > DateTime.Today)
-                {
-                    break;
-                }
-                if (game.Pickups.Exists(dropin.Id))
-                {
+                    Attendee pickup = game.Dropins.FindByPlayerId(player.Id);
                     TableRow row = new TableRow();
                     TableCell dateCell = new TableCell();
                     dateCell.Text = game.Date.ToString("ddd, MMM d, yyyy");
@@ -248,8 +224,8 @@ namespace VballManager
                     TableCell statusCell = new TableCell();
                     statusCell.HorizontalAlign = HorizontalAlign.Right;
                     Image imageBtn = new Image();
-                    imageBtn.ID = dropin.Id + "," + game.Date.ToShortDateString();
-                    imageBtn.ImageUrl = "~/Icons/In.png";
+                    imageBtn.ID = player.Id + "," + game.Date.ToShortDateString();
+                    imageBtn.ImageUrl = GetStatusImageUrl(pickup.Status);
                     imageBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
                     imageBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
                     //  imageBtn.CssClass = "imageBtn";
@@ -351,86 +327,12 @@ namespace VballManager
 
             }
         }
-        private VolleyballClub Manager
-        {
-            get
-            {
-                return (VolleyballClub)Application[Constants.DATA];
+ 
 
-            }
-            set { }
-        }
-        private Pool CurrentPool
-        {
-            get
-            {
-                String poolName = (String)Session[Constants.POOL];
-                return Manager.FindPoolByName(poolName);
-            }
-            set { }
-        }
-        protected void SaveName_Click(object sender, ImageClickEventArgs e)
-        {
-            ImageButton lbtn = (ImageButton)sender;
-            String currentUserId = lbtn.ID.Split(',')[0];
-            if (!IsAuthencated(currentUserId))
-            {
-                return;
-            }
-            Player member = Manager.FindPlayerById(currentUserId);
-            if (member != null)
-            {
-                member.Name = NameTb.Text.Trim();
-            }
-            else
-            {
-                Player user = Manager.FindPlayerById(currentUserId);
-                if (user != null)
-                {
-                    user.Name = NameTb.Text.Trim();
-                }
-            }
-            DataAccess.Save(Manager);
-            Response.Redirect(Request.RawUrl);
-        }
-
-        protected void Mark_Click(object sender, ImageClickEventArgs e)
-        {
-            ImageButton lbtn = (ImageButton)sender;
-            String currentUserId = lbtn.ID.Split(',')[0];
-            if (!IsAuthencated(currentUserId))
-            {
-                return;
-            }
-            Player member = Manager.FindPlayerById(currentUserId);
-            if (member != null)
-            {
-                member.Marked = !member.Marked;
-                DataAccess.Save(Manager);
-            Response.Redirect(Request.RawUrl);
-           }
-         }
-        protected void SavePasscode_Click(object sender, ImageClickEventArgs e)
-        {
-            ImageButton lbtn = (ImageButton)sender;
-            String currentUserId = lbtn.ID.Split(',')[0];
-            if (!IsAuthencated(currentUserId))
-            {
-                return;
-            }
-            Player player = Manager.FindPlayerById(currentUserId);
-               player.Passcode = PasscodeTb.Text.Trim();
-            DataAccess.Save(Manager);
-            if (PasscodeTb.Text.Trim() != Manager.SuperAdmin)
-            {
-                Session[Constants.PASSCODE] = PasscodeTb.Text.Trim();
-            }
-            Response.Redirect(Request.RawUrl);
-        }
-
+ 
         protected void BackBtn_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("Default.aspx?Pool=" + CurrentPool.Name);
+            Response.Redirect(Constants.DEFAULT_PAGE + "?Pool=" + CurrentPool.Name);
 
         }
 
@@ -438,53 +340,29 @@ namespace VballManager
         {
             ImageButton btn = (ImageButton)sender;
             String playerId = btn.ID.Split(',')[0];
-            if (!IsAuthencated(playerId))
-            {
-                return;
-            }
+ 
             DateTime date = DateTime.Parse(btn.ID.Split(',')[1]);
             Player player = Manager.FindPlayerById(playerId);
             Game game = CurrentPool.FindGameByDate(date);
-            if (game.Absences.Exists(playerId))
+            Attendee attendee = game.Members.FindByPlayerId(playerId);
+            if (attendee.Status == InOutNoshow.Out)
             {
-                Absence absence = (Absence)game.Absences.FindByPlayerId(playerId);
-                if (absence.TransferId != null)
+                if (IsSpotAvailable(CurrentPool, game.Date))
                 {
-                    Transfer transfer = player.FindTransferById(absence.TransferId);
-                    player.Transfers.Remove(transfer);
+                    ReservePromarySpot(CurrentPool, game, player);
+                    Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, ComingGameDate);
                 }
-                //Add to reserved list
-                game.Presences.Add(new Presence(playerId));
-                game.Absences.Remove(absence);
+                else
+                {
+                    ShowMessage("Pool " + CurrentPool.Name + " is full. If you would like to add to waiting list, use the pool reservation page");
+                    return;
+                }
+                return;
             }
-            else
+            else if (attendee.Status == InOutNoshow.In)
             {
-                //Check authorization
-                if (!this.IsAdmin)
-                {
-                    if (Request.Cookies[Constants.PRIMARY_USER] == null)
-                    {
-                        ShowMessage("Sorry, but your device is not linked to the user " + player.Name + ", Please contact admin for advice");
-                        return;
-                    }
-
-                    String operatorId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
-                    if (operatorId != player.Id && !player.AuthorizedUsers.Contains(operatorId))
-                    {
-                        ShowMessage("Sorry, but you are not authorized to make the cancellation for " + player.Name + ", Please contact admin for advice");
-                        return;
-                    }
-                }
-                Absence absence = new Absence(playerId);
-                if (!Manager.ClubMemberMode)
-                {
-                    Transfer transfer = new Transfer(game.Date);
-                    player.Transfers.Add(transfer);
-                    absence.TransferId = transfer.TransferId;
-                }
-                game.Absences.Add(absence);
-                //Remove from reserved list
-                game.Presences.Remove(playerId);
+                CancelPromarySpot(CurrentPool, game, player);
+                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.CANCELLED, CurrentPool, CurrentPool, ComingGameDate);
             }
             DataAccess.Save(Manager);
             Response.Redirect(Request.RawUrl);
@@ -495,26 +373,6 @@ namespace VballManager
             this.PopupLabel.Text = message;
             this.ConfirmImageButton.Visible = false;
             this.PopupModal.Show();
-        }
-        
-        private bool IsAuthencated(String id)
-        {
-            Player player = Manager.FindPlayerById(id);
-            if (!Manager.PasscodeAuthen)
-            {
-                return true;
-            }
-            if (Session[Constants.PASSCODE] == null)
-            {
-                return false;
-            }
-            String passcode = Session[Constants.PASSCODE].ToString();
-
-            if (passcode == Manager.SuperAdmin || player != null && player.Passcode == passcode)
-            {
-                return true;
-            }
-             return false;
         }
      }
 }

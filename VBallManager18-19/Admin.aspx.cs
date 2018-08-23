@@ -8,14 +8,14 @@ using System.IO;
 
 namespace VballManager
 {
-    public partial class Admin : System.Web.UI.Page
+    public partial class Admin : AdminBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             Application[Constants.DATA] = DataAccess.LoadReservation();
             if (!IsPostBack)
             {
-                this.AuthCb.Checked = Manager.PasscodeAuthen;
+               // this.AuthCb.Checked = Manager.PasscodeAuthen;
                 this.AdminPasscodeTb.Text = Manager.SuperAdmin;
                 this.TimeOffsetTb.Text = Manager.TimezoneOffset.ToString();
                 TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName);
@@ -57,7 +57,6 @@ namespace VballManager
                 BindRoleDropdownList(this.Role);
                 //
                 this.DeletePlayerBtn.OnClientClick = "if ( !confirm('Are you sure you want to delete this Player?')) return false;";
-                this.SendWelcomeWechatMessageBtn.OnClientClick = "if ( !confirm('Are you sure to send welcome message to all the Players?')) return false;";
                 //Update permits
                 UpdatePermits();
             }
@@ -205,47 +204,6 @@ namespace VballManager
             //Response.Redirect(Request.RawUrl);
         }
 
-        private bool IsSuperAdmin()
-        {
-            if (Request.Cookies[Constants.PRIMARY_USER] != null)
-            {
-                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
-                Player player = Manager.FindPlayerById(userId);
-                if (Manager.ActionPermitted(Actions.Admin_Management, player.Role))
-                {
-                    return true;
-                }
-            }
-            TextBox passcodeTb = (TextBox)Master.FindControl("PasscodeTb");
-            if (Manager.SuperAdmin != passcodeTb.Text)
-            {
-                ClientScript.RegisterStartupScript(Page.GetType(), "msgid", "alert('Wrong passcode! Re-enter your passcode and try again')", true);
-                return false;
-            }
-            Session[Constants.SUPER_ADMIN] = passcodeTb.Text;
-            return true;
-        }
-
-
-        private VolleyballClub Manager
-        {
-            get
-            {
-                return (VolleyballClub)Application[Constants.DATA];
-
-            }
-            set { }
-        }
-
-        private Pool CurrentPool
-        {
-            get
-            {
-                String poolName = (String)Session[Constants.POOL];
-                return Manager.FindPoolByName(poolName);
-            }
-            set { }
-        }
         protected void DeletePlayerBtn_Click(object sender, EventArgs e)
         {
             if (!IsSuperAdmin())
@@ -304,7 +262,7 @@ namespace VballManager
             {
                 return;
             }
-            Manager.PasscodeAuthen = AuthCb.Checked;
+            //Manager.PasscodeAuthen = AuthCb.Checked;
             if (!String.IsNullOrEmpty(AdminPasscodeTb.Text.Trim()))
             {
                 Manager.SuperAdmin = AdminPasscodeTb.Text.Trim();
@@ -344,7 +302,7 @@ namespace VballManager
             List<Player> players = new List<Player>();
             foreach (Member member in members)
             {
-                players.Add(Manager.FindPlayerById(member.Id));
+                players.Add(Manager.FindPlayerById(member.PlayerId));
             }
             return players.OrderBy(p => p.Name);
         }
@@ -353,7 +311,7 @@ namespace VballManager
             List<Player> players = new List<Player>();
             foreach (Dropin dropin in dropins)
             {
-                players.Add(Manager.FindPlayerById(dropin.Id));
+                players.Add(Manager.FindPlayerById(dropin.PlayerId));
             }
             return players.OrderBy(p => p.Name);
         }
@@ -439,9 +397,9 @@ namespace VballManager
                 //Delete games
                 pool.Games = new List<Game>();
                 //Delete Dropins
-                pool.Dropins = new List<Dropin>();
+                pool.Dropins = new VList<Dropin>();
                 //Delete member
-                pool.Members = new List<Member>();
+                pool.Members = new VList<Member>();
             }
             foreach (Player player in Manager.Players)
             {
@@ -464,9 +422,8 @@ namespace VballManager
                     pool.Dropins.Clear();
                     foreach (Game game in pool.Games)
                     {
-                        game.Presences.Clear();
-                        game.Absences.Clear();
-                        game.Pickups.Clear();
+                        game.Members.Clear();
+                        game.Dropins.Clear();
                         game.WaitingList.Clear();
                     }
                 }
@@ -547,58 +504,12 @@ namespace VballManager
             updateFeeTypes();
         }
 
-        protected void SendWelcomeWechatMessageBtn_Click(object sender, EventArgs e)
-        {
-            IEnumerable<Player> players = Manager.Players.FindAll(player => player.IsActive && !String.IsNullOrEmpty(player.WechatName));
-            foreach (Player player in players)
-            {
-                if (player.IsRegisterdMember)
-                {
-                    String message = " Welcome to Hitmen Volleyball Club! We are happy to inform you that your membership has been approved! As a registed member, you could become primary member of the pools you attend if your attendance rate is high. And you are allow to make reservation one day before the game. let's play and have great fun!";
-                    Manager.AddNotifyWechatMessage(player, message);
-                    message = " Here is your private register link " + Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(player.Id);
-                    Manager.AddNotifyWechatMessage(player, message);
-                    decimal total = 0;
-                    foreach (Fee fee in player.Fees)
-                    {
-                        if (!fee.IsPaid) total = total + fee.Amount;
-                    }
-                    if (total > 0)
-                    {
-                        message = " You membership fee is " + Manager.RegisterMembeshipFee + ". You unpaid fee is " + total + ". If you would like to pay e-transfer, please send to " + Manager.AdminEmail + ". Thanks";
-                        Manager.AddNotifyWechatMessage(player, message);
-                    }
-                }
-                else
-                {
-                    String message = " Welcome to Hitmen Volleyball Club! Here is your private register link " + Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(player.Id);
-                    Manager.AddNotifyWechatMessage(player, message);
-                }
-            }
-        }
-
-        protected void SendPrimaryMemberNotificationWechatMessageBtn_Click(object sender, EventArgs e)
-        {
-            foreach (Pool pool in Manager.Pools)
-            {
-                String message = "Hi, everyone. We will re-assign primary members as scheduled. Following " + pool.Members.Count + " players are highly rated on their attendance, they will be the primary members for next few months";
-                Manager.AddNotifyWechatMessage(pool, message);
-                foreach(Member member in pool.Members)
-                {
-                    Player player = Manager.FindPlayerById(member.Id);
-                    message = "Congratus!. We are very pleased that you have become 1 of " + pool.Members.Count + " primary members in pool " + pool.Name + ". You deserve this because you attended a lot of games in the post. We will pre-reserve a spot for you for each week in this pool. However, please cancel your reservation if you cannot make it. Thanks";
-                    Manager.AddNotifyWechatMessage(player, message);
-                    message = "Congratus! You have become the primary member in pool " + pool.Name;
-                    Manager.AddNotifyWechatMessage(pool, player, message);
-                }
-            }
-        }
-
+ 
         protected void AllWechatNameBtn_Click(object sender, EventArgs e)
         {
             foreach (Player player in Manager.Players)
             {
-                player.WechatName = "";
+               // player.WechatName = "";
             }
             DataAccess.Save(Manager);
         }
@@ -607,5 +518,19 @@ namespace VballManager
         {
             RebindPlayerList();
         }
+
+        protected void SetMembershipBtn_Click(object sender, EventArgs e)
+        {
+            foreach (Pool pool in Manager.Pools)
+            {
+                foreach (Member member in pool.Members.Items)
+                {
+                    Player player = Manager.FindPlayerById(member.PlayerId);
+                    player.IsRegisterdMember = true;
+                }
+            }
+            DataAccess.Save(Manager);
+        }
+
     }
 }

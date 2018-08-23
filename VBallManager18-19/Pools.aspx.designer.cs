@@ -265,15 +265,6 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.DropDownList StatsTypeDdl;
         
         /// <summary>
-        /// SendPrimaryMemberNotificationBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SendPrimaryMemberNotificationBtn;
-        
-        /// <summary>
         /// WechatGroupName control.
         /// </summary>
         /// <remarks>
@@ -355,24 +346,6 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.Button SaveMemberBtn;
         
         /// <summary>
-        /// MemberCancelledCb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox MemberCancelledCb;
-        
-        /// <summary>
-        /// MemberSuspendedCb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox MemberSuspendedCb;
-        
-        /// <summary>
         /// DropinListbox control.
         /// </summary>
         /// <remarks>
@@ -416,15 +389,6 @@ namespace VballManager {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox DropinCoopCb;
-        
-        /// <summary>
-        /// DropinSuspendedCb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox DropinSuspendedCb;
         
         /// <summary>
         /// GameListbox control.

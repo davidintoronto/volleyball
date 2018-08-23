@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace VballManager
 {
-    public partial class Pools : System.Web.UI.Page
+    public partial class Pools : AdminBase
     {
        protected void Page_Load(object sender, EventArgs e)
         {
@@ -21,7 +21,6 @@ namespace VballManager
                 }
                 this.DeletePoolBtn.OnClientClick = "if ( !confirm('Are you sure to delete this pool?')) return false;";
                 this.DeleteGameBtn.OnClientClick = "if ( !confirm('Are you sure to delete this game?')) return false;";
-                this.SendPrimaryMemberNotificationBtn.OnClientClick = "if ( !confirm('Are you sure to send primary member notification message to the players?')) return false;";
                 //Bind pool list
                 int selectPoolIndex = this.PoolListbox.SelectedIndex;
                 this.PoolListbox.DataSource = Manager.Pools;
@@ -95,106 +94,87 @@ namespace VballManager
            this.PlayerListPopup.Show();
        }
 
-        protected void AddPlayers_Click(object sender, EventArgs e)
-        {
-            if (Session[Constants.ADD_PLAYER_POOL].ToString() == Constants.ACTION_MEMEBER_ADD)
-            {
-                foreach (ListItem item in this.PlayerListbox.Items)
-                {
-                    if (item.Selected && !CurrentPool.Members.Exists(member => member.Id == item.Value) && !CurrentPool.Dropins.Exists(dropin => dropin.Id == item.Value))
-                    {
-                        CurrentPool.Members.Add(new Member(item.Value));
-                        //Add to reserved list for the future games
-                        foreach (Game game in CurrentPool.Games)
-                        {
-                            if (game.Date >= DateTime.Today)
-                            {
-                               game.Presences.Add(new Presence(item.Value));
-                            }
-                        }
-                        //Change the player to club registered member and create membership fee it is  club member mode
-                        Player player = Manager.FindPlayerById(item.Value);
-                        if (Manager.ClubMemberMode)
-                        {
-                            if (!player.IsRegisterdMember)
-                            {
-                                player.IsRegisterdMember = true;
-                                Fee fee = new Fee(Fee.FEETYPE_CLUB_MEMBERSHIP, Manager.RegisterMembeshipFee);
-                                fee.FeeType = FeeTypeEnum.Membership.ToString();
-                                fee.Date = DateTime.Today;
-                                player.Fees.Add(fee);
-                            }
-                        }
-                        else
-                        {
-                            Fee fee = new Fee(CurrentPool.MembershipFee);
-                            fee.FeeType = FeeTypeEnum.Membership.ToString();
-                            fee.FeeDesc = String.Format(Fee.FEETYPE_MEMBERSHIP, CurrentPool.Name);
-                            fee.Date = DateTime.Today;
-                            player.Fees.Add(fee);
-                        }
-                        this.MemberListbox.DataSource = GetPlayers(CurrentPool.Members);
-                        this.MemberListbox.DataBind();
-                        DataAccess.Save(Manager);
-                        // Response.Redirect(Request.RawUrl);
-                    }
-                }
-            }
-            else if (Session[Constants.ADD_PLAYER_POOL].ToString() == Constants.ACTION_DROPIN_ADD)
-            {
-                foreach (ListItem item in this.PlayerListbox.Items)
-                {
-                    if (item.Selected && !CurrentPool.Dropins.Exists(dropin => dropin.Id == item.Value) && !CurrentPool.Members.Exists(member => member.Id == item.Value))
-                    {
-                        CurrentPool.Dropins.Add(new Dropin(item.Value));
-                        this.DropinListbox.DataSource = GetPlayers(CurrentPool.Dropins);
-                        this.DropinListbox.DataBind();
-                         DataAccess.Save(Manager);
-                        // Response.Redirect(Request.RawUrl);
-                    }
-                }
-            }
-        }
-        private bool IsSuperAdmin()
-        {
-            if (Request.Cookies[Constants.PRIMARY_USER] != null)
-            {
-                String userId = Request.Cookies[Constants.PRIMARY_USER][Constants.PLAYER_ID];
-                Player player = Manager.FindPlayerById(userId);
-                if (Manager.ActionPermitted(Actions.Admin_Management, player.Role))
-                {
-                    return true;
-                }
-            }
-            TextBox passcodeTb = (TextBox)Master.FindControl("PasscodeTb");
-            if (Manager.SuperAdmin != passcodeTb.Text)
-            {
-                ClientScript.RegisterStartupScript(Page.GetType(), "msgid", "alert('Wrong passcode! Re-enter your passcode and try again')", true);
-                return false;
-            }
-            Session[Constants.SUPER_ADMIN] = passcodeTb.Text;
-            return true;
-        }
-
-        private VolleyballClub Manager
-        {
-            get
-            {
-                return (VolleyballClub)Application[Constants.DATA];
-
-            }
-            set { }
-        }
-
-        private Pool CurrentPool
-        {
-            get
-            {
-                String poolName = (String)Session[Constants.POOL];
-                return Manager.FindPoolByName(poolName);
-            }
-            set { }
-        }
+       protected void AddPlayers_Click(object sender, EventArgs e)
+       {
+           if (Session[Constants.ADD_PLAYER_POOL].ToString() == Constants.ACTION_MEMEBER_ADD)
+           {
+               foreach (ListItem item in this.PlayerListbox.Items)
+               {
+                   if (item.Selected)
+                   {
+                       if (CurrentPool.Members.Exists(item.Value) || CurrentPool.Dropins.Exists(item.Value))
+                       {
+                           ClientScript.RegisterStartupScript(Page.GetType(), "msgid", "alert('Error! " + item.Text + " has already added as primary member or dropin')", true);
+                           return;
+                       }
+                       else
+                       {
+                           CurrentPool.Members.Add(new Member(item.Value));
+                           //Add to reserved list for the future games
+                           foreach (Game game in CurrentPool.Games)
+                           {
+                               if (game.Date >= DateTime.Today)
+                               {
+                                   game.Members.Add(new Attendee(item.Value, InOutNoshow.In));
+                               }
+                           }
+                           //Change the player to club registered member and create membership fee it is  club member mode
+                           Player player = Manager.FindPlayerById(item.Value);
+                           if (Manager.ClubMemberMode)
+                           {
+                               if (!player.IsRegisterdMember)
+                               {
+                                   player.IsRegisterdMember = true;
+                                   Fee fee = new Fee(Fee.FEETYPE_CLUB_MEMBERSHIP, Manager.RegisterMembeshipFee);
+                                   fee.FeeType = FeeTypeEnum.Membership.ToString();
+                                   fee.Date = DateTime.Today;
+                                   player.Fees.Add(fee);
+                               }
+                           }
+                           else
+                           {
+                               Fee fee = new Fee(CurrentPool.MembershipFee);
+                               fee.FeeType = FeeTypeEnum.Membership.ToString();
+                               fee.FeeDesc = String.Format(Fee.FEETYPE_MEMBERSHIP, CurrentPool.Name);
+                               fee.Date = DateTime.Today;
+                               player.Fees.Add(fee);
+                           }
+                           this.MemberListbox.DataSource = GetPlayers(CurrentPool.Members);
+                           this.MemberListbox.DataBind();
+                           DataAccess.Save(Manager);
+                           // Response.Redirect(Request.RawUrl);
+                       }
+                   }
+               }
+           }
+           else if (Session[Constants.ADD_PLAYER_POOL].ToString() == Constants.ACTION_DROPIN_ADD)
+           {
+               foreach (ListItem item in this.PlayerListbox.Items)
+               {
+                   if (item.Selected)
+                   {
+                       if (CurrentPool.Members.Exists(item.Value) || CurrentPool.Dropins.Exists(item.Value))
+                       {
+                           ClientScript.RegisterStartupScript(Page.GetType(), "msgid", "alert('Error! " + item.Text + " has already added as primary member or dropin')", true);
+                           return;
+                       }
+                       CurrentPool.Dropins.Add(new Dropin(item.Value));
+                       //Add into game dropin list for the future games
+                       foreach (Game game in CurrentPool.Games)
+                       {
+                           if (game.Date >= DateTime.Today)
+                           {
+                               game.Dropins.Add(new Pickup(item.Value));
+                           }
+                       }
+                       this.DropinListbox.DataSource = GetPlayers(CurrentPool.Dropins);
+                       this.DropinListbox.DataBind();
+                       DataAccess.Save(Manager);
+                       // Response.Redirect(Request.RawUrl);
+                   }
+               }
+           }
+       }
  
         protected void RemoveMemberBtn_Click(object sender, EventArgs e)
         {
@@ -209,13 +189,13 @@ namespace VballManager
             {
                 if (game.Date >= DateTime.Today)
                 {
-                    if (game.Presences.Exists(playerId))
+                    if (game.Members.Exists(playerId))
                     {
-                        game.Presences.Remove(playerId);
+                        game.Members.Remove(playerId);
                     }
-                    if (game.Absences.Exists(playerId))
+                    if (game.WaitingList.Exists(playerId))
                     {
-                        game.Absences.Remove(playerId);
+                        game.WaitingList.Remove(playerId);
                     }
                 }
             }
@@ -234,6 +214,20 @@ namespace VballManager
             }
             String playerId = this.DropinListbox.SelectedValue;
             CurrentPool.RemoveDropin(playerId);
+            foreach (Game game in CurrentPool.Games)
+            {
+                if (game.Date >= DateTime.Today)
+                {
+                    if (game.Dropins.Exists(playerId))
+                    {
+                        game.Dropins.Remove(playerId);
+                    }
+                    if (game.WaitingList.Exists(playerId))
+                    {
+                        game.WaitingList.Remove(playerId);
+                    }
+                }
+            }
             //Save
             DataAccess.Save(Manager);
             this.DropinListbox.DataSource = GetPlayers(CurrentPool.Dropins);
@@ -247,6 +241,8 @@ namespace VballManager
             {
                 return;
             }
+            //Set current pool
+            Session[Constants.POOL] = this.PoolListbox.SelectedItem.Text;
             this.PoolDetailPanel.Visible = true;
             Pool pool = Manager.FindPoolById(this.PoolListbox.SelectedValue);
             Session[Constants.POOL] = pool.Name;
@@ -329,15 +325,18 @@ namespace VballManager
                 DateTime date = DateTime.Parse(gameDate);
                 if (date.Date < Manager.EastDateTimeToday.Date)
                 {
-                    //continue;
+                    continue;
                 }
                 Game game = new Game(date);
-                foreach (Member member in CurrentPool.Members)
+                foreach (Member member in CurrentPool.Members.Items)
                 {
-                    if (!member.IsCancelled && !member.IsSuspended)
-                    {
-                        game.Presences.Add(new Presence(member.Id));
-                    }
+                    game.Members.Add(new Attendee(member.PlayerId, InOutNoshow.In));
+                }
+                foreach (Dropin dropin in CurrentPool.Dropins.Items)
+                {
+                    Pickup attendee = new Pickup(dropin.PlayerId);
+                    attendee.IsCoop = dropin.IsCoop;
+                    game.Dropins.Add(attendee);
                 }
                 CurrentPool.Games.Add(game);
             }
@@ -461,7 +460,11 @@ namespace VballManager
             {
                 if (game.Date >= DateTime.Today)
                 {
-                    game.Pickups.Clear();
+                    foreach (Attendee attendee in game.Dropins.Items)
+                    {
+                        attendee.Status = InOutNoshow.Out;
+                    }
+                    game.WaitingList.Clear();
                     DataAccess.Save(Manager);
                     break;
                 }
@@ -478,21 +481,21 @@ namespace VballManager
             return players.OrderBy(p => p.Name);
         }
 
-        private IEnumerable<Player> GetPlayers(List<Member> members)
+        private IEnumerable<Player> GetPlayers(VList<Member> members)
         {
             List<Player> players = new List<Player>();
-            foreach (Member member in members)
+            foreach (Member member in members.Items)
             {
-                players.Add(Manager.FindPlayerById(member.Id));
+                players.Add(Manager.FindPlayerById(member.PlayerId));
             }
             return players.OrderBy(p => p.Name);
         }
-        private IEnumerable<Player> GetPlayers(List<Dropin> dropins)
+        private IEnumerable<Player> GetPlayers(VList<Dropin> dropins)
         {
             List<Player> players = new List<Player>();
-            foreach (Dropin dropin in dropins)
+            foreach (Dropin dropin in dropins.Items)
             {
-                players.Add(Manager.FindPlayerById(dropin.Id));
+                players.Add(Manager.FindPlayerById(dropin.PlayerId));
             }
             return players.OrderBy(p => p.Name);
         }
@@ -527,70 +530,42 @@ namespace VballManager
 
         protected void MemberListbox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Member member = CurrentPool.Members.Find(attendee => attendee.Id == MemberListbox.SelectedValue);
-            this.MemberCancelledCb.Checked = member.IsCancelled;
-            this.MemberSuspendedCb.Checked = member.IsSuspended;
+            Member member = CurrentPool.Members.FindByPlayerId(MemberListbox.SelectedValue);
+            //this.MemberCancelledCb.Checked = member.IsCancelled;
             //Response.Redirect(Request.RawUrl);
         }
 
         protected void DropinListbox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Dropin dropin = CurrentPool.Dropins.Find(attendee => attendee.Id == DropinListbox.SelectedValue);
+            Dropin dropin = CurrentPool.Dropins.FindByPlayerId(DropinListbox.SelectedValue);
             this.DropinCoopCb.Checked = dropin.IsCoop;
-            this.DropinSuspendedCb.Checked = dropin.IsSuspended;
             //Response.Redirect(Request.RawUrl);
         }
 
         protected void SaveMemberBtn_Click(object sender, EventArgs e)
         {
-            Member member = CurrentPool.Members.Find(attendee => attendee.Id == MemberListbox.SelectedValue);
-            Player player = Manager.FindPlayerById(member.Id);
-            //Mark as absent for rest of games if a member is suspended
-            if (!member.IsSuspended && this.MemberSuspendedCb.Checked)
-            {
-                foreach (Game game in CurrentPool.Games)
-                {
-                    if (game.Date >= DateTime.Today)
-                    {
-                        Transfer transfer = new Transfer(game.Date);
-                        player.Transfers.Add(transfer);
-                        Absence absence = new Absence(member.Id, transfer.TransferId);
-                        game.Absences.Add(absence);
-                        //Remove from reserved list
-                        game.Presences.Remove(player.Id);
-                    }
-                }
-            }
-            //Remove the absence for the rest of games if the member is unsuspended.
-            else if (member.IsSuspended && !this.MemberSuspendedCb.Checked)
-            {
-                foreach (Game game in CurrentPool.Games)
-                {
-                    if (game.Date >= DateTime.Today)
-                    {
-                        Transfer transfer = player.FindTransferByGameDate(game.Date);
-                        if (transfer != null)
-                        {
-                            player.Transfers.Remove(transfer);
-                        }
-                        game.Absences.Remove(player.Id);
-                        //Add back to Presences list
-                        game.Presences.Add(new Presence(player.Id));
-                    }
-                }
- 
-            }
-            member.IsCancelled = this.MemberCancelledCb.Checked;
-            member.IsSuspended = this.MemberSuspendedCb.Checked;
-            DataAccess.Save(Manager);
+            Member member = CurrentPool.Members.FindByPlayerId(MemberListbox.SelectedValue);
+            Player player = Manager.FindPlayerById(member.PlayerId);
+            //member.IsCancelled = this.MemberCancelledCb.Checked;
+             DataAccess.Save(Manager);
            // Response.Redirect(Request.RawUrl);
         }
 
         protected void SaveDropinBtn_Click(object sender, EventArgs e)
         {
-            Dropin dropin = CurrentPool.Dropins.Find(attendee => attendee.Id == DropinListbox.SelectedValue);
+            Dropin dropin = CurrentPool.Dropins.FindByPlayerId(DropinListbox.SelectedValue);
             dropin.IsCoop = this.DropinCoopCb.Checked;
-            dropin.IsSuspended = this.DropinSuspendedCb.Checked;
+            //dropin.IsSuspended = this.DropinSuspendedCb.Checked;
+            //Update future game 
+            foreach (Game game in CurrentPool.Games)
+            {
+                if (game.Date >= DateTime.Today)
+                {
+                    Pickup attendee = game.Dropins.FindByPlayerId(dropin.PlayerId);
+                    if (attendee != null) attendee.IsCoop = dropin.IsCoop;
+                }
+            }
+
             DataAccess.Save(Manager);
            // Response.Redirect(Request.RawUrl);
         }
@@ -602,36 +577,5 @@ namespace VballManager
                 Response.Redirect("Default.aspx?abcd=" + this.PoolListbox.SelectedValue + "&GameDate=" + this.GameListbox.SelectedItem.Text + "&Admin=1");
             }
         }
-
-        protected void SendPrimaryMemberNotificationWechatMessageBtn_Click(object sender, EventArgs e)
-        {
-            if (!IsSuperAdmin() || this.PoolListbox.SelectedIndex == -1)
-            {
-                return;
-            }
-            Pool pool = Manager.FindPoolById(this.PoolListbox.SelectedValue);
-            String message = "Hi, everyone. We will re-assign the primary members as scheduled. Following " + pool.Members.Count + " players are rated high by their attendances, they will become the primary members for next few months";
-            Manager.AddNotifyWechatMessage(pool, message);
-            foreach (Member member in pool.Members)
-            {
-                Player player = Manager.FindPlayerById(member.Id);
-                message = "Congratus! " + player.Name + ". We are very pleased that you have become 1 of " + pool.Members.Count + " primary members in pool " + pool.Name + ". You deserve this because you attended a lot of games in the post. We will pre-reserve a spot for you for each week in this pool. However, please cancel your reservation if you cannot make it. Thanks";
-                Manager.AddNotifyWechatMessage(player, message);
-                message = "Congratus! You have become the primary member in pool " + pool.Name;
-                Manager.AddNotifyWechatMessage(pool, WechatAtAndMessage(player, message));
-            }
-        }
-
-        private String WechatAtAndMessage(Player player, String message)
-        {
-            if (String.IsNullOrEmpty(player.WechatName))
-            {
-                return player.Name + ", " + message;
-            }
-
-            return "@" + player.WechatName + "{ENTER}" + message;
-        }
-
-
      }
 }

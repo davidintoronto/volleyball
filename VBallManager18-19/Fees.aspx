@@ -121,8 +121,8 @@
      </table>
        </asp:Panel>
          <asp:Panel ID="Panel1" runat="server">
-             <asp:Button ID="ResetFeeBtn" runat="server" Text="Reset All" 
-             onclick="ReverseAllFeeBtn_Click" Width="127px" Visible="False" />
+             <asp:Button ID="ResetFeeBtn" runat="server" Text="Set Membership Fee" 
+             onclick="CreateAllMembershipFeeBtn_Click" Width="127px" />
          </asp:Panel>
          <asp:Panel ID="FeeReportPanel" runat="server">
        <asp:Table Width="100%" ID="FeeReportTable" runat="server" 

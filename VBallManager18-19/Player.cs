@@ -211,29 +211,15 @@ namespace VballManager
         }
     }
 
-    public class Attendee
+    public class Person : Identifier
     {
-        private String id;
-        private bool isSuspended;
+        public Person() { }
 
-        public Attendee() { }
-
-        public Attendee(String id)
+        public Person(String playerId)
         {
-            this.id = id;
+            this.playerId = playerId;
         }
 
-        public String Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
-
-        public bool IsSuspended
-        {
-            get { return isSuspended; }
-            set { isSuspended = value; }
-        }
         private bool preRegistered = false;
 
         public bool PreRegistered
@@ -250,23 +236,15 @@ namespace VballManager
         }
 
     }
-    public class Dropin : Attendee
+    public class Dropin : Person
     {
         private bool isCoop;
-        private DateTime lastCoopDate;
 
         public Dropin() { }
 
-        public DateTime LastCoopDate
-        {
-            get { return lastCoopDate; }
-            set { lastCoopDate = value; }
-        }
-
-
         public Dropin(String id)
         {
-            this.Id = id;
+            this.PlayerId = id;
         }
 
         public bool IsCoop
@@ -274,45 +252,17 @@ namespace VballManager
             get { return isCoop; }
             set { isCoop = value; }
         }
-
-        public void DropinSuspend()
-        {
-            this.IsSuspended = true;
-        }
-
-        public void ResumeSuspend()
-        {
-            this.IsSuspended = false;
-        }
     }
 
-    public class Member : Attendee
+    public class Member : Person
     {
         private DateTime joinDate;
-        private DateTime cancelDate;
-        private bool isCancelled;
 
         public Member() { }
         public Member(String id)
         {
-            this.Id = id;
+            this.PlayerId = id;
             this.joinDate = DateTime.Today;
-        }
-
-        public void CancelMember()
-        {
-            this.isCancelled = true;
-            this.cancelDate = DateTime.Today;
-        }
-        public void SuspendMember()
-        {
-            this.IsSuspended = true;
-        }
-        public void ResumeMember()
-        {
-            this.isCancelled = false;
-            this.IsSuspended = false;
-            this.cancelDate = DateTime.MinValue;
         }
 
         public DateTime JoinDate
@@ -321,18 +271,7 @@ namespace VballManager
             set { joinDate = value; }
         }
 
-        public DateTime CancelDate
-        {
-            get { return cancelDate; }
-            set { cancelDate = value; }
-        }
-
-        public bool IsCancelled
-        {
-            get { return isCancelled; }
-            set { isCancelled = value; }
-        }
-    }
+       }
 
     public class Notification
     {

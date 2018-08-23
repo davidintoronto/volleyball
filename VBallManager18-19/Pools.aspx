@@ -214,8 +214,7 @@
            </tr>
            <tr>
                            <td class="style12" colspan="2">
-                               <asp:Button ID="SendPrimaryMemberNotificationBtn" runat="server" OnClick="SendPrimaryMemberNotificationWechatMessageBtn_Click" Text="Send Primary Member Notificatioin" Width="212px" />
-                </td>
+                               &nbsp;</td>
                <td class="style15">
                     Wechat Group</td>
                <td>
@@ -282,14 +281,10 @@
                     </td>
                 </tr>
                  <tr>
-                    <td align="center" class="style8">Cancelled
-                    <asp:CheckBox ID="MemberCancelledCb" runat="server" />
-                    </td>
+                    <td align="center" class="style8">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td align="center" class="style8">Suspended
-                    <asp:CheckBox ID="MemberSuspendedCb" runat="server" />
-                    </td>
+                    <td align="center" class="style8">&nbsp;</td>
                  </tr>
                 <tr>
                     <td align="center" class="style8">
@@ -339,9 +334,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td align="center">Suspended
-                    <asp:CheckBox ID="DropinSuspendedCb" runat="server" />
-                    </td>
+                    <td align="center">&nbsp;</td>
                  </tr>
                  <tr>
                     <td align="center">

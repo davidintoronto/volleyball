@@ -72,6 +72,7 @@
     <Content Include="BillingDetail.aspx" />
     <Content Include="Authen.aspx" />
     <Content Include="Authorize.aspx" />
+    <Content Include="Wechat.aspx" />
     <Content Include="Icons\noShow.png" />
     <Content Include="Icons\toConfirm.png" />
     <Content Include="RegisterDevice.aspx" />
@@ -137,6 +138,9 @@
     <Compile Include="Admin.aspx.designer.cs">
       <DependentUpon>Admin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin.Base.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Checker.aspx.cs">
       <DependentUpon>Checker.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -172,6 +176,26 @@
     </Compile>
     <Compile Include="Authorize.aspx.designer.cs">
       <DependentUpon>Authorize.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Action.Reserve.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Action.Cancel.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WechatNotify.cs" />
+    <Compile Include="Wechat.aspx.cs">
+      <DependentUpon>Wechat.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Wechat.aspx.designer.cs">
+      <DependentUpon>Wechat.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Handler.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Action.Core.cs">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="RegisterDevice.aspx.cs">
       <DependentUpon>RegisterDevice.aspx</DependentUpon>
@@ -320,13 +344,14 @@
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
-    <Compile Include="Validation.cs" />
     <Compile Include="VballWebService.asmx.cs">
       <DependentUpon>VballWebService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Reserve.dgml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Site.Master" />
   </ItemGroup>
@@ -343,7 +368,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>19040</DevelopmentServerPort>
+          <DevelopmentServerPort>37861</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/VBallManager</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
