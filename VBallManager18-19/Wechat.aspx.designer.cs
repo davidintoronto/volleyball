@@ -22,6 +22,15 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.Panel SendWechatPanel;
         
         /// <summary>
+        /// WechatEnableRBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton WechatEnableRBtn;
+        
+        /// <summary>
         /// Panel3 control.
         /// </summary>
         /// <remarks>
@@ -31,13 +40,13 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.Panel Panel3;
         
         /// <summary>
-        /// MemberWechatMessageTb control.
+        /// WelcomeMemberWechatMessageTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MemberWechatMessageTb;
+        protected global::System.Web.UI.WebControls.TextBox WelcomeMemberWechatMessageTb;
         
         /// <summary>
         /// SendToMembersBtn control.
@@ -49,13 +58,13 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.Button SendToMembersBtn;
         
         /// <summary>
-        /// DropinWechatMessageTb control.
+        /// WelcomeDropinWechatMessageTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox DropinWechatMessageTb;
+        protected global::System.Web.UI.WebControls.TextBox WelcomeDropinWechatMessageTb;
         
         /// <summary>
         /// SendToDropinsBtn control.
@@ -101,6 +110,24 @@ namespace VballManager {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox PrimaryMemberMessgeTb;
+        
+        /// <summary>
+        /// TestAllTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TestAllTb;
+        
+        /// <summary>
+        /// TestToAllBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button TestToAllBtn;
         
         /// <summary>
         /// PlayerPanel control.

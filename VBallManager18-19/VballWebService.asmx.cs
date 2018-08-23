@@ -22,21 +22,39 @@ namespace VballManager
         [WebMethod]
         public List<WechatMessage> WechatMessages()
         {
-            IEnumerable<WechatMessage> weChatMassages = Manager.WechatMessages.FindAll(wechat=> wechat.Date.Date == DateTime.Today.Date);
-            Manager.WechatMessages.Clear();
+            IEnumerable<WechatMessage> weChatMassages = Manager.WechatNotifier.WechatMessages.FindAll(wechat=> wechat.Date.Date == DateTime.Today.Date);
+            Manager.WechatNotifier.WechatMessages.Clear();
             DataAccess.Save(Manager);
             return weChatMassages.ToList();
         }
 
         [WebMethod]
-        public void QueryPublishLink(int hours)
+        public void RunScheduleTasks(int hour)
         {
-
             String homePcIp = GetUserIP();
             File.WriteAllText(System.AppDomain.CurrentDomain.BaseDirectory + Constants.IP_FILE, GetUserIP() + " - " + Manager.EastDateTimeNow.ToString("yyyy-MM-dd HH:mm:ss"));
+            QueryPublishLinks(hour);
+            AutoAssignCoopSpots(hour);
+       }
+
+        private void AutoAssignCoopSpots(int hour)
+        {
+            foreach (Pool pool in Manager.Pools)
+            {
+                DateTime comingGameDate = FindComingGameDate(pool);
+                if (pool.AutoCoopReserve && hour == pool.ReservHourForCoop && Manager.EastDateTimeToday.AddDays(pool.DaysToReserve).Date == comingGameDate.Date)
+                {
+                    BasePage page = new BasePage();
+                    page.AutoReserveCoopPlayers(pool, comingGameDate);
+                }
+            }
+        }
+
+        private void QueryPublishLinks(int hour)
+        {
             //
             String reservationUrl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.PathAndQuery, HttpContext.Current.Request.ApplicationPath) + "/" + Constants.POOL_LINK_LIST_PAGE;
-             if (hours != Manager.DropinSpotOpeningHour) return;
+             if (hour != Manager.DropinSpotOpeningHour) return;
              foreach (Pool pool in Manager.Pools)
              {
                  DateTime comingGameDate = FindComingGameDate(pool);
@@ -66,7 +84,7 @@ namespace VballManager
                      int availableDropinSpots = pool.MaximumPlayerNumber - memberPlayers - dropinPlayers;
                      if (availableDropinSpots < 0) availableDropinSpots = 0;
                      String message = pool.DayOfWeek.ToString() + " volleyball reservation starts now for " + publishTo + ". Currently, we have " + availableDropinSpots + (availableDropinSpots<2 ? " dropin spot" : " dropin spots") + " available in pool "+ pool.Name +". Click the link to reserve. " + reservationUrl;
-                     Manager.AddNotifyWechatMessage(pool, message);
+                     Manager.WechatNotifier.AddNotifyWechatMessage(pool, message);
                  }
              }
         }

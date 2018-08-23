@@ -9,7 +9,7 @@ namespace VballManager
     {
         private DateTime date;
         private VList<Attendee> members = new VList<Attendee>();
-        private VList<Attendee> dropins = new VList<Attendee>();
+        private VList<Pickup> dropins = new VList<Pickup>();
         private VList<Waiting> waitingList = new VList<Waiting>();
 
         public Game()
@@ -20,8 +20,8 @@ namespace VballManager
             get { return members; }
             set { members = value; }
         }
- 
-        public VList<Attendee> Dropins
+
+        public VList<Pickup> Dropins
         {
             get { return dropins; }
             set { dropins = value; }
@@ -53,6 +53,11 @@ namespace VballManager
                 allPlayers.Items.AddRange(this.dropins.Items);
                 return allPlayers;
             }
+        }
+
+        public int NumberOfReservedPlayers
+        {
+            get { return AllPlayers.Items.FindAll(player => player.Status == InOutNoshow.In).ToArray().Length; }
         }
      }
 
@@ -216,14 +221,7 @@ namespace VballManager
     {
         private InOutNoshow status = InOutNoshow.Out;
         private CostReference costReference;
-        private bool isCoop;
-
-        public bool IsCoop
-        {
-            get { return isCoop; }
-            set { isCoop = value; }
-        }
-
+   
         public Attendee() { }
         public Attendee(String playerId)
         {
@@ -247,48 +245,7 @@ namespace VballManager
             set { costReference = value; }
         }
     }
-    public class iPresence : Identifier
-    {
-        public iPresence() { }
-        public iPresence(String playerId)
-        {
-            this.playerId = playerId;
-        }
- 
-         private bool isNoShow;
 
-         public bool IsNoShow
-        {
-            get { return isNoShow; }
-            set { isNoShow = value; }
-        }
-    }
-
-    public class iPickup : Waiting
-    {
-        public iPickup() { }
-        private CostReference costReference;
-        public iPickup(String playerId, CostReference costReference)
-        {
-            this.playerId = playerId;
-            this.costReference = costReference;
-        }
-
-        private bool isNoShow;
-
-        public bool IsNoShow
-        {
-            get { return isNoShow; }
-            set { isNoShow = value; }
-        }
- 
-        public CostReference CostReference
-        {
-            get { return costReference; }
-            set { costReference = value; }
-        }
-
-    }
 
     public enum CostType
     {
@@ -318,6 +275,31 @@ namespace VballManager
             get { return referenceId; }
             set { referenceId = value; }
         }
+    }
+    public class Pickup : Attendee
+    {
+       private bool isCoop;
+       private DateTime lastCoopDate;
+
+       public Pickup() { }
+
+              public Pickup(String playerId)
+        {
+            this.playerId = playerId;
+        }
+         
+        public DateTime LastCoopDate
+        {
+            get { return lastCoopDate; }
+            set { lastCoopDate = value; }
+        }
+
+        public bool IsCoop
+        {
+            get { return isCoop; }
+            set { isCoop = value; }
+        }
+ 
     }
 
     public class Transfer

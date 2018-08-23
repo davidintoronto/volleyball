@@ -164,7 +164,7 @@ namespace VballManager
                        {
                            if (game.Date >= DateTime.Today)
                            {
-                               game.Dropins.Add(new Attendee(item.Value));
+                               game.Dropins.Add(new Pickup(item.Value));
                            }
                        }
                        this.DropinListbox.DataSource = GetPlayers(CurrentPool.Dropins);
@@ -241,6 +241,8 @@ namespace VballManager
             {
                 return;
             }
+            //Set current pool
+            Session[Constants.POOL] = this.PoolListbox.SelectedItem.Text;
             this.PoolDetailPanel.Visible = true;
             Pool pool = Manager.FindPoolById(this.PoolListbox.SelectedValue);
             Session[Constants.POOL] = pool.Name;
@@ -332,7 +334,9 @@ namespace VballManager
                 }
                 foreach (Dropin dropin in CurrentPool.Dropins.Items)
                 {
-                    game.Dropins.Add(new Attendee(dropin.PlayerId));
+                    Pickup attendee = new Pickup(dropin.PlayerId);
+                    attendee.IsCoop = dropin.IsCoop;
+                    game.Dropins.Add(attendee);
                 }
                 CurrentPool.Games.Add(game);
             }
@@ -557,7 +561,7 @@ namespace VballManager
             {
                 if (game.Date >= DateTime.Today)
                 {
-                    Attendee attendee = game.Dropins.FindByPlayerId(dropin.PlayerId);
+                    Pickup attendee = game.Dropins.FindByPlayerId(dropin.PlayerId);
                     if (attendee != null) attendee.IsCoop = dropin.IsCoop;
                 }
             }

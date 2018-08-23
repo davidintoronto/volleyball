@@ -29,46 +29,20 @@ namespace VballManager
         private bool cookieAuthRequired = false;
         private String timeZoneName = "Eastern Standard Time";
         private List<Permit> permits = new List<Permit>();
-        private List<WechatMessage> wechatMessages = new List<WechatMessage>();
-        private String wechatMemberWelcomeMessage;
-        private String wechatDropinWelcomeMessage;
-        private String wechatPoolMessage;
-        private String wechatPrimaryMemberMessage;
         private int maxDropinFeeOwe = 20;
+        private WechatNotify wechatNotifier = new WechatNotify();
 
-        public String WechatMemberWelcomeMessage
-        {
-            get { return wechatMemberWelcomeMessage; }
-            set { wechatMemberWelcomeMessage = value; }
-        }
-
-        public String WechatDropinWelcomeMessage
-        {
-            get { return wechatDropinWelcomeMessage; }
-            set { wechatDropinWelcomeMessage = value; }
-        }
-
-        public String WechatPoolMessage
-        {
-            get { return wechatPoolMessage; }
-            set { wechatPoolMessage = value; }
-        }
-
-        public String WechatPrimaryMemberMessage
-        {
-            get { return wechatPrimaryMemberMessage; }
-            set { wechatPrimaryMemberMessage = value; }
-        }
+ 
        public int MaxDropinFeeOwe
         {
             get { return maxDropinFeeOwe; }
             set { maxDropinFeeOwe = value; }
         }
 
-        public List<WechatMessage> WechatMessages
+        public WechatNotify WechatNotifier
         {
-            get { return wechatMessages; }
-            set { wechatMessages = value; }
+            get { return wechatNotifier; }
+            set { wechatNotifier = value; }
         }
 
         public String AdminEmail
@@ -381,71 +355,7 @@ namespace VballManager
             return false;
         }
 
-        public void AddNotifyWechatMessage(Player player, String message)
-        {
-            if (!String.IsNullOrEmpty(player.WechatName))
-            {
-                WechatMessage wechat = new WechatMessage(player.WechatName, player.Name, message);
-                WechatMessages.Add(wechat);
-            }
-        }
-        public void AddNotifyWechatMessage(Pool pool, String message)
-        {
-            if (!String.IsNullOrEmpty(pool.WechatGroupName))
-            {
-                WechatMessage wechat = new WechatMessage(pool.WechatGroupName, message);
-                WechatMessages.Add(wechat);
-            }
-        }
-
-        public void AddNotifyWechatMessage(Pool pool, Player player, String message)
-        {
-            if (!String.IsNullOrEmpty(pool.WechatGroupName))
-            {
-                WechatMessage wechat = new WechatMessage(pool.WechatGroupName, player, message);
-                WechatMessages.Add(wechat);
-            }
-        }
-        public void AddReservationNotifyWechatMessage(String playerId, String operatorId, String result, Pool pool, Pool originalPool, DateTime gameDate)
-        {
-            Player player = FindPlayerById(playerId);
-            Player user = operatorId == null ? null : FindPlayerById(operatorId);
-            String message = null;
-            int players = pool.GetNumberOfAttendingMembers(gameDate) + pool.GetNumberOfDropins(gameDate);
-
-            String poolAndGameDate = " in pool " + pool.Name + " of " + gameDate.ToString("MM/dd/yyyy") + ". Total player number: " + players;
-            if (result == Constants.RESERVED || result == Constants.CANCELLED)
-            {
-                if (playerId == operatorId)
-                {
-                    message = "You " + result.ToString();
-                }
-                else
-                {
-                    message = (user == null ? "Admin" : user.Name) + " " + result.ToString() + " for you";
-                }
-                AddNotifyWechatMessage(pool, player, message + poolAndGameDate);
-            }
-            else if (result == Constants.WAITING_TO_RESERVED)
-            {
-                message = result.ToString();
-                AddNotifyWechatMessage(player, message + poolAndGameDate);
-                AddNotifyWechatMessage(pool, player, message + poolAndGameDate);
-            }
-            else if (result == Constants.MOVED)
-            {
-                message = result.ToString() + " " + pool.Name;
-                AddNotifyWechatMessage(player, message + poolAndGameDate);
-                AddNotifyWechatMessage(pool, player, message + poolAndGameDate);
-
-            }
-            else if (result == Constants.WAITING && playerId != operatorId)
-            {
-                message = (user == null ? "Admin" : user.Name) + " " + result.ToString();
-                AddNotifyWechatMessage(pool, player, message + poolAndGameDate);
-            }
-        }
-
+ 
         public DateTime EastDateTimeToday
         {
             get
@@ -464,7 +374,50 @@ namespace VballManager
             }
         }
 
+       public void AddReservationNotifyWechatMessage(String playerId, String operatorId, String result, Pool targetPool, Pool originalPool, DateTime gameDate)
+        {
+            Player player = FindPlayerById(playerId);
+            Player user = operatorId == null ? null : FindPlayerById(operatorId);
+            String message = null;
+            int numberOfReservedPlayerInTargetPool = targetPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
+
+            String poolAndGameDate = " in pool " + targetPool.Name + " for " + gameDate.ToString("MM/dd/yyyy") + ". Total player number in pool " + targetPool.Name + ": " + numberOfReservedPlayerInTargetPool;
+            if (result == Constants.RESERVED || result == Constants.CANCELLED)
+            {
+                if (playerId == operatorId)
+                {
+                    message = "You " + result.ToString();
+                }
+                else
+                {
+                    message = (user == null ? "Admin" : user.Name) + " " + result.ToString() + " for you";
+                }
+                WechatNotifier.AddNotifyWechatMessage(targetPool, player, message + poolAndGameDate);
+            }
+            else if (result == Constants.WAITING_TO_RESERVED)
+            {
+                message = result.ToString();
+                WechatNotifier.AddNotifyWechatMessage(player, message + poolAndGameDate);
+                WechatNotifier.AddNotifyWechatMessage(targetPool, player, message + poolAndGameDate);
+            }
+            else if (result == Constants.MOVED)
+            {
+                message = result.ToString() + " from pool " + originalPool.Name + " to pool " + targetPool.Name + " for " + gameDate.ToString("MM/dd/yyyy");
+                WechatNotifier.AddNotifyWechatMessage(player, message);
+                message = result.ToString() + " from pool " + originalPool.Name + " for " + gameDate.ToString("MM/dd/yyyy") + ". Total player number in pool " + originalPool.Name + ": " + originalPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
+                WechatNotifier.AddNotifyWechatMessage(originalPool, player, message);
+                message = result.ToString() + " to pool " + targetPool.Name + " for " + gameDate.ToString("MM/dd/yyyy") + ". Total player number in pool " + targetPool.Name + ": " + numberOfReservedPlayerInTargetPool;
+                WechatNotifier.AddNotifyWechatMessage(player, message);
+                WechatNotifier.AddNotifyWechatMessage(targetPool, player, message);
+            }
+            else if (result == Constants.WAITING && playerId != operatorId)
+            {
+                message = (user == null ? "Admin" : user.Name) + " " + result.ToString();
+                WechatNotifier.AddNotifyWechatMessage(targetPool, player, message + poolAndGameDate);
+            }
+        }
     }
+
 
     public class Pool
     {
@@ -759,82 +712,6 @@ namespace VballManager
         None, Day, Week
     }
 
-    public class WechatMessage
-    {
-        public WechatMessage()
-        { }
-
-        public WechatMessage(String wechatName, String message)
-        {
-            this.date = DateTime.Today;
-            this.wechatName = wechatName;
-            this.message = message;
-        }
-
-        public WechatMessage(String wechatName, Player player, String message)
-        {
-            this.date = DateTime.Today;
-            this.wechatName = wechatName;
-            this.message = message;
-            if (String.IsNullOrEmpty(player.WechatName))
-            {
-                this.name = player.Name;
-            }
-            else
-            {
-                this.at = player.WechatName;
-            }
-        }
-
-        public WechatMessage(String wechatName, String name, String message)
-        {
-            this.date = DateTime.Today;
-            this.wechatName = wechatName;
-            this.name = name;
-            this.message = message;
-        }
-
-        private DateTime date;
-
-        public DateTime Date
-        {
-            get { return date; }
-            set { date = value; }
-        }
-
-        private String wechatName;
-
-        public String WechatName
-        {
-            get { return wechatName; }
-            set { wechatName = value; }
-        }
-
-        private String at;
-
-        public String At
-        {
-            get { return at; }
-            set { at = value; }
-        }
-
-        private String name;
-
-        public String Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
-        private String message;
-
-        public String Message
-        {
-            get { return message; }
-            set { message = value; }
-        }
-
-    }
     public enum PlayerBooleanProperties
     {
         IsRegisterMember, IsActive, Marked

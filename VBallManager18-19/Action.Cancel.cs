@@ -16,7 +16,7 @@ namespace VballManager
         {
             Attendee attendee = game.Members.FindByPlayerId(player.Id);
             //Cancel spots for members
-            if (attendee != null && attendee.Status == InOutNoshow.In)
+            if (attendee != null && attendee.Status != InOutNoshow.Out)
             {
                 attendee.Status = InOutNoshow.Out;
                 if (!Manager.ClubMemberMode)
@@ -42,27 +42,24 @@ namespace VballManager
         protected void CancelDropinSpot(Pool pool, Game game, Player player)
         {
             //Cancel spots for dropin
-            Attendee attendee = game.Dropins.FindByPlayerId(player.Id);
+            Pickup dropin = game.Dropins.FindByPlayerId(player.Id);
             //Cancel spots for members
-            if (attendee != null && attendee.Status == InOutNoshow.In)
+            if (dropin != null && dropin.Status != InOutNoshow.Out)
             {
-                attendee.Status = InOutNoshow.Out;
+                dropin.Status = InOutNoshow.Out;
                 //Cancel dropin fee
-                CancelDropinFee(attendee);
+                CancelDropinFee(dropin);
                 LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), pool.Name, Manager.FindPlayerById(player.Id).Name, "Cancel dropin");
                 Manager.Logs.Add(log);
                 //reset last dropin time for coop
-                Dropin dropin = pool.Dropins.FindByPlayerId(player.Id);
-                if (dropin.IsCoop) dropin.LastCoopDate = new DateTime();
+                dropin.LastCoopDate = new DateTime();
                 //Move first one in waiting list into dropin list
                 if (!IsReservationLocked(game.Date) && game.WaitingList.Count > 0 && IsSpotAvailable(pool, game.Date))
                 {
                     AssignDropinSpotToWaiting(pool, game);
                 }
                 DataAccess.Save(Manager);
-               // this.PopupModal.Hide();
             }
-          // Response.Redirect(Constants.DEFAULT_PAGE);
         }
 
 

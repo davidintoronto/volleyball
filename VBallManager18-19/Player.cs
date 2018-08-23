@@ -239,16 +239,8 @@ namespace VballManager
     public class Dropin : Person
     {
         private bool isCoop;
-        private DateTime lastCoopDate;
 
         public Dropin() { }
-
-        public DateTime LastCoopDate
-        {
-            get { return lastCoopDate; }
-            set { lastCoopDate = value; }
-        }
-
 
         public Dropin(String id)
         {

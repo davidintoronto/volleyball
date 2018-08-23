@@ -101,12 +101,13 @@ namespace VballManager
             }
             //Check if there is dropin spots available for the players on waiting list
             Game comingGame = CurrentPool.FindGameByDate(ComingGameDate);
-            while (!IsReservationLocked(gameDate))
+            while (!this.IsReservationLocked(ComingGameDate) && IsSpotAvailable(CurrentPool, ComingGameDate) && comingGame.WaitingList.Count > 0)
             {
-                if (IsSpotAvailable(CurrentPool, ComingGameDate) && comingGame.WaitingList.Count > 0)
-                {
-                    AssignDropinSpotToWaiting(CurrentPool, comingGame);
-                }
+                AssignDropinSpotToWaiting(CurrentPool, comingGame);
+            }
+            //Move coop reservation if current pool needs more players
+            if (!this.IsReservationLocked(ComingGameDate))
+            {
                 AutoReserveCoopPlayers(CurrentPool, ComingGameDate);
             }
             //Fill game information
@@ -488,8 +489,7 @@ namespace VballManager
                  imageBtn.Click += new ImageClickEventHandler(Cancel_Click);
             }else{
                 imageBtn.ImageUrl = "~/Icons/Add.png";
-                if (attendee.IsCoop) imageBtn.Click += new ImageClickEventHandler(Coop_Reserve_Click);
-                else imageBtn.Click += new ImageClickEventHandler(Reserve_Click);          
+                imageBtn.Click += new ImageClickEventHandler(Reserve_Click);          
             }
             
             imageBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
@@ -562,10 +562,14 @@ namespace VballManager
                         break;
                     case Constants.ACTION_NO_SHOW:
                         this.ConfirmImageButton.Click += No_Show_Confirm_Click;
+                        this.CloseImageBtn.Click += this.Continue_Cancel_Click;
                         break;
                     case Constants.ACTION_POWER_RESERVE:
-                        this.ConfirmImageButton.Click += Reserve_Confirm_Click;
-                        this.CloseImageBtn.Click += this.InquireAddingToWaitingList_Click;
+                        this.ConfirmImageButton.Click += Power_Confirm_Click;
+                        if (!IsReservationLocked(ComingGameDate))
+                        {
+                            this.CloseImageBtn.Click += this.InquireAddingToWaitingList_Click;
+                        }
                         break;
                 }
             }

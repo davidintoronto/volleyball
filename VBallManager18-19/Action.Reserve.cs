@@ -16,11 +16,11 @@ namespace VballManager
         {
             if (game.Members.Exists(player.Id))
             {
-                ReservePromarySpot(CurrentPool, game, player);
+                ReservePromarySpot(pool, game, player);
             }
             else if (game.Dropins.Exists(player.Id))
             {
-                ReserveDropinSpot(CurrentPool, game, player);
+                ReserveDropinSpot(pool, game, player);
             }
         }
 
@@ -50,15 +50,19 @@ namespace VballManager
         protected void ReserveDropinSpot(Pool pool, Game game, Player player)
         {
             //Cancel spots for dropin
-            Attendee attendee = game.Dropins.FindByPlayerId(player.Id);
+            Pickup dropin = game.Dropins.FindByPlayerId(player.Id);
             //Cancel spots for members
-            if (attendee != null && attendee.Status == InOutNoshow.Out)
+            if (dropin != null && dropin.Status == InOutNoshow.Out)
             {
-                attendee.Status = InOutNoshow.In;
+                dropin.Status = InOutNoshow.In;
                 //Create fee
                 CostReference reference = CreateDropinFee(pool, game.Date, player.Id);
-                attendee.CostReference = reference;
-                attendee.OperatorId = CurrentUser.Id;
+                dropin.CostReference = reference;
+                dropin.OperatorId = CurrentUser.Id;
+                if (dropin.IsCoop) 
+                {
+                    dropin.LastCoopDate = game.Date;
+                }
                 LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), pool.Name, player.Name, "Reserve dropin");
                 DataAccess.Save(Manager);
                // this.PopupModal.Hide();
@@ -66,21 +70,21 @@ namespace VballManager
           // Response.Redirect(Constants.DEFAULT_PAGE);
         }
 
-        protected void MoveReservation(Pool pool, Game game, Player player)
+        //Return the original pool where spot is moved from
+        protected Pool MoveReservation(Pool pool, Game game, Player player)
         {
             ReserveSpot(pool, game, player);
             //Cancel the spot in other pool
-            Pool sameDayPool = Manager.Pools.Find(p => pool.Name != pool.Name && p.DayOfWeek == pool.DayOfWeek);
+            Pool sameDayPool = Manager.Pools.Find(p => p.DayOfWeek == pool.DayOfWeek && p.Name != pool.Name);
             if (CancelSpot(sameDayPool, sameDayPool.FindGameByDate(game.Date), player))
             {
-                Manager.AddReservationNotifyWechatMessage(player.Id, pool.Id, Constants.MOVED, sameDayPool, pool, game.Date);
+                return sameDayPool;
             }
             else
             {
-                Manager.AddReservationNotifyWechatMessage(player.Id, pool.Id, Constants.RESERVED, sameDayPool, pool, game.Date);
+                return null;
             }
-            DataAccess.Save(Manager);
-        }
+          }
         #endregion
 
         #region Waiting list
@@ -94,25 +98,25 @@ namespace VballManager
             Manager.Logs.Add(log);
         }
 
-        protected void AssignDropinSpotToWaiting(Pool thePool, Game comingGame)
+        protected void AssignDropinSpotToWaiting(Pool thePool, Game theGame)
         {
-            if (IsReservationLocked(comingGame.Date) || comingGame.WaitingList.Count == 0 || !IsSpotAvailable(thePool, comingGame.Date))
+            if (IsReservationLocked(theGame.Date) || theGame.WaitingList.Count == 0 || !IsSpotAvailable(thePool, theGame.Date))
             {
                 return;
             }
-            Waiting waiting = comingGame.WaitingList[0];
+            Waiting waiting = theGame.WaitingList[0];
             String playerId = waiting.PlayerId;
             Player player = Manager.FindPlayerById(playerId);
-            ReserveSpot(thePool, comingGame, player);
-            comingGame.WaitingList.Remove(playerId);
-            Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.WAITING_TO_RESERVED, thePool, thePool, comingGame.Date);
-            comingGame.WaitingList.Remove(playerId);
+            ReserveSpot(thePool, theGame, player);
+            theGame.WaitingList.Remove(playerId);
+            Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.WAITING_TO_RESERVED, thePool, thePool, theGame.Date);
+            theGame.WaitingList.Remove(playerId);
             //Cancel the member spot in another pool on same day
-            Pool sameDayPool = Manager.Pools.Find(pool => pool.Name != CurrentPool.Name && pool.DayOfWeek == CurrentPool.DayOfWeek);
-            if (CancelSpot(sameDayPool, sameDayPool.FindGameByDate(comingGame.Date), player))
+            Pool sameDayPool = Manager.Pools.Find(pool => pool.Name != thePool.Name && pool.DayOfWeek == thePool.DayOfWeek);
+            if (CancelSpot(sameDayPool, sameDayPool.FindGameByDate(theGame.Date), player))
             {
-                Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.CANCELLED, sameDayPool, sameDayPool, comingGame.Date);
-                AssignDropinSpotToWaiting(sameDayPool, sameDayPool.FindGameByDate(comingGame.Date));
+                Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.CANCELLED, sameDayPool, sameDayPool, theGame.Date);
+                AssignDropinSpotToWaiting(sameDayPool, sameDayPool.FindGameByDate(theGame.Date));
             }
         }
 
@@ -180,7 +184,7 @@ namespace VballManager
             if (!player.IsRegisterdMember && IsDropinOwesExceedMax(player))
             {
                 String message = "[System Info] Hi, " + player.Name + ". According to our records, the total amount you unpaid dropin fee reaches the maximum ($" + Manager.MaxDropinFeeOwe + "). Please make the payment ASAP, in order to continue making reservation in the future.";
-                Manager.AddNotifyWechatMessage(player, message);
+                Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
             }
             return new CostReference(CostType.FEE, fee.FeeId);
         }
@@ -247,54 +251,52 @@ namespace VballManager
         }
 
          #region Auto reserve
-         protected void AutoReserveCoopPlayers(Pool thePool, DateTime gameDate)
-        {
-            foreach (Pool pool in Manager.Pools)
-            {
-                if (pool.AutoCoopReserve && pool.DayOfWeek == thePool.DayOfWeek && Manager.EastDateTimeToday.Date == gameDate.Date && Manager.EastDateTimeNow.Hour >= pool.ReservHourForCoop)
-                {
-                    Game game = pool.FindGameByDate(gameDate);
-                    //Check to see if number of reserved coop players already reaches maximum
-                    while (DropinSpotAvailableForCoop(pool, gameDate))
-                    {
-                        Dropin coopCandidate = null;
-                        //Find the best candidate of coop
-                        foreach (Dropin dropin in pool.Dropins.Items)
-                        {
-                            if (dropin.IsCoop && !game.Dropins.Exists(dropin.PlayerId) && PlayerAttendedLastWeekGame(dropin.PlayerId))
-                            {
-                                //find it if it is member and reserved in another pool on same day
-                                Pool otherPool = Manager.Pools.Find(p => pool.Name != thePool.Name && p.DayOfWeek == thePool.DayOfWeek);
-                                //If number of attedning players in other pool is not enough, then stop moving coop
-                                if (otherPool != null && otherPool.GetNumberOfAttendingMembers(gameDate) + otherPool.GetNumberOfDropins(gameDate) > otherPool.LessThanPayersForCoop)
-                                {
-                                    //Is pool member and reserved for game day
-                                    if (otherPool.Members.Exists(dropin.PlayerId) && otherPool.FindGameByDate(gameDate).Members.Items.Exists(m => m.PlayerId == dropin.PlayerId && m.Status == InOutNoshow.In))
-                                    {
-                                        if (coopCandidate == null || coopCandidate.LastCoopDate > dropin.LastCoopDate)
-                                        {
-                                            coopCandidate = dropin;
-                                        }
+         public void AutoReserveCoopPlayers(Pool thePool, DateTime gameDate)
+         {
+             if (thePool.AutoCoopReserve && Manager.EastDateTimeNow.Hour >= thePool.ReservHourForCoop)
+             {
+                 Game game = thePool.FindGameByDate(gameDate);
+                 //Check to see if number of reserved coop players already reaches maximum
+                 while (DropinSpotAvailableForCoop(thePool, gameDate))
+                 {
+                     //find it if it is member and reserved in another pool on same day
+                     Pool originalPool = Manager.Pools.Find(p => p.Name != thePool.Name && p.DayOfWeek == thePool.DayOfWeek);
+                     Pickup coopCandidate = null;
+                     //Find the best candidate of coop
+                     foreach (Pickup coopDropin in game.Dropins.Items.FindAll(dropin => dropin.IsCoop && dropin.Status == InOutNoshow.Out))
+                     {
+                          //If number of attedning players in other pool is not enough, then stop moving coop
+                         if (originalPool != null && originalPool.FindGameByDate(gameDate).AllPlayers.Items.FindAll(p => p.Status == InOutNoshow.In).ToArray().Length > originalPool.LessThanPayersForCoop)
+                         {
+                             //Is pool member and reserved for game day
+                             Game originalGame = originalPool.FindGameByDate(gameDate);
+                             if (originalGame != null && originalGame.Members.Items.Exists(member => member.PlayerId == coopDropin.PlayerId && member.Status == InOutNoshow.In))
+                             {
+                                 if (coopCandidate == null || coopCandidate.LastCoopDate > ((Pickup)coopDropin).LastCoopDate)
+                                 {
+                                     coopCandidate = coopDropin;
+                                 }
 
-                                    }
-                                }
-                            }
-                        }
-                        if (coopCandidate == null)
-                        {
-                            break;
-                        }
-                         Player coopPlayer = Manager.FindPlayerById(coopCandidate.PlayerId);
-                        MoveReservation(CurrentPool, game, coopPlayer);
-                    }
-                }
-            }
-        }
-        private bool PlayerAttendedLastWeekGame(String playerId)
+                             }
+                         }
+                     }
+                     if (coopCandidate == null)
+                     {
+                         break;
+                     }
+                     Player coopPlayer = Manager.FindPlayerById(coopCandidate.PlayerId);
+                     MoveReservation(thePool, game, coopPlayer);
+                     Manager.AddReservationNotifyWechatMessage(coopPlayer.Id, CurrentUser.Id, Constants.MOVED, thePool, originalPool, ComingGameDate);
+                     DataAccess.Save(Manager);
+                 }
+             }
+         }
+
+        private bool PlayerAttendedLastWeekGame(Pool thePool, String playerId)
         {
             foreach (Pool pool in Manager.Pools)
             {
-                if (pool.DayOfWeek == CurrentPool.DayOfWeek)
+                if (pool.DayOfWeek == thePool.DayOfWeek)
                 {
                     Game previousGame = null;
                     List<Game> games = pool.Games;

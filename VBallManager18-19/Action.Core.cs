@@ -154,6 +154,14 @@ namespace VballManager
             return now >= reserveDate;
         }
 
+        protected bool IsDropinSpotOpeningForCoop(Pool pool, DateTime gameDate, Player player)
+        {
+            DateTime reserveDate = TimeZoneInfo.ConvertTimeFromUtc(gameDate, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
+            reserveDate = reserveDate.AddDays(-1 * pool.DaysToReserve).AddHours(-1 * reserveDate.Hour + pool.ReservHourForCoop);
+            DateTime now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
+            return now >= reserveDate;
+        }
+
         protected bool IsSpotAvailable(Pool pool, DateTime gameDate)
         {
             if (!pool.HasCap)

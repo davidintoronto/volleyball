@@ -137,7 +137,7 @@ namespace VballManager
              DataAccess.Save(Manager);
              if (fee.IsPaid)
              {
-                 Manager.AddNotifyWechatMessage(player, "Hi, " + player.Name + ". We have received your payment $" + fee.Amount + " . Thank you!");
+                 Manager.WechatNotifier.AddNotifyWechatMessage(player, "Hi, " + player.Name + ". We have received your payment $" + fee.Amount + " . Thank you!");
              }
              Response.Redirect("BillingDetail.aspx?id="+playerId);
          }
@@ -158,7 +158,7 @@ namespace VballManager
                  }
              }
               DataAccess.Save(Manager);
-             if (total >0) Manager.AddNotifyWechatMessage(player, "Hi, " + player.Name + ". We have received your payment $" + total + " . Thank you!");
+             if (total >0) Manager.WechatNotifier.AddNotifyWechatMessage(player, "Hi, " + player.Name + ". We have received your payment $" + total + " . Thank you!");
              Response.Redirect("BillingDetail.aspx?id=" + playerId);
          }
 
