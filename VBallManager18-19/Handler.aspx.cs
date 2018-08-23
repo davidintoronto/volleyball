@@ -126,18 +126,7 @@ namespace VballManager
         #endregion
 
         #region Confirmed click
-        protected void Power_Confirm_Click(object sender, EventArgs e)
-        {
-            String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
-            Player player = Manager.FindPlayerById(playerId);
-            //Make reservation
-            ReserveSpot(CurrentPool, CurrentPool.FindGameByDate(ComingGameDate), player);
-            Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, ComingGameDate);
-            DataAccess.Save(Manager);
-            Response.Redirect(Constants.DEFAULT_PAGE);
-        }
-
-        protected void Rower_Confirm_Click(object sender, EventArgs e)
+        protected void Reserve_Confirm_Click(object sender, EventArgs e)
         {
             String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
             Player player = Manager.FindPlayerById(playerId);

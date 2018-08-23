@@ -38,16 +38,20 @@ namespace VballManager
                 poolName = Manager.FindPoolById(poolId).Name;
                 Session[Constants.POOL] = poolName;
                 this.ToReadmeBtn.Visible = false;
+                Session[Constants.GAME_DATE] = null;
             }
             else if (poolName != null)
             {
                 Session[Constants.POOL] = poolName;
+                Session[Constants.GAME_DATE] = null;
             }
+            Application[Constants.DATA] = DataAccess.LoadReservation();
             if (CurrentPool == null)
             {
                 Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
                 return;
             }
+            this.Page.Title = CurrentPool.Title;
             //Check to see if user is quilified to view current pool
             if (!Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) && !CurrentPool.Members.Exists(currentUser.Id) && !CurrentPool.Dropins.Exists(currentUser.Id))
             {
@@ -61,18 +65,16 @@ namespace VballManager
             {
                 gameDate = DateTime.Parse(gameDateString);
             }
-            Application[Constants.DATA] = DataAccess.LoadReservation();
+            else if (Session[Constants.GAME_DATE] != null)
+            {
+                gameDate = DateTime.Parse(Session[Constants.GAME_DATE].ToString());
+            }
             Session[Constants.GAME_DATE] = null;
             List<Game> games = CurrentPool.Games;
-            IEnumerable<Game> gameQuery = games.OrderBy(game => game.Date);
-
-            foreach (Game game in gameQuery)
+            Game targetGame = games.OrderBy(game => game.Date).ToList<Game>().Find(game=>game.Date>=gameDate);
+            if (targetGame != null)
             {
-                if (game.Date >= gameDate)
-                {
-                    Session[Constants.GAME_DATE] = game.Date;
-                    break;
-                }
+                Session[Constants.GAME_DATE] = targetGame.Date;
             }
             //Fill message board
             if (!String.IsNullOrEmpty(CurrentPool.MessageBoard))
@@ -551,6 +553,9 @@ namespace VballManager
             {
                   switch (Session[Constants.ACTION_TYPE].ToString())
                 {
+                    case Constants.ACTION_RESERVE:
+                        this.ConfirmImageButton.Click += Reserve_Confirm_Click;
+                        break;
                     case Constants.ACTION_CANCEL:
                         this.ConfirmImageButton.Click += Cancel_Confirm_Click;
                         break;
@@ -565,7 +570,7 @@ namespace VballManager
                         this.CloseImageBtn.Click += this.Continue_Cancel_Click;
                         break;
                     case Constants.ACTION_POWER_RESERVE:
-                        this.ConfirmImageButton.Click += Power_Confirm_Click;
+                        this.ConfirmImageButton.Click += Reserve_Confirm_Click;
                         if (!IsReservationLocked(ComingGameDate))
                         {
                             this.CloseImageBtn.Click += this.InquireAddingToWaitingList_Click;

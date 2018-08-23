@@ -7,7 +7,7 @@ namespace VballManager
 {
     public class WechatNotify
     {
-        private bool enable = true;
+        private bool enable;
         private List<WechatMessage> wechatMessages = new List<WechatMessage>();
         private String wechatMemberWelcomeMessage;
         private String wechatDropinWelcomeMessage;
@@ -53,7 +53,7 @@ namespace VballManager
 
         public void AddNotifyWechatMessage(Player player, String message)
         {
-            if (enable && !String.IsNullOrEmpty(player.WechatName))
+            if (Enable && !String.IsNullOrEmpty(player.WechatName))
             {
                 WechatMessage wechat = new WechatMessage(player.WechatName, player.Name, message);
                 WechatMessages.Add(wechat);
@@ -61,7 +61,7 @@ namespace VballManager
         }
         public void AddNotifyWechatMessage(Pool pool, String message)
         {
-            if (enable && !String.IsNullOrEmpty(pool.WechatGroupName))
+            if (Enable && !String.IsNullOrEmpty(pool.WechatGroupName))
             {
                 WechatMessage wechat = new WechatMessage(pool.WechatGroupName, message);
                 WechatMessages.Add(wechat);
@@ -70,7 +70,7 @@ namespace VballManager
 
         public void AddNotifyWechatMessage(Pool pool, Player player, String message)
         {
-            if (enable && !String.IsNullOrEmpty(pool.WechatGroupName))
+            if (Enable && !String.IsNullOrEmpty(pool.WechatGroupName))
             {
                 WechatMessage wechat = new WechatMessage(pool.WechatGroupName, player, message);
                 WechatMessages.Add(wechat);

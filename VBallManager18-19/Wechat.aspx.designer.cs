@@ -22,13 +22,22 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.Panel SendWechatPanel;
         
         /// <summary>
-        /// WechatEnableRBtn control.
+        /// WechatNotifyCb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton WechatEnableRBtn;
+        protected global::System.Web.UI.WebControls.CheckBox WechatNotifyCb;
+        
+        /// <summary>
+        /// SaveBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SaveBtn;
         
         /// <summary>
         /// Panel3 control.
@@ -40,6 +49,24 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.Panel Panel3;
         
         /// <summary>
+        /// PlayerListBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox PlayerListBox;
+        
+        /// <summary>
+        /// SendWelcomeToPlayerBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SendWelcomeToPlayerBtn;
+        
+        /// <summary>
         /// WelcomeMemberWechatMessageTb control.
         /// </summary>
         /// <remarks>
@@ -49,13 +76,13 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.TextBox WelcomeMemberWechatMessageTb;
         
         /// <summary>
-        /// SendToMembersBtn control.
+        /// SendWelcomeToPlayersBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SendToMembersBtn;
+        protected global::System.Web.UI.WebControls.Button SendWelcomeToPlayersBtn;
         
         /// <summary>
         /// WelcomeDropinWechatMessageTb control.

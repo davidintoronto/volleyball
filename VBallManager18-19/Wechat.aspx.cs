@@ -23,15 +23,20 @@ namespace VballManager
                 this.WelcomeMemberWechatMessageTb.Text = Manager.WechatNotifier.WechatMemberWelcomeMessage;
                 this.WelcomeDropinWechatMessageTb.Text = Manager.WechatNotifier.WechatDropinWelcomeMessage;
                 this.PoolWechatMessageTb.Text = Manager.WechatNotifier.WechatPoolMessage;
-                this.WechatEnableRBtn.Enabled = Manager.WechatNotifier.Enable;
+                this.WechatNotifyCb.Checked = Manager.WechatNotifier.Enable;
                 this.PoolListBox.DataSource = Manager.Pools;
                 this.PoolListBox.DataTextField = "Name";
                 this.PoolListBox.DataValueField = "Name";
                 this.PoolListBox.DataBind();
+                this.PlayerListBox.DataSource = Manager.Players.FindAll(player=>player.IsActive);
+                this.PlayerListBox.DataTextField = "Name";
+                this.PlayerListBox.DataValueField = "Id";
+                this.PlayerListBox.DataBind();
             }
             this.SendToGroupBtn.OnClientClick = "if ( !confirm('Are you sure to send notification to new primary members?')) return false;";
             this.SendToDropinsBtn.OnClientClick = "if ( !confirm('Are you sure to send welcome message to all the dropins?')) return false;";
-            this.SendToMembersBtn.OnClientClick = "if ( !confirm('Are you sure to send welcome message to all the members?')) return false;";
+            this.SendWelcomeToPlayersBtn.OnClientClick = "if ( !confirm('Are you sure to send welcome message to all the members?')) return false;";
+            this.TestToAllBtn.OnClientClick = "if ( !confirm('Are you sure to send test messages to all?')) return false;";
             RanderPlayerWechatPanel();
         }
 
@@ -91,22 +96,35 @@ namespace VballManager
                 String registerLink = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(player.Id); 
                 if (player.IsRegisterdMember)
                 {
-                    String message = this.WelcomeMemberWechatMessageTb.Text.Replace(REGISTER_LINK, registerLink);
-                    Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
-                    decimal total = 0;
-                    foreach (Fee fee in player.Fees)
-                    {
-                        if (!fee.IsPaid) total = total + fee.Amount;
-                    }
-                    if (total > 0)
-                    {
-                        message = "You membership fee is $" + Manager.RegisterMembeshipFee + ", and it is due now. You unpaid fee is $" + total + ". If you would like to pay e-transfer, please send to " + Manager.AdminEmail + ". Thanks";
-                        Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
-                    }
+                    SendWelcomeMessageToPlayer(player);
                 }
              }
-            Manager.WechatNotifier.WechatMemberWelcomeMessage = this.WelcomeMemberWechatMessageTb.Text;
             DataAccess.Save(Manager);
+        }
+
+        private void SendWelcomeMessageToPlayer(Player player)
+        {
+            String registerLink = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(player.Id);
+            if (player.IsRegisterdMember)
+            {
+                String message = this.WelcomeMemberWechatMessageTb.Text.Replace(REGISTER_LINK, registerLink);
+                Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
+                decimal total = 0;
+                foreach (Fee fee in player.Fees)
+                {
+                    if (!fee.IsPaid) total = total + fee.Amount;
+                }
+                if (total > 0)
+                {
+                    message = "You membership fee is $" + Manager.RegisterMembeshipFee + ", and it is due now. You unpaid fee is $" + total + ". If you would like to pay e-transfer, please send to " + Manager.AdminEmail + ". Thanks";
+                    Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
+                }
+            }
+            else
+            {
+                String message = this.WelcomeDropinWechatMessageTb.Text.Replace(REGISTER_LINK, registerLink);
+                Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
+            }
         }
 
         protected void SendPrimaryMemberNotificationWechatMessageBtn_Click(object sender, EventArgs e)
@@ -124,8 +142,6 @@ namespace VballManager
                     message = "Congratus! You have become the primary member in pool " + pool.Name;
                     Manager.WechatNotifier.AddNotifyWechatMessage(pool, player, message);
                 }
-                 Manager.WechatNotifier.WechatPoolMessage = this.PoolWechatMessageTb.Text;
-                Manager.WechatNotifier.WechatPrimaryMemberMessage = this.PrimaryMemberMessgeTb.Text;
                 DataAccess.Save(Manager);
             }
             else 
@@ -140,14 +156,8 @@ namespace VballManager
             IEnumerable<Player> players = Manager.Players.FindAll(player => player.IsActive && !String.IsNullOrEmpty(player.WechatName));
             foreach (Player player in players)
             {
-                String registerLink = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(player.Id);
-                if (!player.IsRegisterdMember)
-                {
-                    String message = this.WelcomeDropinWechatMessageTb.Text.Replace(REGISTER_LINK, registerLink);
-                    Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
-                }
+                SendWelcomeMessageToPlayer(player);
             }
-            Manager.WechatNotifier.WechatDropinWelcomeMessage = this.WelcomeDropinWechatMessageTb.Text;
             DataAccess.Save(Manager);
         }
 
@@ -162,11 +172,31 @@ namespace VballManager
             DataAccess.Save(Manager);
         }
 
-        protected void WechatEnableRBtn_CheckedChanged(object sender, EventArgs e)
+        protected void WechatNotifyCb_CheckedChanged(object sender, EventArgs e)
         {
-            Manager.WechatNotifier.Enable = this.WechatEnableRBtn.Enabled;
+            Manager.WechatNotifier.Enable = this.WechatNotifyCb.Checked;
             DataAccess.Save(Manager);
         }
+
  
+        protected void SendWelcomeToPlayerBtn_Click(object sender, EventArgs e)
+        {
+            if (this.PlayerListBox.SelectedIndex < 0)
+            {
+                ClientScript.RegisterStartupScript(Page.GetType(), "msgid", "alert('Player is not selected')", true);
+                return;
+            }
+            Player player = Manager.FindPlayerById(this.PlayerListBox.SelectedValue);
+            SendWelcomeMessageToPlayer(player);
+        }
+
+        protected void SaveBtn_Click(object sender, EventArgs e)
+        {
+            Manager.WechatNotifier.WechatPoolMessage = this.PoolWechatMessageTb.Text;
+            Manager.WechatNotifier.WechatPrimaryMemberMessage = this.PrimaryMemberMessgeTb.Text;
+            Manager.WechatNotifier.WechatMemberWelcomeMessage = this.WelcomeMemberWechatMessageTb.Text;
+            Manager.WechatNotifier.WechatDropinWelcomeMessage = this.WelcomeDropinWechatMessageTb.Text;
+            DataAccess.Save(Manager);
+        }
     }
 }
