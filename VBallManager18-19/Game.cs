@@ -116,6 +116,7 @@ namespace VballManager
     {
         public static string FEETYPE_DROPIN = "Dropin fee ({0})";
         public static string FEETYPE_MEMBERSHIP = "Membership fee ({0})";
+        public static string FEETYPE_MEMBER_CREDIT = "Member Credit";
         public static string FEETYPE_CLUB_MEMBERSHIP = "Membership Fee";
         public static string FEETYPE_DROPIN_PRE_PAID = "Dropin pre-paid";
 

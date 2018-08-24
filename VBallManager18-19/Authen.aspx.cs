@@ -66,7 +66,7 @@ namespace VballManager
             }
             this.LinkDeviceTb.Text = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(player.Id);
             //this.LinkDeviceTb.Text = "http://hitmen.000webhostapp.com/register.html?id=" + Manager.ReversedId(player.Id);
-            this.ResetLinkDeviceTb.Text = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?reset=true";
+            this.ResetLinkDeviceTb.Text = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?reset=true&id=" + Manager.ReversedId(player.Id);
         }
 
  
@@ -100,7 +100,7 @@ namespace VballManager
         {
             if (this.PlayerListbox.SelectedIndex >= 0)
             {
-                Response.Redirect(Constants.REGISTER_DEVICE_PAGE + "?reset=true");
+                Response.Redirect(Constants.REGISTER_DEVICE_PAGE + "?reset=true&id=" + Manager.ReversedId(this.PlayerListbox.SelectedItem.Value));
             }
         }
 

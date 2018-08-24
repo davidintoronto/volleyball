@@ -10,9 +10,10 @@ namespace VballManager
 {
     public partial class Wechat : AdminBase
     {
-        private const String REGISTER_LINK = "{REGISTER_LINK}";
-        private const String POOL_MEMBER_COUNT = "{POOL.MEMBER.COUNT}";
-        private const String POOL_NAME = "{POOL_NAME}";
+        private const String REGISTER_LINK = "{register.url}";
+        private const String POOL_MEMBER_COUNT = "{pool.member.count}";
+        private const String POOL_NAME = "{pool.name}";
+        private const String PLAYER_NAME = "{player.name}";
         int playerPerCol = 4;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -23,6 +24,7 @@ namespace VballManager
                 this.WelcomeMemberWechatMessageTb.Text = Manager.WechatNotifier.WechatMemberWelcomeMessage;
                 this.WelcomeDropinWechatMessageTb.Text = Manager.WechatNotifier.WechatDropinWelcomeMessage;
                 this.PoolWechatMessageTb.Text = Manager.WechatNotifier.WechatPoolMessage;
+                this.TestAllTb.Text = Manager.WechatNotifier.WechatToAllTestMessage;
                 this.WechatNotifyCb.Checked = Manager.WechatNotifier.Enable;
                 this.PoolListBox.DataSource = Manager.Pools;
                 this.PoolListBox.DataTextField = "Name";
@@ -166,7 +168,7 @@ namespace VballManager
             IEnumerable<Player> players = Manager.Players.FindAll(player => player.IsActive && !String.IsNullOrEmpty(player.WechatName));
             foreach (Player player in players)
             {
-                String message = this.TestAllTb.Text;
+                String message = this.TestAllTb.Text.Replace(PLAYER_NAME, player.Name);
                 Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
             }
             DataAccess.Save(Manager);
@@ -196,6 +198,7 @@ namespace VballManager
             Manager.WechatNotifier.WechatPrimaryMemberMessage = this.PrimaryMemberMessgeTb.Text;
             Manager.WechatNotifier.WechatMemberWelcomeMessage = this.WelcomeMemberWechatMessageTb.Text;
             Manager.WechatNotifier.WechatDropinWelcomeMessage = this.WelcomeDropinWechatMessageTb.Text;
+            Manager.WechatNotifier.WechatToAllTestMessage = this.TestAllTb.Text;
             DataAccess.Save(Manager);
         }
     }

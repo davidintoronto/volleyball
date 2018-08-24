@@ -308,7 +308,8 @@
                                     <asp:ListItem Value="IsActive">Active</asp:ListItem>
                                     <asp:ListItem Value="Marked">Mark</asp:ListItem>
                                 </asp:DropDownList>
-                                &nbsp;<asp:Button ID="SetMembershipBtn" runat="server" OnClick="SetMembershipBtn_Click" Style="margin-left: 0px" Text="Check Club Memberships" Width="164px" />
+                                &nbsp;<asp:Button ID="SetMembershipBtn0" runat="server" OnClick="SetMembershipBtn_Click" Style="margin-left: 0px" Text="Check Club Memberships" Width="164px" />
+                                <asp:Button ID="CreditToMembersBtn" runat="server" OnClick="CreditToMembersBtn_Click" Style="margin-left: 0px" Text="Credit to members" Width="164px" />
                             </td>
                         </tr>
                         <tr>

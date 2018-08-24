@@ -13,13 +13,19 @@ namespace VballManager
         private String wechatDropinWelcomeMessage;
         private String wechatPoolMessage;
         private String wechatPrimaryMemberMessage;
-
+        private String wechatToAllTestMessage;
+ 
         public WechatNotify() { }
 
         public bool Enable
         {
             get { return enable; }
             set { enable = value; }
+        }
+       public String WechatToAllTestMessage
+        {
+            get { return wechatToAllTestMessage; }
+            set { wechatToAllTestMessage = value; }
         }
 
         public String WechatMemberWelcomeMessage

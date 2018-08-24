@@ -11,12 +11,15 @@ namespace VballManager
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (IsCallback) return;
+            if (IsPostBack) return;
             if (Request.Params["reset"] != null)
             {
                 ResetCookie();
-                Response.Redirect(Constants.REQUEST_REGISTER_LINK_PAGE);
-                return;
+                if (Request.Params["id"] == null)
+                {
+                    Response.Redirect(Constants.REQUEST_REGISTER_LINK_PAGE);
+                    return;
+                }
             }
             String userId = Request.Params["id"];
             if (userId == null && Request.Cookies[Constants.PRIMARY_USER] == null)
@@ -28,14 +31,13 @@ namespace VballManager
             {
                 userId = Manager.ReversedId(userId);
                 Player user = Manager.FindPlayerById(userId);
-                if (Request.Cookies[Constants.PRIMARY_USER] != null)
+                if (Request.Cookies[Constants.PRIMARY_USER]!=null && Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID] != null)
                 {
                     String existingUserId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
                     Player existingUser = Manager.FindPlayerById(existingUserId);
                     if (existingUser != null && existingUser.Id != userId)
                     {
-                        Session[Constants.USER_ID] = userId;
-                        this.PromptLb.Text = "Your device has already registered as [" + existingUser.Name + "]. Would you like to re-register as [" + user.Name + "]?";
+                        this.PromptLb.Text = "Your device has already registered as [" + existingUser.Name + "].  Would you like to authorize someone to help you with reservations?";
                         return;
                     }
                 }
@@ -57,7 +59,7 @@ namespace VballManager
         private void ResetCookie()
         {
             HttpCookie appCookie = new HttpCookie(Constants.PRIMARY_USER);
-            appCookie[Constants.USER_ID] = "";
+            appCookie[Constants.USER_ID] = null;
             appCookie.Expires = DateTime.Now.AddDays(-1);
             Response.Cookies.Add(appCookie);
         }

@@ -400,13 +400,22 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.DropDownList PlayerPropertiesList;
         
         /// <summary>
-        /// SetMembershipBtn control.
+        /// SetMembershipBtn0 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SetMembershipBtn;
+        protected global::System.Web.UI.WebControls.Button SetMembershipBtn0;
+        
+        /// <summary>
+        /// CreditToMembersBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button CreditToMembersBtn;
         
         /// <summary>
         /// PlayerListbox control.

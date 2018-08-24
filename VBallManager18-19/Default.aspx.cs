@@ -131,6 +131,7 @@ namespace VballManager
         {
             if (!Manager.ActionPermitted(Actions.Admin_Management, CurrentUser.Role))
             {
+                this.GameInfoTable.Caption = CurrentPool.DayOfWeek + " Pool " + CurrentPool.Name;
                 return;
             }
             TableRow navRow = new TableRow();

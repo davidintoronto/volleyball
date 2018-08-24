@@ -15,7 +15,7 @@ namespace VballManager
             Application[Constants.DATA] = DataAccess.LoadReservation();
             if (!IsPostBack)
             {
-               // this.AuthCb.Checked = Manager.PasscodeAuthen;
+                // this.AuthCb.Checked = Manager.PasscodeAuthen;
                 this.AdminPasscodeTb.Text = Manager.SuperAdmin;
                 this.TimeOffsetTb.Text = Manager.TimezoneOffset.ToString();
                 TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName);
@@ -504,12 +504,12 @@ namespace VballManager
             updateFeeTypes();
         }
 
- 
+
         protected void AllWechatNameBtn_Click(object sender, EventArgs e)
         {
             foreach (Player player in Manager.Players)
             {
-               // player.WechatName = "";
+                // player.WechatName = "";
             }
             DataAccess.Save(Manager);
         }
@@ -532,5 +532,22 @@ namespace VballManager
             DataAccess.Save(Manager);
         }
 
+        protected void CreditToMembersBtn_Click(object sender, EventArgs e)
+        {
+            foreach (ListItem playerItem in this.PlayerListbox.Items)
+            {
+                Player player = Manager.FindPlayerById(playerItem.Value);
+                if (player != null && playerItem.Selected)
+                {
+                    //Create credit fee entry
+                    Fee fee = new Fee(Fee.FEETYPE_MEMBER_CREDIT, -30);
+                    fee.FeeType = FeeTypeEnum.Credit.ToString();
+                    fee.Date = DateTime.Today;
+                    player.Fees.Add(fee);
+
+                }
+            }
+            DataAccess.Save(Manager);
+        }
     }
 }
