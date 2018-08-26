@@ -179,10 +179,10 @@ namespace VballManager
         private void FillGameTable(Player player)
         {
             IEnumerable<Game> query = CurrentPool.Games.OrderBy(game => game.Date);
-            DateTime comingGameDate = (DateTime)Session[Constants.GAME_DATE];
-            if (comingGameDate == null)
+            DateTime comingGameDate = DateTime.Today.AddYears(1);
+            if (Session[Constants.GAME_DATE] != null)
             {
-                return;
+                comingGameDate = (DateTime)Session[Constants.GAME_DATE];
             }
              foreach (Game game in query)
             {

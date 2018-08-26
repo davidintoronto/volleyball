@@ -7,7 +7,7 @@
     <asp:Panel ID="ProfilePanel" runat="server">
         <table width="100%">
             <tr>
-                <td align="right">
+                <td align="left">
                     <asp:ImageButton ID="BackBtn" runat="server" ImageUrl="~/Icons/Back.png" OnClick="BackBtn_Click" />
                 </td>
             </tr>

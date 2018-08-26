@@ -93,11 +93,14 @@ namespace VballManager
             {
                 if (String.IsNullOrEmpty(CurrentPool.MessageBoard))
                 {
-                    GameInfoTable.Caption = "No Game Available !!!";
+                    GameInfoTable.Caption = "No volleyball in pool " + CurrentPool.Name + " !";
                 }
-                this.GameInfoPanel.Visible = false;
-                this.MemberPanel.Visible = false;
-                this.DropinPanel.Visible = false;
+                //Fill member table
+                FillMemberTable(CurrentPool);
+
+                //Fill dropin table
+                this.DropinCandidateTable.Caption = "Dropins";
+                FillDropinTable(CurrentPool);
                 return;
             }
             //Check if there is dropin spots available for the players on waiting list
@@ -370,12 +373,78 @@ namespace VballManager
             }
         }
 
-        private void FillDropinTable(Pool pool, DateTime date)
+        private void FillMemberTable(Pool pool)
+        {
+            IEnumerable<Player> playerQuery = OrderMembersByStats(pool);
+            bool alterbackcolor = false;
+            foreach (Player player in playerQuery)
+            {
+                //If this player is on the waiting list, don't list it in member section
+                Member member = pool.Members.FindByPlayerId(player.Id);
+                TableRow row = new TableRow();
+                if (alterbackcolor)
+                {
+                    row.BackColor = MemberTable.BorderColor;
+                }
+                alterbackcolor = !alterbackcolor;
+                if (player.Id == GetOperatorId())
+                {
+                    row.BackColor = System.Drawing.Color.CadetBlue;
+                    row.BorderStyle = BorderStyle.Outset;
+                }
+                TableCell nameCell = new TableCell();
+                LinkButton nameLink = new LinkButton();
+                nameLink.Text = player.Name;
+                nameLink.Font.Bold = true;
+                nameLink.Font.Size = new FontUnit(Constants.LINKBUTTON_FONTSIZE);
+                nameLink.ID = player.Id + ",MEMEBER";
+                this.MemberTable.Rows.Add(row);
+                nameCell.Controls.Add(nameLink);
+                //Statistics 
+                Label stats = new Label();
+                stats.Font.Size = new FontUnit(Constants.STATS_FONTSIZE);
+                stats.ForeColor = System.Drawing.Color.OrangeRed;
+                stats.Text = "   " + player.TotalPlayedCount.ToString();
+                nameCell.Controls.Add(stats);
+                //If current user is not permit to reserve for this player, disable the image btn
+                if (IsPermitted(Actions.Reserve_Pool, player))
+                {
+                    nameLink.Click += new EventHandler(Username_Click);
+                }
+                if (player.Marked)
+                {
+                    Image image = new Image();
+                    image.ImageUrl = "~/Icons/Colorball.png";
+                    nameCell.Controls.Add(image);
+                }
+                foreach (Fee fee in player.Fees)
+                {
+                    if (!fee.IsPaid && fee.Amount > 0)
+                    {
+                        Image image = new Image();
+                        image.ImageUrl = "~/Icons/dollar.png";
+                        nameCell.Controls.Add(image);
+                    }
+                }
+                row.Cells.Add(nameCell);
+                TableCell actionCell = new TableCell();
+                actionCell.HorizontalAlign = HorizontalAlign.Right;
+                ImageButton imageBtn = new ImageButton();
+                imageBtn.ID = player.Id;
+                imageBtn.ImageUrl = "~/Icons/Colorball.png";
+                imageBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
+                imageBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
+                actionCell.Controls.Add(imageBtn);
+                row.Cells.Add(actionCell);
+            }
+        }
+
+        private void FillDropinTable(Pool pool, DateTime gameDate)
         {
             //Calcuate stats for dropins
-            List<Player> players = CalculateDropinStats();
-            Game game = pool.FindGameByDate(date);
-            bool dropinSpotAvailable = IsSpotAvailable(pool, date);
+            List<Player> players = CalculateDropinStats(pool, gameDate);
+            Game game = pool.FindGameByDate(gameDate);
+            bool dropinSpotAvailable = IsSpotAvailable(pool, gameDate);
             foreach (Player player in players)
             {
                 Attendee attdenee = game.Dropins.FindByPlayerId(player.Id);
@@ -443,6 +512,32 @@ namespace VballManager
 
         }
 
+        private void FillDropinTable(Pool pool)
+        {
+            //Calcuate stats for dropins
+            List<Player> players = CalculateDropinStats(pool);
+            foreach (Player player in players)
+            {
+
+                Dropin dropin = CurrentPool.Dropins.FindByPlayerId(player.Id);
+                if (dropin != null)
+                {
+
+                    TableRow row = CreateDropinTableRow(player);
+                    this.DropinCandidateTable.Rows.Add(row);
+                    if (DropinCandidateTable.Rows.Count % 2 == 1)
+                    {
+                        row.BackColor = DropinCandidateTable.BorderColor;
+                    }
+                    if (player.Id == GetOperatorId())
+                    {
+                        row.BorderStyle = BorderStyle.Double;
+                        row.BackColor = System.Drawing.Color.DarkOrange;
+                    }
+                }
+            }
+        }
+
         private TableRow CreateDropinTableRow(Player player, Attendee attendee, bool isWaiting)
         {
             TableRow row = new TableRow();
@@ -506,6 +601,52 @@ namespace VballManager
             else
             {
                 imageBtn.Enabled = false;
+            }
+            return row;
+        }
+
+        private TableRow CreateDropinTableRow(Player player)
+        {
+            TableRow row = new TableRow();
+            TableCell nameCell = new TableCell();
+            LinkButton nameLink = new LinkButton();
+            nameLink.Text = player.Name;
+            nameLink.Font.Bold = true;
+            nameLink.Font.Size = new FontUnit(Constants.LINKBUTTON_FONTSIZE);
+            nameLink.ID = player.Id + ", DROPIN";
+            nameCell.Controls.Add(nameLink);
+            if (player.IsRegisterdMember)
+            {
+                Label stats = new Label();
+                stats.Font.Size = new FontUnit(Constants.STATS_FONTSIZE);
+                stats.ForeColor = System.Drawing.Color.OrangeRed;
+                stats.Text = "   " + player.TotalPlayedCount.ToString();
+                nameCell.Controls.Add(stats);
+            }
+            foreach (Fee fee in player.Fees)
+            {
+                if (!fee.IsPaid && fee.Amount > 0)
+                {
+                    Image image = new Image();
+                    image.ImageUrl = "~/Icons/dollar.png";
+                    nameCell.Controls.Add(image);
+                }
+            }
+            row.Cells.Add(nameCell);
+            row.Cells.Add(nameCell);
+            TableCell actionCell = new TableCell();
+            actionCell.HorizontalAlign = HorizontalAlign.Right;
+            ImageButton imageBtn = new ImageButton();
+            imageBtn.ID = player.Id;
+            imageBtn.ImageUrl = "~/Icons/Colorball.png";
+            imageBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
+            imageBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
+            actionCell.Controls.Add(imageBtn);
+            row.Cells.Add(actionCell);
+            if (IsPermitted(Actions.Reserve_Pool, player))
+            {
+                nameLink.Click += new EventHandler(Username_Click);
+
             }
             return row;
         }
@@ -594,13 +735,38 @@ namespace VballManager
             return players.OrderByDescending(p => p.TotalPlayedCount);
         }
 
-        private List<Player> CalculateDropinStats()
+         private IEnumerable<Player> OrderMembersByStats(Pool pool)
+         {
+             List<Player> players = new List<Player>();
+             foreach (Member member in pool.Members.Items)
+             {
+                 Player player = Manager.FindPlayerById(member.PlayerId);
+                 player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType);
+                 players.Add(player);
+             }
+             return players.OrderByDescending(p => p.TotalPlayedCount);
+         }
+         
+        private List<Player> CalculateDropinStats(Pool pool, DateTime gameDate)
         {
             List<Player> players = new List<Player>();
-            Game game = CurrentPool.FindGameByDate(ComingGameDate);
+            Game game = pool.FindGameByDate(gameDate);
             foreach (Attendee attendee in game.Dropins.Items)
             {
                 Player player = Manager.FindPlayerById(attendee.PlayerId);
+                player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType);
+                players.Add(player);
+            }
+            return players.OrderBy(dropin => dropin.Name).ToList();
+
+        }
+
+        private List<Player> CalculateDropinStats(Pool pool)
+        {
+            List<Player> players = new List<Player>();
+            foreach (Dropin dropin in pool.Dropins.Items)
+            {
+                Player player = Manager.FindPlayerById(dropin.PlayerId);
                 player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType);
                 players.Add(player);
             }

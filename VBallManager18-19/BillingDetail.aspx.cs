@@ -86,11 +86,11 @@ namespace VballManager
                 TableCell dateCell = new TableCell();
                 dateCell.Text = fee.Date.ToString("MM/dd/yyyy");
                 row.Cells.Add(dateCell);
-                TableCell typeCell = new TableCell();
-                typeCell.Text = fee.FeeType;
-                row.Cells.Add(typeCell);
+                //TableCell typeCell = new TableCell();
+                //typeCell.Text = fee.FeeType;
+                //row.Cells.Add(typeCell);
                 TableCell descCell = new TableCell();
-                typeCell.Text = fee.FeeDesc;
+                descCell.Text = fee.FeeDesc;
                 row.Cells.Add(descCell);
                 statusCell = new TableCell();
                 statusCell.HorizontalAlign = HorizontalAlign.Right;

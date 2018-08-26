@@ -11,7 +11,7 @@ namespace VballManager
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            this.Page.Title = "Hitmen Volleyball Club Reservation System";
         }
     }
 }

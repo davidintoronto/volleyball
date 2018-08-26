@@ -34,7 +34,7 @@ namespace VballManager
             else
             {
                 this.RequestBtn.Visible = true;
-                String notification = "Hi, " + user.Name + ". Here is your private register link " + Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(user.Id);
+                String notification = "Here is your private register link " + Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, Request.ApplicationPath) + "/" + Constants.REGISTER_DEVICE_PAGE + "?id=" + Manager.ReversedId(user.Id);
                 notification = notification.Replace("//" + Constants.REGISTER_DEVICE_PAGE, "/" + Constants.REGISTER_DEVICE_PAGE);
                 Manager.WechatNotifier.AddNotifyWechatMessage(user, notification);
                 this.ResultLabel.Text = "Your private register link has sent, you will receive it in your Wechat in minute";

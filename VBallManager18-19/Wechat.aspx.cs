@@ -30,7 +30,7 @@ namespace VballManager
                 this.PoolListBox.DataTextField = "Name";
                 this.PoolListBox.DataValueField = "Name";
                 this.PoolListBox.DataBind();
-                this.PlayerListBox.DataSource = Manager.Players.FindAll(player=>player.IsActive);
+                this.PlayerListBox.DataSource = Manager.Players.FindAll(player=>player.IsActive&&!String.IsNullOrEmpty(player.WechatName));
                 this.PlayerListBox.DataTextField = "Name";
                 this.PlayerListBox.DataValueField = "Id";
                 this.PlayerListBox.DataBind();
