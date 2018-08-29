@@ -350,7 +350,7 @@ namespace VballManager
                 if (IsSpotAvailable(CurrentPool, game.Date))
                 {
                     ReservePromarySpot(CurrentPool, game, player);
-                    Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, ComingGameDate);
+                    Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, TargetGameDate);
                 }
                 else
                 {
@@ -362,7 +362,7 @@ namespace VballManager
             else if (attendee.Status == InOutNoshow.In)
             {
                 CancelPromarySpot(CurrentPool, game, player);
-                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.CANCELLED, CurrentPool, CurrentPool, ComingGameDate);
+                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.CANCELLED, CurrentPool, CurrentPool, TargetGameDate);
             }
             DataAccess.Save(Manager);
             Response.Redirect(Request.RawUrl);

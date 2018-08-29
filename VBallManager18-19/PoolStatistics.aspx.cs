@@ -34,7 +34,7 @@ namespace VballManager
             List<Game> fullGames = new List<Game>();
             foreach (Game game in CurrentPool.Games)
             {
-                int attended = game.Members.Items.FindAll(member => member.Status != InOutNoshow.Out).ToArray().Length + game.Dropins.Items.FindAll(dropin => dropin.Status != InOutNoshow.Out).ToArray().Length;
+                int attended = game.Members.Items.FindAll(member => member.Status != InOutNoshow.Out).Count + game.Dropins.Items.FindAll(dropin => dropin.Status != InOutNoshow.Out).Count;
                 if (attended < 12)
                 {
                     less12++;
@@ -55,7 +55,7 @@ namespace VballManager
             }
             foreach (Game game in CurrentPool.Games)
             {
-                int attendedWithoutCoop = game.Members.Items.FindAll(member => member.Status != InOutNoshow.Out).ToArray().Length + game.Dropins.Items.FindAll(dropin => !dropin.IsCoop && dropin.Status != InOutNoshow.Out).ToArray().Length;
+                int attendedWithoutCoop = game.Members.Items.FindAll(member => member.Status != InOutNoshow.Out).Count + game.Dropins.Items.FindAll(dropin => !dropin.IsCoop && dropin.Status != InOutNoshow.Out).Count;
                 if (attendedWithoutCoop < 12)
                 {
                     less12WithoutCoop++;

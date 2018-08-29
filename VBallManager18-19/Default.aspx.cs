@@ -104,24 +104,24 @@ namespace VballManager
                 return;
             }
             //Check if there is dropin spots available for the players on waiting list
-            Game comingGame = CurrentPool.FindGameByDate(ComingGameDate);
-            while (!this.IsReservationLocked(ComingGameDate) && IsSpotAvailable(CurrentPool, ComingGameDate) && comingGame.WaitingList.Count > 0)
+            Game comingGame = CurrentPool.FindGameByDate(TargetGameDate);
+            while (!this.IsReservationLocked(TargetGameDate) && IsSpotAvailable(CurrentPool, TargetGameDate) && comingGame.WaitingList.Count > 0)
             {
                 AssignDropinSpotToWaiting(CurrentPool, comingGame);
             }
             //Move coop reservation if current pool needs more players
-            if (!this.IsReservationLocked(ComingGameDate))
+            if (!this.IsReservationLocked(TargetGameDate))
             {
-                AutoReserveCoopPlayers(CurrentPool, ComingGameDate);
+                AutoReserveCoopPlayers(CurrentPool, TargetGameDate);
             }
             //Fill game information
-            FillGameInfoTable(CurrentPool, ComingGameDate);
+            FillGameInfoTable(CurrentPool, TargetGameDate);
 
             //Fill member table
-            FillMemberTable(CurrentPool, ComingGameDate);
+            FillMemberTable(CurrentPool, TargetGameDate);
 
             //Fill dropin table
-            FillDropinTable(CurrentPool, ComingGameDate);
+            FillDropinTable(CurrentPool, TargetGameDate);
 
             SetConfirmButtonHandlder();
             this.AddDropinImageBtn.Click += new ImageClickEventHandler(AddDropinImageBtn_Click);
@@ -132,7 +132,7 @@ namespace VballManager
         #region Navigation
         private void FillNavTable()
         {
-            if (!Manager.ActionPermitted(Actions.Admin_Management, CurrentUser.Role))
+            if (!Manager.ActionPermitted(Actions.View_Past_Games, CurrentUser.Role) && !Manager.ActionPermitted(Actions.View_Future_Games, CurrentUser.Role))
             {
                 this.GameInfoTable.Caption = CurrentPool.DayOfWeek + " Pool " + CurrentPool.Name;
                 return;
@@ -184,7 +184,7 @@ namespace VballManager
             IEnumerable<Game> gameQuery = games.OrderByDescending(game => game.Date);
             foreach (Game game in gameQuery)
             {
-                if ((Manager.ActionPermitted(Actions.View_Past_Games, CurrentUser.Role) || game.Date >= Manager.EastDateTimeToday) && game.Date < ComingGameDate)
+                if ((Manager.ActionPermitted(Actions.View_Past_Games, CurrentUser.Role) || game.Date >= Manager.EastDateTimeToday) && game.Date < TargetGameDate)
                 {
                     return game;
                 }
@@ -197,7 +197,7 @@ namespace VballManager
             IEnumerable<Game> gameQuery = games.OrderBy(game => game.Date);
             foreach (Game game in gameQuery)
             {
-                if (game.Date > ComingGameDate)
+                if ((Manager.ActionPermitted(Actions.View_Future_Games, CurrentUser.Role) || game.Date >= Manager.EastDateTimeToday) && game.Date > TargetGameDate)
                 {
                     return game;
                 }
@@ -339,11 +339,11 @@ namespace VballManager
                 ImageButton imageBtn = new ImageButton();
                 imageBtn.ID = player.Id;
                 //If current user is not permit to reserve for this player, disable the image btn
-                if (IsPermitted(Actions.Reserve_Pool, player))
+                if (IsPermitted(Actions.View_Player_Details, player))
                 {
                     nameLink.Click += new EventHandler(Username_Click);
                 }
-                else
+                if (!IsPermitted(Actions.Reserve_Player, player))
                 {
                     imageBtn.Enabled = false;
                 }
@@ -406,8 +406,8 @@ namespace VballManager
                 stats.ForeColor = System.Drawing.Color.OrangeRed;
                 stats.Text = "   " + player.TotalPlayedCount.ToString();
                 nameCell.Controls.Add(stats);
-                //If current user is not permit to reserve for this player, disable the image btn
-                if (IsPermitted(Actions.Reserve_Pool, player))
+                //If current user is not permit to view the details of this player, disable the image btn
+                if (IsPermitted(Actions.View_Player_Details, player))
                 {
                     nameLink.Click += new EventHandler(Username_Click);
                 }
@@ -484,7 +484,7 @@ namespace VballManager
                 this.DropinWaitingTable.Visible = true;
             }
 
-            if (Manager.ActionPermitted(Actions.Add_New_Player, CurrentUser.Role))
+            if (pool.AllowAddNewDropinName && Manager.ActionPermitted(Actions.Add_New_Player, CurrentUser.Role))
             {
                 TableRow addRow = new TableRow();
                 TableCell addNameCell = new TableCell();
@@ -536,6 +536,7 @@ namespace VballManager
                     }
                 }
             }
+            this.DropinNameTb.Visible = false;
         }
 
         private TableRow CreateDropinTableRow(Player player, Attendee attendee, bool isWaiting)
@@ -593,12 +594,12 @@ namespace VballManager
             imageBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
             actionCell.Controls.Add(imageBtn);
             row.Cells.Add(actionCell);
-            if (IsPermitted(Actions.Reserve_Pool, player))
+            if (IsPermitted(Actions.View_Player_Details, player))
             {
                 nameLink.Click += new EventHandler(Username_Click);
 
             }
-            else
+            if (!IsPermitted(Actions.Reserve_Player, player))
             {
                 imageBtn.Enabled = false;
             }
@@ -643,7 +644,7 @@ namespace VballManager
             imageBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
             actionCell.Controls.Add(imageBtn);
             row.Cells.Add(actionCell);
-            if (IsPermitted(Actions.Reserve_Pool, player))
+            if (IsPermitted(Actions.Reserve_Player, player))
             {
                 nameLink.Click += new EventHandler(Username_Click);
 
@@ -712,7 +713,7 @@ namespace VballManager
                         break;
                     case Constants.ACTION_POWER_RESERVE:
                         this.ConfirmImageButton.Click += Reserve_Confirm_Click;
-                        if (!IsReservationLocked(ComingGameDate))
+                        if (!IsReservationLocked(TargetGameDate))
                         {
                             this.CloseImageBtn.Click += this.InquireAddingToWaitingList_Click;
                         }

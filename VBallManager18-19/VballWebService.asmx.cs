@@ -67,7 +67,7 @@ namespace VballManager
                  {
                      if (Manager.EastDateTimeToday.AddDays(pool.DaysToReserve4Member).Date == comingGameDate.Date)
                      {
-                         publishTo = "registered members";
+                         publishTo = "register members";
                      }
                      if (Manager.EastDateTimeToday.AddDays(pool.DaysToReserve).Date == comingGameDate.Date)
                      {

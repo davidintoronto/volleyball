@@ -157,6 +157,33 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.Button TestToAllBtn;
         
         /// <summary>
+        /// EmoPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel EmoPanel;
+        
+        /// <summary>
+        /// EmoTable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Table EmoTable;
+        
+        /// <summary>
+        /// EmoTableHeaderRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TableHeaderRow EmoTableHeaderRow;
+        
+        /// <summary>
         /// PlayerPanel control.
         /// </summary>
         /// <remarks>

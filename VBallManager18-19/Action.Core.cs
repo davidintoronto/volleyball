@@ -41,7 +41,7 @@ namespace VballManager
             set { }
         }
 
-        protected DateTime ComingGameDate
+        protected DateTime TargetGameDate
         {
             get
             {
@@ -53,6 +53,10 @@ namespace VballManager
 
         protected bool IsPermitted(Actions action, Player player)
         {
+            if ((Session[Constants.GAME_DATE] == null || TargetGameDate.AddDays(3) < Manager.EastDateTimeToday) && !Manager.ActionPermitted(Actions.Change_Past_Games, CurrentUser.Role))
+            {
+                return false;
+            }
             if (Manager.ActionPermitted(action, CurrentUser.Role) || CurrentUser.Id == player.Id || player.AuthorizedUsers.Contains(CurrentUser.Id))
             {
                 return true;

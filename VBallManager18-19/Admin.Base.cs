@@ -51,5 +51,15 @@ namespace VballManager
             }
             set { }
         }
+
+        protected WechatNotify WechatNotifier
+        {
+            get
+            {
+                return Manager.WechatNotifier;
+
+            }
+            set { }
+        }
     }
 }

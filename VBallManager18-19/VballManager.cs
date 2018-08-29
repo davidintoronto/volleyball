@@ -393,6 +393,8 @@ namespace VballManager
                     message = (user == null ? "Admin" : user.Name) + " " + result.ToString() + " for you";
                 }
                 WechatNotifier.AddNotifyWechatMessage(targetPool, player, message + poolAndGameDate);
+                int emoType = result == Constants.RESERVED? (int)EmoTypes.Reserve : (int)EmoTypes.Cancel;
+                WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage(emoType, numberOfReservedPlayerInTargetPool));
             }
             else if (result == Constants.WAITING_TO_RESERVED)
             {
@@ -409,6 +411,7 @@ namespace VballManager
                 message = message + ". Total player number in pool " + targetPool.Name + ": " + numberOfReservedPlayerInTargetPool;
                 WechatNotifier.AddNotifyWechatMessage(player, message);
                 WechatNotifier.AddNotifyWechatMessage(targetPool, player, message);
+                WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage((int)EmoTypes.Move, numberOfReservedPlayerInTargetPool));
             }
             else if (result == Constants.WAITING && playerId != operatorId)
             {
@@ -615,13 +618,13 @@ namespace VballManager
         public int GetNumberOfAttendingMembers(DateTime date)
         {
             Game game = FindGameByDate(date);
-            return game.Members.Items.FindAll(member=>member.Status==InOutNoshow.In).ToArray().Length;
+            return game.Members.Items.FindAll(member=>member.Status==InOutNoshow.In).Count;
         }
 
         public int GetNumberOfAvailableDropinSpots(DateTime date)
         {
             Game game = FindGameByDate(date);
-            int availableSpot = MaximumPlayerNumber - game.AllPlayers.Items.FindAll(player=>player.Status == InOutNoshow.In).ToArray().Length;
+            int availableSpot = MaximumPlayerNumber - game.AllPlayers.Items.FindAll(player=>player.Status == InOutNoshow.In).Count;
             return availableSpot > 0 ? availableSpot : 0;
         }
 
@@ -629,14 +632,14 @@ namespace VballManager
         public int GetNumberOfDropins(DateTime date)
         {
             Game game = FindGameByDate(date);
-            return game.Dropins.Items.FindAll(player => player.Status == InOutNoshow.In).ToArray().Length;
+            return game.Dropins.Items.FindAll(player => player.Status == InOutNoshow.In).Count;
         }
 
         //Get number of coop for the date
         public int GetNumberOfReservedCoops(DateTime date)
         {
             Game game = FindGameByDate(date);
-            return game.Dropins.Items.FindAll(player => player.IsCoop && player.Status == InOutNoshow.In).ToArray().Length;
+            return game.Dropins.Items.FindAll(player => player.IsCoop && player.Status == InOutNoshow.In).Count;
         }
 
         public void AddDropin(Player player)
@@ -704,7 +707,7 @@ namespace VballManager
 
     public enum Actions
     {
-        View_Player_Details, View_All_Pools, View_Past_Games, View_Future_Games, Edit_Past_Games, Add_New_Player, Reserve_All_Pools, Reserve_Pool, Reserve_Player, Power_Reserve, Reserve_After_Locked, Admin_Management
+        View_Player_Details, View_All_Pools, View_Past_Games, View_Future_Games, Change_Past_Games, Add_New_Player, Reserve_Player, Power_Reserve, Change_After_Locked, Admin_Management
     }
 
     public enum StatsTypes

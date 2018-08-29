@@ -9,50 +9,56 @@ namespace VballManager
 {
     public partial class RegisterDevice : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            if (IsPostBack) return;
-            if (Request.Params["reset"] != null)
-            {
-                ResetCookie();
-                if (Request.Params["id"] == null)
-                {
-                    Response.Redirect(Constants.REQUEST_REGISTER_LINK_PAGE);
-                    return;
-                }
-            }
-            String userId = Request.Params["id"];
-            if (userId == null && Request.Cookies[Constants.PRIMARY_USER] == null)
-            {
-                Response.Redirect(Constants.REQUEST_REGISTER_LINK_PAGE);
-                return;
-            }
-            if (userId != null)
-            {
-                userId = Manager.ReversedId(userId);
-                Player user = Manager.FindPlayerById(userId);
-                if (Request.Cookies[Constants.PRIMARY_USER]!=null && Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID] != null)
-                {
-                    String existingUserId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
-                    Player existingUser = Manager.FindPlayerById(existingUserId);
-                    if (existingUser != null && existingUser.Id != userId)
-                    {
-                        this.PromptLb.Text = "Your device has already registered as [" + existingUser.Name + "].  Would you like to authorize someone to help you with reservations?";
-                        return;
-                    }
-                }
-                else
-                {
-                    SetUserCookie(user);
-                }
-                this.PromptLb.Text = "Your device is registered as [" + user.Name + "]. Would you like to authorize someone to help you with reservations?";
-            }
-            else if (Request.Cookies[Constants.PRIMARY_USER] != null)
-            {
-                String existingUserId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
-                Player existingUser = Manager.FindPlayerById(existingUserId);
-                this.PromptLb.Text = "Your device has registered as [" + existingUser.Name + "]. Would you like to authorize someone else to help you with reservations?";
-            }
+         private const String RESET = "reset";
+         private const String PLAYER_ID = "id";
+         protected void Page_Load(object sender, EventArgs e)
+         {
+             if (IsPostBack) return;
+             if (Request.Params[RESET] != null)
+             {
+                 if (Request.Params[PLAYER_ID] == null)
+                 {
+                     ResetCookie();
+                     Response.Redirect(Constants.REQUEST_REGISTER_LINK_PAGE);
+                     return;
+                 }
+                 Player user = Manager.FindPlayerById(Manager.ReversedId(Request.Params["id"]));
+                 SetUserCookie(user);
+                 this.PromptLb.Text = "Your device is registered as [" + user.Name + "]. Would you like to authorize someone to help you with reservations?";
+                 return;
+             }
+             //
+             String userId = Request.Params[PLAYER_ID];
+             if (userId == null)
+             {
+                 if (Request.Cookies[Constants.PRIMARY_USER] == null || Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID] == null)
+                 {
+                     Response.Redirect(Constants.REQUEST_REGISTER_LINK_PAGE);
+                     return;
+                 }
+                 String existingUserId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
+                 Player existingUser = Manager.FindPlayerById(existingUserId);
+                 this.PromptLb.Text = "Your device has registered as [" + existingUser.Name + "]. Would you like to authorize someone else to help you with reservations?";
+                 return;
+             }
+             else
+             {
+                 userId = Manager.ReversedId(userId);
+                 Player user = Manager.FindPlayerById(userId);
+                 if (Request.Cookies[Constants.PRIMARY_USER] != null && Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID] != null)
+                 {
+                     String existingUserId = Request.Cookies[Constants.PRIMARY_USER][Constants.USER_ID];
+                     Player existingUser = Manager.FindPlayerById(existingUserId);
+                     this.PromptLb.Text = "Your device has already registered as [" + existingUser.Name + "].  Would you like to authorize someone to help you with reservations?";
+                     return;
+                 }
+                 else
+                 {
+                     SetUserCookie(user);
+                 }
+                 this.PromptLb.Text = "Your device is registered as [" + user.Name + "]. Would you like to authorize someone to help you with reservations?";
+                 return;
+             }
          }
 
 

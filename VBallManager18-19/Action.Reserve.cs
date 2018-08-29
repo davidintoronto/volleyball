@@ -266,7 +266,7 @@ namespace VballManager
                      foreach (Pickup coopDropin in game.Dropins.Items.FindAll(dropin => dropin.IsCoop && dropin.Status == InOutNoshow.Out))
                      {
                           //If number of attedning players in other pool is not enough, then stop moving coop
-                         if (originalPool != null && originalPool.FindGameByDate(gameDate).AllPlayers.Items.FindAll(p => p.Status == InOutNoshow.In).ToArray().Length > originalPool.LessThanPayersForCoop)
+                         if (originalPool != null && originalPool.FindGameByDate(gameDate).AllPlayers.Items.FindAll(p => p.Status == InOutNoshow.In).Count > originalPool.LessThanPayersForCoop)
                          {
                              //Is pool member and reserved for game day
                              Game originalGame = originalPool.FindGameByDate(gameDate);
@@ -304,7 +304,7 @@ namespace VballManager
 
                     foreach (Game game in gameQuery)
                     {
-                        if (game.Date < ComingGameDate)
+                        if (game.Date < TargetGameDate)
                         {
                             previousGame = game;
                         }

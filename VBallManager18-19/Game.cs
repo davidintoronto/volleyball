@@ -57,7 +57,7 @@ namespace VballManager
 
         public int NumberOfReservedPlayers
         {
-            get { return AllPlayers.Items.FindAll(player => player.Status == InOutNoshow.In).ToArray().Length; }
+            get { return AllPlayers.Items.FindAll(player => player.Status == InOutNoshow.In).Count; }
         }
      }
 

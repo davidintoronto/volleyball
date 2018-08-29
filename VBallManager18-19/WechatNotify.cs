@@ -14,7 +14,9 @@ namespace VballManager
         private String wechatPoolMessage;
         private String wechatPrimaryMemberMessage;
         private String wechatToAllTestMessage;
- 
+        private List<EmoMessage> emoMessages = new List<EmoMessage>();
+
+
         public WechatNotify() { }
 
         public bool Enable
@@ -22,7 +24,13 @@ namespace VballManager
             get { return enable; }
             set { enable = value; }
         }
-       public String WechatToAllTestMessage
+        public List<EmoMessage> EmoMessages
+        {
+            get { return emoMessages; }
+            set { emoMessages = value; }
+        }
+
+        public String WechatToAllTestMessage
         {
             get { return wechatToAllTestMessage; }
             set { wechatToAllTestMessage = value; }
@@ -76,12 +84,32 @@ namespace VballManager
 
         public void AddNotifyWechatMessage(Pool pool, Player player, String message)
         {
-            if (Enable && !String.IsNullOrEmpty(pool.WechatGroupName))
+            if (Enable && !String.IsNullOrEmpty(pool.WechatGroupName) && !String.IsNullOrEmpty(message))
             {
                 WechatMessage wechat = new WechatMessage(pool.WechatGroupName, player, message);
                 WechatMessages.Add(wechat);
             }
         }
+
+        public EmoMessage FindEmoMessageById(String id)
+        {
+            return this.emoMessages.Find(emo => emo.Id == id);
+        }
+
+        public String GetEmoMessage(int type, int playerNumber) {
+            List<EmoMessage> emos = this.emoMessages.FindAll(emo => (int)emo.Type == type && playerNumber >= emo.Min && playerNumber <= emo.Max);
+            if (emos.Count > 0)
+            {
+                int index = new Random().Next(emos.Count);
+                return emos[index].Message;
+            }
+            return null;
+        }
+    }
+
+    public enum EmoTypes
+    {
+        Reserve=1, Cancel=0, Move=2
     }
 
     public class WechatMessage
@@ -158,7 +186,56 @@ namespace VballManager
             get { return message; }
             set { message = value; }
         }
+    }
 
+    public class EmoMessage
+    {
+        private String id;
+        private int type = 0;
+        private int min;
+        private int max;
+        private String message;
+        public EmoMessage()
+        {
+        }
+        public EmoMessage(int type, int min, int max, String message)
+        {
+            this.type = type;
+            this.id = Guid.NewGuid().ToString();
+            this.min = min;
+            this.max = max;
+            this.message = message;
+        }
+
+        public int Type
+        {
+            get { return type; }
+            set { type = value; }
+        }
+
+        public String Id
+        {
+            get { return id; }
+            set { id = value; }
+        }
+
+        public int Min
+        {
+            get { return min; }
+            set { min = value; }
+        }
+
+        public int Max
+        {
+            get { return max; }
+            set { max = value; }
+        }
+
+        public String Message
+        {
+            get { return message; }
+            set { message = value; }
+        }
     }
 
 }
