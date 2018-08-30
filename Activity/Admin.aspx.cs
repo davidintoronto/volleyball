@@ -65,6 +65,7 @@ namespace Reservation
                 this.MessageTextTb.Text = game.Message;
                 this.MaxPlayersTb.Text = game.MaxPlayers.ToString();
                 this.PublishCb.Checked = game.Publish;
+                this.WechatNameTb.Text = game.WechatName;
                 this.PasswordTb.Text = "";
             }
         }
@@ -97,6 +98,7 @@ namespace Reservation
             game.Location = this.LocationTb.Text;
             game.Message = this.MessageTextTb.Text;
             game.MaxPlayers = int.Parse(this.MaxPlayersTb.Text);
+            game.WechatName = this.WechatNameTb.Text;
             game.Publish = this.PublishCb.Checked;
             if (!String.IsNullOrEmpty(this.PasswordTb.Text.Trim()))
             {
@@ -136,6 +138,7 @@ namespace Reservation
                     game.Message = this.MessageTextTb.Text;
                     game.MaxPlayers = int.Parse(this.MaxPlayersTb.Text);
                     game.Publish = this.PublishCb.Checked;
+                    game.WechatName = this.WechatNameTb.Text;
                     this.GameList.DataSource = Reservations.Games;
                     this.GameList.DataBind();
                     this.GameList.SelectedValue = game.Id;

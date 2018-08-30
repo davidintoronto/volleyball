@@ -21,7 +21,7 @@ namespace VballManager
         private const String TYPE = "type";
         
         int playerPerCol = 4;
-        private List<int> playerNumbers = new List<int>() { 14, 13, 12, 11, 10, 8, 1 };
+        private List<int> playerNumbers = new List<int>() { 14, 13, 12, 11, 10, 8, 7, 1 };
         private List<String> types = new List<String>() {"Reserve", "Cancel"};
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -80,11 +80,6 @@ namespace VballManager
             BindEmoTypeDropdownList(typeDDL);
             typeDDL.DataBind();
             typeDDL.SelectedValue = emoMessage.Type.ToString();
-            if (!String.IsNullOrEmpty(emoMessage.Message))
-            {
-                typeDDL.AutoPostBack = true;
-                typeDDL.SelectedIndexChanged += new EventHandler(EmoMessageDDL_Changed);
-            }
             typeCell.Controls.Add(typeDDL);
             tableRow.Cells.Add(typeCell);
             //min
@@ -94,11 +89,6 @@ namespace VballManager
             minDDL.DataSource = playerNumbers;
             minDDL.DataBind();
             minDDL.SelectedValue = emoMessage.Min.ToString();
-            if (!String.IsNullOrEmpty(emoMessage.Message))
-            {
-                minDDL.AutoPostBack = true;
-                minDDL.SelectedIndexChanged += new EventHandler(EmoMessageDDL_Changed);
-            }
             minCell.Controls.Add(minDDL);
             tableRow.Cells.Add(minCell);
             //max
@@ -108,11 +98,6 @@ namespace VballManager
             maxDDL.DataSource = playerNumbers;
             maxDDL.DataBind();
             maxDDL.SelectedValue = emoMessage.Max.ToString();
-            if (!String.IsNullOrEmpty(emoMessage.Message))
-            {
-                maxDDL.AutoPostBack = true;
-                maxDDL.SelectedIndexChanged += new EventHandler(EmoMessageDDL_Changed);
-            }
             maxCell.Controls.Add(maxDDL);
             tableRow.Cells.Add(maxCell);
             //
@@ -121,11 +106,6 @@ namespace VballManager
             messageTb.ID = emoMessage.Id + ",message";
             messageTb.Width = 800;
             messageTb.Text = emoMessage.Message;
-            if (!String.IsNullOrEmpty(emoMessage.Message))
-            {
-                messageTb.AutoPostBack = true;
-                messageTb.TextChanged += new EventHandler(EmoMessage_Changed);
-            }
             messageCell.Controls.Add(messageTb);
             tableRow.Cells.Add(messageCell);
             TableCell actionCell = new TableCell();
@@ -136,6 +116,18 @@ namespace VballManager
             actionBtn.OnClientClick = "if ( !confirm('Are you sure?')) return false;";
             actionCell.Controls.Add(actionBtn);
             tableRow.Cells.Add(actionCell);
+            if (!String.IsNullOrEmpty(emoMessage.Message))
+            {
+                minDDL.AutoPostBack = true;
+                minDDL.SelectedIndexChanged += new EventHandler(EmoMessageDDL_Changed);
+                maxDDL.AutoPostBack = true;
+                maxDDL.SelectedIndexChanged += new EventHandler(EmoMessageDDL_Changed);
+                typeDDL.AutoPostBack = true;
+                typeDDL.SelectedIndexChanged += new EventHandler(EmoMessageDDL_Changed);
+                messageTb.AutoPostBack = true;
+                messageTb.TextChanged += new EventHandler(EmoMessage_Changed);
+                tableRow.BackColor = System.Drawing.Color.CadetBlue;
+            }
             this.EmoTable.Rows.Add(tableRow);
         }
 

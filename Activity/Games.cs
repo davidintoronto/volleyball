@@ -69,8 +69,9 @@ namespace Reservation
 
         private String deletePassword;
         private String id;
+        private String wechatName;
 
-        public String Id
+       public String Id
         {
             get { return id; }
             set { id = value; }
@@ -83,7 +84,12 @@ namespace Reservation
         }
         private String title;
 
-        public String Title
+        public String WechatName
+        {
+            get { return wechatName; }
+            set { wechatName = value; }
+        }
+         public String Title
         {
             get { return title; }
             set { title = value; }

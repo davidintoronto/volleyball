@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +13,13 @@ namespace Reservation
          private String title;
          private bool sharePlayers = true;
          private bool openAdmin = false;
+         private List<WechatMessage> wechatMessages = new List<WechatMessage>();
+
+         public List<WechatMessage> WechatMessages
+         {
+             get { return wechatMessages; }
+             set { wechatMessages = value; }
+         }
 
          public bool OpenAdmin
          {
@@ -115,6 +122,13 @@ namespace Reservation
                 if (!game.Players.Contains(game.WaitingListIds[0]))
                 {
                     game.Players.Add(game.WaitingListIds[0]);
+                    if (!String.IsNullOrEmpty(game.WechatName))
+                    {
+                        String message = "恭喜你报上的名参加" + game.Title + "。目前的报名总人数: " + game.Players.Count;
+                        if (game.MaxPlayers > 0) message = message + "，还有" + (game.MaxPlayers - game.Players.Count) + "个空位";
+                        WechatMessage wechatMessage = new WechatMessage(game.WechatName, FindPlayerById(game.WaitingListIds[0]).Name, message);
+                        wechatMessages.Add(wechatMessage);
+                    }
                 }
                 game.WaitingListIds.RemoveAt(0);
             }

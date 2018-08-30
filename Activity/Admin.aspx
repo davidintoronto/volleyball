@@ -132,6 +132,16 @@
             </td>
         </tr>
         <tr>
+            <td class="style-label" align="center">
+                Wechat Name
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <asp:TextBox ID="WechatNameTb" runat="server" class="style-textbox" Height="350px" TextMode="MultiLine"></asp:TextBox>
+            </td>
+        </tr>
+       <tr>
             <td align="center" class="style26">
                 <table>
                     <tr>
