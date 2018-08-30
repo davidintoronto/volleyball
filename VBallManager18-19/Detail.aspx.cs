@@ -332,7 +332,7 @@ namespace VballManager
  
         protected void BackBtn_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect(Constants.DEFAULT_PAGE + "?Pool=" + CurrentPool.Name);
+            Response.Redirect(Constants.RESERVE_PAGE + "?Pool=" + CurrentPool.Name);
 
         }
 

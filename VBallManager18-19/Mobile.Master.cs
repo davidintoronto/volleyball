@@ -12,7 +12,10 @@ namespace VballManager
         protected void Page_Load(object sender, EventArgs e)
         {
             string title = GetTitleOfCurrentPool();
+            if (String.IsNullOrEmpty(Page.Title))
+            {
             Page.Title = title;
+            }
             this.TitleLabel.Text = title;
             //this.ClosePanel.Visible = false;
             if (Request.UserAgent.Contains("MicroMessenger"))

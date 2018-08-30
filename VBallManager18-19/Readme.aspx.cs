@@ -34,7 +34,7 @@ namespace VballManager
  
         protected void BackBtn_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("Default.aspx?Pool=" + CurrentPool.Name);
+            Response.Redirect(Constants.RESERVE_PAGE + "?Pool=" + CurrentPool.Name);
         }
 
 

@@ -512,7 +512,7 @@ namespace VballManager
         {
             if (this.PoolListbox.SelectedIndex >= 0 && this.GameListbox.SelectedIndex >= 0)
             {
-                Response.Redirect("Default.aspx?Pool=" + this.PoolListbox.SelectedItem.Text + "&GameDate=" + this.GameListbox.SelectedItem.Text + "&Admin=1");
+                Response.Redirect(Constants.RESERVE_PAGE + "?Pool=" + this.PoolListbox.SelectedItem.Text + "&GameDate=" + this.GameListbox.SelectedItem.Text + "&Admin=1");
             }
         }
 
@@ -574,7 +574,7 @@ namespace VballManager
         {
             if (this.PoolListbox.SelectedIndex >= 0 && this.GameListbox.SelectedIndex >= 0)
             {
-                Response.Redirect("Default.aspx?abcd=" + this.PoolListbox.SelectedValue + "&GameDate=" + this.GameListbox.SelectedItem.Text + "&Admin=1");
+                Response.Redirect(Constants.RESERVE_PAGE + "?abcd=" + this.PoolListbox.SelectedValue + "&GameDate=" + this.GameListbox.SelectedItem.Text);
             }
         }
      }

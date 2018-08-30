@@ -9,7 +9,7 @@ using System.Net;
 
 namespace VballManager
 {
-    public partial class Default : BasePage
+    public partial class Reserve : BasePage
     {
 
         #region Reserve or cancel click
@@ -120,7 +120,7 @@ namespace VballManager
             Manager.Logs.Add(log);
             DataAccess.Save(Manager);
             this.PopupModal.Hide();
-            Response.Redirect(Constants.DEFAULT_PAGE);
+            Response.Redirect(Constants.RESERVE_PAGE);
         }
 
         #endregion
@@ -134,7 +134,7 @@ namespace VballManager
             ReserveSpot(CurrentPool, game, player);
             Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, TargetGameDate);
             DataAccess.Save(Manager);
-            Response.Redirect(Constants.DEFAULT_PAGE);
+            Response.Redirect(Constants.RESERVE_PAGE);
         }
 
         protected void Cancel_Confirm_Click(object sender, EventArgs e)
@@ -160,7 +160,7 @@ namespace VballManager
             }
             AssignDropinSpotToWaiting(CurrentPool, game);
             DataAccess.Save(Manager);
-            Response.Redirect(Constants.DEFAULT_PAGE);
+            Response.Redirect(Constants.RESERVE_PAGE);
        }
 
         protected void Move_Confirm_Click(object sender, EventArgs e)
@@ -178,7 +178,7 @@ namespace VballManager
                 Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, originalPool, game.Date);
             }
             DataAccess.Save(Manager);
-            Response.Redirect(Constants.DEFAULT_PAGE);
+            Response.Redirect(Constants.RESERVE_PAGE);
         }
 
        private void No_Show_Confirm_Click(object sender, EventArgs e)
@@ -190,7 +190,7 @@ namespace VballManager
            String message = String.Format("[System Info] Hi, {0}. Admin marked you as no-show on the reservation of {1}. If you have any question, contact the admin", player.Name, game.Date.ToString("MM/dd/yyyy"));
            Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
            DataAccess.Save(Manager);
-           Response.Redirect(Constants.DEFAULT_PAGE);
+           Response.Redirect(Constants.RESERVE_PAGE);
        }
 
        protected void AddWaitingList_Confirm_Click(object sender, ImageClickEventArgs e)
@@ -221,7 +221,7 @@ namespace VballManager
            AddToWaitingList(CurrentPool, game, Manager.FindPlayerById(playerId));
            Manager.AddReservationNotifyWechatMessage(playerId, CurrentUser.Id, Constants.WAITING, CurrentPool, CurrentPool, TargetGameDate);
            DataAccess.Save(Manager);
-           Response.Redirect(Constants.DEFAULT_PAGE);
+           Response.Redirect(Constants.RESERVE_PAGE);
        }
 
        protected void InquireAddingToWaitingList_Click(object sender, ImageClickEventArgs e)

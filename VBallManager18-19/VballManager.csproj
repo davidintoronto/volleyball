@@ -82,7 +82,7 @@
     <Content Include="RequestRegisterLink.aspx" />
     <Content Include="Statistics.aspx" />
     <Content Include="Index.htm" />
-    <Content Include="PoolLinkList.aspx" />
+    <Content Include="Default.aspx" />
     <Content Include="Register.aspx" />
     <Content Include="Report.aspx" />
     <Content Include="Pools.aspx" />
@@ -103,7 +103,7 @@
     <Content Include="Icons\Save.png" />
     <Content Include="Icons\Colorball.png" />
     <Content Include="Mobile.Master" />
-    <Content Include="Default.aspx" />
+    <Content Include="Reserve.aspx" />
     <Content Include="Readme.aspx" />
     <Content Include="Score.aspx" />
     <Content Include="Scripts\jquery.easing.1.3.js" />
@@ -237,12 +237,12 @@
     <Compile Include="Statistics.aspx.designer.cs">
       <DependentUpon>Statistics.aspx</DependentUpon>
     </Compile>
-    <Compile Include="PoolLinkList.aspx.cs">
-      <DependentUpon>PoolLinkList.aspx</DependentUpon>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="PoolLinkList.aspx.designer.cs">
-      <DependentUpon>PoolLinkList.aspx</DependentUpon>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Player.cs" />
     <Compile Include="Register.aspx.cs">
@@ -306,12 +306,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="Reserve.aspx.cs">
+      <DependentUpon>Reserve.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="Reserve.aspx.designer.cs">
+      <DependentUpon>Reserve.aspx</DependentUpon>
     </Compile>
     <Compile Include="LogHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -356,9 +356,6 @@
       <DependentUpon>VballWebService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Reserve.dgml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Site.Master" />
