@@ -50,7 +50,7 @@ namespace VballManager
         private void QueryPublishLinks(int hour)
         {
             //
-            String reservationUrl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.PathAndQuery, HttpContext.Current.Request.ApplicationPath) + "/" + Constants.POOL_LINK_LIST_PAGE;
+            String reservationUrl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.PathAndQuery, HttpContext.Current.Request.ApplicationPath);// +"/" + Constants.POOL_LINK_LIST_PAGE;
              if (hour != Manager.DropinSpotOpeningHour) return;
              foreach (Pool pool in Manager.Pools)
              {
@@ -82,6 +82,7 @@ namespace VballManager
                      if (availableDropinSpots < 0) availableDropinSpots = 0;
                      String message = pool.DayOfWeek.ToString() + " volleyball reservation starts now for " + publishTo + ". Currently, we have " + availableDropinSpots + (availableDropinSpots<2 ? " dropin spot" : " dropin spots") + " available in pool "+ pool.Name +". Click the link to reserve. " + reservationUrl;
                      Manager.WechatNotifier.AddNotifyWechatMessage(pool, message);
+                     Manager.WechatNotifier.AddNotifyWechatMessage(pool, "{ReservationLink}");
                  }
              }
         }

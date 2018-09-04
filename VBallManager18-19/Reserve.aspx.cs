@@ -712,7 +712,7 @@ namespace VballManager
                         this.CloseImageBtn.Click += this.Continue_Cancel_Click;
                         break;
                     case Constants.ACTION_POWER_RESERVE:
-                        this.ConfirmImageButton.Click += Reserve_Confirm_Click;
+                        this.ConfirmImageButton.Click += PowerReserve_Confirm_Click;
                         if (!IsReservationLocked(TargetGameDate))
                         {
                             this.CloseImageBtn.Click += this.InquireAddingToWaitingList_Click;

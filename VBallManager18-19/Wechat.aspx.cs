@@ -258,6 +258,7 @@ namespace VballManager
                 String message = this.WelcomeDropinWechatMessageTb.Text.Replace(REGISTER_LINK, registerLink);
                 Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
             }
+            DataAccess.Save(Manager);
         }
 
         protected void SendPrimaryMemberNotificationWechatMessageBtn_Click(object sender, EventArgs e)

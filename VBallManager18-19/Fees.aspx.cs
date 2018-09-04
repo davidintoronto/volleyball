@@ -46,7 +46,7 @@ namespace VballManager
             {
                 foreach (Fee fee in player.Fees)
                 {
-                    if (fee.FeeDesc.StartsWith("Credit"))
+                    if (fee.FeeType == FeeTypeEnum.Credit.ToString())
                     {
                         Fee paidFee = new Fee();
                         paidFee.PayDate = fee.PayDate;

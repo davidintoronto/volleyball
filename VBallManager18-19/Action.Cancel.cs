@@ -49,7 +49,7 @@ namespace VballManager
                 dropin.Status = InOutNoshow.Out;
                 //Cancel dropin fee
                 CancelDropinFee(dropin);
-                LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), pool.Name, Manager.FindPlayerById(player.Id).Name, "Cancel dropin");
+                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, Manager.FindPlayerById(player.Id).Name, "Cancel dropin");
                 Manager.Logs.Add(log);
                 //reset last dropin time for coop
                 dropin.LastCoopDate = new DateTime();

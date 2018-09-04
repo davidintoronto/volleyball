@@ -252,7 +252,8 @@
             <table class="inlineBlock" style="width: 45%; top: inherit;">
                 <tr>
                     <td align="center" class="style8">
-                        Members</td>
+                        <asp:Label ID="MemberLb" runat="server" Text="Members"></asp:Label>
+                    </td>
                 </tr>
                 <tr>
                     <td class="style8">

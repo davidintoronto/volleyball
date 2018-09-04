@@ -141,6 +141,7 @@ namespace VballManager
                            }
                            this.MemberListbox.DataSource = GetPlayers(CurrentPool.Members);
                            this.MemberListbox.DataBind();
+                           this.MemberLb.Text = "Members(" + CurrentPool.Members.Count + ")";
                            DataAccess.Save(Manager);
                            // Response.Redirect(Request.RawUrl);
                        }
@@ -204,6 +205,8 @@ namespace VballManager
             DataAccess.Save(Manager);
             this.MemberListbox.DataSource = GetPlayers(CurrentPool.Members);
             this.MemberListbox.DataBind();
+            this.MemberLb.Text = "Members(" + CurrentPool.Members.Count + ")";
+
             // Response.Redirect(Request.RawUrl);
         }
         protected void RemoveDropinBtn_Click(object sender, EventArgs e)
@@ -283,6 +286,7 @@ namespace VballManager
             this.GameListbox.DataTextFormatString = "{0:d}";
             this.GameListbox.DataBind();
             //this.GameListbox.SelectedIndex = selectGameIndex;
+            this.MemberLb.Text = "Members(" + pool.Members.Count + ")"; 
             if (this.PoolListbox.SelectedIndex >= 0)
             {
                 this.PoolPanel.Enabled = true;

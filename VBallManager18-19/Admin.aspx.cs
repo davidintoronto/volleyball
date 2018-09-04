@@ -19,7 +19,7 @@ namespace VballManager
                 this.AdminPasscodeTb.Text = Manager.SuperAdmin;
                 this.TimeOffsetTb.Text = Manager.TimezoneOffset.ToString();
                 TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName);
-                //this.ServerTimeLb.Text = TimeZoneInfo.ConvertTime(DateTime.Now, easternZone).ToShortTimeString() + "-" + TimeZoneInfo.ConvertTime(DateTime.Today, easternZone).AddHours(Manager.LockReservationHour).ToShortTimeString();//DateTime.UtcNow.ToLocalTime().ToShortTimeString();
+                //this.ServerTimeLb.Text = TimeZoneInfo.ConvertTime(Manager.EastDateTimeNow, easternZone).ToShortTimeString() + "-" + TimeZoneInfo.ConvertTime(DateTime.Today, easternZone).AddHours(Manager.LockReservationHour).ToShortTimeString();//DateTime.UtcNow.ToLocalTime().ToShortTimeString();
                 this.DropinSpotOpenHourTb.Text = Manager.DropinSpotOpeningHour.ToString();
                 // this.CoopReserveHourTb.Text = Manager.CoopReserveHour.ToString();
                 this.LockReservationHourTb.Text = Manager.LockReservationHour.ToString();
@@ -526,6 +526,13 @@ namespace VballManager
                 foreach (Member member in pool.Members.Items)
                 {
                     Player player = Manager.FindPlayerById(member.PlayerId);
+                    //Create membership fee entry
+                    if (Manager.ClubMemberMode && !player.IsRegisterdMember)
+                    {
+                        Fee fee = new Fee(Fee.FEETYPE_CLUB_MEMBERSHIP, Manager.RegisterMembeshipFee);
+                        fee.Date = DateTime.Today;
+                        player.Fees.Add(fee);
+                    }
                     player.IsRegisterdMember = true;
                 }
             }

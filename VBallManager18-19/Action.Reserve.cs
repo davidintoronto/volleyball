@@ -63,7 +63,7 @@ namespace VballManager
                 {
                     dropin.LastCoopDate = game.Date;
                 }
-                LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), pool.Name, player.Name, "Reserve dropin");
+                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Reserve dropin");
                 DataAccess.Save(Manager);
                // this.PopupModal.Hide();
             }
@@ -94,7 +94,7 @@ namespace VballManager
             waiting.OperatorId = GetOperatorId();
             game.WaitingList.Add(waiting);
             Manager.AddReservationNotifyWechatMessage(player.Id, waiting.OperatorId, Constants.WAITING, pool, pool, game.Date);
-            LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), pool.Name, player.Name, "Add to Waiting List");
+            LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Add to Waiting List");
             Manager.Logs.Add(log);
         }
 
@@ -246,14 +246,14 @@ namespace VballManager
                     attendee.Status = InOutNoshow.NoShow;
                 }
             }
-            LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), pool.Name, player.Name, "Marked as No-Show");
+            LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Marked as No-Show");
             Manager.Logs.Add(log);
         }
 
          #region Auto reserve
          public void AutoReserveCoopPlayers(Pool thePool, DateTime gameDate)
          {
-             if (thePool.AutoCoopReserve && Manager.EastDateTimeNow.Hour >= thePool.ReservHourForCoop)
+             if (thePool.AutoCoopReserve && Manager.EastDateTimeToday.AddDays(thePool.DaysToReserve) >= gameDate.Date && Manager.EastDateTimeNow.Hour >= thePool.ReservHourForCoop)
              {
                  Game game = thePool.FindGameByDate(gameDate);
                  //Check to see if number of reserved coop players already reaches maximum
@@ -286,7 +286,7 @@ namespace VballManager
                      }
                      Player coopPlayer = Manager.FindPlayerById(coopCandidate.PlayerId);
                      MoveReservation(thePool, game, coopPlayer);
-                     Manager.AddReservationNotifyWechatMessage(coopPlayer.Id, (CurrentUser == null ? null : CurrentUser.Id), Constants.MOVED, thePool, originalPool, gameDate);
+                     Manager.AddReservationNotifyWechatMessage(coopPlayer.Id, null, Constants.MOVED, thePool, originalPool, gameDate);
                      DataAccess.Save(Manager);
                  }
              }

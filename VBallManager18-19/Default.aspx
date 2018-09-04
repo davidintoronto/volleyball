@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Register Device" Language="C#" MasterPageFile="~/Mobile.Master" AutoEventWireup="true"
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Mobile.Master" AutoEventWireup="true"
     CodeBehind="Default.aspx.cs" Inherits="VballManager.PoolLinkList" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">

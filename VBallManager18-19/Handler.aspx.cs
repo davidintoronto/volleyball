@@ -53,23 +53,7 @@ namespace VballManager
             if (IsSpotAvailable(CurrentPool, TargetGameDate))
             {
                 //Check to see if the player has dropin spot in another pool on same day
-                Pool sameDayPool = Manager.Pools.Find(pool => pool.Name != CurrentPool.Name && pool.DayOfWeek == CurrentPool.DayOfWeek);
-                if (sameDayPool != null)
-                {
-                    if (sameDayPool.FindGameByDate(TargetGameDate).Members.Items.Exists(member => member.PlayerId == playerId && member.Status == InOutNoshow.In) ||
-                        sameDayPool.FindGameByDate(TargetGameDate).Dropins.Items.Exists(dropin => dropin.PlayerId == playerId && dropin.Status == InOutNoshow.In))
-                    {
-                        Session[Constants.ACTION_TYPE] = Constants.ACTION_MOVE_RESERVATION;
-                        ShowPopupModal("You have aleady reserved a spot in pool " + sameDayPool.Name + " on the same day. Would you like to cancel that and reserve this?");
-                        return;
-                    }
-                    else if (sameDayPool.FindGameByDate(TargetGameDate).WaitingList.Exists(playerId))
-                    {
-                        Session[Constants.ACTION_TYPE] = Constants.ACTION_MOVE_RESERVATION;
-                        ShowPopupModal("You are aleady on the waiting list of pool " + sameDayPool.Name + " on the same day. Would you like to cancel that and reserve this?");
-                        return;
-                    }
-                }
+                if (IsReservedInAnotherPool(playerId)) return;
             }
             else
             {
@@ -88,6 +72,29 @@ namespace VballManager
             } 
             Session[Constants.ACTION_TYPE] = Constants.ACTION_RESERVE;
             ShowPopupModal("Are you sure to reserve?");
+        }
+
+        private bool IsReservedInAnotherPool(String playerId)
+        {
+            //Check to see if the player has dropin spot in another pool on same day
+            Pool sameDayPool = Manager.Pools.Find(pool => pool.Name != CurrentPool.Name && pool.DayOfWeek == CurrentPool.DayOfWeek);
+            if (sameDayPool != null)
+            {
+                if (sameDayPool.FindGameByDate(TargetGameDate).Members.Items.Exists(member => member.PlayerId == playerId && member.Status == InOutNoshow.In) ||
+                    sameDayPool.FindGameByDate(TargetGameDate).Dropins.Items.Exists(dropin => dropin.PlayerId == playerId && dropin.Status == InOutNoshow.In))
+                {
+                    Session[Constants.ACTION_TYPE] = Constants.ACTION_MOVE_RESERVATION;
+                    ShowPopupModal("You have aleady reserved a spot in pool " + sameDayPool.Name + " on the same day. Would you like to cancel that and reserve this?");
+                    return true;
+                }
+                else if (sameDayPool.FindGameByDate(TargetGameDate).WaitingList.Exists(playerId))
+                {
+                    Session[Constants.ACTION_TYPE] = Constants.ACTION_MOVE_RESERVATION;
+                    ShowPopupModal("You are aleady on the waiting list of pool " + sameDayPool.Name + " on the same day. Would you like to cancel that and reserve this?");
+                    return true;
+                }
+            }
+            return false;
         }
 
         //Cancel primary members and dropn pickup, not for waiting list
@@ -116,7 +123,7 @@ namespace VballManager
             String playerId = lbtn.ID;
             Game game = CurrentPool.FindGameByDate(TargetGameDate);
             game.WaitingList.Remove(playerId);
-            LogHistory log = CreateLog(DateTime.Now, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel waitinglist");
+            LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel waitinglist");
             Manager.Logs.Add(log);
             DataAccess.Save(Manager);
             this.PopupModal.Hide();
@@ -126,6 +133,12 @@ namespace VballManager
         #endregion
 
         #region Confirmed click
+        protected void PowerReserve_Confirm_Click(object sender, EventArgs e)
+        {
+            String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
+            if (IsReservedInAnotherPool(playerId)) return;
+            Reserve_Confirm_Click(sender, e);       
+        }
         protected void Reserve_Confirm_Click(object sender, EventArgs e)
         {
             String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
