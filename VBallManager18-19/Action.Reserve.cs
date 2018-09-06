@@ -12,20 +12,21 @@ namespace VballManager
     public partial class BasePage
     {
         #region Reserve
-        protected void ReserveSpot(Pool pool, Game game, Player player)
+        protected bool ReserveSpot(Pool pool, Game game, Player player)
         {
             if (game.Members.Exists(player.Id))
             {
-                ReservePromarySpot(pool, game, player);
+                return ReservePromarySpot(pool, game, player);
             }
             else if (game.Dropins.Exists(player.Id))
             {
-                ReserveDropinSpot(pool, game, player);
+                return ReserveDropinSpot(pool, game, player);
             }
+            return false;
         }
 
 
-        protected void ReservePromarySpot(Pool pool, Game game, Player player)
+        protected bool ReservePromarySpot(Pool pool, Game game, Player player)
         {
             Attendee attendee = game.Members.FindByPlayerId(player.Id);
             //Cancel spots for members
@@ -41,13 +42,12 @@ namespace VballManager
                         player.Transfers.Remove(transfer);
                     }
                 }
-                //Log and save
-                 LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Reserve member");
-                Manager.Logs.Add(log);
+                return true;
              }
+            return false;
         }
 
-        protected void ReserveDropinSpot(Pool pool, Game game, Player player)
+        protected bool ReserveDropinSpot(Pool pool, Game game, Player player)
         {
             //Cancel spots for dropin
             Pickup dropin = game.Dropins.FindByPlayerId(player.Id);
@@ -63,11 +63,9 @@ namespace VballManager
                 {
                     dropin.LastCoopDate = game.Date;
                 }
-                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Reserve dropin");
-                DataAccess.Save(Manager);
-               // this.PopupModal.Hide();
+                return true;
             }
-          // Response.Redirect(Constants.DEFAULT_PAGE);
+            return false;
         }
 
         //Return the original pool where spot is moved from
@@ -94,8 +92,8 @@ namespace VballManager
             waiting.OperatorId = GetOperatorId();
             game.WaitingList.Add(waiting);
             Manager.AddReservationNotifyWechatMessage(player.Id, waiting.OperatorId, Constants.WAITING, pool, pool, game.Date);
-            LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Add to Waiting List");
-            Manager.Logs.Add(log);
+            //LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Add to Waiting List");
+           // Manager.Logs.Add(log);
         }
 
         protected void AssignDropinSpotToWaiting(Pool thePool, Game theGame)
@@ -110,6 +108,8 @@ namespace VballManager
             ReserveSpot(thePool, theGame, player);
             theGame.WaitingList.Remove(playerId);
             Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.WAITING_TO_RESERVED, thePool, thePool, theGame.Date);
+            LogHistory log = CreateLog(Manager.EastDateTimeNow, theGame.Date, GetUserIP(), thePool.Name, Manager.FindPlayerById(playerId).Name, "Reserved", "Admin");
+            Manager.Logs.Add(log);
             theGame.WaitingList.Remove(playerId);
             //Cancel the member spot in another pool on same day
             Pool sameDayPool = Manager.Pools.Find(pool => pool.Name != thePool.Name && pool.DayOfWeek == thePool.DayOfWeek);
@@ -246,8 +246,8 @@ namespace VballManager
                     attendee.Status = InOutNoshow.NoShow;
                 }
             }
-            LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Marked as No-Show");
-            Manager.Logs.Add(log);
+            //LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Marked as No-Show");
+            //Manager.Logs.Add(log);
         }
 
          #region Auto reserve
@@ -287,6 +287,8 @@ namespace VballManager
                      Player coopPlayer = Manager.FindPlayerById(coopCandidate.PlayerId);
                      MoveReservation(thePool, game, coopPlayer);
                      Manager.AddReservationNotifyWechatMessage(coopPlayer.Id, null, Constants.MOVED, thePool, originalPool, gameDate);
+                     LogHistory log = CreateLog(Manager.EastDateTimeNow, gameDate.Date, GetUserIP(), thePool.Name, coopPlayer.Name, "Moved from " + originalPool.Name, "Admin");
+                     Manager.Logs.Add(log);
                      DataAccess.Save(Manager);
                  }
              }

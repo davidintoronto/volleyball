@@ -141,6 +141,7 @@ namespace VballManager
             this.PlayerListbox.DataBind();
             this.PlayerLb.DataSource = Manager.Players.OrderBy(p => p.Name);
             this.PlayerLb.DataBind();
+            int count = 0;
             foreach (ListItem playerItem in this.PlayerListbox.Items)
             {
                 Player player = Manager.FindPlayerById(playerItem.Value);
@@ -156,7 +157,9 @@ namespace VballManager
                 {
                     playerItem.Selected = player.Marked;
                 }
+                if (playerItem.Selected) count++;
             }
+            this.SavePlayersBtn.Text = "Save(" + count + ")";
         }
 
         protected void AddPlayerBtn_Click(object sender, EventArgs e)

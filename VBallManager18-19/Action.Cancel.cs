@@ -27,8 +27,8 @@ namespace VballManager
                     attendee.CostReference = costRef;
                 }
                 //Log and save
-                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Cancel member");
-                Manager.Logs.Add(log);
+                //LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Cancel member");
+                //Manager.Logs.Add(log);
                 //Assgin a spot to the first one on waiting list
                 if (!IsReservationLocked(game.Date) && game.WaitingList.Count > 0 && IsSpotAvailable(pool, game.Date))
                 {
@@ -49,8 +49,8 @@ namespace VballManager
                 dropin.Status = InOutNoshow.Out;
                 //Cancel dropin fee
                 CancelDropinFee(dropin);
-                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, Manager.FindPlayerById(player.Id).Name, "Cancel dropin");
-                Manager.Logs.Add(log);
+                //LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, Manager.FindPlayerById(player.Id).Name, "Cancel dropin");
+                //Manager.Logs.Add(log);
                 //reset last dropin time for coop
                 dropin.LastCoopDate = new DateTime();
                 //Move first one in waiting list into dropin list
@@ -112,17 +112,18 @@ namespace VballManager
            if (game.Members.Items.Exists(member => member.PlayerId == player.Id && member.Status != InOutNoshow.Out))
            {
                CancelPromarySpot(pool, game, player);
+               return true;
            }
            else if (game.Dropins.Items.Exists(dropin => dropin.PlayerId == player.Id && dropin.Status != InOutNoshow.Out))
            {
                CancelDropinSpot(pool, game, player);
+               return true;
            }
            else if (game.WaitingList.Exists(player.Id))
            {
                game.WaitingList.Remove(player.Id);
-               return false;
            }
-           return true;
+           return false;
        }
     }
 }

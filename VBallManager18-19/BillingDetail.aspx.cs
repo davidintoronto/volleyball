@@ -137,7 +137,7 @@ namespace VballManager
              DataAccess.Save(Manager);
              if (fee.IsPaid)
              {
-                 Manager.WechatNotifier.AddNotifyWechatMessage(player, "Hi, " + player.Name + ". We have received your payment $" + fee.Amount + " . Thank you!");
+                 Manager.WechatNotifier.AddNotifyWechatMessage(player, "We have received your payment $" + fee.Amount + " . Thank you!");
              }
              Response.Redirect("BillingDetail.aspx?id="+playerId);
          }
@@ -150,7 +150,7 @@ namespace VballManager
              decimal total = 0;
              foreach (Fee fee in player.Fees)
              {
-                 if (!fee.IsPaid && fee.Amount > 0)
+                 if (!fee.IsPaid)
                  {
                      fee.IsPaid = true;
                      fee.PayDate = DateTime.Today;
@@ -158,7 +158,7 @@ namespace VballManager
                  }
              }
               DataAccess.Save(Manager);
-             if (total >0) Manager.WechatNotifier.AddNotifyWechatMessage(player, "Hi, " + player.Name + ". We have received your payment $" + total + " . Thank you!");
+             if (total >0) Manager.WechatNotifier.AddNotifyWechatMessage(player, "We have received your payment $" + total + " . Thank you!");
              Response.Redirect("BillingDetail.aspx?id=" + playerId);
          }
 

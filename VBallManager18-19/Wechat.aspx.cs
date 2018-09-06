@@ -38,7 +38,7 @@ namespace VballManager
                 this.PoolListBox.DataTextField = "Name";
                 this.PoolListBox.DataValueField = "Name";
                 this.PoolListBox.DataBind();
-                this.PlayerListBox.DataSource = Manager.Players.FindAll(player=>player.IsActive&&!String.IsNullOrEmpty(player.WechatName));
+                this.PlayerListBox.DataSource = Manager.Players.FindAll(player=>player.IsActive&&!String.IsNullOrEmpty(player.WechatName)).OrderBy(player=>player.Name);
                 this.PlayerListBox.DataTextField = "Name";
                 this.PlayerListBox.DataValueField = "Id";
                 this.PlayerListBox.DataBind();
@@ -249,7 +249,7 @@ namespace VballManager
                 }
                 if (total > 0)
                 {
-                    message = "You membership fee is $" + Manager.RegisterMembeshipFee + ", and it is due now. You unpaid fee is $" + total + ". If you would like to pay e-transfer, please send to " + Manager.AdminEmail + ". Thanks";
+                    message = "You membership fee is $" + Manager.RegisterMembeshipFee + ", and it is due now. You unpaid fee is $" + total + ". If you would like to pay e-transfer, please send to " + Manager.AdminEmail + " with password HITMEN. Thanks";
                     Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
                 }
             }

@@ -123,7 +123,7 @@ namespace VballManager
             String playerId = lbtn.ID;
             Game game = CurrentPool.FindGameByDate(TargetGameDate);
             game.WaitingList.Remove(playerId);
-            LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel waitinglist");
+            LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel waitinglist", CurrentUser.Name);
             Manager.Logs.Add(log);
             DataAccess.Save(Manager);
             this.PopupModal.Hide();
@@ -144,9 +144,13 @@ namespace VballManager
             String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
             Player player = Manager.FindPlayerById(playerId);
             Game game = CurrentPool.FindGameByDate(TargetGameDate);
-            ReserveSpot(CurrentPool, game, player);
-            Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, TargetGameDate);
-            DataAccess.Save(Manager);
+            if (ReserveSpot(CurrentPool, game, player))
+            {
+                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, TargetGameDate);
+                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Reserved", CurrentUser.Name);
+                Manager.Logs.Add(log);
+                DataAccess.Save(Manager);
+            }
             Response.Redirect(Constants.RESERVE_PAGE);
         }
 
@@ -170,6 +174,8 @@ namespace VballManager
             if (CancelSpot(CurrentPool, game, player))
             {
                 Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.CANCELLED, CurrentPool, CurrentPool, TargetGameDate);
+                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Cancelled", CurrentUser.Name);
+                Manager.Logs.Add(log);
             }
             AssignDropinSpotToWaiting(CurrentPool, game);
             DataAccess.Save(Manager);
@@ -185,10 +191,14 @@ namespace VballManager
             if (originalPool == null)
             {
                 Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, game.Date);
+                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Reserved", CurrentUser.Name);
+                Manager.Logs.Add(log);
             }
             else
             {
-                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, originalPool, game.Date);
+                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.MOVED, CurrentPool, originalPool, game.Date);
+                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Moved from " + originalPool.Name, CurrentUser.Name);
+                Manager.Logs.Add(log);
             }
             DataAccess.Save(Manager);
             Response.Redirect(Constants.RESERVE_PAGE);
@@ -202,6 +212,8 @@ namespace VballManager
            MarkNoShow(CurrentPool, game, player);
            String message = String.Format("[System Info] Hi, {0}. Admin marked you as no-show on the reservation of {1}. If you have any question, contact the admin", player.Name, game.Date.ToString("MM/dd/yyyy"));
            Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
+           LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Marked no-show", CurrentUser.Name);
+           Manager.Logs.Add(log);
            DataAccess.Save(Manager);
            Response.Redirect(Constants.RESERVE_PAGE);
        }
@@ -233,6 +245,8 @@ namespace VballManager
            }
            AddToWaitingList(CurrentPool, game, Manager.FindPlayerById(playerId));
            Manager.AddReservationNotifyWechatMessage(playerId, CurrentUser.Id, Constants.WAITING, CurrentPool, CurrentPool, TargetGameDate);
+           LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Added to waiting list", CurrentUser.Name);
+           Manager.Logs.Add(log);
            DataAccess.Save(Manager);
            Response.Redirect(Constants.RESERVE_PAGE);
        }
