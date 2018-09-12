@@ -289,12 +289,6 @@ namespace VballManager
             this.playerId = playerId;
         }
          
-        public DateTime LastCoopDate
-        {
-            get { return lastCoopDate; }
-            set { lastCoopDate = value; }
-        }
-
         public bool IsCoop
         {
             get { return isCoop; }

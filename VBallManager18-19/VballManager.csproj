@@ -114,7 +114,6 @@
     <Content Include="Scripts\jquery-1.4.1.js" />
     <Content Include="Scripts\jquery-1.4.1.min.js" />
     <Content Include="PreRegister.aspx" />
-    <Content Include="v2pc.aspx" />
     <Content Include="VballWebService.asmx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -189,6 +188,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Action.Cancel.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Action.Move.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WechatNotify.cs" />
@@ -336,13 +338,6 @@
     </Compile>
     <Compile Include="PreRegister.aspx.designer.cs">
       <DependentUpon>PreRegister.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="v2pc.aspx.cs">
-      <DependentUpon>v2pc.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="v2pc.aspx.designer.cs">
-      <DependentUpon>v2pc.aspx</DependentUpon>
     </Compile>
     <Compile Include="VballManager.cs" />
     <Compile Include="Site.Master.cs">

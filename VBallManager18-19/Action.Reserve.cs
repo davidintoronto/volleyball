@@ -59,10 +59,6 @@ namespace VballManager
                 CostReference reference = CreateDropinFee(pool, game.Date, player.Id);
                 dropin.CostReference = reference;
                 if (CurrentUser != null ) dropin.OperatorId = CurrentUser.Id;
-                if (dropin.IsCoop) 
-                {
-                    dropin.LastCoopDate = game.Date;
-                }
                 return true;
             }
             return false;
@@ -249,94 +245,5 @@ namespace VballManager
             //LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Marked as No-Show");
             //Manager.Logs.Add(log);
         }
-
-         #region Auto reserve
-         public void AutoReserveCoopPlayers(Pool thePool, DateTime gameDate)
-         {
-             if (thePool.AutoCoopReserve && Manager.EastDateTimeToday.AddDays(thePool.DaysToReserve) >= gameDate.Date && Manager.EastDateTimeNow.Hour >= thePool.ReservHourForCoop)
-             {
-                 Game game = thePool.FindGameByDate(gameDate);
-                 //Check to see if number of reserved coop players already reaches maximum
-                 while (DropinSpotAvailableForCoop(thePool, gameDate))
-                 {
-                     //find it if it is member and reserved in another pool on same day
-                     Pool originalPool = Manager.Pools.Find(p => p.Name != thePool.Name && p.DayOfWeek == thePool.DayOfWeek);
-                     Pickup coopCandidate = null;
-                     //Find the best candidate of coop
-                     foreach (Pickup coopDropin in game.Dropins.Items.FindAll(dropin => dropin.IsCoop && dropin.Status == InOutNoshow.Out))
-                     {
-                          //If number of attedning players in other pool is not enough, then stop moving coop
-                         if (originalPool != null && originalPool.FindGameByDate(gameDate).AllPlayers.Items.FindAll(p => p.Status == InOutNoshow.In).Count > originalPool.LessThanPayersForCoop)
-                         {
-                             //Is pool member and reserved for game day
-                             Game originalGame = originalPool.FindGameByDate(gameDate);
-                             if (originalGame != null && originalGame.Members.Items.Exists(member => member.PlayerId == coopDropin.PlayerId && member.Status == InOutNoshow.In))
-                             {
-                                 if (coopCandidate == null || coopCandidate.LastCoopDate > ((Pickup)coopDropin).LastCoopDate)
-                                 {
-                                     coopCandidate = coopDropin;
-                                 }
-
-                             }
-                         }
-                     }
-                     if (coopCandidate == null)
-                     {
-                         break;
-                     }
-                     Player coopPlayer = Manager.FindPlayerById(coopCandidate.PlayerId);
-                     MoveReservation(thePool, game, coopPlayer);
-                     Manager.AddReservationNotifyWechatMessage(coopPlayer.Id, null, Constants.MOVED, thePool, originalPool, gameDate);
-                     LogHistory log = CreateLog(Manager.EastDateTimeNow, gameDate.Date, GetUserIP(), thePool.Name, coopPlayer.Name, "Moved from " + originalPool.Name, "Admin");
-                     Manager.Logs.Add(log);
-                     DataAccess.Save(Manager);
-                 }
-             }
-         }
-
-        private bool PlayerAttendedLastWeekGame(Pool thePool, String playerId)
-        {
-            foreach (Pool pool in Manager.Pools)
-            {
-                if (pool.DayOfWeek == thePool.DayOfWeek)
-                {
-                    Game previousGame = null;
-                    List<Game> games = pool.Games;
-                    IEnumerable<Game> gameQuery = games.OrderBy(game => game.Date);
-
-                    foreach (Game game in gameQuery)
-                    {
-                        if (game.Date < TargetGameDate)
-                        {
-                            previousGame = game;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    //Return true if current game is the first one in a season
-                    if (previousGame == null)
-                    {
-                        return true;
-                    }
-                    //Return true if the player is member and attend previous game
-                    if (pool.Members.Exists(playerId) && previousGame.Members.Items.Exists(a=>a.PlayerId == playerId && a.Status == InOutNoshow.In))
-                    {
-                        return true;
-                    }
-                    //Return true if the player is dropin and attend previous game
-                    if (pool.Dropins.Exists(playerId) && previousGame.Dropins.Items.Exists(a => a.PlayerId == playerId && a.Status == InOutNoshow.In))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-
-        #endregion
-
     }
 }

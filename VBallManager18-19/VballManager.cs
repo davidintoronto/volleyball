@@ -18,6 +18,7 @@ namespace VballManager
         private int dropinFee = 5;
         private List<LogHistory> logs = new List<LogHistory>();
         private int lockReservationHour = 20;
+        private int lockWaitingListHour = 18;
         // private int coopReserveHour = 15;
         private List<Payment> payments = new List<Payment>();
         private String readme;
@@ -26,7 +27,7 @@ namespace VballManager
         private bool isDropinFeeWithCap = false;
         private int registerMembershipFee;
         private DateTime cookieExpire = DateTime.Parse("07/01/2018");
-        private bool cookieAuthRequired = false;
+        private bool cookieAuthRequired = true;
         private String timeZoneName = "Eastern Standard Time";
         private List<Permit> permits = new List<Permit>();
         private int maxDropinFeeOwe = 20;
@@ -105,6 +106,12 @@ namespace VballManager
             set { readme = value; }
         }
 
+        public int LockWaitingListHour
+        {
+            get { return lockWaitingListHour; }
+            set { lockWaitingListHour = value; }
+        }
+        
         public List<Payment> GetPayments()
         {
             return payments;
@@ -361,7 +368,7 @@ namespace VballManager
             get
             {
                 TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneName);
-                return TimeZoneInfo.ConvertTime(DateTime.Today, easternZone);
+                return TimeZoneInfo.ConvertTime(DateTime.Today, easternZone).Date;
             }
         }
 
@@ -393,14 +400,18 @@ namespace VballManager
                     message = (user == null ? "Admin" : user.Name) + " " + result.ToString() + " for you";
                 }
                 WechatNotifier.AddNotifyWechatMessage(targetPool, player, message + poolAndGameDate);
-                int emoType = result == Constants.RESERVED? (int)EmoTypes.Reserve : (int)EmoTypes.Cancel;
-                WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage(emoType, numberOfReservedPlayerInTargetPool));
+                if (EastDateTimeToday.AddDays(7) >= gameDate)
+                {
+                    int emoType = result == Constants.RESERVED ? (int)EmoTypes.Reserve : (int)EmoTypes.Cancel;
+                    WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage(emoType, numberOfReservedPlayerInTargetPool));
+                }
             }
             else if (result == Constants.WAITING_TO_RESERVED)
             {
-                message = result.ToString();
-                WechatNotifier.AddNotifyWechatMessage(player, message + poolAndGameDate);
-                WechatNotifier.AddNotifyWechatMessage(targetPool, player, message + poolAndGameDate);
+                message = result.ToString() + poolAndGameDate;
+                WechatNotifier.AddNotifyWechatMessage(player, message);
+                if (EastDateTimeToday==gameDate.Date && EastDateTimeNow.Hour >= lockWaitingListHour) WechatNotifier.AddNotifyWechatMessage(player, "It is kind of late, if you cannot make it, please cancel it right away. Thank you!");
+                WechatNotifier.AddNotifyWechatMessage(targetPool, player, message);
             }
             else if (result == Constants.MOVED)
             {
@@ -444,10 +455,17 @@ namespace VballManager
         private List<Game> games = new List<Game>();
         private DayOfWeek dayOfWeek;
         private int reservHourForCoop = 12;
+        private int settleHourForCoop = 15;
         private int lessThanPayersForCoop = 13;
         private bool autoCoopReserve = false;
         private int maxCoopPlayers = 1;
         private String statsType = "None";
+
+        public int SettleHourForCoop
+        {
+            get { return settleHourForCoop; }
+            set { settleHourForCoop = value; }
+        }
 
         public String StatsType
         {

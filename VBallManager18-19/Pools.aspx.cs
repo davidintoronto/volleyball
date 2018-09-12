@@ -258,6 +258,7 @@ namespace VballManager
             this.MemberShipFeeTb.Text = pool.MembershipFee.ToString();
             this.AllowAddingDropinCb.Checked = pool.AllowAddNewDropinName;
             this.CoopReserveHourTb.Text = pool.ReservHourForCoop.ToString();
+            this.CoopSettleHourTb.Text = pool.SettleHourForCoop.ToString();
             this.CoopLessThanPlayersTb.Text = pool.LessThanPayersForCoop.ToString();
             this.DaysToReserveForMemberTb.Text = pool.DaysToReserve4Member.ToString();
             this.DaysToReserveTb.Text = pool.DaysToReserve.ToString();
@@ -440,6 +441,7 @@ namespace VballManager
             CurrentPool.AllowAddNewDropinName = this.AllowAddingDropinCb.Checked;
             CurrentPool.MembershipFee = int.Parse(this.MemberShipFeeTb.Text);
             CurrentPool.ReservHourForCoop = int.Parse(this.CoopReserveHourTb.Text);
+            CurrentPool.SettleHourForCoop = int.Parse(this.CoopSettleHourTb.Text);
             CurrentPool.LessThanPayersForCoop = int.Parse(this.CoopLessThanPlayersTb.Text);
             CurrentPool.DaysToReserve4Member = int.Parse(this.DaysToReserveForMemberTb.Text);
             CurrentPool.DaysToReserve = int.Parse(this.DaysToReserveTb.Text);

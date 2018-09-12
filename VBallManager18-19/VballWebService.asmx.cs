@@ -35,6 +35,7 @@ namespace VballManager
             File.WriteAllText(System.AppDomain.CurrentDomain.BaseDirectory + Constants.IP_FILE, GetUserIP() + " - " + Manager.EastDateTimeNow.ToString("yyyy-MM-dd HH:mm:ss"));
             QueryPublishLinks(hour);
             AutoAssignCoopSpots(hour);
+            NoonRemainder(hour);
        }
 
         private void AutoAssignCoopSpots(int hour)
@@ -85,6 +86,24 @@ namespace VballManager
                      Manager.WechatNotifier.AddNotifyWechatMessage(pool, "{ReservationLink}");
                  }
              }
+        }
+
+        private void NoonRemainder(int hour)
+        {
+            String reservationUrl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.PathAndQuery, HttpContext.Current.Request.ApplicationPath);// +"/" + Constants.POOL_LINK_LIST_PAGE;
+            if (hour != 12) return;
+            foreach (Pool pool in Manager.Pools)
+            {
+                DateTime comingGameDate = FindComingGameDate(pool);
+                if (comingGameDate.Date == Manager.EastDateTimeToday.Date)
+                {
+                    Game game = pool.FindGameByDate(comingGameDate);
+                    String message = String.Format("Hi, all. Currently we have {0} players for tonight volleyball. If you are holding a spot but cannot make it, please cancel it, thanks. Now ", game.NumberOfReservedPlayers);
+                    int availableSpots = pool.MaximumPlayerNumber - game.NumberOfReservedPlayers;
+                    message = message + availableSpots + (availableSpots > 1 ? " spots are" : " spot is") + " available. Click the link to reserve. " + reservationUrl;
+                    Manager.WechatNotifier.AddNotifyWechatMessage(pool, message);
+                }
+            }
         }
 
         private DateTime FindComingGameDate(Pool pool)

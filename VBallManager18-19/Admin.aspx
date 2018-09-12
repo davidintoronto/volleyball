@@ -58,13 +58,14 @@
                                 <asp:TextBox ID="AdminPasscodeTb" runat="server" TextMode="Password" Width="107px"></asp:TextBox>
                             </td>
                         </tr>
-                        <tr>
+ <!--                       <tr>
                             <td class="style4">Cookie Authentication
                             </td>
                             <td class="auto-style5">
                                 <asp:CheckBox ID="CookieAuthCb" runat="server" />
                             </td>
                         </tr>
+ -->
                         <tr>
                             <td class="style4">Auth Expires On
                             </td>
@@ -129,6 +130,16 @@
                             <td class="auto-style5">
                                 <asp:TextBox ID="MembershipFeeTb" runat="server" Width="47px">0</asp:TextBox>
                                 <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="DropinSpotOpenHourTb"
+                                    ErrorMessage="Integers only please" ForeColor="#FF3300" Operator="DataTypeCheck"
+                                    Type="Integer"></asp:CompareValidator>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="style4">&nbsp;Lock Waiting list hour&nbsp;
+                            </td>
+                            <td class="auto-style5">
+                                <asp:TextBox ID="LockWaitingListHourTb" runat="server" Width="29px"></asp:TextBox>
+                                <asp:CompareValidator ID="CompareValidator3" runat="server" ControlToValidate="LockWaitingListHourTb"
                                     ErrorMessage="Integers only please" ForeColor="#FF3300" Operator="DataTypeCheck"
                                     Type="Integer"></asp:CompareValidator>
                             </td>

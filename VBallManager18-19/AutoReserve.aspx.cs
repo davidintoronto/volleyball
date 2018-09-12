@@ -19,10 +19,7 @@ namespace VballManager
                 if (pool.AutoCoopReserve && hour == pool.ReservHourForCoop)
                 {
                     DateTime comingGameDate = FindComingGameDate(pool);
-                    if (Manager.EastDateTimeToday.AddDays(pool.DaysToReserve).Date == comingGameDate.Date)
-                    {
-                        AutoReserveCoopPlayers(pool, comingGameDate);
-                    }
+                    AutoMoveCoopPlayers(pool.DayOfWeek, comingGameDate);
                 }
             }
         }

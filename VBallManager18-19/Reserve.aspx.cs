@@ -109,11 +109,6 @@ namespace VballManager
             {
                 AssignDropinSpotToWaiting(CurrentPool, comingGame);
             }
-            //Move coop reservation if current pool needs more players
-            if (!this.IsReservationLocked(TargetGameDate))
-            {
-                AutoReserveCoopPlayers(CurrentPool, TargetGameDate);
-            }
             //Fill game information
             FillGameInfoTable(CurrentPool, TargetGameDate);
 

@@ -32,6 +32,9 @@
         {
             width: 130px;
         }
+        .auto-style1 {
+            width: 131px;
+        }
     </style>
  </asp:Content>
 
@@ -135,7 +138,7 @@
                          <asp:ListItem>Friday</asp:ListItem>
                      </asp:DropDownList>
                  </td>
-                                 <td>
+                                 <td class="auto-style1">
                                      Co-op auto reserve</td>
                 <td>
                     <asp:CheckBox ID="AutoCoopReserveCb" runat="server" />
@@ -156,7 +159,7 @@
                          ControlToValidate="MaxPlayers" ErrorMessage="Integers only please" 
                          ForeColor="#FF3300" Operator="DataTypeCheck" Type="Integer"></asp:CompareValidator>
                 </td>
-                <td>
+                <td class="auto-style1">
                     Co-op reserve hour</td>
                 <td>
                     <asp:TextBox ID="CoopReserveHourTb" runat="server" Width="29px"></asp:TextBox>
@@ -173,10 +176,10 @@
                 <td  >
                     <asp:CheckBox ID="AllowAddingDropinCb" runat="server" />
                  </td>
-                                 <td>
-                                     Co-op reserve less than players</td>
+                                 <td class="auto-style1">
+                                     Co-op settle hour</td>
                 <td>
-                    <asp:TextBox ID="CoopLessThanPlayersTb" runat="server" Width="29px"></asp:TextBox>
+                    <asp:TextBox ID="CoopSettleHourTb" runat="server" Width="29px"></asp:TextBox>
                 </td>
 
            </tr>
@@ -188,10 +191,10 @@
                         ControlToValidate="MemberShipFeeTb" ErrorMessage="Integers only please" 
                         ForeColor="#FF3300" Operator="DataTypeCheck" Type="Integer"></asp:CompareValidator>
                </td>
-                               <td>
-                                   Co-op max players</td>
+                               <td class="auto-style1">
+                                   Co-op reserve less than players</td>
                 <td>
-                    <asp:TextBox ID="MaxCoopPlayerTb" runat="server" Width="29px"></asp:TextBox>
+                    <asp:TextBox ID="CoopLessThanPlayersTb" runat="server" Width="29px"></asp:TextBox>
                 </td>
 
             </tr>
@@ -202,14 +205,10 @@
                     <asp:TextBox ID="DaysToReserveForMemberTb" runat="server" Width="29px">0</asp:TextBox>
                 </td>
 
-              <td  >
-                    Stats Type</td>
+              <td class="auto-style1"  >
+                    Co-op max players</td>
                  <td>
-                     <asp:DropDownList ID="StatsTypeDdl" runat="server" Height="25px" Width="88px">
-                         <asp:ListItem>None</asp:ListItem>
-                         <asp:ListItem>Day</asp:ListItem>
-                         <asp:ListItem>Week</asp:ListItem>
-                     </asp:DropDownList>
+                     <asp:TextBox ID="MaxCoopPlayerTb" runat="server" Width="29px"></asp:TextBox>
                            </td>
            </tr>
            <tr>
@@ -226,11 +225,33 @@
                 <td>
                     <asp:TextBox ID="DaysToReserveTb" runat="server" Width="29px">0</asp:TextBox>
                            </td>
+               <td class="auto-style1">
+                    Stats Type</td>
                <td>
+                    <asp:DropDownList ID="StatsTypeDdl" runat="server" Height="25px" Width="88px">
+                        <asp:ListItem>None</asp:ListItem>
+                        <asp:ListItem>Day</asp:ListItem>
+                        <asp:ListItem>Week</asp:ListItem>
+                    </asp:DropDownList>
+                           </td>
+           </tr>
+           <tr>
+                           <td class="style12" colspan="2">
+                               &nbsp;</td>
+               <td class="style15">
                     &nbsp;</td>
                <td>
-                    <asp:Button ID="SavePoolBtn" runat="server" onclick="SavePoolBtn_Click" 
-                        Text="Save" Width="67px" />
+                    &nbsp;</td>
+               <td class="style14">
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+               <td class="auto-style1">
+                    &nbsp;</td>
+               <td>
+                    
+                           <asp:Button ID="SavePoolBtn" runat="server" onclick="SavePoolBtn_Click" Text="Save" Width="67px" />
+                    
                            </td>
            </tr>
         </table>

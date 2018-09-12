@@ -211,13 +211,13 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.CheckBox AllowAddingDropinCb;
         
         /// <summary>
-        /// CoopLessThanPlayersTb control.
+        /// CoopSettleHourTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox CoopLessThanPlayersTb;
+        protected global::System.Web.UI.WebControls.TextBox CoopSettleHourTb;
         
         /// <summary>
         /// MemberShipFeeTb control.
@@ -238,13 +238,13 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.CompareValidator CompareValidator6;
         
         /// <summary>
-        /// MaxCoopPlayerTb control.
+        /// CoopLessThanPlayersTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MaxCoopPlayerTb;
+        protected global::System.Web.UI.WebControls.TextBox CoopLessThanPlayersTb;
         
         /// <summary>
         /// DaysToReserveForMemberTb control.
@@ -256,13 +256,13 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.TextBox DaysToReserveForMemberTb;
         
         /// <summary>
-        /// StatsTypeDdl control.
+        /// MaxCoopPlayerTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList StatsTypeDdl;
+        protected global::System.Web.UI.WebControls.TextBox MaxCoopPlayerTb;
         
         /// <summary>
         /// WechatGroupName control.
@@ -281,6 +281,15 @@ namespace VballManager {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox DaysToReserveTb;
+        
+        /// <summary>
+        /// StatsTypeDdl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList StatsTypeDdl;
         
         /// <summary>
         /// SavePoolBtn control.

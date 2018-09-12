@@ -149,6 +149,7 @@ namespace VballManager
                 Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, TargetGameDate);
                 LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Reserved", CurrentUser.Name);
                 Manager.Logs.Add(log);
+                AutoMoveCoopPlayers(CurrentPool.DayOfWeek, game.Date);
                 DataAccess.Save(Manager);
             }
             Response.Redirect(Constants.RESERVE_PAGE);
@@ -178,6 +179,7 @@ namespace VballManager
                 Manager.Logs.Add(log);
             }
             AssignDropinSpotToWaiting(CurrentPool, game);
+            AutoMoveCoopPlayers(CurrentPool.DayOfWeek, game.Date);
             DataAccess.Save(Manager);
             Response.Redirect(Constants.RESERVE_PAGE);
        }
@@ -200,6 +202,7 @@ namespace VballManager
                 LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Moved from " + originalPool.Name, CurrentUser.Name);
                 Manager.Logs.Add(log);
             }
+            AutoMoveCoopPlayers(CurrentPool.DayOfWeek, game.Date);
             DataAccess.Save(Manager);
             Response.Redirect(Constants.RESERVE_PAGE);
         }
@@ -247,6 +250,7 @@ namespace VballManager
            Manager.AddReservationNotifyWechatMessage(playerId, CurrentUser.Id, Constants.WAITING, CurrentPool, CurrentPool, TargetGameDate);
            LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Added to waiting list", CurrentUser.Name);
            Manager.Logs.Add(log);
+           AutoMoveCoopPlayers(CurrentPool.DayOfWeek, game.Date);
            DataAccess.Save(Manager);
            Response.Redirect(Constants.RESERVE_PAGE);
        }

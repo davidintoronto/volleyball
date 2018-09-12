@@ -10,60 +10,42 @@
 namespace VballManager {
     
     
-    public partial class v2pc {
+    public partial class Confirm {
         
         /// <summary>
-        /// form1 control.
+        /// LoginUserPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.Panel LoginUserPanel;
         
         /// <summary>
-        /// PrefixTb control.
+        /// PromptLb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PrefixTb;
+        protected global::System.Web.UI.WebControls.Label PromptLb;
         
         /// <summary>
-        /// StartNumTb control.
+        /// ConfirmBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox StartNumTb;
+        protected global::System.Web.UI.WebControls.Button ConfirmBtn;
         
         /// <summary>
-        /// Button1 control.
+        /// NoBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
-        
-        /// <summary>
-        /// ResultXsltTb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ResultXsltTb;
-        
-        /// <summary>
-        /// ResultCpCmdTb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ResultCpCmdTb;
+        protected global::System.Web.UI.WebControls.Button NoBtn;
     }
 }
