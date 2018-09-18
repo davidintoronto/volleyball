@@ -15,7 +15,7 @@ namespace Reservation
             Page.Title = Reservations.Title;
             ((Label)Master.FindControl("TitleLabel")).Text = Reservations.Title;
 
-            foreach (Game game in Reservations.Games)
+            foreach (Game game in Reservations.Games.OrderBy(game =>game.Date))
             {
                 if (game.Id == null)
                 {

@@ -161,7 +161,7 @@ namespace Reservation
             }
             foreach (Player dropin in query)
             {
-                if (!game.WaitingListIds.Contains(dropin.Id) && Reservations.SharePlayers)// if (dropinSpotAvailable)
+                if (Reservations.SharePlayers && !game.WaitingListIds.Contains(dropin.Id) && !game.Players.Contains(dropin.Id))// if (dropinSpotAvailable)
                 {
                     TableRow row = CreateDropinTableRow(dropin, false);
                     this.DropinCandidateTable.Rows.Add(row);

@@ -137,10 +137,7 @@ namespace VballManager
 
         protected bool IsReservationLocked(DateTime gameDate)
         {
-            DateTime lockDate = TimeZoneInfo.ConvertTimeFromUtc(gameDate, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
-            lockDate = lockDate.AddHours(-1 * lockDate.Hour + Manager.LockReservationHour);
-            DateTime now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
-            return now >= lockDate;
+            return Manager.IsReservationLocked(gameDate);
         }
 
         protected bool IsDropinSpotOpening(Pool pool, DateTime gameDate, Player player)

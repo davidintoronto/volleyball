@@ -98,7 +98,7 @@ namespace VballManager
                 if (comingGameDate.Date == Manager.EastDateTimeToday.Date)
                 {
                     Game game = pool.FindGameByDate(comingGameDate);
-                    String message = String.Format("Hi, all. Currently we have {0} players for tonight volleyball. If you are holding a spot but cannot make it, please cancel it, thanks. Now ", game.NumberOfReservedPlayers);
+                    String message = String.Format("Hi, all. Currently we have {0} players for tonight volleyball. If you are holding a spot but cannot make it , please cancel your spot, thanks. ", game.NumberOfReservedPlayers);
                     int availableSpots = pool.MaximumPlayerNumber - game.NumberOfReservedPlayers;
                     message = message + availableSpots + (availableSpots > 1 ? " spots are" : " spot is") + " available. Click the link to reserve. " + reservationUrl;
                     Manager.WechatNotifier.AddNotifyWechatMessage(pool, message);

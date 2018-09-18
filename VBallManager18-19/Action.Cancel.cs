@@ -32,7 +32,7 @@ namespace VballManager
                 //Assgin a spot to the first one on waiting list
                 if (!IsReservationLocked(game.Date) && game.WaitingList.Count > 0 && IsSpotAvailable(pool, game.Date))
                 {
-                    AssignDropinSpotToWaiting(pool, game);
+                    //AssignDropinSpotToWaiting(pool, game);
                 }
                 DataAccess.Save(Manager);
                 return;
@@ -52,7 +52,7 @@ namespace VballManager
                 //Move first one in waiting list into dropin list
                 if (!IsReservationLocked(game.Date) && game.WaitingList.Count > 0 && IsSpotAvailable(pool, game.Date))
                 {
-                    AssignDropinSpotToWaiting(pool, game);
+                    //AssignDropinSpotToWaiting(pool, game);
                 }
                 DataAccess.Save(Manager);
             }

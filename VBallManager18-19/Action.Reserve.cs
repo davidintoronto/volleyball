@@ -87,7 +87,7 @@ namespace VballManager
             Waiting waiting = new Waiting(player.Id);
             waiting.OperatorId = GetOperatorId();
             game.WaitingList.Add(waiting);
-            Manager.AddReservationNotifyWechatMessage(player.Id, waiting.OperatorId, Constants.WAITING, pool, pool, game.Date);
+            //Manager.AddReservationNotifyWechatMessage(player.Id, waiting.OperatorId, Constants.WAITING, pool, pool, game.Date);
             //LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Add to Waiting List");
            // Manager.Logs.Add(log);
         }

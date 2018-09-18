@@ -355,6 +355,15 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.TextBox WechatNameTb;
         
         /// <summary>
+        /// PlayerActiveCb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox PlayerActiveCb;
+        
+        /// <summary>
         /// PlayerMarkCb control.
         /// </summary>
         /// <remarks>
@@ -364,13 +373,13 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.CheckBox PlayerMarkCb;
         
         /// <summary>
-        /// PlayerActiveCb control.
+        /// PlayerWaiverSigned control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox PlayerActiveCb;
+        protected global::System.Web.UI.WebControls.CheckBox PlayerWaiverSigned;
         
         /// <summary>
         /// AddPlayerBtn control.

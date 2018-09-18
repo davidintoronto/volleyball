@@ -381,8 +381,18 @@ namespace VballManager
             }
         }
 
+        public bool IsReservationLocked(DateTime gameDate)
+        {
+            DateTime lockDate = TimeZoneInfo.ConvertTimeFromUtc(gameDate, TimeZoneInfo.FindSystemTimeZoneById(TimeZoneName));
+            lockDate = lockDate.AddHours(-1 * lockDate.Hour + LockReservationHour);
+            DateTime now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(TimeZoneName));
+            return now >= lockDate;
+        }
+
+
        public void AddReservationNotifyWechatMessage(String playerId, String operatorId, String result, Pool targetPool, Pool originalPool, DateTime gameDate)
         {
+           if (IsReservationLocked(gameDate)) return;
             Player player = FindPlayerById(playerId);
             Player user = operatorId == null ? null : FindPlayerById(operatorId);
             String message = null;
@@ -424,9 +434,9 @@ namespace VballManager
                 WechatNotifier.AddNotifyWechatMessage(targetPool, player, message);
                 WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage((int)EmoTypes.Move, numberOfReservedPlayerInTargetPool));
             }
-            else if (result == Constants.WAITING && playerId != operatorId)
+            else if (result == Constants.WAITING)
             {
-                message = (user == null ? "Admin" : user.Name) + " " + result.ToString();
+                message = (user == null ? "Admin" : (playerId == operatorId? "You" : user.Name)) + " " + result.ToString();
                 WechatNotifier.AddNotifyWechatMessage(targetPool, player, message + poolAndGameDate);
             }
         }
@@ -725,7 +735,7 @@ namespace VballManager
 
     public enum Actions
     {
-        View_Player_Details, View_All_Pools, View_Past_Games, View_Future_Games, Change_Past_Games, Add_New_Player, Reserve_Player, Power_Reserve, Change_After_Locked, Admin_Management
+        View_Player_Details, View_All_Pools, View_Past_Games, View_Future_Games, Change_Past_Games, Add_New_Player, Reserve_Coop, Reserve_Player, Power_Reserve, Change_After_Locked, Admin_Management
     }
 
     public enum StatsTypes
@@ -735,6 +745,6 @@ namespace VballManager
 
     public enum PlayerBooleanProperties
     {
-        IsRegisterMember, IsActive, Marked
+        IsRegisterMember, IsActive, Waiver, Marked
     }
 }

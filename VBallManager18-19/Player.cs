@@ -11,6 +11,7 @@ namespace VballManager
         private String name;
         private String passcode;
         private bool marked;
+        private bool signedWaiver;
         private List<Transfer> transfers = new List<Transfer>();
         private bool isActive = true;
         private List<Fee> fees = new List<Fee>();
@@ -26,6 +27,12 @@ namespace VballManager
         public int FridayPlayedCount;
         public int TotalPlayedCount;
   
+        public bool SignedWaiver
+        {
+            get { return signedWaiver; }
+            set { signedWaiver = value; }
+        }
+
         public String WechatName
         {
             get { return wechatName; }

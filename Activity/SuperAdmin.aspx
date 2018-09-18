@@ -66,7 +66,7 @@
 
 </asp:Panel>
 <asp:Panel ID="Panel3" runat="server" CssClass="inlineBlock" Width="189px" 
-            Height="304px" BackColor="#FFCC66">
+            Height="304px" BackColor="#FFCC66" Visible="False">
         <table bgcolor="#FFFFCC">
         <tr>
         <td>

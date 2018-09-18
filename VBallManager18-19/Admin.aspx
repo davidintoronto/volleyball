@@ -262,21 +262,28 @@
                                 <asp:TextBox ID="WechatNameTb" runat="server"></asp:TextBox>
                             </td>
                         </tr>
-                        <tr>
-                            <td align="right">Mark
-                            </td>
-                            <td>
-                                <asp:CheckBox ID="PlayerMarkCb" runat="server" />
-                            </td>
-                        </tr>
-                        <tr>
+                         <tr>
                             <td>Active
                             </td>
                             <td>
                                 <asp:CheckBox ID="PlayerActiveCb" runat="server" />
                             </td>
                         </tr>
-                        <tr>
+                      <tr>
+                            <td align="right">Mark
+                            </td>
+                            <td>
+                                <asp:CheckBox ID="PlayerMarkCb" runat="server" />
+                            </td>
+                        </tr>
+                      <tr>
+                            <td align="right">Waiver Signed
+                            </td>
+                            <td>
+                                <asp:CheckBox ID="PlayerWaiverSigned" runat="server" />
+                            </td>
+                        </tr>
+                         <tr>
                             <td>&nbsp;
                             </td>
                             <td align="center">
@@ -318,6 +325,7 @@
                                     <asp:ListItem Value="IsRegisterMember">Membership</asp:ListItem>
                                     <asp:ListItem Value="IsActive">Active</asp:ListItem>
                                     <asp:ListItem Value="Marked">Mark</asp:ListItem>
+                                    <asp:ListItem Value="Waiver">Waiver Signed</asp:ListItem>
                                 </asp:DropDownList>
                                 &nbsp;<asp:Button ID="SetMembershipBtn0" runat="server" OnClick="SetMembershipBtn_Click" Style="margin-left: 0px" Text="Check Club Memberships" Width="164px" />
                                 <asp:Button ID="CreditToMembersBtn" runat="server" OnClick="CreditToMembersBtn_Click" Style="margin-left: 0px" Text="Credit to members" Width="164px" />

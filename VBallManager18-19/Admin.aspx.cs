@@ -158,6 +158,10 @@ namespace VballManager
                 {
                     playerItem.Selected = player.Marked;
                 }
+                else if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.Waiver.ToString())
+                {
+                    playerItem.Selected = player.SignedWaiver;
+                }
                 if (playerItem.Selected) count++;
             }
             this.SavePlayersBtn.Text = "Save(" + count + ")";
@@ -202,6 +206,7 @@ namespace VballManager
             player.WechatName = WechatNameTb.Text;
             player.Marked = PlayerMarkCb.Checked;
             player.IsActive = PlayerActiveCb.Checked;
+            player.SignedWaiver = PlayerWaiverSigned.Checked;
             //Save
             DataAccess.Save(Manager);
             RebindPlayerList();
@@ -235,6 +240,7 @@ namespace VballManager
             PlayerPasscodeTb.Text = player.Passcode;
             PlayerMarkCb.Checked = player.Marked;
             PlayerActiveCb.Checked = player.IsActive;
+            PlayerWaiverSigned.Checked = player.SignedWaiver;
             this.Role.SelectedValue = player.Role.ToString();
             this.WechatNameTb.Text = player.WechatName;
         }
@@ -366,6 +372,10 @@ namespace VballManager
                     else if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.Marked.ToString())
                     {
                         player.Marked = playerItem.Selected;
+                    }
+                    else if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.Waiver.ToString())
+                    {
+                        player.SignedWaiver = playerItem.Selected;
                     }
                 }
             }

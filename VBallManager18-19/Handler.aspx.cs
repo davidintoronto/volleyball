@@ -29,10 +29,18 @@ namespace VballManager
             if (game.Dropins.Exists(playerId))
             {
                 Pickup dropin = game.Dropins.FindByPlayerId(playerId);
-                if (dropin.IsCoop && !IsDropinSpotOpeningForCoop(CurrentPool, TargetGameDate, player))
+                if (dropin.IsCoop)
                 {
-                    ShowMessage("Sorry, but Pool " + CurrentPool.Name + " reservation starts at  " + CurrentPool.ReservHourForCoop + " O'clock on game day for co-op players. Check back later");
-                    return;
+                    if (!IsDropinSpotOpeningForCoop(CurrentPool, TargetGameDate, player))
+                    {
+                        ShowMessage("Sorry, but Pool " + CurrentPool.Name + " reservation starts at  " + CurrentPool.ReservHourForCoop + " O'clock on game day for co-op players. Check back later");
+                        return;
+                    }
+                    else if (!Manager.ActionPermitted(Actions.Reserve_Coop, CurrentUser.Role))
+                    {
+                        ShowMessage("Sorry, but you are not permitted to reserve for " + player.Name + " in this pool, contact admin for advise");
+                        return;
+                    }
                 }
                 else if (!dropin.IsCoop && !IsDropinSpotOpening(CurrentPool, TargetGameDate, player))
                 {
@@ -177,9 +185,9 @@ namespace VballManager
                 Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.CANCELLED, CurrentPool, CurrentPool, TargetGameDate);
                 LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Cancelled", CurrentUser.Name);
                 Manager.Logs.Add(log);
+                AssignDropinSpotToWaiting(CurrentPool, game);
+                AutoMoveCoopPlayers(CurrentPool.DayOfWeek, game.Date);
             }
-            AssignDropinSpotToWaiting(CurrentPool, game);
-            AutoMoveCoopPlayers(CurrentPool.DayOfWeek, game.Date);
             DataAccess.Save(Manager);
             Response.Redirect(Constants.RESERVE_PAGE);
        }

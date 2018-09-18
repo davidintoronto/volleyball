@@ -31,9 +31,12 @@ namespace VballManager
                     {
                         Player coopPlayer = Manager.FindPlayerById(coopDropin.PlayerId);
                         MoveReservation(lowPool, lowPoolGame, coopPlayer);
-                        String wechatMessage = String.Format("We have moved your spot from pool {0} to pool {1} for tonight's volleyball in order to balance the players in each pool. However we may move you back later when things change." //
-                        + " if you don't receive any further notification by {2} o'clock, then this is the final arrangement.", lowPool.Name, highPool.Name, highPool.SettleHourForCoop); 
+                        String wechatMessage = String.Format("Sorry, but we had to move your spot back to pool {0} for tonight's volleyball in order to balance the players in each pool. However we may move your spot again later when things change.", lowPool.Name);
                         Manager.WechatNotifier.AddNotifyWechatMessage(coopPlayer, wechatMessage);
+                        wechatMessage = String.Format("Currently, we have {0} players in pool {1} for tonight volleyball", highPoolGame.NumberOfReservedPlayers, highPool.Name);
+                        Manager.WechatNotifier.AddNotifyWechatMessage(highPool, wechatMessage);
+                        wechatMessage = String.Format("Currently, we have {0} players in pool {1} for tonight volleyball", lowPoolGame.NumberOfReservedPlayers, lowPool.Name);
+                        Manager.WechatNotifier.AddNotifyWechatMessage(lowPool, wechatMessage);
                         LogHistory log = CreateLog(Manager.EastDateTimeNow, gameDate.Date, GetUserIP(), lowPool.Name, coopPlayer.Name, "Moved from " + highPool.Name, "Admin");
                         Manager.Logs.Add(log);
                         DataAccess.Save(Manager);
@@ -51,8 +54,13 @@ namespace VballManager
                     }
                     Player coopPlayer = Manager.FindPlayerById(coopDropin.PlayerId);
                     MoveReservation(highPool, highPoolGame, coopPlayer);
-                    String wechatMessage = String.Format("Sorry, but we had to move your spot back to pool {0} for tonight's volleyball in order to balance the players in each pool. However we may move your spot again later when things change.", lowPool.Name);
+                    String wechatMessage = String.Format("We have moved your spot from pool {0} to pool {1} for tonight's volleyball in order to balance the players in each pool. However we may move you back later when things change." //
+                    + " if you don't receive any further notification by {2} o'clock, then this is the final arrangement.", lowPool.Name, highPool.Name, highPool.SettleHourForCoop);
                     Manager.WechatNotifier.AddNotifyWechatMessage(coopPlayer, wechatMessage);
+                    wechatMessage = String.Format("Currently, we have {0} players in pool {1} for tonight volleyball", highPoolGame.NumberOfReservedPlayers, highPool.Name);
+                    Manager.WechatNotifier.AddNotifyWechatMessage(highPool, wechatMessage);
+                    wechatMessage = String.Format("Currently, we have {0} players in pool {1} for tonight volleyball", lowPoolGame.NumberOfReservedPlayers, lowPool.Name);
+                    Manager.WechatNotifier.AddNotifyWechatMessage(lowPool, wechatMessage);
                     LogHistory log = CreateLog(Manager.EastDateTimeNow, gameDate.Date, GetUserIP(), highPool.Name, coopPlayer.Name, "Moved from " + lowPool.Name, "Admin");
                     Manager.Logs.Add(log);
                     DataAccess.Save(Manager);
@@ -62,7 +70,7 @@ namespace VballManager
 
         private bool MoveToHighPoolRequired(Pool highPool, Pool lowPool, Game highPoolGame, Game lowPoolGame)
         {
-            return (highPoolGame.NumberOfReservedPlayers < highPool.LessThanPayersForCoop && lowPoolGame.NumberOfReservedPlayers > lowPool.LessThanPayersForCoop) || //
+            return (highPoolGame.NumberOfReservedPlayers < highPool.LessThanPayersForCoop && lowPoolGame.NumberOfReservedPlayers > lowPool.LessThanPayersForCoop && lowPoolGame.NumberOfReservedPlayers > highPoolGame.NumberOfReservedPlayers +1) || //
            (lowPoolGame.WaitingList.Count > 0 && highPoolGame.NumberOfReservedPlayers < highPool.MaximumPlayerNumber);
         }
 

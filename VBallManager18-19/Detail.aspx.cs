@@ -363,6 +363,7 @@ namespace VballManager
             {
                 CancelPromarySpot(CurrentPool, game, player);
                 Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.CANCELLED, CurrentPool, CurrentPool, game.Date);
+                AssignDropinSpotToWaiting(CurrentPool, game);
             }
             DataAccess.Save(Manager);
             Response.Redirect(Request.RawUrl);
