@@ -103,6 +103,15 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.TextBox PoolNameTb;
         
         /// <summary>
+        /// LowPoolCb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox LowPoolCb;
+        
+        /// <summary>
         /// AddPoolBtn control.
         /// </summary>
         /// <remarks>

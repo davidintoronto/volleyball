@@ -52,6 +52,7 @@ namespace VballManager
            }
            Pool pool = new Pool();
            pool.Name = this.PoolNameTb.Text;
+           pool.IsLowPool = this.LowPoolCb.Checked;
            Manager.Pools.Add(pool);
            this.PoolListbox.DataSource = Manager.Pools;
            this.PoolListbox.DataBind();
@@ -67,6 +68,7 @@ namespace VballManager
            }
            Pool pool = Manager.FindPoolById(this.PoolListbox.SelectedValue);
            pool.Name = this.PoolNameTb.Text;
+           pool.IsLowPool = this.LowPoolCb.Checked;
            this.PoolListbox.DataSource = Manager.Pools;
            this.PoolListbox.DataBind();
            DataAccess.Save(Manager);
@@ -250,6 +252,7 @@ namespace VballManager
             Pool pool = Manager.FindPoolById(this.PoolListbox.SelectedValue);
             Session[Constants.POOL] = pool.Name;
             PoolNameTb.Text = pool.Name;
+            this.LowPoolCb.Checked = pool.IsLowPool;
             this.TitleTb.Text = pool.Title;
             this.ScheduleTimeTb.Text = pool.GameScheduleTime;
             this.DayOfWeekDl.SelectedValue = pool.DayOfWeek.ToString();

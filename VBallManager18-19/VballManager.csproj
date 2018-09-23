@@ -73,6 +73,7 @@
     <Content Include="BillingDetail.aspx" />
     <Content Include="Authen.aspx" />
     <Content Include="Authorize.aspx" />
+    <Content Include="Icons\Back.png" />
     <Content Include="Wechat.aspx" />
     <Content Include="Icons\noShow.png" />
     <Content Include="Icons\toConfirm.png" />
@@ -91,7 +92,7 @@
     <Content Include="Fees.aspx" />
     <Content Include="Detail.aspx" />
     <Content Include="Icons\Add.png" />
-    <Content Include="Icons\Back.png" />
+    <Content Include="Icons\Move.png" />
     <Content Include="Icons\Close.png" />
     <Content Include="Icons\loginCancel.png" />
     <Content Include="Icons\Delete.png" />

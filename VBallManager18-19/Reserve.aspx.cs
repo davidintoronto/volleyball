@@ -51,12 +51,6 @@ namespace VballManager
                 Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
                 return;
             }
-            //Check to see if user is quilified to view current pool
-            if (!Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) && !CurrentPool.Members.Exists(currentUser.Id) && !CurrentPool.Dropins.Exists(currentUser.Id))
-            {
-                Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
-                return;
-            }
             // 
             DateTime gameDate = Manager.EastDateTimeToday;
             String gameDateString = this.Request.Params[Constants.GAME_DATE];
@@ -75,7 +69,13 @@ namespace VballManager
             {
                 Session[Constants.GAME_DATE] = targetGame.Date;
             }
-            //Fill message board
+             //Check to see if user is quilified to view current pool
+            if (!Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) && !CurrentPool.Members.Exists(currentUser.Id) && !CurrentPool.Dropins.Exists(currentUser.Id) && !targetGame.Dropins.Exists(currentUser.Id))
+            {
+                Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
+                return;
+            }
+           //Fill message board
             if (!String.IsNullOrEmpty(CurrentPool.MessageBoard))
             {
                 this.MessageTextTable.Visible = true;
@@ -352,10 +352,20 @@ namespace VballManager
                 else if (attdenee.Status == InOutNoshow.In)
                 {
                    imageBtn.ImageUrl = "~/Icons/In.png";
-                    imageBtn.Click += new ImageClickEventHandler(Cancel_Click);
+                   imageBtn.Click += new ImageClickEventHandler(Cancel_Click);
+                    if (CurrentPool.IsLowPool && Manager.ActionPermitted(Actions.Move_To_High_Pool, CurrentUser.Role))
+                    {
+                        ImageButton moveBtn = new ImageButton();
+                        moveBtn.ID = player.Id + ",move";
+                        moveBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
+                        moveBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
+                        moveBtn.ImageUrl = "~/Icons/Move.png";
+                        moveBtn.Click += MoveFromCurrentPool_Click;
+                        statusCell.Controls.Add(moveBtn);
+                    }
                 }
                 else//No show
-                    {
+                {
                         imageBtn.ImageUrl = "~/Icons/noShow.png";
                     imageBtn.Click += new ImageClickEventHandler(Cancel_Click);
                 }
@@ -576,7 +586,18 @@ namespace VballManager
             {
                 imageBtn.ImageUrl = "~/Icons/Remove.png";
                  imageBtn.Click += new ImageClickEventHandler(Cancel_Click);
-            }else if (attendee.Status == InOutNoshow.NoShow)
+                 if (CurrentPool.IsLowPool && Manager.ActionPermitted(Actions.Move_To_High_Pool, CurrentUser.Role))
+                 {
+                     ImageButton moveBtn = new ImageButton();
+                     moveBtn.ID = player.Id + ",move";
+                     moveBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
+                     moveBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
+                     moveBtn.ImageUrl = "~/Icons/Move.png";
+                     moveBtn.Click += MoveFromCurrentPool_Click;
+                     actionCell.Controls.Add(moveBtn);
+                 }
+            }
+            else if (attendee.Status == InOutNoshow.NoShow)
             {
                 imageBtn.ImageUrl = "~/Icons/noShow.png";
                  imageBtn.Click += new ImageClickEventHandler(Cancel_Click);

@@ -49,6 +49,11 @@ namespace VballManager
                 dropin.Status = InOutNoshow.Out;
                 //Cancel dropin fee
                 CancelDropinFee(dropin);
+                Game comingGame = Manager.FindComingGame(pool);
+                if (game.Date.Date == comingGame.Date.Date && !pool.Dropins.Exists(player.Id))
+                {
+                    game.Dropins.Remove(dropin);
+                }
                 //Move first one in waiting list into dropin list
                 if (!IsReservationLocked(game.Date) && game.WaitingList.Count > 0 && IsSpotAvailable(pool, game.Date))
                 {

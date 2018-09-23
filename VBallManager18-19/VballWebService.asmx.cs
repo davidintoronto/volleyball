@@ -5,6 +5,7 @@ using System.Web;
 using System.Net;
 using System.IO;
 using System.Web.Services;
+using System.Web.Script.Serialization;
 
 namespace VballManager
 {
@@ -104,6 +105,15 @@ namespace VballManager
                     Manager.WechatNotifier.AddNotifyWechatMessage(pool, message);
                 }
             }
+        }
+
+        [WebMethod]
+        public String RetrieveData(int hour)
+        {
+            if (hour != 23) return null;
+            var jss = new JavaScriptSerializer();
+            return jss.Serialize(Manager);
+
         }
 
         private DateTime FindComingGameDate(Pool pool)

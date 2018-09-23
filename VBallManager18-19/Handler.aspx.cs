@@ -36,9 +36,9 @@ namespace VballManager
                         ShowMessage("Sorry, but Pool " + CurrentPool.Name + " reservation starts at  " + CurrentPool.ReservHourForCoop + " O'clock on game day for co-op players. Check back later");
                         return;
                     }
-                    else if (!Manager.ActionPermitted(Actions.Reserve_Coop, CurrentUser.Role))
+                    else if (CurrentPool.AutoCoopReserve && !Manager.ActionPermitted(Actions.Reserve_Coop, CurrentUser.Role))
                     {
-                        ShowMessage("Sorry, but you are not permitted to reserve for " + player.Name + " in this pool, contact admin for advise");
+                        ShowMessage("Sorry, but making reservation for " + player.Name + " is restricted in this pool, contact admin for advise");
                         return;
                     }
                 }
@@ -103,6 +103,18 @@ namespace VballManager
                 }
             }
             return false;
+        }
+
+        //Move spot to high pool
+        protected void MoveFromCurrentPool_Click(object sender, EventArgs e)
+        {
+            if (Manager.ActionPermitted(Actions.Move_To_High_Pool, CurrentUser.Role))
+            {
+                ImageButton lbtn = (ImageButton)sender;
+                Session[Constants.CURRENT_PLAYER_ID] = lbtn.ID.Split(',')[0];
+                Session[Constants.ACTION_TYPE] = Constants.ACTION_MOVE_RESERVATION;
+                ShowPopupModal("Are you sure to move?");
+            }
         }
 
         //Cancel primary members and dropn pickup, not for waiting list
@@ -197,20 +209,35 @@ namespace VballManager
             Game game = CurrentPool.FindGameByDate(TargetGameDate);
             String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
             Player player = Manager.FindPlayerById(playerId);
-            Pool originalPool = MoveReservation(CurrentPool, game, player);
+            if (game.Members.Items.Exists(member => member.PlayerId == playerId && member.Status == InOutNoshow.In) ||
+                game.Dropins.Items.Exists(dropin => dropin.PlayerId == playerId && dropin.Status == InOutNoshow.In))
+            {
+                Pool sameDayPool = Manager.Pools.Find(p => p.DayOfWeek == CurrentPool.DayOfWeek && p.Name != CurrentPool.Name);
+                game = sameDayPool.FindGameByDate(TargetGameDate);
+                MoveSpot(sameDayPool, game, player);
+                return;
+            }
+
+            MoveSpot(CurrentPool, game, player);
+        }
+
+  
+        private void MoveSpot(Pool pool, Game game, Player player)
+        {
+            Pool originalPool = MoveReservation(pool, game, player);
             if (originalPool == null)
             {
-                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, game.Date);
-                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Reserved", CurrentUser.Name);
+                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, pool, pool, game.Date);
+                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, Manager.FindPlayerById(player.Id).Name, "Reserved", CurrentUser.Name);
                 Manager.Logs.Add(log);
             }
             else
             {
-                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.MOVED, CurrentPool, originalPool, game.Date);
-                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Moved from " + originalPool.Name, CurrentUser.Name);
+                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.MOVED, pool, pool, game.Date);
+                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, Manager.FindPlayerById(player.Id).Name, "Moved from " + originalPool.Name, CurrentUser.Name);
                 Manager.Logs.Add(log);
             }
-            AutoMoveCoopPlayers(CurrentPool.DayOfWeek, game.Date);
+            AutoMoveCoopPlayers(pool.DayOfWeek, game.Date);
             DataAccess.Save(Manager);
             Response.Redirect(Constants.RESERVE_PAGE);
         }

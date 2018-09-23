@@ -335,6 +335,12 @@ namespace VballManager
             }
             players.Remove(player);
         }
+
+        public Game FindComingGame(Pool pool)
+        {
+            return pool.Games.OrderBy(game => game.Date).ToList<Game>().Find(game => game.Date >= EastDateTimeToday);
+        }
+
         public String ReversedId(String id)
         {
             String reversedId = id.Replace('0', 'Z');
@@ -470,6 +476,13 @@ namespace VballManager
         private bool autoCoopReserve = false;
         private int maxCoopPlayers = 1;
         private String statsType = "None";
+        private bool isLowPool = false;
+
+        public bool IsLowPool
+        {
+            get { return isLowPool; }
+            set { isLowPool = value; }
+        }
 
         public int SettleHourForCoop
         {
@@ -735,7 +748,7 @@ namespace VballManager
 
     public enum Actions
     {
-        View_Player_Details, View_All_Pools, View_Past_Games, View_Future_Games, Change_Past_Games, Add_New_Player, Reserve_Coop, Reserve_Player, Power_Reserve, Change_After_Locked, Admin_Management
+        View_Player_Details, View_All_Pools, View_Past_Games, View_Future_Games, Change_Past_Games, Add_New_Player, Reserve_Coop, Reserve_Player, Move_To_High_Pool, Power_Reserve, Change_After_Locked, Admin_Management
     }
 
     public enum StatsTypes

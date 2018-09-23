@@ -18,11 +18,11 @@ namespace VballManager
             {
                 return ReservePromarySpot(pool, game, player);
             }
-            else if (game.Dropins.Exists(player.Id))
+            else// if (game.Dropins.Exists(player.Id))
             {
                 return ReserveDropinSpot(pool, game, player);
             }
-            return false;
+            //return false;
         }
 
 
@@ -49,9 +49,14 @@ namespace VballManager
 
         protected bool ReserveDropinSpot(Pool pool, Game game, Player player)
         {
-            //Cancel spots for dropin
             Pickup dropin = game.Dropins.FindByPlayerId(player.Id);
-            //Cancel spots for members
+            //Add pickup if it is not regular dropin player
+            if (dropin == null)
+            {
+                dropin = new Pickup(player.Id);
+                dropin.Status = InOutNoshow.Out;
+                game.Dropins.Add(dropin);
+            }
             if (dropin != null && dropin.Status == InOutNoshow.Out)
             {
                 dropin.Status = InOutNoshow.In;

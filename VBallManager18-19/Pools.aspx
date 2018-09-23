@@ -19,6 +19,7 @@
         .style12
         {
             width: 87px;
+            background-color: aliceblue;
         }
         .style13
         {
@@ -34,6 +35,17 @@
         }
         .auto-style1 {
             width: 131px;
+        }
+        .auto-style2 {
+            width: 193px;
+            height: 38px;
+        }
+        .auto-style3 {
+            height: 38px;
+        }
+        .auto-style4 {
+            width: 131px;
+            height: 38px;
         }
     </style>
  </asp:Content>
@@ -91,11 +103,12 @@
                         </tr>
                         <tr>
                             <td class="style6">
-                                &nbsp;</td>
+                                <asp:TextBox ID="PoolNameTb" runat="server" Width="66px"></asp:TextBox>
+                            </td>
                         </tr>
                         <tr>
                             <td class="style6">
-                                <asp:TextBox ID="PoolNameTb" runat="server" Width="66px"></asp:TextBox>
+                                <asp:CheckBox ID="LowPoolCb" runat="server" Text="Low Pool" />
                             </td>
                         </tr>
                         <tr>
@@ -199,15 +212,15 @@
 
             </tr>
            <tr>
-                           <td class="style14">
+                           <td class="auto-style2">
                                Days to reserve(Member)</td>
-                <td>
+                <td class="auto-style3">
                     <asp:TextBox ID="DaysToReserveForMemberTb" runat="server" Width="29px">0</asp:TextBox>
                 </td>
 
-              <td class="auto-style1"  >
+              <td class="auto-style4"  >
                     Co-op max players</td>
-                 <td>
+                 <td class="auto-style3">
                      <asp:TextBox ID="MaxCoopPlayerTb" runat="server" Width="29px"></asp:TextBox>
                            </td>
            </tr>
