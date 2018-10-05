@@ -233,7 +233,7 @@ namespace VballManager
             }
             else
             {
-                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.MOVED, pool, pool, game.Date);
+                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.MOVED, originalPool, pool, game.Date);
                 LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, Manager.FindPlayerById(player.Id).Name, "Moved from " + originalPool.Name, CurrentUser.Name);
                 Manager.Logs.Add(log);
             }
@@ -365,6 +365,10 @@ namespace VballManager
        protected void ToReadmeBtn_Click(object sender, EventArgs e)
        {
            Response.Redirect("Readme.aspx");
+       }
+       protected void RateBtn_Click(object sender, EventArgs e)
+       {
+           Response.Redirect("ParticipationRate.aspx?Pool=" + CurrentPool.Name);
        }
         #endregion
     }

@@ -73,6 +73,7 @@
     <Content Include="BillingDetail.aspx" />
     <Content Include="Authen.aspx" />
     <Content Include="Authorize.aspx" />
+    <Content Include="ParticipationRate.aspx" />
     <Content Include="Icons\Back.png" />
     <Content Include="Wechat.aspx" />
     <Content Include="Icons\noShow.png" />
@@ -193,6 +194,13 @@
     </Compile>
     <Compile Include="Action.Move.cs">
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ParticipationRate.aspx.cs">
+      <DependentUpon>ParticipationRate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ParticipationRate.aspx.designer.cs">
+      <DependentUpon>ParticipationRate.aspx</DependentUpon>
     </Compile>
     <Compile Include="WechatNotify.cs" />
     <Compile Include="Wechat.aspx.cs">

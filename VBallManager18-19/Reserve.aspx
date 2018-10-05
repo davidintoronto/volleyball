@@ -73,6 +73,11 @@
         <div id="wrapper" style="width: 100%; height: 100%; overflow: auto; position: relative; -webkit-overflow-scrolling: touch;">
             <table width="100%">
                 <tr>
+                    <td align="left">
+                        <asp:Button ID="RateBtn" Text="Rate" runat="server"
+                            Style="font-size: 5em;" OnClick="RateBtn_Click"
+                            BackColor="#F2A8AA" ForeColor="#006600" />
+                    </td>
                     <td align="right">
                         <asp:Button ID="ToReadmeBtn" Text="About Us" runat="server"
                             Style="font-size: 5em;" OnClick="ToReadmeBtn_Click"

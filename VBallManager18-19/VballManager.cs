@@ -404,7 +404,8 @@ namespace VballManager
             String message = null;
             int numberOfReservedPlayerInTargetPool = targetPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
 
-            String poolAndGameDate = " in pool " + targetPool.Name + " for the " + targetPool.DayOfWeek + " volleyball on " + gameDate.ToString("MM/dd/yyyy") + ". Total player number in pool " + targetPool.Name + ": " + numberOfReservedPlayerInTargetPool;
+            String poolAndGameDate = " in pool " + targetPool.Name + " for the " + targetPool.DayOfWeek + " volleyball on " + gameDate.ToString("MM/dd/yyyy") +".";
+            String playerNumber = " Total player number in pool " + targetPool.Name + ": " + numberOfReservedPlayerInTargetPool;
             if (result == Constants.RESERVED || result == Constants.CANCELLED)
             {
                 if (playerId == operatorId)
@@ -415,16 +416,20 @@ namespace VballManager
                 {
                     message = (user == null ? "Admin" : user.Name) + " " + result.ToString() + " for you";
                 }
-                WechatNotifier.AddNotifyWechatMessage(targetPool, player, message + poolAndGameDate);
-                if (EastDateTimeToday.AddDays(7) >= gameDate)
+                if (EastDateTimeToday.AddDays(7) < gameDate)
                 {
+                    WechatNotifier.AddNotifyWechatMessage(targetPool, player, message + poolAndGameDate);
+                }
+                else
+                {
+                    WechatNotifier.AddNotifyWechatMessage(targetPool, player, message + poolAndGameDate + playerNumber);
                     int emoType = result == Constants.RESERVED ? (int)EmoTypes.Reserve : (int)EmoTypes.Cancel;
                     WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage(emoType, numberOfReservedPlayerInTargetPool));
                 }
             }
             else if (result == Constants.WAITING_TO_RESERVED)
             {
-                message = result.ToString() + poolAndGameDate;
+                message = result.ToString() + poolAndGameDate + playerNumber;
                 WechatNotifier.AddNotifyWechatMessage(player, message);
                 if (EastDateTimeToday==gameDate.Date && EastDateTimeNow.Hour >= lockWaitingListHour) WechatNotifier.AddNotifyWechatMessage(player, "It is kind of late, if you cannot make it, please cancel it right away. Thank you!");
                 WechatNotifier.AddNotifyWechatMessage(targetPool, player, message);
