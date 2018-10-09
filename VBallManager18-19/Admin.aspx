@@ -241,17 +241,16 @@
                             </td>
                         </tr>
                         <tr>
-                            <td align="right">Passcode
-                            </td>
+                            <td align="right">Birthday</td>
                             <td>
-                                <asp:TextBox ID="PlayerPasscodeTb" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="PlayerBirthdayTb" runat="server"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
                             <td align="right">Role
                             </td>
                             <td>
-                                <asp:DropDownList ID="Role" runat="server" Height="16px" Width="124px">
+                                <asp:DropDownList ID="Role" runat="server" Width="124px">
                                 </asp:DropDownList>
                             </td>
                         </tr>
@@ -285,6 +284,7 @@
                         </tr>
                          <tr>
                             <td>&nbsp;
+                                <asp:TextBox ID="PlayerPasscodeTb" runat="server" Visible="False" Width="16px"></asp:TextBox>
                             </td>
                             <td align="center">
                                 <asp:Button ID="AddPlayerBtn" runat="server" OnClick="AddPlayerBtn_Click" Text="Add"
@@ -295,7 +295,7 @@
                             <td>&nbsp;
                             </td>
                             <td align="center">
-                                <asp:Button ID="UpdatePlayerBtn" runat="server" OnClick="UpdatePlayerBtn_Click" Text="Save"
+                                <asp:Button ID="UpdatePlayerBtn" runat="server" OnClick="SavePlayerBtn_Click" Text="Save"
                                     Width="80px" />
                             </td>
                         </tr>
@@ -327,8 +327,8 @@
                                     <asp:ListItem Value="Marked">Mark</asp:ListItem>
                                     <asp:ListItem Value="Waiver">Waiver Signed</asp:ListItem>
                                 </asp:DropDownList>
-                                &nbsp;<asp:Button ID="SetMembershipBtn0" runat="server" OnClick="SetMembershipBtn_Click" Style="margin-left: 0px" Text="Check Club Memberships" Width="164px" />
-                                <asp:Button ID="CreditToMembersBtn" runat="server" OnClick="CreditToMembersBtn_Click" Style="margin-left: 0px" Text="Credit to members" Width="164px" />
+                                &nbsp;<asp:Button ID="SetMembershipBtn0" runat="server" OnClick="SetMembershipBtn_Click" Style="margin-left: 0px" Text="Check Club Memberships" Width="164px" Enabled="False" />
+                                <asp:Button ID="CreditToMembersBtn" runat="server" OnClick="CreditToMembersBtn_Click" Style="margin-left: 0px" Text="Credit to members" Width="164px" Enabled="False" />
                             </td>
                         </tr>
                         <tr>
@@ -360,7 +360,7 @@
                                     <asp:CheckBox ID="ResetUserAuthorizationCb" runat="server" Text="Reset User Authorization" />
                                     <asp:CheckBox ID="ClearPlayerFeeCb" runat="server" Text="Clear Player Fees" />
                                     <asp:Button ID="ResetPoolsBtn" runat="server" OnClick="ResetSystemBtn_Click" Text="Reset"
-                                        Width="94px" />
+                                        Width="94px" Enabled="False" />
                                 </asp:Panel>
                                 <br />
                             </td>

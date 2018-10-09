@@ -23,10 +23,18 @@ namespace VballManager
         private int role = (int)Roles.Player;
         private String wechatName;
         private List<Notification> notifications = new List<Notification>();
+        private String birthday;
         public int MondayPlayedCount;
         public int FridayPlayedCount;
         public int TotalPlayedCount;
-  
+
+
+        public String Birthday
+        {
+            get { return birthday; }
+            set { birthday = value; }
+        }
+
         public bool SignedWaiver
         {
             get { return signedWaiver; }

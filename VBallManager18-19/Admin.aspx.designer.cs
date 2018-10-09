@@ -328,13 +328,13 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.TextBox PlayerIdTb;
         
         /// <summary>
-        /// PlayerPasscodeTb control.
+        /// PlayerBirthdayTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PlayerPasscodeTb;
+        protected global::System.Web.UI.WebControls.TextBox PlayerBirthdayTb;
         
         /// <summary>
         /// Role control.
@@ -380,6 +380,15 @@ namespace VballManager {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox PlayerWaiverSigned;
+        
+        /// <summary>
+        /// PlayerPasscodeTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox PlayerPasscodeTb;
         
         /// <summary>
         /// AddPlayerBtn control.

@@ -184,6 +184,7 @@ namespace VballManager
                 player.Role = int.Parse(this.Role.SelectedValue);
                 player.WechatName = this.WechatNameTb.Text;
                 player.IsActive = this.PlayerActiveCb.Checked;
+                player.Birthday = this.PlayerBirthdayTb.Text;
                 Manager.Players.Add(player);
             }
             DataAccess.Save(Manager);
@@ -193,7 +194,7 @@ namespace VballManager
         }
 
 
-        protected void UpdatePlayerBtn_Click(object sender, EventArgs e)
+        protected void SavePlayerBtn_Click(object sender, EventArgs e)
         {
             if (!IsSuperAdmin() || this.PlayerNameTb.Text == "" || this.PlayerLb.SelectedItem == null)
             {
@@ -207,6 +208,7 @@ namespace VballManager
             player.Marked = PlayerMarkCb.Checked;
             player.IsActive = PlayerActiveCb.Checked;
             player.SignedWaiver = PlayerWaiverSigned.Checked;
+            player.Birthday = PlayerBirthdayTb.Text;
             //Save
             DataAccess.Save(Manager);
             RebindPlayerList();
@@ -241,6 +243,7 @@ namespace VballManager
             PlayerMarkCb.Checked = player.Marked;
             PlayerActiveCb.Checked = player.IsActive;
             PlayerWaiverSigned.Checked = player.SignedWaiver;
+            PlayerBirthdayTb.Text = player.Birthday;
             this.Role.SelectedValue = player.Role.ToString();
             this.WechatNameTb.Text = player.WechatName;
         }

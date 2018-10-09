@@ -19,6 +19,18 @@ namespace VballManager
     // [System.Web.Script.Services.ScriptService]
     public class VballWebService : System.Web.Services.WebService
     {
+        private List<String> birthdayWishes = new List<string>() {"Wishing you a day that is as special in every way as you are. Happy Birthday!!",//
+            "Set the world on fire with your dreams and use the flame to light a birthday candle. HAPPY BIRTHDAY!!",//
+            "Thinking of you on your birthday, and wishing you all the best! I hope it is as fantastic as you are, you deserve the best and nothing less. Happy Birthday!!",//
+            "A birthday is a most special day in one’s life. Enjoy yours to its fullest. HAPPY BIRTHDAY!!",//
+            "My birthday wish for you is that you continue to love life and never stop dreaming. May beauty and happiness surround you, not only on your special day, but always. Happy Birthday!!",//
+            "Have a wonderful, happy, healthy birthday now and forever. Happy Birthday!",//
+            "Another year has passed, and let me just say how much we count on you, rather than count the years. I wish you a wonderful birthday. Happy Birthday!!",//
+            "Blowing out another candle should mean that you have lived another year of joy, and that you’ve made this world a better place. Make every day of your life, and every candle, count. Have a delightful birthday!",//
+            "Happy Birthday!! Wishing you a wonderful year ahead. Your birthday deserves to be a national holiday, because you are a special, national treasure",//
+            "May your birthday and every day be filled with the warmth of sunshine, the happiness of smiles, the sounds of laughter, the feeling of love and the sharing of good cheer. Happy Birthday!!",//
+            "I hope you have a wonderful day and that the year ahead is filled with much love, many wonderful surprises and gives you lasting memories that you will cherish in all the days ahead. Happy Birthday.",//
+            "On this special day, I wish you all the very best, all the joy you can ever have and may you be blessed abundantly today, tomorrow and the days to come! May you have a fantastic birthday and many more to come; HAPPY BIRTHDAY!!!!"};
 
         [WebMethod]
         public List<WechatMessage> WechatMessages()
@@ -37,6 +49,7 @@ namespace VballManager
             QueryPublishLinks(hour);
             AutoAssignCoopSpots(hour);
             NoonRemainder(hour);
+            BirthdayWishes(hour);
        }
 
         private void AutoAssignCoopSpots(int hour)
@@ -170,6 +183,20 @@ namespace VballManager
             return strIP;
         }
 
+        private void BirthdayWishes(int hour)
+        {
+            if (hour != 9) return;
+            List<Player> birthdayPlayers = Manager.Players.FindAll(player => !String.IsNullOrEmpty(player.Birthday) && player.Birthday.Split('/')[0] == Manager.EastDateTimeToday.Month.ToString() && player.Birthday.Split('/')[1] == Manager.EastDateTimeToday.Day.ToString());
+            String message = " 🎉[Cake]🍾💰🎻[Rose]🎁🍻[Packet][Hug]";
+            foreach (Player player in birthdayPlayers)
+            {
+                String[] birthday = player.Birthday.Split('/');
+                String poolName = "B";
+                if (birthday.Length == 3) poolName = birthday[2];
+                String wish = birthdayWishes[new Random().Next(birthdayWishes.Count)];
+                Manager.WechatNotifier.AddNotifyWechatMessage(Manager.FindPoolByName(poolName), player, wish + message);
+            }
+        }
 
 
         private VolleyballClub Manager

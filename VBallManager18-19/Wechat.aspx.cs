@@ -300,8 +300,11 @@ namespace VballManager
             IEnumerable<Player> players = Manager.Players.FindAll(player => player.IsActive && !String.IsNullOrEmpty(player.WechatName));
             foreach (Player player in players)
             {
+                if (player.IsActive && String.IsNullOrEmpty(player.Birthday))
+                {
                 String message = this.TestAllTb.Text.Replace(PLAYER_NAME, player.Name);
                 Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
+                }
             }
             DataAccess.Save(Manager);
         }
