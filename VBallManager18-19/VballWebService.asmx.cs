@@ -71,6 +71,19 @@ namespace VballManager
              {
                  DateTime comingGameDate = FindComingGameDate(pool);
                  String publishTo = null;
+                 if (Manager.EastDateTimeToday.AddDays(pool.DaysToReserve4MondayPlayer).Date == comingGameDate.Date && pool.DayOfWeek == DayOfWeek.Friday)
+                 {
+                         publishTo = "the players who attended Monday volleyball this week";
+                         foreach (Dropin dropin in pool.Dropins.Items)
+                         {
+                             Player player = Manager.FindPlayerById(dropin.PlayerId);
+                             if (player.IsRegisterdMember && !dropin.IsCoop && Manager.IsPlayerAttendedThisWeekMondayGame(comingGameDate.Date, player))
+                             {
+                                 String wechatMessage = String.Format("Because you attended Monday volleyball, you are rewarded with making reservation for Friday volleyball {0} days in advance. Click the link to reserve now. {1}", pool.DaysToReserve4MondayPlayer, reservationUrl);
+                                 Manager.WechatNotifier.AddNotifyWechatMessage(player, wechatMessage);
+                             }
+                         }
+                 }
                  if (pool.DaysToReserve == pool.DaysToReserve4Member)
                  {
                      if (Manager.EastDateTimeToday.AddDays(pool.DaysToReserve4Member).Date == comingGameDate.Date)
@@ -113,6 +126,10 @@ namespace VballManager
                 {
                     Game game = pool.FindGameByDate(comingGameDate);
                     String message = String.Format("Hi, all. Currently we have {0} players for tonight volleyball. If you are holding a spot but cannot make it , please cancel your spot, thanks. ", game.NumberOfReservedPlayers);
+                    if (game.WaitingList.Count > 0)
+                    {
+                        message = String.Format("Hi, all. Currently we have {0} players for tonight volleyball, {1} people in waiting list. If you are holding a spot but cannot make it , please cancel your spot, thanks. ", game.NumberOfReservedPlayers, game.WaitingList.Count);
+                    }
                     int availableSpots = pool.MaximumPlayerNumber - game.NumberOfReservedPlayers;
                     message = message + availableSpots + (availableSpots > 1 ? " spots are" : " spot is") + " available. Click the link to reserve. " + reservationUrl;
                     Manager.WechatNotifier.AddNotifyWechatMessage(pool, message);

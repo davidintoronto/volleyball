@@ -15,7 +15,7 @@ namespace VballManager
             this.LogTable.Rows.Add(createLogTableRow("Date", "Player", "Game Date",  "Pool","Type", "Operator"));
             foreach (LogHistory log in Manager.Logs)
             {
-                this.LogTable.Rows.Add(createLogTableRow(TimeZoneInfo.ConvertTime(log.Date, easternZone).ToString("yyyy-MM-dd hh:mm:ss"),  log.PlayerName, TimeZoneInfo.ConvertTime(log.GameDate, easternZone).ToString("yyyy-MM-dd"), log.PoolName,log.Type, log.OperatorName));
+                this.LogTable.Rows.Add(createLogTableRow(TimeZoneInfo.ConvertTime(log.Date, easternZone).ToString("yyyy-MM-dd HH:mm:ss"),  log.PlayerName, TimeZoneInfo.ConvertTime(log.GameDate, easternZone).ToString("yyyy-MM-dd"), log.PoolName,log.Type, log.OperatorName));
             }
         }
         private VolleyballClub Manager

@@ -155,8 +155,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="style4">&nbsp;</td>
-                            <td class="auto-style5">&nbsp;</td>
+                            <td class="style4">Attend Rate Start</td>
+                            <td class="auto-style5">
+                                <asp:TextBox ID="AttendRateStartDateTb" runat="server" Width="115px">09/01/2018</asp:TextBox>
+                                <asp:CompareValidator ID="CompareValidator10" runat="server" ControlToValidate="AttendRateStartDateTb" ErrorMessage="MM/dd/YYYY" ForeColor="#FF3300" Operator="DataTypeCheck" Type="Date"></asp:CompareValidator>
+                            </td>
                         </tr>
                     </table>
                 </td>

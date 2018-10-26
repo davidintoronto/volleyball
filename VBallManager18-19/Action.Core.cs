@@ -140,19 +140,22 @@ namespace VballManager
             return Manager.IsReservationLocked(gameDate);
         }
 
-        protected bool IsDropinSpotOpening(Pool pool, DateTime gameDate, Player player)
+        protected DateTime DropinSpotOpeningDate(Pool pool, DateTime gameDate, Player player)
         {
             DateTime reserveDate = TimeZoneInfo.ConvertTimeFromUtc(gameDate, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
             if (player.IsRegisterdMember)
             {
-                reserveDate = reserveDate.AddDays(-1 * pool.DaysToReserve4Member).AddHours(-1 * reserveDate.Hour + Manager.DropinSpotOpeningHour);
+                //If this is Friday pool, check to see if player attend most recent monday game
+                if (pool.DayOfWeek == DayOfWeek.Friday && Manager.IsPlayerAttendedThisWeekMondayGame(gameDate, player))
+                {
+                    return reserveDate.AddDays(-1 * pool.DaysToReserve4MondayPlayer).AddHours(-1 * reserveDate.Hour + Manager.DropinSpotOpeningHour);
+                }
+                return reserveDate.AddDays(-1 * pool.DaysToReserve4Member).AddHours(-1 * reserveDate.Hour + Manager.DropinSpotOpeningHour);
             }
             else
             {
-                reserveDate = reserveDate.AddDays(-1 * pool.DaysToReserve).AddHours(-1 * reserveDate.Hour + Manager.DropinSpotOpeningHour);
+                return reserveDate.AddDays(-1 * pool.DaysToReserve).AddHours(-1 * reserveDate.Hour + Manager.DropinSpotOpeningHour);
             }
-            DateTime now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
-            return now >= reserveDate;
         }
 
         protected bool IsDropinSpotOpeningForCoop(Pool pool, DateTime gameDate, Player player)

@@ -265,6 +265,7 @@ namespace VballManager
             this.CoopLessThanPlayersTb.Text = pool.LessThanPayersForCoop.ToString();
             this.DaysToReserveForMemberTb.Text = pool.DaysToReserve4Member.ToString();
             this.DaysToReserveTb.Text = pool.DaysToReserve.ToString();
+            this.DaysToReserveMondayPlayerTb.Text = pool.DaysToReserve4MondayPlayer.ToString();
             this.AutoCoopReserveCb.Checked = pool.AutoCoopReserve;
             this.MaxCoopPlayerTb.Text = pool.MaxCoopPlayers.ToString();
             this.StatsTypeDdl.SelectedValue = pool.StatsType;
@@ -448,6 +449,7 @@ namespace VballManager
             CurrentPool.LessThanPayersForCoop = int.Parse(this.CoopLessThanPlayersTb.Text);
             CurrentPool.DaysToReserve4Member = int.Parse(this.DaysToReserveForMemberTb.Text);
             CurrentPool.DaysToReserve = int.Parse(this.DaysToReserveTb.Text);
+            CurrentPool.DaysToReserve4MondayPlayer = int.Parse(this.DaysToReserveMondayPlayerTb.Text);
             CurrentPool.AutoCoopReserve = AutoCoopReserveCb.Checked;
             CurrentPool.MaxCoopPlayers = int.Parse(this.MaxCoopPlayerTb.Text);
             CurrentPool.StatsType = this.StatsTypeDdl.SelectedValue;

@@ -32,6 +32,7 @@ namespace VballManager
                 //this.CookieAuthCb.Checked = Manager.CookieAuthRequired;
                 this.TimeZoneTb.Text = Manager.TimeZoneName;
                 this.AdminEmailTb.Text = Manager.AdminEmail;
+                this.AttendRateStartDateTb.Text = Manager.AttendRateStartDate.ToShortDateString();
                 this.MaxDropinfeeOweTb.Text = Manager.MaxDropinFeeOwe.ToString();
                 DateTime time = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
                 this.SystemTimeLb.Text = time.ToString("MMM dd yyyy HH/mm/ss") + " - H" + time.Hour;
@@ -291,6 +292,7 @@ namespace VballManager
             Manager.IsDropinFeeWithCap = this.DropinFeeCappedCb.Checked;
             Manager.RegisterMembeshipFee = int.Parse(this.MembershipFeeTb.Text);
             Manager.CookieExpire = DateTime.Parse(this.AuthCookieExpireTb.Text);
+            Manager.AttendRateStartDate = DateTime.Parse(this.AttendRateStartDateTb.Text);
             //Manager.CookieAuthRequired = this.CookieAuthCb.Checked;
             Manager.TimeZoneName = this.TimeZoneTb.Text;
             Manager.AdminEmail = this.AdminEmailTb.Text;

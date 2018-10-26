@@ -32,7 +32,13 @@ namespace VballManager
         private List<Permit> permits = new List<Permit>();
         private int maxDropinFeeOwe = 20;
         private WechatNotify wechatNotifier = new WechatNotify();
+        private DateTime attendRateStartDate;
 
+        public DateTime AttendRateStartDate
+        {
+            get { return attendRateStartDate; }
+            set { attendRateStartDate = value; }
+        }
  
        public int MaxDropinFeeOwe
         {
@@ -451,6 +457,20 @@ namespace VballManager
                 WechatNotifier.AddNotifyWechatMessage(targetPool, player, message + poolAndGameDate);
             }
         }
+
+       //If player attended most recent Monday game
+       public bool IsPlayerAttendedThisWeekMondayGame(DateTime fridayGameDate, Player player)
+       {
+           List<Pool> mondayPools = Pools.FindAll(mondayPool => mondayPool.DayOfWeek == DayOfWeek.Monday);
+           foreach (Pool pool in mondayPools)
+           {
+               Game mostRecentGame = pool.Games.OrderByDescending(game => game.Date).ToList<Game>().Find(game => game.Date < fridayGameDate);
+               if (mostRecentGame == null || mostRecentGame.Date.AddDays(7) < fridayGameDate.Date) continue;
+               if (mostRecentGame.AllPlayers.Items.Exists(attendee => attendee.PlayerId == player.Id && attendee.Status == InOutNoshow.In)) return true;
+           }
+           return false;
+       }
+
     }
 
 
@@ -466,6 +486,7 @@ namespace VballManager
         private bool allowAddNewDropinName;
         private int membershipFee;
         private int daysToReserve4Memeber = 0;
+        private int daysToReserve4MondayPlayer = 0;
         private int daysToReserve = 0;
         // private List<String> members = new List<String>();
         // private List<String> dropins = new List<String>();
@@ -483,6 +504,12 @@ namespace VballManager
         private String statsType = "None";
         private bool isLowPool = false;
 
+
+        public int DaysToReserve4MondayPlayer
+        {
+            get { return daysToReserve4MondayPlayer; }
+            set { daysToReserve4MondayPlayer = value; }
+        }
         public bool IsLowPool
         {
             get { return isLowPool; }

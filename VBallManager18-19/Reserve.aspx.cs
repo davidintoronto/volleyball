@@ -749,7 +749,8 @@ namespace VballManager
                 player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType);
                 players.Add(player);
             }
-            return players.OrderByDescending(p => p.TotalPlayedCount);
+            //return players.OrderByDescending(p => p.TotalPlayedCount);
+            return players.OrderBy(p => p.Name);
         }
 
          private IEnumerable<Player> OrderMembersByStats(Pool pool)
@@ -761,7 +762,8 @@ namespace VballManager
                  player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType);
                  players.Add(player);
              }
-             return players.OrderByDescending(p => p.TotalPlayedCount);
+            // return players.OrderByDescending(p => p.TotalPlayedCount);
+             return players.OrderBy(p => p.Name);
          }
          
         private List<Player> CalculateDropinStats(Pool pool, DateTime gameDate)
@@ -802,7 +804,7 @@ namespace VballManager
                 {
                     foreach (Game game in pool.Games)
                     {
-                        if (game.Date.Date < Manager.EastDateTimeToday.Date && (game.Members.Items.Exists(member=> member.PlayerId == player.Id && member.Status == InOutNoshow.In) || game.Dropins.Items.Exists(pickup=>pickup.PlayerId == player.Id && pickup.Status == InOutNoshow.In)))
+                        if (game.Date.Date > Manager.AttendRateStartDate.Date && game.Date.Date < Manager.EastDateTimeToday.Date && (game.Members.Items.Exists(member=> member.PlayerId == player.Id && member.Status == InOutNoshow.In) || game.Dropins.Items.Exists(pickup=>pickup.PlayerId == player.Id && pickup.Status == InOutNoshow.In)))
                         {
                             playedCount++;
                         }

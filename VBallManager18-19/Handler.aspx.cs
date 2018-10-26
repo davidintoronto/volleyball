@@ -31,26 +31,25 @@ namespace VballManager
                 Pickup dropin = game.Dropins.FindByPlayerId(playerId);
                 if (dropin.IsCoop)
                 {
-                    if (!IsDropinSpotOpeningForCoop(CurrentPool, TargetGameDate, player))
+                    if (CurrentPool.AutoCoopReserve && !Manager.ActionPermitted(Actions.Reserve_Coop, CurrentUser.Role))
                     {
-                        ShowMessage("Sorry, but Pool " + CurrentPool.Name + " reservation starts at  " + CurrentPool.ReservHourForCoop + " O'clock on game day for co-op players. Check back later");
+                        ShowMessage("Sorry, but the reservation for " + player.Name + " is not permitted in this pool, contact admin for advise");
                         return;
                     }
-                    else if (CurrentPool.AutoCoopReserve && !Manager.ActionPermitted(Actions.Reserve_Coop, CurrentUser.Role))
+                    if (!IsDropinSpotOpeningForCoop(CurrentPool, TargetGameDate, player))
                     {
-                        ShowMessage("Sorry, but making reservation for " + player.Name + " is restricted in this pool, contact admin for advise");
+                        ShowMessage("Sorry, but the reservation for " + player.Name + " starts at " + CurrentPool.ReservHourForCoop + " O'clock on game day. Check back later");
                         return;
                     }
                 }
-                else if (!dropin.IsCoop && !IsDropinSpotOpening(CurrentPool, TargetGameDate, player))
+                else
                 {
-                    DateTime reserveDate = TargetGameDate.AddDays(-1 * CurrentPool.DaysToReserve4Member);
-                    if (!player.IsRegisterdMember)
+                    DateTime dropinSpotOpeningDate = DropinSpotOpeningDate(CurrentPool, TargetGameDate, player);
+                    if (Manager.EastDateTimeNow < dropinSpotOpeningDate)
                     {
-                        reserveDate = TargetGameDate.AddDays(-1 * CurrentPool.DaysToReserve);
+                        ShowMessage("Sorry, But drop-in reservation for " + player.Name + " cannot be made until " + Manager.DropinSpotOpeningHour + " on " + dropinSpotOpeningDate.ToLongDateString() + ". Please check back later.");
+                        return;
                     }
-                    ShowMessage("Sorry, But drop-in reservations cannot be made until " + Manager.DropinSpotOpeningHour + " on " + reserveDate.ToLongDateString() + ". Please check back later.");
-                    return;
                 }
                 if (!player.IsRegisterdMember && IsDropinOwesExceedMax(player))
                 {
@@ -233,7 +232,7 @@ namespace VballManager
             }
             else
             {
-                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.MOVED, originalPool, pool, game.Date);
+                Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.MOVED, pool, originalPool, game.Date);
                 LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, Manager.FindPlayerById(player.Id).Name, "Moved from " + originalPool.Name, CurrentUser.Name);
                 Manager.Logs.Add(log);
             }

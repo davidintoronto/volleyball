@@ -37,7 +37,7 @@
             width: 131px;
         }
         .auto-style2 {
-            width: 193px;
+            width: 242px;
             height: 38px;
         }
         .auto-style3 {
@@ -46,6 +46,9 @@
         .auto-style4 {
             width: 131px;
             height: 38px;
+        }
+        .auto-style5 {
+            width: 242px;
         }
     </style>
  </asp:Content>
@@ -144,7 +147,7 @@
                 <td   colspan="1">
                     <asp:TextBox ID="TitleTb" runat="server" Width="96%" EnableTheming="True"></asp:TextBox>
                 </td>
-                  <td class="style14" >Day of Week</td>
+                  <td class="auto-style5" >Day of Week</td>
                  <td  >
                      <asp:DropDownList ID="DayOfWeekDl" runat="server" Height="25px" Width="88px">
                          <asp:ListItem>Monday</asp:ListItem>
@@ -165,7 +168,7 @@
                     <asp:TextBox ID="ScheduleTimeTb" runat="server" Width="96%" 
                         EnableTheming="True"></asp:TextBox>
                 </td>
-               <td class="style14"  > Maximum Players </td>
+               <td class="auto-style5"  > Maximum Players </td>
                 <td  >
                      <asp:TextBox ID="MaxPlayers" runat="server" Width="32px"></asp:TextBox>
                      <asp:CompareValidator ID="CompareValidator5" runat="server" 
@@ -185,7 +188,7 @@
                      <asp:TextBox ID="MessageTb" runat="server" 
                          TextMode="MultiLine" Height="72px" Width="255px"></asp:TextBox>
                  </td>
-                <td class="style14"  >Allow add new dropin</td>
+                <td class="auto-style5"  >Allow add new dropin</td>
                 <td  >
                     <asp:CheckBox ID="AllowAddingDropinCb" runat="server" />
                  </td>
@@ -197,7 +200,7 @@
 
            </tr>
            <tr>
-              <td class="style14"  >Membership Fee</td>
+              <td class="auto-style5"  >Membership Fee</td>
                 <td  >
                     <asp:TextBox ID="MemberShipFeeTb" runat="server" Width="29px"></asp:TextBox>
                     <asp:CompareValidator ID="CompareValidator6" runat="server" 
@@ -233,7 +236,7 @@
                     <asp:TextBox ID="WechatGroupName" runat="server" EnableTheming="True" 
                         Width="96%"></asp:TextBox>
                            </td>
-               <td class="style14">
+               <td class="auto-style5">
                     Days to reserve</td>
                 <td>
                     <asp:TextBox ID="DaysToReserveTb" runat="server" Width="29px">0</asp:TextBox>
@@ -255,10 +258,11 @@
                     &nbsp;</td>
                <td>
                     &nbsp;</td>
-               <td class="style14">
-                    &nbsp;</td>
+               <td class="auto-style5">
+                    Days to reserve (MonPlayer)</td>
                 <td>
-                    &nbsp;</td>
+                    <asp:TextBox ID="DaysToReserveMondayPlayerTb" runat="server" Width="29px">0</asp:TextBox>
+                           </td>
                <td class="auto-style1">
                     &nbsp;</td>
                <td>

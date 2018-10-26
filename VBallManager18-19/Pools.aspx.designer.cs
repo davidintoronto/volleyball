@@ -301,6 +301,15 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.DropDownList StatsTypeDdl;
         
         /// <summary>
+        /// DaysToReserveMondayPlayerTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox DaysToReserveMondayPlayerTb;
+        
+        /// <summary>
         /// SavePoolBtn control.
         /// </summary>
         /// <remarks>
