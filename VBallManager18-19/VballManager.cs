@@ -33,6 +33,20 @@ namespace VballManager
         private int maxDropinFeeOwe = 20;
         private WechatNotify wechatNotifier = new WechatNotify();
         private DateTime attendRateStartDate;
+        private List<Factor> factors = new List<Factor>();
+        private String season;
+
+        public String Season
+        {
+            get { return season; }
+            set { season = value; }
+        }
+
+        public List<Factor> Factors
+        {
+            get { return factors; }
+            set { factors = value; }
+        }
 
         public DateTime AttendRateStartDate
         {
@@ -273,6 +287,18 @@ namespace VballManager
                 }
             );
         }
+
+        public Pool FindSameDayPool(Pool pool)
+        {
+            return Pools.Find(p=>p.DayOfWeek == pool.DayOfWeek && pool.IsLowPool != p.IsLowPool);
+        }
+
+        public Pool FindSameLevelPool(Pool pool)
+        {
+            return Pools.Find(p => p.DayOfWeek != pool.DayOfWeek && pool.IsLowPool == p.IsLowPool);
+        }
+
+
         //Find player list with given Ids
         public List<Player> FindPlayersByIds(List<String> ids)
         {
@@ -428,14 +454,26 @@ namespace VballManager
                 }
                 else
                 {
-                    WechatNotifier.AddNotifyWechatMessage(targetPool, player, message + poolAndGameDate + playerNumber);
-                    int emoType = result == Constants.RESERVED ? (int)EmoTypes.Reserve : (int)EmoTypes.Cancel;
-                    WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage(emoType, numberOfReservedPlayerInTargetPool));
+                    message = message + poolAndGameDate + playerNumber;
+                    if (targetPool.IsLowPool)
+                    {
+                        message = message + ". Current factor is " + targetPool.FindGameByDate(gameDate).Factor;
+                    }
+                    WechatNotifier.AddNotifyWechatMessage(targetPool, player, message);
+                    if (wechatNotifier.EnableEmoMessage)
+                    {
+                        int emoType = result == Constants.RESERVED ? (int)EmoTypes.Reserve : (int)EmoTypes.Cancel;
+                        WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage(emoType, numberOfReservedPlayerInTargetPool));
+                    }
                 }
             }
             else if (result == Constants.WAITING_TO_RESERVED)
             {
                 message = result.ToString() + poolAndGameDate + playerNumber;
+                if (targetPool.IsLowPool)
+                {
+                    message = message + ". Current factor is " + targetPool.FindGameByDate(gameDate).Factor;
+                }
                 WechatNotifier.AddNotifyWechatMessage(player, message);
                 if (EastDateTimeToday==gameDate.Date && EastDateTimeNow.Hour >= lockWaitingListHour) WechatNotifier.AddNotifyWechatMessage(player, "It is kind of late, if you cannot make it, please cancel it right away. Thank you!");
                 WechatNotifier.AddNotifyWechatMessage(targetPool, player, message);
@@ -445,11 +483,20 @@ namespace VballManager
                 message = result.ToString() + " from pool " + originalPool.Name + " to pool " + targetPool.Name + " for the " + targetPool.DayOfWeek + " volleyball on " + gameDate.ToString("MM/dd/yyyy");
                 WechatNotifier.AddNotifyWechatMessage(player, message);
                 message = message + ". Total player number in pool " + originalPool.Name + ": " + originalPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
+                if (originalPool.IsLowPool)
+                {
+                    message = message + ". Current factor is " + originalPool.FindGameByDate(gameDate).Factor;
+                }
                 WechatNotifier.AddNotifyWechatMessage(originalPool, player, message);
                 message = message + ". Total player number in pool " + targetPool.Name + ": " + numberOfReservedPlayerInTargetPool;
                 WechatNotifier.AddNotifyWechatMessage(player, message);
+                if (targetPool.IsLowPool)
+                {
+                    message = message + ". Current factor is " + targetPool.FindGameByDate(gameDate).Factor;
+                }
                 WechatNotifier.AddNotifyWechatMessage(targetPool, player, message);
-                WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage((int)EmoTypes.Move, numberOfReservedPlayerInTargetPool));
+                if (wechatNotifier.EnableEmoMessage) 
+                    WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage((int)EmoTypes.Move, numberOfReservedPlayerInTargetPool));
             }
             else if (result == Constants.WAITING)
             {
@@ -471,8 +518,52 @@ namespace VballManager
            return false;
        }
 
-    }
+        //
+       public bool IsPlayerAttendedThisMondayGameWithPowerReserveFactor(Pool fridayPool, DateTime fridayGameDate, Player player)
+       {
+           if (fridayPool.Dropins.FindByPlayerId(player.Id).WaiveBenefit || !IsPlayerAttendedThisWeekMondayGame(fridayGameDate, player)) return false;
+           Pool mondayPool = Pools.Find(p => p.DayOfWeek != fridayPool.DayOfWeek && p.IsLowPool == fridayPool.IsLowPool);
+           Game mostRecentGame = mondayPool.Games.Find(game => game.Date.AddDays(4) == fridayGameDate.Date);
+           return mostRecentGame != null && mostRecentGame.Factor >= mondayPool.FactorForPowerReserve;
+       }
 
+       //Calculate factor for current moment
+       public void ReCalculateFactor(Pool pool, DateTime gameDate)
+       {
+           Pool anotherDayPoolWithSameLevel = Pools.Find(p => p.DayOfWeek != pool.DayOfWeek && p.IsLowPool == pool.IsLowPool);
+           Pool anotherDayPoolWithDifferentLevel = Pools.Find(p => p.DayOfWeek != pool.DayOfWeek && p.IsLowPool != pool.IsLowPool);
+           Game game = pool.FindGameByDate(gameDate);
+           int currentPoolNumberOfPlayer = game.NumberOfReservedPlayers;
+           Pool sameDayPool = Pools.Find(p => p.DayOfWeek == pool.DayOfWeek && p.Name != pool.Name);
+           Game sameDayPoolGame = sameDayPool.FindGameByDate(gameDate);
+           int sameDayPoolNumberOfPlayers = sameDayPoolGame.NumberOfReservedPlayers;
+           if (pool.IsLowPool)
+           {
+               int coopNumberOfPlayers = sameDayPool.FindGameByDate(gameDate).Dropins.Items.FindAll(pickup => pickup.IsCoop && pickup.Status == InOutNoshow.In).Count;
+               Factor factor = Factors.Find(f => f.PoolName == anotherDayPoolWithSameLevel.Name && f.LowPoolName == pool.Name && f.LowPoolNumberFrom <= currentPoolNumberOfPlayer && currentPoolNumberOfPlayer <= f.LowPoolNumberTo &&//
+                   f.CoopNumberFrom <= coopNumberOfPlayers && coopNumberOfPlayers <= f.CoopNumberTo && f.HighPoolName == sameDayPool.Name && f.HighPoolNumberFrom <= sameDayPoolNumberOfPlayers &&//
+                  sameDayPoolNumberOfPlayers <= f.HighPoolNumberTo);
+               if (factor != null) game.Factor = factor.Value;
+               factor = Factors.Find(f => f.PoolName == anotherDayPoolWithDifferentLevel.Name && f.LowPoolName == pool.Name && f.LowPoolNumberFrom <= currentPoolNumberOfPlayer && currentPoolNumberOfPlayer <= f.LowPoolNumberTo &&//
+                  f.CoopNumberFrom <= coopNumberOfPlayers && coopNumberOfPlayers <= f.CoopNumberTo && f.HighPoolName == sameDayPool.Name && f.HighPoolNumberFrom <= sameDayPoolNumberOfPlayers &&//
+                 sameDayPoolNumberOfPlayers <= f.HighPoolNumberTo);
+               if (factor != null) sameDayPoolGame.Factor = factor.Value;
+           }
+           else
+           {
+               int coopNumberOfPlayers = pool.FindGameByDate(gameDate).Dropins.Items.FindAll(pickup => pickup.IsCoop && pickup.Status == InOutNoshow.In).Count;
+               Factor factor = Factors.Find(f => f.PoolName == anotherDayPoolWithDifferentLevel.Name && f.LowPoolName == sameDayPool.Name && f.LowPoolNumberFrom <= sameDayPoolNumberOfPlayers && sameDayPoolNumberOfPlayers <= f.LowPoolNumberTo &&//
+                    f.CoopNumberFrom <= coopNumberOfPlayers && coopNumberOfPlayers <= f.CoopNumberTo && f.HighPoolName == pool.Name && f.HighPoolNumberFrom <= currentPoolNumberOfPlayer &&//
+                    currentPoolNumberOfPlayer <= f.HighPoolNumberTo);
+               if (factor != null) game.Factor = factor.Value;
+               factor = Factors.Find(f => f.PoolName == anotherDayPoolWithSameLevel.Name && f.LowPoolName == sameDayPool.Name && f.LowPoolNumberFrom <= sameDayPoolNumberOfPlayers && sameDayPoolNumberOfPlayers <= f.LowPoolNumberTo &&//
+                    f.CoopNumberFrom <= coopNumberOfPlayers && coopNumberOfPlayers <= f.CoopNumberTo && f.HighPoolName == pool.Name && f.HighPoolNumberFrom <= currentPoolNumberOfPlayer &&//
+                    currentPoolNumberOfPlayer <= f.HighPoolNumberTo);
+               if (factor != null) sameDayPoolGame.Factor = factor.Value;
+           }
+       }
+
+    }
 
     public class Pool
     {
@@ -488,6 +579,8 @@ namespace VballManager
         private int daysToReserve4Memeber = 0;
         private int daysToReserve4MondayPlayer = 0;
         private int daysToReserve = 0;
+        private decimal factorForAdvancedReserve;
+        private decimal factorForPowerReserve;
         // private List<String> members = new List<String>();
         // private List<String> dropins = new List<String>();
         private VList<Member> members = new VList<Member>();
@@ -504,6 +597,18 @@ namespace VballManager
         private String statsType = "None";
         private bool isLowPool = false;
 
+
+        public decimal FactorForAdvancedReserve
+        {
+            get { return factorForAdvancedReserve; }
+            set { factorForAdvancedReserve = value; }
+        }
+
+        public decimal FactorForPowerReserve
+        {
+            get { return factorForPowerReserve; }
+            set { factorForPowerReserve = value; }
+        }
 
         public int DaysToReserve4MondayPlayer
         {
@@ -791,5 +896,104 @@ namespace VballManager
     public enum PlayerBooleanProperties
     {
         IsRegisterMember, IsActive, Waiver, Marked
+    }
+
+    public class Factor
+    {
+        private String id;
+        private String poolName;
+        private String lowPoolName;
+        private int lowPoolNumberFrom;
+        private int lowPoolNumberTo;
+        private int coopNumberFrom;
+        private int coopNumberTo;
+        private String highPoolName;
+        private int highPoolNumberFrom;
+        private int highPoolNumberTo;
+        private decimal value;
+
+        public Factor() { }
+
+        public Factor(String poolName, String lowPoolName, int lowPoolNumberFrom, int lowPoolNumberTo, //
+            int coopNumberFrom, int coopNumberTo, String highPoolName, int highPoolNumberFrom, int highPoolNumberTo, decimal value)
+        {
+            this.id = Guid.NewGuid().ToString();
+            this.poolName = poolName;
+            this.lowPoolName = lowPoolName;
+            this.lowPoolNumberFrom = lowPoolNumberFrom;
+            this.lowPoolNumberTo = lowPoolNumberTo;
+            this.coopNumberFrom = coopNumberFrom;
+            this.coopNumberTo = coopNumberTo;
+            this.highPoolName = highPoolName;
+            this.highPoolNumberFrom = highPoolNumberFrom;
+            this.highPoolNumberTo = highPoolNumberTo;
+            this.value = value;
+        }
+
+        public String Id
+        {
+            get { return id; }
+            set { id = value; }
+        }
+
+        public String PoolName
+        {
+            get { return poolName; }
+            set { poolName = value; }
+        }
+
+        public String LowPoolName
+        {
+            get { return lowPoolName; }
+            set { lowPoolName = value; }
+        }
+
+        public int LowPoolNumberFrom
+        {
+            get { return lowPoolNumberFrom; }
+            set { lowPoolNumberFrom = value; }
+        }
+
+        public int LowPoolNumberTo
+        {
+            get { return lowPoolNumberTo; }
+            set { lowPoolNumberTo = value; }
+        }
+
+        public int CoopNumberFrom
+        {
+            get { return coopNumberFrom; }
+            set { coopNumberFrom = value; }
+        }
+
+        public int CoopNumberTo
+        {
+            get { return coopNumberTo; }
+            set { coopNumberTo = value; }
+        }
+
+        public String HighPoolName
+        {
+            get { return highPoolName; }
+            set { highPoolName = value; }
+        }
+
+        public int HighPoolNumberFrom
+        {
+            get { return highPoolNumberFrom; }
+            set { highPoolNumberFrom = value; }
+        }
+
+        public int HighPoolNumberTo
+        {
+            get { return highPoolNumberTo; }
+            set { highPoolNumberTo = value; }
+        }
+
+        public decimal Value
+        {
+            get { return this.value; }
+            set { this.value = value; }
+        }
     }
 }

@@ -36,41 +36,178 @@ namespace VballManager
                 this.MaxDropinfeeOweTb.Text = Manager.MaxDropinFeeOwe.ToString();
                 DateTime time = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
                 this.SystemTimeLb.Text = time.ToString("MMM dd yyyy HH/mm/ss") + " - H" + time.Hour;
+                this.SeasonCb.Text = Manager.Season;
                 //
                 if (null != Session[Constants.SUPER_ADMIN])
                 {
                     ((TextBox)Master.FindControl("PasscodeTb")).Text = Session[Constants.SUPER_ADMIN].ToString();
                 }
-                //Bind player list
-                //int selectPlayerIndex = this.PlayerListbox.SelectedIndex;
-                this.PlayerListbox.DataSource = Manager.Players.OrderBy(player => player.Name);
-                this.PlayerListbox.DataTextField = "Name";
-                this.PlayerListbox.DataValueField = "Id";
-                this.PlayerListbox.DataBind();
-                //this.PlayerListbox.SelectedIndex = selectPlayerIndex;
-                RebindPlayerList();
-
-                int selectPlayerIndex = this.PlayerLb.SelectedIndex;
-                this.PlayerLb.DataSource = Manager.Players.OrderBy(player => player.Name);
-                this.PlayerLb.DataTextField = "Name";
-                this.PlayerLb.DataValueField = "Id";
-                this.PlayerLb.DataBind();
-                this.PlayerLb.SelectedIndex = selectPlayerIndex;
-                BindRoleDropdownList(this.Role);
-                //
-                this.DeletePlayerBtn.OnClientClick = "if ( !confirm('Are you sure you want to delete this Player?')) return false;";
                 //Update permits
                 UpdatePermits();
             }
             // ShowPermits();
             ShowPermits();
+            RanderFactorPanel();
             //Home IP
             String homeIpFile = System.AppDomain.CurrentDomain.BaseDirectory + Constants.IP_FILE;
             if (File.Exists(homeIpFile))
                 this.HomeIPLb.Text = File.ReadAllText(System.AppDomain.CurrentDomain.BaseDirectory + Constants.IP_FILE);
 
         }
+        private void RanderFactorPanel()
+        {
+            IOrderedEnumerable<Factor> orderedFactors = Manager.Factors.OrderBy(factor => factor.PoolName).ThenBy(factor => factor.LowPoolName).//
+                ThenBy(factor => factor.LowPoolNumberFrom).ThenBy(factor => factor.CoopNumberFrom).ThenBy(factor => factor.HighPoolNumberFrom);
+            foreach (Factor factor in orderedFactors)
+            {
+                CreateFactorTableRow(factor);
+            }
+            CreateFactorTableRow(new Factor());
+        }
 
+        private TableCell CreatePoolNameCell(Factor factor, String poolNameType, String poolName)
+        {
+            TableCell poolNameCell = new TableCell();
+            DropDownList poolNameDDL = new DropDownList();
+            poolNameDDL.ID = factor.Id + "," + poolNameType;
+            poolNameDDL.DataSource = Manager.Pools;
+            poolNameDDL.DataTextField = "Name";
+            poolNameDDL.DataValueField = "Name";
+            poolNameDDL.DataBind();
+            poolNameDDL.SelectedValue = poolName;
+            if (factor.Id != null)
+            {
+                poolNameDDL.AutoPostBack = true;
+                poolNameDDL.SelectedIndexChanged += new EventHandler(FactorPoolNameDDL_Changed);
+            }
+            poolNameCell.Controls.Add(poolNameDDL);
+            return poolNameCell;
+        }
+
+        private void FactorPoolNameDDL_Changed(object sender, EventArgs e)
+        {
+            DropDownList ddl = (DropDownList)sender;
+            String[] ids = ddl.ID.Split(',');
+            Factor factor = Manager.Factors.Find(fa => fa.Id == ids[0]);
+            if (ids[1] == POOL_NAME) factor.PoolName = ddl.Text;
+            else if (ids[1] == LOW_POOL_NAME) factor.LowPoolName = ddl.Text;
+            else if (ids[1] == HIGH_POOL_NAME) factor.HighPoolName = ddl.Text;
+            DataAccess.Save(Manager);
+        }
+
+        private void FactorNumber_Changed(object sender, EventArgs e)
+        {
+            DropDownList ddl = (DropDownList)sender;
+            String[] ids = ddl.ID.Split(',');
+            Factor factor = Manager.Factors.Find(fa => fa.Id == ids[0]);
+            if (ids[1] == LOW_POOL_FROM) factor.LowPoolNumberFrom = int.Parse(ddl.Text);
+            else if (ids[1] == LOW_POOL_TO) factor.LowPoolNumberTo = int.Parse(ddl.Text);
+            else if (ids[1] == COOP_FROM) factor.CoopNumberFrom = int.Parse(ddl.Text);
+            else if (ids[1] == COOP_TO) factor.CoopNumberTo = int.Parse(ddl.Text);
+            else if (ids[1] == HIGH_POOL_FROM) factor.HighPoolNumberFrom = int.Parse(ddl.Text);
+            else if (ids[1] == HIGH_POOL_TO) factor.HighPoolNumberTo = int.Parse(ddl.Text);
+            else if (ids[1] == FACTOR_VALUE) factor.Value = decimal.Parse(ddl.Text);
+            DataAccess.Save(Manager);
+        }
+        
+        private TableCell CreateNumberCell(Factor factor, String numberType, String number, List<String> numbers)
+        {
+            TableCell numberCell = new TableCell();
+            DropDownList numberDDL = new DropDownList();
+            numberDDL.ID = factor.Id + "," + numberType;
+            numberDDL.DataSource = numbers;
+            numberDDL.DataBind();
+            numberDDL.SelectedValue = number;
+            if (factor.Id != null)
+            {
+                numberDDL.AutoPostBack = true;
+                numberDDL.SelectedIndexChanged += new EventHandler(FactorNumber_Changed);
+            }
+            numberCell.Controls.Add(numberDDL);
+            return numberCell;
+        }
+
+        private const String POOL_NAME = "PoolName";
+        private const String LOW_POOL_NAME = "LowPoolName";
+        private const String HIGH_POOL_NAME = "HighPoolName";
+        private const String LOW_POOL_FROM = "LowPoolFrom";
+        private const String LOW_POOL_TO = "LowPoolTo";
+        private const String COOP_FROM = "CoopFrom";
+        private const String COOP_TO = "CoopTo";
+        private const String HIGH_POOL_FROM = "HighPoolFrom";
+        private const String HIGH_POOL_TO = "HighPoolTo";
+        private const String FACTOR_VALUE = "FactorValue";
+        private const String ADD = "Add";
+        private const String DELETE = "Delete";
+        private List<String> playerNumbers = new List<String>() { "24", "18", "16", "15", "14", "13", "12", "11", "10", "8", "7", "5", "4", "3", "2", "1", "0" };
+        private List<String> factorNumbers = new List<String>() { "3", "2.5", "2", "1.5", "1", "0.5", "0.1", "0.01", "0"};
+
+        private void CreateFactorTableRow(Factor factor)
+        {
+            TableRow tableRow = new TableRow();
+            //Pool Name
+            tableRow.Cells.Add(CreatePoolNameCell(factor, POOL_NAME, factor.PoolName));
+            //Low pool name
+            tableRow.Cells.Add(CreatePoolNameCell(factor, LOW_POOL_NAME, factor.LowPoolName));
+            //Low pool number from
+            tableRow.Cells.Add(CreateNumberCell(factor, LOW_POOL_FROM, factor.LowPoolNumberFrom.ToString(), playerNumbers));
+            //Low pool number to
+            tableRow.Cells.Add(CreateNumberCell(factor, LOW_POOL_TO, factor.LowPoolNumberTo.ToString(), playerNumbers));
+            //Coop from
+            tableRow.Cells.Add(CreateNumberCell(factor, COOP_FROM, factor.CoopNumberFrom.ToString(), playerNumbers));
+            //Coop to
+            tableRow.Cells.Add(CreateNumberCell(factor, COOP_TO, factor.CoopNumberTo.ToString(), playerNumbers));
+            //high pool name
+            tableRow.Cells.Add(CreatePoolNameCell(factor, HIGH_POOL_NAME, factor.HighPoolName));
+            //high pool number from
+            tableRow.Cells.Add(CreateNumberCell(factor, HIGH_POOL_FROM, factor.HighPoolNumberFrom.ToString(), playerNumbers));
+            //high pool number to
+            tableRow.Cells.Add(CreateNumberCell(factor, HIGH_POOL_TO, factor.HighPoolNumberTo.ToString(), playerNumbers));
+            //Value
+            tableRow.Cells.Add(CreateNumberCell(factor, FACTOR_VALUE, factor.Value.ToString(), factorNumbers));
+
+            TableCell actionCell = new TableCell();
+            Button actionBtn = new Button();
+            actionBtn.ID = factor.Id + "," + (factor.Id == null ? ADD : DELETE);
+            actionBtn.Text = (factor.Id == null) ? ADD : DELETE;
+            actionBtn.Click += new EventHandler(ActionFactor_Click);
+            actionBtn.OnClientClick = "if ( !confirm('Are you sure?')) return false;";
+            actionCell.Controls.Add(actionBtn);
+            tableRow.Cells.Add(actionCell);
+            if (factor.Id == null)
+            {
+                tableRow.BackColor = System.Drawing.Color.CadetBlue;
+            }
+            this.FactorTable.Rows.Add(tableRow);
+        }
+
+        private void ActionFactor_Click(object sender, EventArgs e)
+        {
+            Button tb = (Button)sender;
+            String[] ids = tb.ID.Split(',');
+            if (ids[1] == ADD)
+            {
+                String poolName = ((DropDownList)this.Master.FindControl("MainContent").FindControl("," + POOL_NAME)).Text;
+                String lowPoolName = ((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_NAME)).Text;
+                int lowPoolFrom = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_FROM)).Text);
+                int lowPoolTo = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_TO)).Text);
+                int coopFrom = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + COOP_FROM)).Text);
+                int coopTo = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + COOP_TO)).Text);
+                String highPoolName = ((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HIGH_POOL_NAME)).Text;
+                int highPoolFrom = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HIGH_POOL_FROM)).Text);
+                int highPoolTo = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HIGH_POOL_TO)).Text);
+                decimal value = decimal.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + FACTOR_VALUE)).Text);
+                Factor factor = new Factor(poolName, lowPoolName, lowPoolFrom, lowPoolTo, coopFrom, coopTo, highPoolName, highPoolFrom, highPoolTo, value);
+                Manager.Factors.Add(factor);
+            }
+            else if (ids[1] == DELETE)
+            {
+                Factor factor = Manager.Factors.Find(fa => fa.Id == ids[0]);
+                Manager.Factors.Remove(factor);
+            }
+            DataAccess.Save(Manager);
+            Response.Redirect(Request.RawUrl);
+        }
 
         private void ShowPermits()
         {
@@ -137,119 +274,6 @@ namespace VballManager
 
         }
 
-        private void RebindPlayerList()
-        {
-            this.PlayerListbox.DataSource = Manager.Players.OrderBy(p => p.Name);
-            this.PlayerListbox.DataBind();
-            this.PlayerLb.DataSource = Manager.Players.OrderBy(p => p.Name);
-            this.PlayerLb.DataBind();
-            int count = 0;
-            foreach (ListItem playerItem in this.PlayerListbox.Items)
-            {
-                Player player = Manager.FindPlayerById(playerItem.Value);
-                if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.IsRegisterMember.ToString())
-                {
-                    playerItem.Selected = player.IsRegisterdMember;
-                }
-                else if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.IsActive.ToString())
-                {
-                    playerItem.Selected = player.IsActive;
-                }
-                else if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.Marked.ToString())
-                {
-                    playerItem.Selected = player.Marked;
-                }
-                else if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.Waiver.ToString())
-                {
-                    playerItem.Selected = player.SignedWaiver;
-                }
-                if (playerItem.Selected) count++;
-            }
-            this.SavePlayersBtn.Text = "Save(" + count + ")";
-        }
-
-        protected void AddPlayerBtn_Click(object sender, EventArgs e)
-        {
-            if (!IsSuperAdmin() || this.PlayerNameTb.Text == "")
-            {
-                return;
-            }
-            String[] names = this.PlayerNameTb.Text.Split(',');
-            foreach (String name in names)
-            {
-                if (Manager.PlayerNameExists(name.Trim()))
-                {
-                    continue;
-                }
-                Player player = new Player(name.Trim(), null, PlayerMarkCb.Checked);
-                player.Role = int.Parse(this.Role.SelectedValue);
-                player.WechatName = this.WechatNameTb.Text;
-                player.IsActive = this.PlayerActiveCb.Checked;
-                player.Birthday = this.PlayerBirthdayTb.Text;
-                Manager.Players.Add(player);
-            }
-            DataAccess.Save(Manager);
-            RebindPlayerList();
-            //Response.Redirect(Request.RawUrl);
-
-        }
-
-
-        protected void SavePlayerBtn_Click(object sender, EventArgs e)
-        {
-            if (!IsSuperAdmin() || this.PlayerNameTb.Text == "" || this.PlayerLb.SelectedItem == null)
-            {
-                return;
-            }
-            Player player = Manager.FindPlayerById(this.PlayerLb.SelectedItem.Value);
-            player.Name = PlayerNameTb.Text;
-            player.Passcode = PlayerPasscodeTb.Text;
-            player.Role = int.Parse(Role.SelectedValue);
-            player.WechatName = WechatNameTb.Text;
-            player.Marked = PlayerMarkCb.Checked;
-            player.IsActive = PlayerActiveCb.Checked;
-            player.SignedWaiver = PlayerWaiverSigned.Checked;
-            player.Birthday = PlayerBirthdayTb.Text;
-            //Save
-            DataAccess.Save(Manager);
-            RebindPlayerList();
-            //Response.Redirect(Request.RawUrl);
-        }
-
-        protected void DeletePlayerBtn_Click(object sender, EventArgs e)
-        {
-            if (!IsSuperAdmin())
-            {
-                return;
-            }
-            Manager.DeletePlayer(this.PlayerLb.SelectedValue);
-            //Save
-            DataAccess.Save(Manager);
-            RebindPlayerList();
-            //Response.Redirect(Request.RawUrl);
-        }
-
-
-
-        protected void PlayerListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!IsSuperAdmin() || this.PlayerLb.SelectedIndex < 0)
-            {
-                return;
-            }
-            Player player = Manager.FindPlayerById(this.PlayerLb.SelectedValue);
-            PlayerIdTb.Text = player.Id;
-            PlayerNameTb.Text = player.Name;
-            PlayerPasscodeTb.Text = player.Passcode;
-            PlayerMarkCb.Checked = player.Marked;
-            PlayerActiveCb.Checked = player.IsActive;
-            PlayerWaiverSigned.Checked = player.SignedWaiver;
-            PlayerBirthdayTb.Text = player.Birthday;
-            this.Role.SelectedValue = player.Role.ToString();
-            this.WechatNameTb.Text = player.WechatName;
-        }
-
-
         private void SetNextGameDate()
         {
             Session[Constants.GAME_DATE] = null;
@@ -265,10 +289,6 @@ namespace VballManager
                 }
             }
         }
-
-
-
-
 
         protected void SaveSystemBtn_Click(object sender, EventArgs e)
         {
@@ -297,6 +317,7 @@ namespace VballManager
             Manager.TimeZoneName = this.TimeZoneTb.Text;
             Manager.AdminEmail = this.AdminEmailTb.Text;
             Manager.MaxDropinFeeOwe = int.Parse(this.MaxDropinfeeOweTb.Text);
+            Manager.Season = this.SeasonCb.Text;
             DataAccess.Save(Manager);
             Response.Redirect(Request.RawUrl);
 
@@ -332,14 +353,6 @@ namespace VballManager
             return players.OrderBy(p => p.Name);
         }
 
-        protected void ClearPlayerSelectionBtn_Click(object sender, EventArgs e)
-        {
-            foreach (ListItem item in this.PlayerListbox.Items)
-            {
-                item.Selected = false;
-            }
-        }
-
         protected void ClearGamesBtn_Click(object sender, EventArgs e)
         {
             CurrentPool.Games.Clear();
@@ -350,42 +363,6 @@ namespace VballManager
         protected void ReloadSystemBtn_Click(object sender, EventArgs e)
         {
 
-        }
-
-        protected void SavePlayersBtn_Click(object sender, EventArgs e)
-        {
-            foreach (ListItem playerItem in this.PlayerListbox.Items)
-            {
-                Player player = Manager.FindPlayerById(playerItem.Value);
-                if (player != null)
-                {
-                    if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.IsRegisterMember.ToString())
-                    {
-                        //Create membership fee entry
-                        if (Manager.ClubMemberMode && !player.IsRegisterdMember && playerItem.Selected)
-                        {
-                            Fee fee = new Fee(Fee.FEETYPE_CLUB_MEMBERSHIP, Manager.RegisterMembeshipFee);
-                            fee.Date = DateTime.Today;
-                            player.Fees.Add(fee);
-                        }
-                        player.IsRegisterdMember = playerItem.Selected;
-                    }
-                    else if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.IsActive.ToString())
-                    {
-                        player.IsActive = playerItem.Selected;
-                    }
-                    else if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.Marked.ToString())
-                    {
-                        player.Marked = playerItem.Selected;
-                    }
-                    else if (this.PlayerPropertiesList.SelectedValue == PlayerBooleanProperties.Waiver.ToString())
-                    {
-                        player.SignedWaiver = playerItem.Selected;
-                    }
-                }
-            }
-            DataAccess.Save(Manager);
-            RebindPlayerList();
         }
 
         protected void ResetGamesBtn_Click(object sender, EventArgs e)
@@ -534,11 +511,6 @@ namespace VballManager
             DataAccess.Save(Manager);
         }
 
-        protected void PlayerPropertiesList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            RebindPlayerList();
-        }
-
         protected void SetMembershipBtn_Click(object sender, EventArgs e)
         {
             foreach (Pool pool in Manager.Pools)
@@ -559,19 +531,13 @@ namespace VballManager
             DataAccess.Save(Manager);
         }
 
-        protected void CreditToMembersBtn_Click(object sender, EventArgs e)
+        protected void RecalculateFactorBtn_Click(object sender, EventArgs e)
         {
-            foreach (ListItem playerItem in this.PlayerListbox.Items)
+            foreach (Pool pool in Manager.Pools.FindAll(p => p.IsLowPool))
             {
-                Player player = Manager.FindPlayerById(playerItem.Value);
-                if (player != null && playerItem.Selected)
+                foreach (Game game in pool.Games.FindAll(g => g.Date > Manager.AttendRateStartDate))
                 {
-                    //Create credit fee entry
-                    Fee fee = new Fee(Fee.FEETYPE_MEMBER_CREDIT, -30);
-                    fee.FeeType = FeeTypeEnum.Credit.ToString();
-                    fee.Date = DateTime.Today;
-                    player.Fees.Add(fee);
-
+                    Manager.ReCalculateFactor(pool, game.Date);
                 }
             }
             DataAccess.Save(Manager);

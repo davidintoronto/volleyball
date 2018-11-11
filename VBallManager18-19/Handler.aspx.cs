@@ -57,7 +57,7 @@ namespace VballManager
                     return;
                 }
             }
-            if (IsSpotAvailable(CurrentPool, TargetGameDate))
+            if (IsSpotAvailable(CurrentPool, TargetGameDate) || (CurrentPool.DayOfWeek == DayOfWeek.Friday && Manager.IsPlayerAttendedThisMondayGameWithPowerReserveFactor(CurrentPool, TargetGameDate, player)))
             {
                 //Check to see if the player has dropin spot in another pool on same day
                 if (IsReservedInAnotherPool(playerId)) return;
@@ -165,6 +165,7 @@ namespace VballManager
             Game game = CurrentPool.FindGameByDate(TargetGameDate);
             if (ReserveSpot(CurrentPool, game, player))
             {
+                Manager.ReCalculateFactor(CurrentPool, TargetGameDate);
                 Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, TargetGameDate);
                 LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Reserved", CurrentUser.Name);
                 Manager.Logs.Add(log);
@@ -193,6 +194,7 @@ namespace VballManager
             Game game = CurrentPool.FindGameByDate(TargetGameDate);
             if (CancelSpot(CurrentPool, game, player))
             {
+                Manager.ReCalculateFactor(CurrentPool, TargetGameDate);
                 Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.CANCELLED, CurrentPool, CurrentPool, TargetGameDate);
                 LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Cancelled", CurrentUser.Name);
                 Manager.Logs.Add(log);
@@ -209,7 +211,8 @@ namespace VballManager
             String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
             Player player = Manager.FindPlayerById(playerId);
             if (game.Members.Items.Exists(member => member.PlayerId == playerId && member.Status == InOutNoshow.In) ||
-                game.Dropins.Items.Exists(dropin => dropin.PlayerId == playerId && dropin.Status == InOutNoshow.In))
+                game.Dropins.Items.Exists(dropin => dropin.PlayerId == playerId && dropin.Status == InOutNoshow.In) ||
+                game.WaitingList.Exists(playerId))
             {
                 Pool sameDayPool = Manager.Pools.Find(p => p.DayOfWeek == CurrentPool.DayOfWeek && p.Name != CurrentPool.Name);
                 game = sameDayPool.FindGameByDate(TargetGameDate);
@@ -224,6 +227,7 @@ namespace VballManager
         private void MoveSpot(Pool pool, Game game, Player player)
         {
             Pool originalPool = MoveReservation(pool, game, player);
+            Manager.ReCalculateFactor(CurrentPool, TargetGameDate);
             if (originalPool == null)
             {
                 Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, pool, pool, game.Date);
@@ -251,6 +255,7 @@ namespace VballManager
            Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
            LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Marked no-show", CurrentUser.Name);
            Manager.Logs.Add(log);
+           Manager.ReCalculateFactor(CurrentPool, TargetGameDate);
            DataAccess.Save(Manager);
            Response.Redirect(Constants.RESERVE_PAGE);
        }

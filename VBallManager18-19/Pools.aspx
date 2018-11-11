@@ -50,6 +50,17 @@
         .auto-style5 {
             width: 242px;
         }
+        .auto-style6 {
+            width: 242px;
+            height: 46px;
+        }
+        .auto-style7 {
+            height: 46px;
+        }
+        .auto-style8 {
+            width: 131px;
+            height: 46px;
+        }
     </style>
  </asp:Content>
 
@@ -200,16 +211,16 @@
 
            </tr>
            <tr>
-              <td class="auto-style5"  >Membership Fee</td>
-                <td  >
+              <td class="auto-style6"  >Membership Fee</td>
+                <td class="auto-style7"  >
                     <asp:TextBox ID="MemberShipFeeTb" runat="server" Width="29px"></asp:TextBox>
                     <asp:CompareValidator ID="CompareValidator6" runat="server" 
                         ControlToValidate="MemberShipFeeTb" ErrorMessage="Integers only please" 
                         ForeColor="#FF3300" Operator="DataTypeCheck" Type="Integer"></asp:CompareValidator>
                </td>
-                               <td class="auto-style1">
+                               <td class="auto-style8">
                                    Co-op reserve less than players</td>
-                <td>
+                <td class="auto-style7">
                     <asp:TextBox ID="CoopLessThanPlayersTb" runat="server" Width="29px"></asp:TextBox>
                 </td>
 
@@ -228,7 +239,7 @@
                            </td>
            </tr>
            <tr>
-                           <td class="style12" colspan="2">
+                           <td colspan="2">
                                &nbsp;</td>
                <td class="style15">
                     Wechat Group</td>
@@ -252,7 +263,7 @@
                            </td>
            </tr>
            <tr>
-                           <td class="style12" colspan="2">
+                           <td colspan="2">
                                &nbsp;</td>
                <td class="style15">
                     &nbsp;</td>
@@ -262,6 +273,42 @@
                     Days to reserve (MonPlayer)</td>
                 <td>
                     <asp:TextBox ID="DaysToReserveMondayPlayerTb" runat="server" Width="29px">0</asp:TextBox>
+                           </td>
+               <td class="auto-style1">
+                    &nbsp;</td>
+               <td>
+                    
+                           &nbsp;</td>
+           </tr>
+          <tr>
+                           <td colspan="2">
+                               &nbsp;</td>
+               <td class="style15">
+                    &nbsp;</td>
+               <td>
+                    &nbsp;</td>
+               <td class="auto-style5">
+                    Advanced Reserve Factor</td>
+                <td>
+                    <asp:TextBox ID="AdvancedReservedFactorTb" runat="server" Width="29px">0</asp:TextBox>
+                           </td>
+               <td class="auto-style1">
+                    &nbsp;</td>
+               <td>
+                    
+                           &nbsp;</td>
+           </tr>
+          <tr>
+                           <td colspan="2">
+                               &nbsp;</td>
+               <td class="style15">
+                    &nbsp;</td>
+               <td>
+                    &nbsp;</td>
+               <td class="auto-style5">
+                    Power Reserve Factor</td>
+                <td>
+                    <asp:TextBox ID="PowerReserveFactorTb" runat="server" Width="29px">0</asp:TextBox>
                            </td>
                <td class="auto-style1">
                     &nbsp;</td>
@@ -317,10 +364,13 @@
                 </tr>
                <tr>
                     <td align="center" class="style8">
+                        <asp:Button ID="MoveToDropinBtn" runat="server" onclick="MoveToDropinBtn_Click" Text="==&gt;" Width="80px" />
                     </td>
                 </tr>
                  <tr>
-                    <td align="center" class="style8">&nbsp;</td>
+                    <td align="center" class="style8">
+                        <asp:Button ID="MoveToMemberBtn" runat="server" onclick="MoveToMemberBtn_Click" Text="&lt;==" Width="80px" />
+                     </td>
                 </tr>
                 <tr>
                     <td align="center" class="style8">&nbsp;</td>
@@ -368,12 +418,13 @@
                             Text="Save" Width="80px" />                        &nbsp;</td>
                 </tr>
                 <tr>
-                    <td align="center">Co-op
-                    <asp:CheckBox ID="DropinCoopCb" runat="server" />
+                    <td align="center">&nbsp;<asp:CheckBox ID="DropinCoopCb" runat="server" Text="Co-op" />
                     </td>
                 </tr>
                 <tr>
-                    <td align="center">&nbsp;</td>
+                    <td align="center">
+                        <asp:CheckBox ID="WaiveBenefitCb" runat="server" Text="Waive Benefit" />
+                    </td>
                  </tr>
                  <tr>
                     <td align="center">

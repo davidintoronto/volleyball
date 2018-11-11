@@ -2,12 +2,14 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
          <asp:Panel ID="SurveyPanel" runat="server">
-            <asp:Table ID="SurveyTable" runat="server"  Style="width: 100%;  font-size: 5em;" Caption=""
+            <asp:Table ID="StatsTable" runat="server"  Style="width: 100%;  font-size: 5em;" Caption=""
                 Font-Bold="True" BackColor="#FAE0DC"> 
              <asp:TableHeaderRow ID="TableHeaderRow" HorizontalAlign="Left" BackColor="#B3AB4D">
                 <asp:TableHeaderCell ID="TableHeaderCell9" Text="" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
-                <asp:TableHeaderCell ID="TableHeaderCell6" Text="Player Name" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
-                <asp:TableHeaderCell ID="PlayedCountCell" Text="Attended" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
+                <asp:TableHeaderCell ID="TableHeaderCell6" Text="Player" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
+                <asp:TableHeaderCell ID="PlayedCountCell" Text="Played" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
+                <asp:TableHeaderCell ID="AdditionalFactorCell" Text="Bonus" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
+                <asp:TableHeaderCell ID="TableHeaderCell1" Text="Total" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
              </asp:TableHeaderRow>
             </asp:Table>
         </asp:Panel>

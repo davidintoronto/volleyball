@@ -57,7 +57,7 @@ namespace VballManager
             {
                 return false;
             }
-            if (Manager.ActionPermitted(action, CurrentUser.Role) || CurrentUser.Id == player.Id || player.AuthorizedUsers.Contains(CurrentUser.Id))
+            if (player.Role == (int)Roles.Guest || Manager.ActionPermitted(action, CurrentUser.Role) || CurrentUser.Id == player.Id || player.AuthorizedUsers.Contains(CurrentUser.Id))
             {
                 return true;
             }
@@ -143,12 +143,18 @@ namespace VballManager
         protected DateTime DropinSpotOpeningDate(Pool pool, DateTime gameDate, Player player)
         {
             DateTime reserveDate = TimeZoneInfo.ConvertTimeFromUtc(gameDate, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
-            if (player.IsRegisterdMember)
+            if (player.IsRegisterdMember && !pool.Dropins.FindByPlayerId(player.Id).WaiveBenefit)
             {
                 //If this is Friday pool, check to see if player attend most recent monday game
                 if (pool.DayOfWeek == DayOfWeek.Friday && Manager.IsPlayerAttendedThisWeekMondayGame(gameDate, player))
                 {
-                    return reserveDate.AddDays(-1 * pool.DaysToReserve4MondayPlayer).AddHours(-1 * reserveDate.Hour + Manager.DropinSpotOpeningHour);
+                   Pool anotherDayLowPool = Manager.Pools.Find(p => p.DayOfWeek != pool.DayOfWeek && p.IsLowPool);
+                   Pool anotherDayhighPool = Manager.Pools.Find(p => p.DayOfWeek != pool.DayOfWeek && !p.IsLowPool);
+                   decimal factor = CalculateFactor(pool, anotherDayLowPool, anotherDayhighPool, gameDate);
+                   if (factor >= pool.FactorForAdvancedReserve)
+                   {
+                       return reserveDate.AddDays(-1 * pool.DaysToReserve4MondayPlayer).AddHours(-1 * reserveDate.Hour + Manager.DropinSpotOpeningHour);
+                   }
                 }
                 return reserveDate.AddDays(-1 * pool.DaysToReserve4Member).AddHours(-1 * reserveDate.Hour + Manager.DropinSpotOpeningHour);
             }
@@ -156,6 +162,65 @@ namespace VballManager
             {
                 return reserveDate.AddDays(-1 * pool.DaysToReserve).AddHours(-1 * reserveDate.Hour + Manager.DropinSpotOpeningHour);
             }
+        }
+
+
+        //Calculate factor for next reservation
+        protected decimal CalculateNextFactor(Pool pool, DateTime gameDate)
+        {
+            Pool anotherDayPool = Manager.Pools.Find(p => p.DayOfWeek != pool.DayOfWeek && p.IsLowPool == pool.IsLowPool);
+            Game game = pool.FindGameByDate(gameDate);
+            int currentPoolNumberOfPlayer = game.NumberOfReservedPlayers;
+            Pool sameDayPool = Manager.Pools.Find(p => p.DayOfWeek == pool.DayOfWeek && p.Name != pool.Name);
+            Game sameDayPoolGame = sameDayPool.FindGameByDate(gameDate);
+            int sameDayPoolNumberOfPlayers = sameDayPoolGame.NumberOfReservedPlayers;
+            Factor factor = null;
+            if (pool.IsLowPool)
+            {
+                int coopNumberOfPlayers = sameDayPool.FindGameByDate(gameDate).Dropins.Items.FindAll(pickup => pickup.IsCoop).Count;
+                if (MoveToHighPoolRequired(sameDayPool, pool, sameDayPoolGame, game) && DropinSpotAvailableForCoop(sameDayPool, gameDate))
+                {
+                    coopNumberOfPlayers++;
+                    sameDayPoolNumberOfPlayers++;
+                }
+                else
+                {
+                    currentPoolNumberOfPlayer++;
+                }
+                factor = Manager.Factors.Find(f => f.PoolName == anotherDayPool.Name && f.LowPoolName == pool.Name && f.LowPoolNumberFrom <= currentPoolNumberOfPlayer && currentPoolNumberOfPlayer <= f.LowPoolNumberTo &&//
+                    f.CoopNumberFrom <= coopNumberOfPlayers && coopNumberOfPlayers <= f.CoopNumberTo && f.HighPoolName == sameDayPool.Name && f.HighPoolNumberFrom <= sameDayPoolNumberOfPlayers &&//
+                   sameDayPoolNumberOfPlayers <= f.HighPoolNumberTo);
+            }
+            else
+            {
+                int coopNumberOfPlayers = pool.FindGameByDate(gameDate).Dropins.Items.FindAll(pickup => pickup.IsCoop).Count;
+                if (MoveToHighPoolRequired(pool, sameDayPool, game, sameDayPoolGame) && DropinSpotAvailableForCoop(pool, gameDate))
+                {
+                    coopNumberOfPlayers++;
+                    currentPoolNumberOfPlayer++;
+                }
+                else
+                {
+                    sameDayPoolNumberOfPlayers++;
+                }
+                factor = Manager.Factors.Find(f => f.PoolName == anotherDayPool.Name && f.LowPoolName == sameDayPool.Name && f.LowPoolNumberFrom <= sameDayPoolNumberOfPlayers && sameDayPoolNumberOfPlayers <= f.LowPoolNumberTo &&//
+                     f.CoopNumberFrom <= coopNumberOfPlayers && coopNumberOfPlayers <= f.CoopNumberTo && f.HighPoolName == pool.Name && f.HighPoolNumberFrom <= currentPoolNumberOfPlayer &&//
+                     currentPoolNumberOfPlayer <= f.HighPoolNumberTo);
+            }
+            if (factor == null) return 0;
+            return factor.Value;
+        }
+
+        protected decimal CalculateFactor(Pool pool, Pool lowPool, Pool highPool, DateTime gameDate)
+        {
+            int lowPoolNumberOfPlayer = lowPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
+            int highPoolNumberOfPlayer = highPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
+            int coopNumberOfPlayers = highPool.FindGameByDate(gameDate).Dropins.Items.FindAll(pickup => pickup.IsCoop && pickup.Status == InOutNoshow.In).Count;
+            Factor factor = Manager.Factors.Find(f => f.PoolName == pool.Name && f.LowPoolName == lowPool.Name && f.LowPoolNumberFrom <= lowPoolNumberOfPlayer && lowPoolNumberOfPlayer <= f.LowPoolNumberTo &&//
+                f.CoopNumberFrom <= coopNumberOfPlayers && coopNumberOfPlayers <= f.CoopNumberTo && f.HighPoolName == highPool.Name && f.HighPoolNumberFrom <= highPoolNumberOfPlayer &&//
+               highPoolNumberOfPlayer <= f.HighPoolNumberTo);
+            if (factor == null) return 0;
+            return factor.Value;
         }
 
         protected bool IsDropinSpotOpeningForCoop(Pool pool, DateTime gameDate, Player player)

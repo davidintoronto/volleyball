@@ -8,12 +8,19 @@ namespace VballManager
     public class Game
     {
         private DateTime date;
+        private decimal factor;
         private VList<Attendee> members = new VList<Attendee>();
         private VList<Pickup> dropins = new VList<Pickup>();
         private VList<Waiting> waitingList = new VList<Waiting>();
 
         public Game()
         { }
+
+        public decimal Factor
+        {
+            get { return factor; }
+            set { factor = value; }
+        }
 
         public VList<Attendee> Members
         {

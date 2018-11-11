@@ -22,13 +22,13 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.Panel SurveyPanel;
         
         /// <summary>
-        /// SurveyTable control.
+        /// StatsTable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Table SurveyTable;
+        protected global::System.Web.UI.WebControls.Table StatsTable;
         
         /// <summary>
         /// TableHeaderRow control.
@@ -65,6 +65,24 @@ namespace VballManager {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TableHeaderCell PlayedCountCell;
+        
+        /// <summary>
+        /// AdditionalFactorCell control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TableHeaderCell AdditionalFactorCell;
+        
+        /// <summary>
+        /// TableHeaderCell1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell1;
         
         /// <summary>
         /// DropinNameTb control.

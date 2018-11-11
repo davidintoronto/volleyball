@@ -87,7 +87,14 @@
     </asp:Panel>
     <br />
     <asp:Panel ID="EmoPanel" runat="server" BackColor="#99CCFF">
-        <asp:Table ID="EmoTable" runat="server" Caption="Emo Messages" Width="100%"
+        <table id="Table2" style="width: 100%;">
+            <tr>
+                <td class="auto-style8">
+                    <asp:CheckBox ID="EnableEmoCb" runat="server" AutoPostBack="True" OnCheckedChanged="EnableEmoCb_CheckedChanged" Text="Enbale Sending Emo Messages" />
+                </td>
+             </tr>
+    </asp:Panel>
+       <asp:Table ID="EmoTable" runat="server" Caption="Emo Messages" Width="100%"
             BorderColor="#D6CCE1" Font-Bold="True" Font-Size="Medium" BackColor="#99CCFF">
             <asp:TableHeaderRow ID="EmoTableHeaderRow" HorizontalAlign="Left" BackColor="#B3AB4D">
                 <asp:TableHeaderCell Text="Type" HorizontalAlign="center"></asp:TableHeaderCell>
@@ -120,7 +127,7 @@
             </tr>
             <tr>
                 <td align="center">
-                    <asp:Button ID="SetWechatNameBtn" runat="server" OnClick="SetWechatNameBtn_Click" Text="Set Username as Wechat" Width="181px" />
+                    <asp:Button ID="SetWechatNameBtn" runat="server" OnClick="SetWechatNameBtn_Click" Text="Set Username as Wechat" Width="181px" Visible="False" />
                 </td>
             </tr>
         </table>

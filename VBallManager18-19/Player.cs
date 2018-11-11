@@ -26,7 +26,7 @@ namespace VballManager
         private String birthday;
         public int MondayPlayedCount;
         public int FridayPlayedCount;
-        public int TotalPlayedCount;
+        public decimal TotalPlayedCount;
 
 
         public String Birthday
@@ -254,10 +254,17 @@ namespace VballManager
     public class Dropin : Person
     {
         private bool isCoop;
+        private bool waiveBenefit;
         private DateTime lastCoopDate;
 
         public Dropin() { }
 
+
+        public bool WaiveBenefit
+        {
+            get { return waiveBenefit; }
+            set { waiveBenefit = value; }
+        }
         public Dropin(String id)
         {
             this.PlayerId = id;
@@ -322,6 +329,6 @@ namespace VballManager
 
     public enum Roles
     {
-        SuperAdmin=9, Admin=8, Manager=6, Captain=4, Player=2, User=0
+        SuperAdmin=9, Admin=8, Manager=6, Captain=4, Player=2, Guest=1, User=0
     }
 }

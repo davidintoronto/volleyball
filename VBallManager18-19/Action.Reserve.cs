@@ -55,6 +55,7 @@ namespace VballManager
             {
                 dropin = new Pickup(player.Id);
                 dropin.Status = InOutNoshow.Out;
+                dropin.IsCoop = true;
                 game.Dropins.Add(dropin);
             }
             if (dropin != null && dropin.Status == InOutNoshow.Out)

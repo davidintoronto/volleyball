@@ -9,13 +9,16 @@ namespace VballManager
 {
     public class DataAccess
     {
-
+        static object dbLock = new object();
         public static void Save(VolleyballClub manager)
         {
 
             var jss = new JavaScriptSerializer();
             String data = jss.Serialize(manager);
-            File.WriteAllText(System.AppDomain.CurrentDomain.BaseDirectory + Constants.DATAFILE + DateTime.Today.ToString("yyyy-MM-dd"), data);
+            lock (dbLock)
+            {
+                File.WriteAllText(System.AppDomain.CurrentDomain.BaseDirectory + Constants.DATAFILE + DateTime.Today.ToString("yyyy-MM-dd"), data);
+            }
         }
 
         public static VolleyballClub LoadReservation()
@@ -25,19 +28,22 @@ namespace VballManager
                 String dataFilePath = System.AppDomain.CurrentDomain.BaseDirectory + Constants.DATAFILE + DateTime.Today.AddDays(-1 * i).ToString("yyyy-MM-dd");
                 if (File.Exists(dataFilePath))
                 {
-                    var jss = new JavaScriptSerializer();
-                    String data = File.ReadAllText(dataFilePath);
-                    VolleyballClub manager = jss.Deserialize<VolleyballClub>(data);
-                    //
-                    foreach (Pool pool in manager.Pools)
+                    lock (dbLock)
                     {
-                        if (pool.Id == null)
+                        var jss = new JavaScriptSerializer();
+                        String data = File.ReadAllText(dataFilePath);
+                        VolleyballClub manager = jss.Deserialize<VolleyballClub>(data);
+                        //
+                        foreach (Pool pool in manager.Pools)
                         {
-                            pool.Id = Guid.NewGuid().ToString();
-                            Save(manager);
+                            if (pool.Id == null)
+                            {
+                                pool.Id = Guid.NewGuid().ToString();
+                                Save(manager);
+                            }
                         }
+                        return manager;
                     }
-                    return manager;
                 }
             }
             return new VolleyballClub();

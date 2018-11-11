@@ -230,6 +230,12 @@ namespace VballManager
             int span = 7;
             FillGameInfoRow("Date", 1, ((DateTime)Session[Constants.GAME_DATE]).ToString("ddd, MMM d, yyyy"), span);
             FillGameInfoRow("Time", 1, pool.GameScheduleTime, span);
+            Game game = pool.FindGameByDate(date);
+            if (game.Factor > 0)
+            {
+                FillGameInfoRow("Current Factor", span, game.Factor.ToString(), 1);
+                FillGameInfoRow("Next Factor", span, CalculateNextFactor(CurrentPool, date).ToString(), 1);
+            }
             FillGameInfoRow("Members", span, memberPlayers.ToString(), 1);
             TableRow dropinRow = new TableRow();
             TableCell dropinLabel = new TableCell();
@@ -258,7 +264,6 @@ namespace VballManager
                 FillGameInfoRow("Total Players", span, (memberPlayers + dropinPlayers).ToString(), 1);
             }
         }
-
 
 
         private void FillGameInfoRow(String label, int labelColSpan, String value, int valueColSpan)
@@ -586,7 +591,18 @@ namespace VballManager
             {
                 imageBtn.ImageUrl = "~/Icons/Remove.png";
                  imageBtn.Click += new ImageClickEventHandler(Cancel_Click);
-                 if (CurrentPool.IsLowPool && Manager.ActionPermitted(Actions.Move_To_High_Pool, CurrentUser.Role))
+             }
+            else if (attendee.Status == InOutNoshow.NoShow)
+            {
+                imageBtn.ImageUrl = "~/Icons/noShow.png";
+                 imageBtn.Click += new ImageClickEventHandler(Cancel_Click);
+            }else{
+                imageBtn.ImageUrl = "~/Icons/Add.png";
+                imageBtn.Click += new ImageClickEventHandler(Reserve_Click);          
+            }
+            if (isWaiting || attendee.Status == InOutNoshow.In)
+            { 
+                if (CurrentPool.IsLowPool && Manager.ActionPermitted(Actions.Move_To_High_Pool, CurrentUser.Role))
                  {
                      ImageButton moveBtn = new ImageButton();
                      moveBtn.ID = player.Id + ",move";
@@ -596,14 +612,6 @@ namespace VballManager
                      moveBtn.Click += MoveFromCurrentPool_Click;
                      actionCell.Controls.Add(moveBtn);
                  }
-            }
-            else if (attendee.Status == InOutNoshow.NoShow)
-            {
-                imageBtn.ImageUrl = "~/Icons/noShow.png";
-                 imageBtn.Click += new ImageClickEventHandler(Cancel_Click);
-            }else{
-                imageBtn.ImageUrl = "~/Icons/Add.png";
-                imageBtn.Click += new ImageClickEventHandler(Reserve_Click);          
             }
             
             imageBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
@@ -746,7 +754,7 @@ namespace VballManager
             foreach (Attendee attendee in game.Members.Items)
             {
                 Player player = Manager.FindPlayerById(attendee.PlayerId);
-                player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType);
+                //player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType);
                 players.Add(player);
             }
             //return players.OrderByDescending(p => p.TotalPlayedCount);
@@ -759,7 +767,7 @@ namespace VballManager
              foreach (Member member in pool.Members.Items)
              {
                  Player player = Manager.FindPlayerById(member.PlayerId);
-                 player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType);
+                 //player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType);
                  players.Add(player);
              }
             // return players.OrderByDescending(p => p.TotalPlayedCount);
@@ -773,7 +781,7 @@ namespace VballManager
             foreach (Attendee attendee in game.Dropins.Items)
             {
                 Player player = Manager.FindPlayerById(attendee.PlayerId);
-                player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType);
+                //player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType);
                 players.Add(player);
             }
             return players.OrderBy(dropin => dropin.Name).ToList();
@@ -786,33 +794,12 @@ namespace VballManager
             foreach (Dropin dropin in pool.Dropins.Items)
             {
                 Player player = Manager.FindPlayerById(dropin.PlayerId);
-                player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType);
+                //player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType);
                 players.Add(player);
             }
             return players.OrderBy(dropin => dropin.Name).ToList();
 
         }
-
-        private int CalculatePlayedStats(Player player, String statsType)
-        {
-            int playedCount = 0;
-            if (statsType == StatsTypes.None.ToString())
-                return playedCount;
-            foreach (Pool pool in Manager.Pools)
-            {
-                if (statsType == StatsTypes.Week.ToString() || pool.DayOfWeek == CurrentPool.DayOfWeek)
-                {
-                    foreach (Game game in pool.Games)
-                    {
-                        if (game.Date.Date > Manager.AttendRateStartDate.Date && game.Date.Date < Manager.EastDateTimeToday.Date && (game.Members.Items.Exists(member=> member.PlayerId == player.Id && member.Status == InOutNoshow.In) || game.Dropins.Items.Exists(pickup=>pickup.PlayerId == player.Id && pickup.Status == InOutNoshow.In)))
-                        {
-                            playedCount++;
-                        }
-                    }
-                }
-            }
-            return playedCount;
-        } 
 
     }
 }

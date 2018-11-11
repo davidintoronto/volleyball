@@ -10,150 +10,195 @@
 namespace VballManager {
     
     
-    public partial class PoolStatistics {
+    public partial class Players {
         
         /// <summary>
-        /// PoolStatPanel control.
+        /// PlayerPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel PoolStatPanel;
+        protected global::System.Web.UI.WebControls.Panel PlayerPanel;
         
         /// <summary>
-        /// PoolStatTable control.
+        /// PlayerLb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Table PoolStatTable;
+        protected global::System.Web.UI.WebControls.ListBox PlayerLb;
         
         /// <summary>
-        /// TableHeaderRow control.
+        /// PlayerNameTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderRow TableHeaderRow;
+        protected global::System.Web.UI.WebControls.TextBox PlayerNameTb;
         
         /// <summary>
-        /// TotalCell control.
+        /// PlayerIdTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderCell TotalCell;
+        protected global::System.Web.UI.WebControls.TextBox PlayerIdTb;
         
         /// <summary>
-        /// TableHeaderCell9 control.
+        /// PlayerBirthdayTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell9;
+        protected global::System.Web.UI.WebControls.TextBox PlayerBirthdayTb;
         
         /// <summary>
-        /// TableHeaderCell4 control.
+        /// Role control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell4;
+        protected global::System.Web.UI.WebControls.DropDownList Role;
         
         /// <summary>
-        /// TableHeaderCell6 control.
+        /// WechatNameTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell6;
+        protected global::System.Web.UI.WebControls.TextBox WechatNameTb;
         
         /// <summary>
-        /// FullWithWaitingCell control.
+        /// PlayerActiveCb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderCell FullWithWaitingCell;
+        protected global::System.Web.UI.WebControls.CheckBox PlayerActiveCb;
         
         /// <summary>
-        /// FullTable control.
+        /// PlayerMarkCb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Table FullTable;
+        protected global::System.Web.UI.WebControls.CheckBox PlayerMarkCb;
         
         /// <summary>
-        /// TableHeaderRow1 control.
+        /// PlayerWaiverSigned control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderRow TableHeaderRow1;
+        protected global::System.Web.UI.WebControls.CheckBox PlayerWaiverSigned;
         
         /// <summary>
-        /// TableHeaderCell1 control.
+        /// PlayerPasscodeTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell1;
+        protected global::System.Web.UI.WebControls.TextBox PlayerPasscodeTb;
         
         /// <summary>
-        /// TableHeaderCell2 control.
+        /// AddPlayerBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell2;
+        protected global::System.Web.UI.WebControls.Button AddPlayerBtn;
         
         /// <summary>
-        /// TableHeaderCell3 control.
+        /// UpdatePlayerBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell3;
+        protected global::System.Web.UI.WebControls.Button UpdatePlayerBtn;
         
         /// <summary>
-        /// TableHeaderCell5 control.
+        /// DeletePlayerBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell5;
+        protected global::System.Web.UI.WebControls.Button DeletePlayerBtn;
         
         /// <summary>
-        /// TableHeaderCell7 control.
+        /// AllWechatNameBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell7;
+        protected global::System.Web.UI.WebControls.Button AllWechatNameBtn;
         
         /// <summary>
-        /// TableHeaderCell8 control.
+        /// PlayerPropertiesList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell8;
+        protected global::System.Web.UI.WebControls.DropDownList PlayerPropertiesList;
+        
+        /// <summary>
+        /// SetMembershipBtn0 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SetMembershipBtn0;
+        
+        /// <summary>
+        /// CreditToMembersBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button CreditToMembersBtn;
+        
+        /// <summary>
+        /// PlayerListbox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList PlayerListbox;
+        
+        /// <summary>
+        /// SavePlayersBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SavePlayersBtn;
+        
+        /// <summary>
+        /// Panel2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel2;
     }
 }

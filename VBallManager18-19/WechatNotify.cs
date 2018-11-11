@@ -14,10 +14,17 @@ namespace VballManager
         private String wechatPoolMessage;
         private String wechatPrimaryMemberMessage;
         private String wechatToAllTestMessage;
+        private bool enableEmoMessage = false;
         private List<EmoMessage> emoMessages = new List<EmoMessage>();
 
 
         public WechatNotify() { }
+
+        public bool EnableEmoMessage
+        {
+            get { return enableEmoMessage; }
+            set { enableEmoMessage = value; }
+        }
 
         public bool Enable
         {

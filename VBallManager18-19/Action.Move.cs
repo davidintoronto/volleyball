@@ -68,7 +68,7 @@ namespace VballManager
             }
         }
 
-        private bool MoveToHighPoolRequired(Pool highPool, Pool lowPool, Game highPoolGame, Game lowPoolGame)
+        protected bool MoveToHighPoolRequired(Pool highPool, Pool lowPool, Game highPoolGame, Game lowPoolGame)
         {
             return (highPoolGame.NumberOfReservedPlayers < highPool.LessThanPayersForCoop && lowPoolGame.NumberOfReservedPlayers > lowPool.LessThanPayersForCoop && lowPoolGame.NumberOfReservedPlayers > highPoolGame.NumberOfReservedPlayers +1) || //
            (lowPoolGame.WaitingList.Count > 0 && highPoolGame.NumberOfReservedPlayers < highPool.MaximumPlayerNumber);

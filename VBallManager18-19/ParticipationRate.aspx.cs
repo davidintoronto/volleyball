@@ -30,24 +30,12 @@ namespace VballManager
             }
             //   CreateTableHead();
             Pool pool = Manager.FindPoolByName(poolName);
-            List<Player> players = new List<Player>();
-            foreach (Person person in pool.AllPlayers.Items)
-            {
-                Player player = Manager.FindPlayerById(person.PlayerId);
-                if (player.IsActive && player.IsRegisterdMember && !pool.Dropins.Items.Exists(dropin=>dropin.PlayerId==person.PlayerId && dropin.IsCoop))
-                {
-                    player.TotalPlayedCount = CalculatePlayedStats(pool, player);
-                    players.Add(player);
-                }
-            }
-            //Statistic played count
-            IEnumerable<Player> sortedPlayers = players.OrderByDescending(p => p.TotalPlayedCount);
             int order = 1;
-            foreach (Player player in sortedPlayers)
+            foreach (Stats stats in CalculateStats(pool))
             {
-                FillPreRegister(order++, player);
+                FillList(order++, stats);
             }
-             this.SurveyTable.Caption = "Pool " + pool.Name + " Attendance Rate";
+            this.StatsTable.Caption = "Pool " + pool.Name + " Attendance Rate";
         }
 
         private Pool CurrentPool
@@ -59,28 +47,36 @@ namespace VballManager
             }
             set { }
         }
-        private void FillPreRegister(int order, Player player)
+        private void FillList(int order, Stats stats)
         {
-             TableRow row = new TableRow();
+            TableRow row = new TableRow();
             //Order
             TableCell cell = new TableCell();
             cell.Text = order.ToString();
             row.Cells.Add(cell);
             //Name
             cell = new TableCell();
-            cell.Text = player.Name;
- 
-            row.Cells.Add(cell);
-             //PlayerCount
-            cell = new TableCell();
-            cell.Text = player.TotalPlayedCount.ToString(); ;
-            row.Cells.Add(cell);
-            this.SurveyTable.Rows.Add(row);
-        }
- 
-  
+            cell.Text = stats.Player.Name;
 
-  
+            row.Cells.Add(cell);
+            //PlayerCount
+            cell = new TableCell();
+            cell.Text = stats.PlayedCount.ToString(); ;
+            row.Cells.Add(cell);
+            //Bonus
+            cell = new TableCell();
+            cell.Text = stats.FactorBonus.ToString(); ;
+            row.Cells.Add(cell);
+            //total
+            cell = new TableCell();
+            cell.Text = stats.Total.ToString(); ;
+            row.Cells.Add(cell);
+            this.StatsTable.Rows.Add(row);
+        }
+
+
+
+
         private VolleyballClub Manager
         {
             get
@@ -91,25 +87,86 @@ namespace VballManager
             set { }
         }
 
-        private int CalculatePlayedStats(Pool thePool, Player player)
+        private IEnumerable<Stats> CalculateStats(Pool pool)
         {
-            int playedCount = 0;
-            if (thePool.StatsType == StatsTypes.None.ToString())
-                return playedCount;
-            foreach (Pool pool in Manager.Pools)
+            List<Stats> statsList = new List<Stats>();
+            List<Player> players = new List<Player>();
+            foreach (Person person in pool.AllPlayers.Items)
             {
-                if (thePool.StatsType == StatsTypes.Week.ToString() || pool.DayOfWeek == thePool.DayOfWeek)
+                Player player = Manager.FindPlayerById(person.PlayerId);
+                if (player.IsActive && player.IsRegisterdMember && !pool.Dropins.Items.Exists(dropin => dropin.PlayerId == person.PlayerId && dropin.IsCoop))
                 {
-                    foreach (Game game in pool.Games)
+                    Stats stats = new Stats();
+                    stats.Player = player;
+                    stats.PlayedCount = pool.Games.FindAll(g => g.Date >= Manager.AttendRateStartDate && g.Date <Manager.EastDateTimeToday.Date && g.AllPlayers.Items.Find(p => p.PlayerId == player.Id && p.Status == InOutNoshow.In) != null).Count;
+                    stats.FactorBonus = CalculateFactorBonus(pool, player);
+                    stats.Total = stats.PlayedCount + stats.FactorBonus;
+                    statsList.Add(stats);
+                }
+            }
+            return statsList.OrderByDescending(stats => stats.Total);
+        }
+
+        private decimal CalculateFactorBonus(Pool thePool, Player player)
+        {
+            decimal sum = 0;
+            if (thePool.StatsType == StatsTypes.None.ToString())
+                return sum;
+            if (thePool.StatsType == StatsTypes.Week.ToString())
+            {
+                Pool sameLevelPool = Manager.Pools.Find(p => p.DayOfWeek != thePool.DayOfWeek && p.IsLowPool == thePool.IsLowPool);
+                foreach (Game game in sameLevelPool.Games)
+                {
+                    //Skip the games that are earlier than specified date or later than today
+                    if (game.Date < Manager.AttendRateStartDate.Date || game.Date.Date >= Manager.EastDateTimeToday.Date) continue;
+                    if (game.AllPlayers.Items.Exists(member => member.PlayerId == player.Id && member.Status == InOutNoshow.In))
                     {
-                        if (game.Date.Date < Manager.EastDateTimeToday.Date && (game.Members.Items.Exists(member=> member.PlayerId == player.Id && member.Status == InOutNoshow.In) || game.Dropins.Items.Exists(pickup=>pickup.PlayerId == player.Id && pickup.Status == InOutNoshow.In)))
+                        sum = sum + game.Factor;
+                    }
+                    else
+                    {
+                        Pool otherPoolOnSameDay = Manager.Pools.Find(p => p.IsLowPool != sameLevelPool.IsLowPool && p.DayOfWeek == sameLevelPool.DayOfWeek);
+                        Game theGame = otherPoolOnSameDay.FindGameByDate(game.Date);
+                        if (theGame.AllPlayers.Items.Exists(member => member.PlayerId == player.Id && member.Status == InOutNoshow.In))
                         {
-                            playedCount++;
+                            sum = sum + game.Factor;
                         }
                     }
                 }
             }
-            return playedCount;
-        } 
+            return sum;
+        }
+
+        public class Stats
+        {
+            private Player player;
+            private int playedCount;
+            private decimal factorBonus;
+            private decimal total;
+
+            public decimal Total
+            {
+                get { return total; }
+                set { total = value; }
+            }
+
+            public Player Player
+            {
+                get { return player; }
+                set { player = value; }
+            }
+
+            public int PlayedCount
+            {
+                get { return playedCount; }
+                set { playedCount = value; }
+            }
+
+            public decimal FactorBonus
+            {
+                get { return factorBonus; }
+                set { factorBonus = value; }
+            }
+        }
     }
 }

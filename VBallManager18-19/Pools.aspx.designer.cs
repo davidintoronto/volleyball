@@ -310,6 +310,24 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.TextBox DaysToReserveMondayPlayerTb;
         
         /// <summary>
+        /// AdvancedReservedFactorTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox AdvancedReservedFactorTb;
+        
+        /// <summary>
+        /// PowerReserveFactorTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox PowerReserveFactorTb;
+        
+        /// <summary>
         /// SavePoolBtn control.
         /// </summary>
         /// <remarks>
@@ -382,6 +400,24 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.Button SaveMemberBtn;
         
         /// <summary>
+        /// MoveToDropinBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button MoveToDropinBtn;
+        
+        /// <summary>
+        /// MoveToMemberBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button MoveToMemberBtn;
+        
+        /// <summary>
         /// DropinListbox control.
         /// </summary>
         /// <remarks>
@@ -425,6 +461,15 @@ namespace VballManager {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox DropinCoopCb;
+        
+        /// <summary>
+        /// WaiveBenefitCb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox WaiveBenefitCb;
         
         /// <summary>
         /// GameListbox control.
