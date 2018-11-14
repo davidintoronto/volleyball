@@ -12,27 +12,10 @@ namespace VballManager
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            String hourString = this.Request.Params[Constants.HOUR];
-            int hour = int.Parse(hourString);
-            foreach (Pool pool in Manager.Pools)
-            {
-                if (pool.AutoCoopReserve && hour == pool.ReservHourForCoop)
-                {
-                    DateTime comingGameDate = FindComingGameDate(pool);
-                    AutoMoveCoopPlayers(pool.DayOfWeek, comingGameDate);
-                }
-            }
-        }
-
-        private DateTime FindComingGameDate(Pool pool)
-        {
-            DateTime gameDate = Manager.EastDateTimeToday;
-            Game targetGame = pool.Games.OrderBy(game => game.Date).ToList<Game>().Find(game => game.Date >= gameDate);
-            if (targetGame != null)
-            {
-                return targetGame.Date;
-            }
-            return DateTime.MaxValue;
+            ReloadManager();
+            InitializeActionHandler();
+            Handler.AutoMoveCoop();
+            Handler.AutoCancelUnconfirmedReservations();
         }
 
     }

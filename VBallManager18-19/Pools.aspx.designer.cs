@@ -400,6 +400,15 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.Button SaveMemberBtn;
         
         /// <summary>
+        /// ConfirmCb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ConfirmCb;
+        
+        /// <summary>
         /// MoveToDropinBtn control.
         /// </summary>
         /// <remarks>

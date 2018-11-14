@@ -15,7 +15,7 @@ namespace VballManager
         #region Reserve or cancel click
         protected void Reserve_Click(object sender, EventArgs e)
         {
-            if (IsReservationLocked(TargetGameDate) && !Manager.ActionPermitted(Actions.Change_After_Locked, CurrentUser.Role))
+            if (Handler.IsReservationLocked(TargetGameDate) && !Manager.ActionPermitted(Actions.Change_After_Locked, CurrentUser.Role))
             {
                 ShowMessage(appLockedMessage);
                 return;
@@ -36,7 +36,7 @@ namespace VballManager
                         ShowMessage("Sorry, but the reservation for " + player.Name + " is not permitted in this pool, contact admin for advise");
                         return;
                     }
-                    if (!IsDropinSpotOpeningForCoop(CurrentPool, TargetGameDate, player))
+                    if (!Handler.IsDropinSpotOpeningForCoop(CurrentPool, TargetGameDate, player))
                     {
                         ShowMessage("Sorry, but the reservation for " + player.Name + " starts at " + CurrentPool.ReservHourForCoop + " O'clock on game day. Check back later");
                         return;
@@ -44,26 +44,28 @@ namespace VballManager
                 }
                 else
                 {
-                    DateTime dropinSpotOpeningDate = DropinSpotOpeningDate(CurrentPool, TargetGameDate, player);
+                    DateTime dropinSpotOpeningDate = Handler.DropinSpotOpeningDate(CurrentPool, TargetGameDate, player);
                     if (Manager.EastDateTimeNow < dropinSpotOpeningDate)
                     {
                         ShowMessage("Sorry, But drop-in reservation for " + player.Name + " cannot be made until " + Manager.DropinSpotOpeningHour + " on " + dropinSpotOpeningDate.ToLongDateString() + ". Please check back later.");
                         return;
                     }
                 }
-                if (!player.IsRegisterdMember && IsDropinOwesExceedMax(player))
+                if (!player.IsRegisterdMember && Handler.IsDropinOwesExceedMax(player))
                 {
                     ShowMessage("According to our records, the total amount you unpaid dropin fee reaches the maximum ($" + Manager.MaxDropinFeeOwe + "). Please make the payment prior to new reservations. If you would like e-transfer, send to " + Manager.AdminEmail + ". Thanks");
                     return;
                 }
             }
-            if (IsSpotAvailable(CurrentPool, TargetGameDate) || (CurrentPool.DayOfWeek == DayOfWeek.Friday && Manager.IsPlayerAttendedThisMondayGameWithPowerReserveFactor(CurrentPool, TargetGameDate, player)))
+            if (Handler.IsSpotAvailable(CurrentPool, TargetGameDate))
             {
                 //Check to see if the player has dropin spot in another pool on same day
                 if (IsReservedInAnotherPool(playerId)) return;
             }
             else
             {
+                //Todo : Power reserve for Monday player with high factor
+
                 //Power reserve
                 if (Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role))
                 {
@@ -119,7 +121,7 @@ namespace VballManager
         //Cancel primary members and dropn pickup, not for waiting list
         protected void Cancel_Click(object sender, EventArgs e)
         {
-            if (IsReservationLocked(TargetGameDate) && !Manager.ActionPermitted(Actions.Change_After_Locked, CurrentUser.Role))
+            if (Handler.IsReservationLocked(TargetGameDate) && !Manager.ActionPermitted(Actions.Change_After_Locked, CurrentUser.Role))
             {
                 ShowMessage(appLockedMessage);
                 return;
@@ -133,7 +135,7 @@ namespace VballManager
         //Cancel waiting
         protected void Cancel_Waiting_Click(object sender, EventArgs e)
         {
-            if (IsReservationLocked(TargetGameDate) && !Manager.ActionPermitted(Actions.Change_After_Locked, CurrentUser.Role))
+            if (Handler.IsReservationLocked(TargetGameDate) && !Manager.ActionPermitted(Actions.Change_After_Locked, CurrentUser.Role))
             {
                 ShowMessage(appLockedMessage);
                 return;
@@ -142,11 +144,32 @@ namespace VballManager
             String playerId = lbtn.ID;
             Game game = CurrentPool.FindGameByDate(TargetGameDate);
             game.WaitingList.Remove(playerId);
-            LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel waitinglist", CurrentUser.Name);
+            LogHistory log = Handler.CreateLog(Manager.EastDateTimeNow, game.Date, Handler.GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Cancel waitinglist", CurrentUser.Name);
             Manager.Logs.Add(log);
             DataAccess.Save(Manager);
             this.PopupModal.Hide();
             Response.Redirect(Constants.RESERVE_PAGE);
+        }
+
+        protected void Confirm_Click(object sender, EventArgs e)
+        {
+            if (Handler.IsReservationLocked(TargetGameDate) && !Manager.ActionPermitted(Actions.Change_After_Locked, CurrentUser.Role))
+            {
+                ShowMessage(appLockedMessage);
+                return;
+            }
+            ImageButton lbtn = (ImageButton)sender;
+            String playerId = lbtn.ID;
+            Game game = CurrentPool.FindGameByDate(TargetGameDate);
+            Attendee member = game.Members.FindByPlayerId(playerId);
+            member.Confirmed = true;
+            LogHistory log = Handler.CreateLog(Manager.EastDateTimeNow, game.Date, Handler.GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Confirmed", CurrentUser.Name);
+            Manager.Logs.Add(log);
+            String message = String.Format("You confirmed your reservation for the volleyball game on {0}. If you change your mind, please cancel it. Thanks", game.Date.ToString("MM/dd/yyyy"));
+            Manager.WechatNotifier.AddNotifyWechatMessage(Manager.FindPlayerById(playerId), message);
+            DataAccess.Save(Manager);
+            ShowMessage("Your reservation is confirmed !");
+            //Response.Redirect(Constants.RESERVE_PAGE);
         }
 
         #endregion
@@ -163,13 +186,13 @@ namespace VballManager
             String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
             Player player = Manager.FindPlayerById(playerId);
             Game game = CurrentPool.FindGameByDate(TargetGameDate);
-            if (ReserveSpot(CurrentPool, game, player))
+            if (Handler.ReserveSpot(CurrentPool, game, player))
             {
                 Manager.ReCalculateFactor(CurrentPool, TargetGameDate);
                 Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, TargetGameDate);
-                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Reserved", CurrentUser.Name);
+                LogHistory log = Handler.CreateLog(Manager.EastDateTimeNow, game.Date, Handler.GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Reserved", CurrentUser.Name);
                 Manager.Logs.Add(log);
-                AutoMoveCoopPlayers(CurrentPool.DayOfWeek, game.Date);
+                Handler.AutoMoveCoopPlayers(CurrentPool.DayOfWeek, game.Date);
                 DataAccess.Save(Manager);
             }
             Response.Redirect(Constants.RESERVE_PAGE);
@@ -177,7 +200,7 @@ namespace VballManager
 
         protected void Cancel_Confirm_Click(object sender, EventArgs e)
         {
-            if (IsReservationLocked(TargetGameDate))
+            if (Handler.IsReservationLocked(TargetGameDate))
             {
                 Session[Constants.ACTION_TYPE] = Constants.ACTION_NO_SHOW;
                 Session[Constants.CONTROL] = sender;
@@ -192,14 +215,14 @@ namespace VballManager
             String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
             Player player = Manager.FindPlayerById(playerId);
             Game game = CurrentPool.FindGameByDate(TargetGameDate);
-            if (CancelSpot(CurrentPool, game, player))
+            if (Handler.CancelSpot(CurrentPool, game, player))
             {
                 Manager.ReCalculateFactor(CurrentPool, TargetGameDate);
                 Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.CANCELLED, CurrentPool, CurrentPool, TargetGameDate);
-                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Cancelled", CurrentUser.Name);
+                LogHistory log = Handler.CreateLog(Manager.EastDateTimeNow, game.Date, Handler.GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Cancelled", CurrentUser.Name);
                 Manager.Logs.Add(log);
-                AssignDropinSpotToWaiting(CurrentPool, game);
-                AutoMoveCoopPlayers(CurrentPool.DayOfWeek, game.Date);
+                Handler.AssignDropinSpotToWaiting(CurrentPool, game);
+                Handler.AutoMoveCoopPlayers(CurrentPool.DayOfWeek, game.Date);
             }
             DataAccess.Save(Manager);
             Response.Redirect(Constants.RESERVE_PAGE);
@@ -226,21 +249,21 @@ namespace VballManager
   
         private void MoveSpot(Pool pool, Game game, Player player)
         {
-            Pool originalPool = MoveReservation(pool, game, player);
+            Pool originalPool = Handler.MoveReservation(pool, game, player);
             Manager.ReCalculateFactor(CurrentPool, TargetGameDate);
             if (originalPool == null)
             {
                 Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, pool, pool, game.Date);
-                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, Manager.FindPlayerById(player.Id).Name, "Reserved", CurrentUser.Name);
+                LogHistory log = Handler.CreateLog(Manager.EastDateTimeNow, game.Date, Handler.GetUserIP(), pool.Name, Manager.FindPlayerById(player.Id).Name, "Reserved", CurrentUser.Name);
                 Manager.Logs.Add(log);
             }
             else
             {
                 Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.MOVED, pool, originalPool, game.Date);
-                LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, Manager.FindPlayerById(player.Id).Name, "Moved from " + originalPool.Name, CurrentUser.Name);
+                LogHistory log = Handler.CreateLog(Manager.EastDateTimeNow, game.Date, Handler.GetUserIP(), pool.Name, Manager.FindPlayerById(player.Id).Name, "Moved from " + originalPool.Name, CurrentUser.Name);
                 Manager.Logs.Add(log);
             }
-            AutoMoveCoopPlayers(pool.DayOfWeek, game.Date);
+            Handler.AutoMoveCoopPlayers(pool.DayOfWeek, game.Date);
             DataAccess.Save(Manager);
             Response.Redirect(Constants.RESERVE_PAGE);
         }
@@ -250,10 +273,10 @@ namespace VballManager
            String playerId = Session[Constants.CURRENT_PLAYER_ID].ToString();
            Game game = CurrentPool.FindGameByDate(TargetGameDate);
            Player player = Manager.FindPlayerById(playerId);
-           MarkNoShow(CurrentPool, game, player);
+           Handler.MarkNoShow(CurrentPool, game, player);
            String message = String.Format("[System Info] Hi, {0}. Admin marked you as no-show on the reservation of {1}. If you have any question, contact the admin", player.Name, game.Date.ToString("MM/dd/yyyy"));
            Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
-           LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Marked no-show", CurrentUser.Name);
+           LogHistory log = Handler.CreateLog(Manager.EastDateTimeNow, game.Date, Handler.GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Marked no-show", CurrentUser.Name);
            Manager.Logs.Add(log);
            Manager.ReCalculateFactor(CurrentPool, TargetGameDate);
            DataAccess.Save(Manager);
@@ -285,11 +308,11 @@ namespace VballManager
                ShowMessage("Sorry, But you are on waiting list in pool " + otherPool.Name + " on the same day. Cancel that before adding onto the waiting list");
                return;
            }
-           AddToWaitingList(CurrentPool, game, Manager.FindPlayerById(playerId));
+           Handler.AddToWaitingList(CurrentPool, game, Manager.FindPlayerById(playerId));
            Manager.AddReservationNotifyWechatMessage(playerId, CurrentUser.Id, Constants.WAITING, CurrentPool, CurrentPool, TargetGameDate);
-           LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Added to waiting list", CurrentUser.Name);
+           LogHistory log = Handler.CreateLog(Manager.EastDateTimeNow, game.Date, Handler.GetUserIP(), CurrentPool.Name, Manager.FindPlayerById(playerId).Name, "Added to waiting list", CurrentUser.Name);
            Manager.Logs.Add(log);
-           AutoMoveCoopPlayers(CurrentPool.DayOfWeek, game.Date);
+           Handler.AutoMoveCoopPlayers(CurrentPool.DayOfWeek, game.Date);
            DataAccess.Save(Manager);
            Response.Redirect(Constants.RESERVE_PAGE);
        }

@@ -31,13 +31,13 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.TextBox AdminPasscodeTb;
         
         /// <summary>
-        /// SeasonCb control.
+        /// SeasonTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox SeasonCb;
+        protected global::System.Web.UI.WebControls.TextBox SeasonTb;
         
         /// <summary>
         /// AuthCookieExpireTb control.
@@ -128,6 +128,24 @@ namespace VballManager {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CompareValidator CompareValidator2;
+        
+        /// <summary>
+        /// AutoCancelHourTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox AutoCancelHourTb;
+        
+        /// <summary>
+        /// CompareValidator5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator5;
         
         /// <summary>
         /// DropinFeeCappedCb control.

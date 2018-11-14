@@ -286,6 +286,8 @@ namespace VballManager
     public class Member : Person
     {
         private DateTime joinDate;
+        private bool needToConfirm;
+
 
         public Member() { }
         public Member(String id)
@@ -300,7 +302,12 @@ namespace VballManager
             set { joinDate = value; }
         }
 
-       }
+        public bool NeedToConfirm
+        {
+            get { return needToConfirm; }
+            set { needToConfirm = value; }
+        }
+    }
 
     public class Notification
     {

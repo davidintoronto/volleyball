@@ -364,24 +364,25 @@
                 </tr>
                <tr>
                     <td align="center" class="style8">
-                        <asp:Button ID="MoveToDropinBtn" runat="server" onclick="MoveToDropinBtn_Click" Text="==&gt;" Width="80px" />
+                        <asp:CheckBox ID="ConfirmCb" runat="server" Text="Need To Confirm" />
                     </td>
                 </tr>
                  <tr>
                     <td align="center" class="style8">
-                        <asp:Button ID="MoveToMemberBtn" runat="server" onclick="MoveToMemberBtn_Click" Text="&lt;==" Width="80px" />
-                     </td>
+                        &nbsp;</td>
                 </tr>
                 <tr>
                     <td align="center" class="style8">&nbsp;</td>
                  </tr>
                 <tr>
                     <td align="center" class="style8">
+                        <asp:Button ID="MoveToDropinBtn" runat="server" onclick="MoveToDropinBtn_Click" Text="==&gt;" Width="80px" />
                     </td>
                 </tr>
                 <tr>
                     <td align="center" class="style8">
-                        &nbsp;</td>
+                        <asp:Button ID="MoveToMemberBtn" runat="server" onclick="MoveToMemberBtn_Click" Text="&lt;==" Width="80px" />
+                    </td>
                 </tr>
             </table>
             </td>

@@ -9,10 +9,10 @@ using System.Net;
 
 namespace VballManager
 {
-    public partial class BasePage
+    public partial class ActionHandler
     {
         #region Reserve
-        protected bool ReserveSpot(Pool pool, Game game, Player player)
+        public bool ReserveSpot(Pool pool, Game game, Player player)
         {
             if (game.Members.Exists(player.Id))
             {
@@ -26,7 +26,7 @@ namespace VballManager
         }
 
 
-        protected bool ReservePromarySpot(Pool pool, Game game, Player player)
+        public bool ReservePromarySpot(Pool pool, Game game, Player player)
         {
             Attendee attendee = game.Members.FindByPlayerId(player.Id);
             //Cancel spots for members
@@ -47,7 +47,7 @@ namespace VballManager
             return false;
         }
 
-        protected bool ReserveDropinSpot(Pool pool, Game game, Player player)
+        public bool ReserveDropinSpot(Pool pool, Game game, Player player)
         {
             Pickup dropin = game.Dropins.FindByPlayerId(player.Id);
             //Add pickup if it is not regular dropin player
@@ -71,7 +71,7 @@ namespace VballManager
         }
 
         //Return the original pool where spot is moved from
-        protected Pool MoveReservation(Pool pool, Game game, Player player)
+        public Pool MoveReservation(Pool pool, Game game, Player player)
         {
             ReserveSpot(pool, game, player);
             //Cancel the spot in other pool
@@ -84,21 +84,45 @@ namespace VballManager
             {
                 return null;
             }
-          }
+        }
+
+        public void AutoMoveCoop()
+        {
+            foreach (Pool pool in Manager.Pools)
+            {
+                if (pool.AutoCoopReserve && Manager.EastDateTimeNow.Hour >= pool.ReservHourForCoop && Manager.EastDateTimeNow.Hour < Manager.LockReservationHour)
+                {
+                    DateTime comingGameDate = FindComingGameDate(pool);
+                    AutoMoveCoopPlayers(pool.DayOfWeek, comingGameDate);
+                }
+            }
+        }
+
+        private DateTime FindComingGameDate(Pool pool)
+        {
+            DateTime gameDate = Manager.EastDateTimeToday;
+            Game targetGame = pool.Games.OrderBy(game => game.Date).ToList<Game>().Find(game => game.Date >= gameDate);
+            if (targetGame != null)
+            {
+                return targetGame.Date;
+            }
+            return DateTime.MaxValue;
+        }
+
         #endregion
 
         #region Waiting list
-        protected void AddToWaitingList(Pool pool, Game game, Player player)
+        public void AddToWaitingList(Pool pool, Game game, Player player)
         {
             Waiting waiting = new Waiting(player.Id);
-            waiting.OperatorId = GetOperatorId();
+            waiting.OperatorId = CurrentUser==null? null : CurrentUser.Id;
             game.WaitingList.Add(waiting);
             //Manager.AddReservationNotifyWechatMessage(player.Id, waiting.OperatorId, Constants.WAITING, pool, pool, game.Date);
             //LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Add to Waiting List");
            // Manager.Logs.Add(log);
         }
 
-        protected void AssignDropinSpotToWaiting(Pool thePool, Game theGame)
+        public void AssignDropinSpotToWaiting(Pool thePool, Game theGame)
         {
             if (IsReservationLocked(theGame.Date) || theGame.WaitingList.Count == 0 || !IsSpotAvailable(thePool, theGame.Date))
             {
@@ -191,7 +215,7 @@ namespace VballManager
             return new CostReference(CostType.FEE, fee.FeeId);
         }
 
-        protected bool IsDropinOwesExceedMax(Player player)
+        public bool IsDropinOwesExceedMax(Player player)
         {
             decimal total = 0;
             foreach (Fee fee in player.Fees)
@@ -233,7 +257,8 @@ namespace VballManager
         }
         #endregion
 
-         protected void MarkNoShow(Pool pool, Game game, Player player)
+        #region No show
+        public void MarkNoShow(Pool pool, Game game, Player player)
         {
             Attendee attendee = game.Members.Items.Find(member => member.PlayerId == player.Id && member.Status == InOutNoshow.In);
             if (attendee != null)
@@ -251,5 +276,6 @@ namespace VballManager
             //LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Marked as No-Show");
             //Manager.Logs.Add(log);
         }
+        #endregion
     }
 }

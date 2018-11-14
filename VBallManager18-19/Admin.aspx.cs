@@ -29,14 +29,14 @@ namespace VballManager
                 this.DropinFeeCappedCb.Checked = Manager.IsDropinFeeWithCap;
                 this.MembershipFeeTb.Text = Manager.RegisterMembeshipFee.ToString();
                 this.AuthCookieExpireTb.Text = Manager.CookieExpire.ToShortDateString();
-                //this.CookieAuthCb.Checked = Manager.CookieAuthRequired;
+                this.AutoCancelHourTb.Text = Manager.AutoCancelHour.ToString();
                 this.TimeZoneTb.Text = Manager.TimeZoneName;
                 this.AdminEmailTb.Text = Manager.AdminEmail;
                 this.AttendRateStartDateTb.Text = Manager.AttendRateStartDate.ToShortDateString();
                 this.MaxDropinfeeOweTb.Text = Manager.MaxDropinFeeOwe.ToString();
                 DateTime time = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
                 this.SystemTimeLb.Text = time.ToString("MMM dd yyyy HH/mm/ss") + " - H" + time.Hour;
-                this.SeasonCb.Text = Manager.Season;
+                this.SeasonTb.Text = Manager.Season;
                 //
                 if (null != Session[Constants.SUPER_ADMIN])
                 {
@@ -57,7 +57,7 @@ namespace VballManager
         private void RanderFactorPanel()
         {
             IOrderedEnumerable<Factor> orderedFactors = Manager.Factors.OrderBy(factor => factor.PoolName).ThenBy(factor => factor.LowPoolName).//
-                ThenBy(factor => factor.LowPoolNumberFrom).ThenBy(factor => factor.CoopNumberFrom).ThenBy(factor => factor.HighPoolNumberFrom);
+                ThenBy(factor => factor.LowPoolNumberFrom).ThenBy(factor => factor.HighPoolNumberFrom).ThenBy(factor => factor.CoopNumberFrom);
             foreach (Factor factor in orderedFactors)
             {
                 CreateFactorTableRow(factor);
@@ -317,7 +317,8 @@ namespace VballManager
             Manager.TimeZoneName = this.TimeZoneTb.Text;
             Manager.AdminEmail = this.AdminEmailTb.Text;
             Manager.MaxDropinFeeOwe = int.Parse(this.MaxDropinfeeOweTb.Text);
-            Manager.Season = this.SeasonCb.Text;
+            Manager.Season = this.SeasonTb.Text;
+            Manager.AutoCancelHour = int.Parse(this.AutoCancelHourTb.Text);
             DataAccess.Save(Manager);
             Response.Redirect(Request.RawUrl);
 

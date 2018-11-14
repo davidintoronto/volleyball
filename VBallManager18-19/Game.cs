@@ -229,6 +229,13 @@ namespace VballManager
     {
         private InOutNoshow status = InOutNoshow.Out;
         private CostReference costReference;
+        private bool confirmed = true;
+
+        public bool Confirmed
+        {
+            get { return confirmed; }
+            set { confirmed = value; }
+        }
    
         public Attendee() { }
         public Attendee(String playerId)

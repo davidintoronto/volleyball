@@ -45,7 +45,10 @@ namespace VballManager
             foreach (Pool pool in Manager.Pools)
             {
                 Game game = Manager.FindComingGame(pool);
-                if (Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) || pool.Members.Exists(currentUser.Id) || pool.Dropins.Exists(currentUser.Id) || game != null && game.Dropins.Exists(currentUser.Id))
+                if (Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) || pool.Members.Exists(currentUser.Id) ||//
+                    pool.Dropins.Items.Exists(d => d.PlayerId == currentUser.Id && !d.IsCoop) ||
+                    (pool.Dropins.Items.Exists(d => d.PlayerId == currentUser.Id && d.IsCoop) && !pool.AutoCoopReserve) ||//
+                    game != null && game.Dropins.Items.Exists(d=>d.PlayerId==currentUser.Id && (!d.IsCoop || d.IsCoop && d.Status== InOutNoshow.In)))
                 {
                     TableRow row = new TableRow();
                     TableCell cell = new TableCell();

@@ -19,7 +19,7 @@ namespace VballManager
         private List<LogHistory> logs = new List<LogHistory>();
         private int lockReservationHour = 20;
         private int lockWaitingListHour = 18;
-        // private int coopReserveHour = 15;
+        private int autoCancelHour = 12;
         private List<Payment> payments = new List<Payment>();
         private String readme;
         private GameScore score = new GameScore();
@@ -40,6 +40,12 @@ namespace VballManager
         {
             get { return season; }
             set { season = value; }
+        }
+
+        public int AutoCancelHour
+        {
+            get { return autoCancelHour; }
+            set { autoCancelHour = value; }
         }
 
         public List<Factor> Factors
@@ -504,6 +510,14 @@ namespace VballManager
                 WechatNotifier.AddNotifyWechatMessage(targetPool, player, message + poolAndGameDate);
             }
         }
+       //If player attended most recent Monday game
+       public Game FindMondayGameOfSameLevelInSameWeek(Pool fridayPool, DateTime fridayGameDate)
+       {
+           Pool mondayPool = Pools.Find(p => p.DayOfWeek != fridayPool.DayOfWeek && p.IsLowPool == fridayPool.IsLowPool);
+           Game mondayGame = mondayPool.Games.OrderByDescending(game => game.Date).ToList<Game>().Find(game => game.Date < fridayGameDate);
+           if (mondayGame == null || mondayGame.Date.AddDays(7) < fridayGameDate.Date) return null;
+           return mondayGame;
+       }
 
        //If player attended most recent Monday game
        public bool IsPlayerAttendedThisWeekMondayGame(DateTime fridayGameDate, Player player)
@@ -519,14 +533,14 @@ namespace VballManager
        }
 
         //
-       public bool IsPlayerAttendedThisMondayGameWithPowerReserveFactor(Pool fridayPool, DateTime fridayGameDate, Player player)
+  /*     public bool IsPlayerAttendedThisMondayGameWithPowerReserveFactor(Pool fridayPool, DateTime fridayGameDate, Player player)
        {
            if (fridayPool.Dropins.FindByPlayerId(player.Id).WaiveBenefit || !IsPlayerAttendedThisWeekMondayGame(fridayGameDate, player)) return false;
            Pool mondayPool = Pools.Find(p => p.DayOfWeek != fridayPool.DayOfWeek && p.IsLowPool == fridayPool.IsLowPool);
            Game mostRecentGame = mondayPool.Games.Find(game => game.Date.AddDays(4) == fridayGameDate.Date);
            return mostRecentGame != null && mostRecentGame.Factor >= mondayPool.FactorForPowerReserve;
        }
-
+*/
        //Calculate factor for current moment
        public void ReCalculateFactor(Pool pool, DateTime gameDate)
        {
@@ -562,7 +576,6 @@ namespace VballManager
                if (factor != null) sameDayPoolGame.Factor = factor.Value;
            }
        }
-
     }
 
     public class Pool

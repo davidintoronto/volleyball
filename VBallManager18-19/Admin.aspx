@@ -43,10 +43,7 @@
         .auto-style6 {
             width: 100px;
         }
-        .auto-style7 {
-            width: 10px;
-        }
-    </style>
+        </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <asp:Panel ID="Panel1" runat="server" BackColor="#CAD3C5">
@@ -65,7 +62,7 @@
                             <td class="style4">Season
                             </td>
                             <td class="auto-style5">
-                                <asp:CheckBox ID="SeasonCb" runat="server" />
+                                <asp:TextBox ID="SeasonTb" runat="server" Width="115px"></asp:TextBox>
                             </td>
                         </tr>
 
@@ -111,11 +108,21 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="style4">Dropin spot opening at hour
+                            <td class="style4">Dropin spot opening hour
                             </td>
                             <td class="auto-style5">
                                 <asp:TextBox ID="DropinSpotOpenHourTb" runat="server" Width="47px">0</asp:TextBox>
                                 <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="DropinSpotOpenHourTb"
+                                    ErrorMessage="Integers only please" ForeColor="#FF3300" Operator="DataTypeCheck"
+                                    Type="Integer"></asp:CompareValidator>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="style4">Auto Cancel Hour
+                            </td>
+                            <td class="auto-style5">
+                                <asp:TextBox ID="AutoCancelHourTb" runat="server" Width="47px">12</asp:TextBox>
+                                <asp:CompareValidator ID="CompareValidator5" runat="server" ControlToValidate="AutoCancelHourTb"
                                     ErrorMessage="Integers only please" ForeColor="#FF3300" Operator="DataTypeCheck"
                                     Type="Integer"></asp:CompareValidator>
                             </td>

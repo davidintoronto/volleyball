@@ -9,10 +9,10 @@ using System.Net;
 
 namespace VballManager
 {
-    public partial class BasePage
+    public partial class ActionHandler
     {
 
-        protected void CancelPromarySpot(Pool pool, Game game, Player player)
+        public void CancelPromarySpot(Pool pool, Game game, Player player)
         {
             Attendee attendee = game.Members.FindByPlayerId(player.Id);
             //Cancel spots for members
@@ -39,7 +39,7 @@ namespace VballManager
             }
         }
 
-        protected void CancelDropinSpot(Pool pool, Game game, Player player)
+        public void CancelDropinSpot(Pool pool, Game game, Player player)
         {
             //Cancel spots for dropin
             Pickup dropin = game.Dropins.FindByPlayerId(player.Id);
@@ -62,8 +62,6 @@ namespace VballManager
                 DataAccess.Save(Manager);
             }
         }
-
-
 
        private void CancelDropinFee(Attendee attendee)
         {
@@ -106,7 +104,7 @@ namespace VballManager
             }
         }
 
-       protected bool CancelSpot(Pool pool, Game game, Player player)
+       public bool CancelSpot(Pool pool, Game game, Player player)
        {
            if (pool == null) return false;
 
@@ -126,5 +124,44 @@ namespace VballManager
            }
            return false;
        }
+
+
+       private Game FindTodayGame(Pool pool)
+       {
+           DateTime gameDate = Manager.EastDateTimeToday;
+           Game targetGame = pool.Games.OrderBy(game => game.Date).ToList<Game>().Find(game => game.Date >= gameDate);
+           if (targetGame != null && targetGame.Date.Date == Manager.EastDateTimeToday)
+           {
+               return targetGame;
+           }
+           return null;
+       }
+       
+       public void AutoCancelUnconfirmedReservations()
+       {
+           if (Manager.EastDateTimeNow.Hour < Manager.AutoCancelHour || Manager.EastDateTimeNow.Hour >= Manager.LockReservationHour) return;
+           foreach (Pool pool in Manager.Pools)
+           {
+               Game game = FindTodayGame(pool);
+               if (game == null) continue;
+               foreach (Attendee member in game.Members.Items.FindAll(m => !m.Confirmed))
+               {
+                   Player player = Manager.FindPlayerById(member.PlayerId);
+                   member.Status = InOutNoshow.Out;
+                   member.Confirmed = true;
+                   String message = "Your reservation of tonight's volleyball is cancelled by system";
+                   Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
+                   message = "Your reservation is cancelled. Currently we have " + game.NumberOfReservedPlayers + " players for tonight volleyball games";
+                   Manager.WechatNotifier.AddNotifyWechatMessage(pool, player, message);
+                    //Assing the spot to waiting list
+                   if (game.WaitingList.Count > 0)
+                   {
+                       AssignDropinSpotToWaiting(pool, game);
+                   }
+                   DataAccess.Save(Manager);
+               }
+           }
+       }
+
     }
 }

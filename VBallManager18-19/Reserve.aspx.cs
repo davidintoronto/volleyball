@@ -15,6 +15,7 @@ namespace VballManager
  
         protected void Page_Load(object sender, EventArgs e)
         {
+            ReloadManager();
             this.PopupModal.Hide();
             if (Manager.CookieAuthRequired && Request.Cookies[Constants.PRIMARY_USER] == null)
             {
@@ -45,7 +46,6 @@ namespace VballManager
                 Session[Constants.POOL] = poolName;
                 Session[Constants.GAME_DATE] = null;
             }
-            Application[Constants.DATA] = DataAccess.LoadReservation();
             if (CurrentPool == null)
             {
                 Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
@@ -70,11 +70,15 @@ namespace VballManager
                 Session[Constants.GAME_DATE] = targetGame.Date;
             }
              //Check to see if user is quilified to view current pool
-            if (!Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) && !CurrentPool.Members.Exists(currentUser.Id) && !CurrentPool.Dropins.Exists(currentUser.Id) && !targetGame.Dropins.Exists(currentUser.Id))
+            if ((!Manager.ActionPermitted(Actions.View_All_Pools, currentUser.Role) && !CurrentPool.Members.Exists(currentUser.Id) &&//
+                !CurrentPool.Dropins.Exists(currentUser.Id) && !targetGame.Dropins.Exists(currentUser.Id)) ||
+                (CurrentPool.AutoCoopReserve && targetGame.Dropins.Items.Exists(c=>c.PlayerId==currentUser.Id && c.IsCoop && c.Status == InOutNoshow.Out)))
             {
                 Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
                 return;
             }
+            //Initialize processor
+            InitializeActionHandler();
            //Fill message board
             if (!String.IsNullOrEmpty(CurrentPool.MessageBoard))
             {
@@ -105,9 +109,9 @@ namespace VballManager
             }
             //Check if there is dropin spots available for the players on waiting list
             Game comingGame = CurrentPool.FindGameByDate(TargetGameDate);
-            while (!this.IsReservationLocked(TargetGameDate) && IsSpotAvailable(CurrentPool, TargetGameDate) && comingGame.WaitingList.Count > 0)
+            while (!Handler.IsReservationLocked(TargetGameDate) && Handler.IsSpotAvailable(CurrentPool, TargetGameDate) && comingGame.WaitingList.Count > 0)
             {
-                AssignDropinSpotToWaiting(CurrentPool, comingGame);
+                Handler.AssignDropinSpotToWaiting(CurrentPool, comingGame);
             }
             //Fill game information
             FillGameInfoTable(CurrentPool, TargetGameDate);
@@ -233,8 +237,7 @@ namespace VballManager
             Game game = pool.FindGameByDate(date);
             if (game.Factor > 0)
             {
-                FillGameInfoRow("Current Factor", span, game.Factor.ToString(), 1);
-                FillGameInfoRow("Next Factor", span, CalculateNextFactor(CurrentPool, date).ToString(), 1);
+                FillGameInfoRow("Factor/Next", span, game.Factor.ToString() + " / " + Handler.CalculateNextFactor(CurrentPool, date).ToString(), 1);
             }
             FillGameInfoRow("Members", span, memberPlayers.ToString(), 1);
             TableRow dropinRow = new TableRow();
@@ -283,8 +286,8 @@ namespace VballManager
 
         private void FillMemberTable(Pool pool, DateTime date)
         {
-            IEnumerable<Player> playerQuery = OrderMembersByStats(pool, date);
-            bool spotsFilledup = !IsSpotAvailable(pool, date);
+            IEnumerable<Player> playerQuery = OrderMembersByName(pool, date);
+            bool spotsFilledup = !Handler.IsSpotAvailable(pool, date);
             bool alterbackcolor = false;
             foreach (Player player in playerQuery)
             {
@@ -312,12 +315,6 @@ namespace VballManager
                 nameLink.ID = player.Id + ",MEMEBER";
                 this.MemberTable.Rows.Add(row);
                 nameCell.Controls.Add(nameLink);
-                //Statistics 
-                Label stats = new Label();
-                stats.Font.Size = new FontUnit(Constants.STATS_FONTSIZE);
-                stats.ForeColor = System.Drawing.Color.OrangeRed;
-                stats.Text = "   " + player.TotalPlayedCount.ToString();               
-                nameCell.Controls.Add(stats);
                 if (player.Marked)
                 {
                     Image image = new Image();
@@ -339,11 +336,11 @@ namespace VballManager
                 ImageButton imageBtn = new ImageButton();
                 imageBtn.ID = player.Id;
                 //If current user is not permit to reserve for this player, disable the image btn
-                if (IsPermitted(Actions.View_Player_Details, player))
+                if (Handler.IsPermitted(Actions.View_Player_Details, player))
                 {
                     nameLink.Click += new EventHandler(Username_Click);
                 }
-                if (!IsPermitted(Actions.Reserve_Player, player))
+                if (!Handler.IsPermitted(Actions.Reserve_Player, player))
                 {
                     imageBtn.Enabled = false;
                 }
@@ -356,17 +353,24 @@ namespace VballManager
                 }
                 else if (attdenee.Status == InOutNoshow.In)
                 {
-                   imageBtn.ImageUrl = "~/Icons/In.png";
-                   imageBtn.Click += new ImageClickEventHandler(Cancel_Click);
-                    if (CurrentPool.IsLowPool && Manager.ActionPermitted(Actions.Move_To_High_Pool, CurrentUser.Role))
+                    if (attdenee.Confirmed)
                     {
-                        ImageButton moveBtn = new ImageButton();
-                        moveBtn.ID = player.Id + ",move";
-                        moveBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
-                        moveBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
-                        moveBtn.ImageUrl = "~/Icons/Move.png";
-                        moveBtn.Click += MoveFromCurrentPool_Click;
-                        statusCell.Controls.Add(moveBtn);
+                        imageBtn.ImageUrl = "~/Icons/In.png";
+                        imageBtn.Click += new ImageClickEventHandler(Cancel_Click);
+                        if (CurrentPool.IsLowPool && Manager.ActionPermitted(Actions.Move_To_High_Pool, CurrentUser.Role))
+                        {
+                            ImageButton moveBtn = new ImageButton();
+                            moveBtn.ID = player.Id + ",move";
+                            moveBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
+                            moveBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
+                            moveBtn.ImageUrl = "~/Icons/Move.png";
+                            moveBtn.Click += MoveFromCurrentPool_Click;
+                            statusCell.Controls.Add(moveBtn);
+                        }
+                    }
+                    else {
+                        imageBtn.ImageUrl = "~/Icons/toConfirm.png";
+                        imageBtn.Click += new ImageClickEventHandler(Confirm_Click);
                     }
                 }
                 else//No show
@@ -385,7 +389,7 @@ namespace VballManager
 
         private void FillMemberTable(Pool pool)
         {
-            IEnumerable<Player> playerQuery = OrderMembersByStats(pool);
+            IEnumerable<Player> playerQuery = OrderMembersByName(pool);
             bool alterbackcolor = false;
             foreach (Player player in playerQuery)
             {
@@ -417,7 +421,7 @@ namespace VballManager
                 stats.Text = "   " + player.TotalPlayedCount.ToString();
                 nameCell.Controls.Add(stats);
                 //If current user is not permit to view the details of this player, disable the image btn
-                if (IsPermitted(Actions.View_Player_Details, player))
+                if (Handler.IsPermitted(Actions.View_Player_Details, player))
                 {
                     nameLink.Click += new EventHandler(Username_Click);
                 }
@@ -452,9 +456,14 @@ namespace VballManager
         private void FillDropinTable(Pool pool, DateTime gameDate)
         {
             //Calcuate stats for dropins
-            List<Player> players = CalculateDropinStats(pool, gameDate);
+            List<Player> players = GetDropinPlayers(pool, gameDate);
             Game game = pool.FindGameByDate(gameDate);
-            bool dropinSpotAvailable = IsSpotAvailable(pool, gameDate);
+            Dropin nextIntern = null;
+            if (!pool.IsLowPool && pool.AutoCoopReserve)
+            {
+                Game lowPoolGame = Manager.FindSameDayPool(pool).FindGameByDate(gameDate);
+                nextIntern = Handler.FindNextCoopCandidateToMoveHighPool(CurrentPool, game, lowPoolGame);
+            }
             foreach (Player player in players)
             {
                 Attendee attdenee = game.Dropins.FindByPlayerId(player.Id);
@@ -469,7 +478,7 @@ namespace VballManager
                     Dropin dropin = CurrentPool.Dropins.FindByPlayerId(player.Id);
                     if (dropin != null)
                     {
-
+                        if (dropin.IsCoop && pool.AutoCoopReserve && (nextIntern == null || nextIntern.PlayerId != dropin.PlayerId)) continue;
                         TableRow row = CreateDropinTableRow(player, attdenee, game.WaitingList.Exists(player.Id));
                         this.DropinCandidateTable.Rows.Add(row);
                         if (DropinCandidateTable.Rows.Count % 2 == 1)
@@ -480,6 +489,11 @@ namespace VballManager
                         {
                             row.BorderStyle = BorderStyle.Double;
                             row.BackColor = System.Drawing.Color.DarkOrange;
+                        }
+                        if (nextIntern != null && nextIntern.PlayerId == dropin.PlayerId)
+                        {
+                            row.BorderStyle = BorderStyle.Double;
+                            row.BackColor = System.Drawing.Color.Beige;
                         }
                     }
                 }
@@ -525,7 +539,7 @@ namespace VballManager
         private void FillDropinTable(Pool pool)
         {
             //Calcuate stats for dropins
-            List<Player> players = CalculateDropinStats(pool);
+            List<Player> players = GetDropinPlayers(pool);
             foreach (Player player in players)
             {
 
@@ -559,15 +573,7 @@ namespace VballManager
             nameLink.Font.Size = new FontUnit(Constants.LINKBUTTON_FONTSIZE);
             nameLink.ID = player.Id + ", DROPIN";
             nameCell.Controls.Add(nameLink);
-            if (player.IsRegisterdMember)
-            {
-                Label stats = new Label();
-                stats.Font.Size = new FontUnit(Constants.STATS_FONTSIZE);
-                stats.ForeColor = System.Drawing.Color.OrangeRed;
-                stats.Text = "   " + player.TotalPlayedCount.ToString();
-                nameCell.Controls.Add(stats);
-            }
-            foreach (Fee fee in player.Fees)
+           foreach (Fee fee in player.Fees)
             {
                 if (!fee.IsPaid && fee.Amount > 0)
                 {
@@ -618,12 +624,12 @@ namespace VballManager
             imageBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
             actionCell.Controls.Add(imageBtn);
             row.Cells.Add(actionCell);
-            if (IsPermitted(Actions.View_Player_Details, player))
+            if (Handler.IsPermitted(Actions.View_Player_Details, player))
             {
                 nameLink.Click += new EventHandler(Username_Click);
 
             }
-            if (!IsPermitted(Actions.Reserve_Player, player))
+            if (!Handler.IsPermitted(Actions.Reserve_Player, player))
             {
                 imageBtn.Enabled = false;
             }
@@ -668,7 +674,7 @@ namespace VballManager
             imageBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
             actionCell.Controls.Add(imageBtn);
             row.Cells.Add(actionCell);
-            if (IsPermitted(Actions.Reserve_Player, player))
+            if (Handler.IsPermitted(Actions.Reserve_Player, player))
             {
                 nameLink.Click += new EventHandler(Username_Click);
 
@@ -693,13 +699,6 @@ namespace VballManager
             this.ConfirmImageButton.Visible = false;
              this.PopupModal.Show();
         }
-
- 
-
-
- 
-
-
 
         protected void Username_Click(object sender, EventArgs e)
         {
@@ -737,7 +736,7 @@ namespace VballManager
                         break;
                     case Constants.ACTION_POWER_RESERVE:
                         this.ConfirmImageButton.Click += PowerReserve_Confirm_Click;
-                        if (!IsReservationLocked(TargetGameDate))
+                        if (!Handler.IsReservationLocked(TargetGameDate))
                         {
                             this.CloseImageBtn.Click += this.InquireAddingToWaitingList_Click;
                         }
@@ -747,7 +746,7 @@ namespace VballManager
         }
 
  
-         private IEnumerable<Player> OrderMembersByStats(Pool pool, DateTime gameDate)
+         private IEnumerable<Player> OrderMembersByName(Pool pool, DateTime gameDate)
         {
             Game game = pool.FindGameByDate(gameDate);
             List<Player> players = new List<Player>();
@@ -761,7 +760,7 @@ namespace VballManager
             return players.OrderBy(p => p.Name);
         }
 
-         private IEnumerable<Player> OrderMembersByStats(Pool pool)
+         private IEnumerable<Player> OrderMembersByName(Pool pool)
          {
              List<Player> players = new List<Player>();
              foreach (Member member in pool.Members.Items)
@@ -774,21 +773,20 @@ namespace VballManager
              return players.OrderBy(p => p.Name);
          }
          
-        private List<Player> CalculateDropinStats(Pool pool, DateTime gameDate)
+        private List<Player> GetDropinPlayers(Pool pool, DateTime gameDate)
         {
             List<Player> players = new List<Player>();
             Game game = pool.FindGameByDate(gameDate);
             foreach (Attendee attendee in game.Dropins.Items)
             {
                 Player player = Manager.FindPlayerById(attendee.PlayerId);
-                //player.TotalPlayedCount = CalculatePlayedStats(player, CurrentPool.StatsType);
                 players.Add(player);
             }
             return players.OrderBy(dropin => dropin.Name).ToList();
 
         }
 
-        private List<Player> CalculateDropinStats(Pool pool)
+        private List<Player> GetDropinPlayers(Pool pool)
         {
             List<Player> players = new List<Player>();
             foreach (Dropin dropin in pool.Dropins.Items)

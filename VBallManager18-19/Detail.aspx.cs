@@ -21,9 +21,11 @@ namespace VballManager
                 Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
                 return;
             }
+            //
+            InitializeActionHandler();
             String id = Request.Params["id"].ToString();
             Player player = Manager.FindPlayerById(id);
-            if (!IsPermitted(Actions.View_Player_Details, player))
+            if (!Handler.IsPermitted(Actions.View_Player_Details, player))
             {
                 Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
                 return;
@@ -200,7 +202,7 @@ namespace VballManager
                     imageBtn.ImageUrl = GetStatusImageUrl(attendee.Status);
                     imageBtn.Width = new Unit(Constants.IMAGE_BUTTON_SIZE);
                     imageBtn.Height = new Unit(Constants.IMAGE_BUTTON_SIZE);
-                    if (IsReservationLocked(game.Date))
+                    if (Handler.IsReservationLocked(game.Date))
                     {
                         imageBtn.Enabled = false;
                     }
@@ -234,6 +236,13 @@ namespace VballManager
                     this.GameTable.Rows.Add(row);
                 }
             }
+        }
+
+        protected String GetStatusImageUrl(InOutNoshow status)
+        {
+            if (status == InOutNoshow.In) return "~/Icons/In.png";
+            else if (status == InOutNoshow.Out) return "~/Icons/Out.png";
+            else return "~/Icons/noShow.png";
         }
         
         private void FillFeeAndPaymentTable(Player player)
@@ -347,9 +356,9 @@ namespace VballManager
             Attendee attendee = game.Members.FindByPlayerId(playerId);
             if (attendee.Status == InOutNoshow.Out)
             {
-                if (IsSpotAvailable(CurrentPool, game.Date))
+                if (Handler.IsSpotAvailable(CurrentPool, game.Date))
                 {
-                    ReservePromarySpot(CurrentPool, game, player);
+                    Handler.ReservePromarySpot(CurrentPool, game, player);
                     Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.RESERVED, CurrentPool, CurrentPool, game.Date);
                 }
                 else
@@ -361,9 +370,9 @@ namespace VballManager
             }
             else if (attendee.Status == InOutNoshow.In)
             {
-                CancelPromarySpot(CurrentPool, game, player);
+                Handler.CancelPromarySpot(CurrentPool, game, player);
                 Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.CANCELLED, CurrentPool, CurrentPool, game.Date);
-                AssignDropinSpotToWaiting(CurrentPool, game);
+                Handler.AssignDropinSpotToWaiting(CurrentPool, game);
             }
             DataAccess.Save(Manager);
             Response.Redirect(Request.RawUrl);

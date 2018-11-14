@@ -244,7 +244,7 @@ namespace VballManager
             //this.DropinListbox.SelectedIndex = selectDropinIndex;
              //Bind Date list
             int selectGameIndex = this.GameListbox.SelectedIndex;
-            this.GameListbox.DataSource = Manager.FindPoolByName(this.PoolListbox.SelectedItem.Text).Games;
+            this.GameListbox.DataSource = Manager.FindPoolByName(this.PoolListbox.SelectedItem.Text).Games.OrderBy(g=>g.Date);
             this.GameListbox.DataTextField = "Date";
             this.GameListbox.DataTextFormatString = "{0:d}";
             this.GameListbox.DataBind();
@@ -297,7 +297,9 @@ namespace VballManager
                 Game game = new Game(date);
                 foreach (Member member in CurrentPool.Members.Items)
                 {
-                    game.Members.Add(new Attendee(member.PlayerId, InOutNoshow.In));
+                    Attendee att = new Attendee(member.PlayerId, InOutNoshow.In);
+                    att.Confirmed = !member.NeedToConfirm;
+                    game.Members.Add(att);
                 }
                 foreach (Dropin dropin in CurrentPool.Dropins.Items)
                 {
@@ -502,7 +504,7 @@ namespace VballManager
         protected void MemberListbox_SelectedIndexChanged(object sender, EventArgs e)
         {
             Member member = CurrentPool.Members.FindByPlayerId(MemberListbox.SelectedValue);
-            //this.MemberCancelledCb.Checked = member.IsCancelled;
+            this.ConfirmCb.Checked = member.NeedToConfirm;
             //Response.Redirect(Request.RawUrl);
         }
 
@@ -518,6 +520,15 @@ namespace VballManager
         {
             Member member = CurrentPool.Members.FindByPlayerId(MemberListbox.SelectedValue);
             Player player = Manager.FindPlayerById(member.PlayerId);
+            if (this.ConfirmCb.Checked != member.NeedToConfirm)
+            {
+                member.NeedToConfirm = this.ConfirmCb.Checked;
+                foreach (Game game in CurrentPool.Games.FindAll(g => g.Date.Date >= Manager.EastDateTimeToday))
+                {
+                    Attendee att = game.Members.FindByPlayerId(member.PlayerId);
+                    att.Confirmed = !this.ConfirmCb.Checked;
+                }
+            }
             //member.IsCancelled = this.MemberCancelledCb.Checked;
              DataAccess.Save(Manager);
            // Response.Redirect(Request.RawUrl);

@@ -94,7 +94,7 @@ namespace VballManager
             foreach (Person person in pool.AllPlayers.Items)
             {
                 Player player = Manager.FindPlayerById(person.PlayerId);
-                if (player.IsActive && player.IsRegisterdMember && !pool.Dropins.Items.Exists(dropin => dropin.PlayerId == person.PlayerId && dropin.IsCoop))
+                if (player.IsActive && player.IsRegisterdMember && !pool.Dropins.Items.Exists(dropin => dropin.PlayerId == person.PlayerId && (dropin.IsCoop || dropin.WaiveBenefit)))
                 {
                     Stats stats = new Stats();
                     stats.Player = player;
