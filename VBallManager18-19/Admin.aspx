@@ -30,20 +30,24 @@
         .auto-style1 {
             width: 177px;
         }
+
         .auto-style2 {
             width: 371px;
         }
+
         .auto-style4 {
             height: 24px;
             width: 186px;
         }
+
         .auto-style5 {
             width: 186px;
         }
+
         .auto-style6 {
             width: 100px;
         }
-        </style>
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <asp:Panel ID="Panel1" runat="server" BackColor="#CAD3C5">
@@ -226,31 +230,62 @@
         </table>
     </asp:Panel>
     <br />
-    <asp:Panel ID="FactorPanel" runat="server" BackColor="#99FFCC" BorderColor="#3333CC"
-                        BorderStyle="Inset">
+    <asp:Panel ID="RulePanel" runat="server" BackColor="#99FFCC" BorderColor="#3333CC"
+        BorderStyle="Inset">
         <table>
             <tr>
                 <td>
-                        <asp:Table ID="FactorTable" runat="server" Caption="Factors">
-                            <asp:TableHeaderRow ID="TableHeaderRow1" HorizontalAlign="Left" BackColor="#B3AB4D">
-                                <asp:TableHeaderCell ID="TableHeaderCell1" Text="Pool Name" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
-                                <asp:TableHeaderCell ID="TableHeaderCell2" Text="Low Pool Name" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
-                                <asp:TableHeaderCell ID="TableHeaderCell3" Text="From" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
-                                <asp:TableHeaderCell ID="TableHeaderCell4" Text="To" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
-                                <asp:TableHeaderCell ID="TableHeaderCell5" Text="Coop From" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
-                                <asp:TableHeaderCell ID="TableHeaderCell7" Text="Coop To" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
-                                <asp:TableHeaderCell ID="TableHeaderCell8" Text="High Pool Name" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
-                                <asp:TableHeaderCell ID="TableHeaderCell10" Text="From" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
-                                <asp:TableHeaderCell ID="TableHeaderCell11" Text="To" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
-                                <asp:TableHeaderCell ID="TableHeaderCell12" Text="Value" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
-                                <asp:TableHeaderCell Text="Action" HorizontalAlign="Left"></asp:TableHeaderCell>
-                            </asp:TableHeaderRow>
-                        </asp:Table>
+                    <asp:Table ID="FactorTable" runat="server" Caption="Factors">
+                        <asp:TableHeaderRow ID="TableHeaderRow1" HorizontalAlign="Center" BackColor="#B3AB4D">
+                            <asp:TableHeaderCell ID="TableHeaderCell1" Text="Pool" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell2" Text="Low Pool" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell3" Text="From" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell4" Text="To" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell5" Text="Coop From" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell7" Text="Coop To" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell8" Text="High Pool" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell10" Text="From" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell11" Text="To" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell12" Text="Value" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell Text="Action" HorizontalAlign="Center"></asp:TableHeaderCell>
+                        </asp:TableHeaderRow>
+                    </asp:Table>
                 </td>
-                <td align="right">
-                        <asp:Button ID="RecalculateFactor" runat="server" OnClick="RecalculateFactorBtn_Click" Text="Re-calculate Factors" Width="141px" />
+               <td>
+                    <asp:Table ID="MoveRuleTable" runat="server" Caption="Intern Move Rules">
+                        <asp:TableHeaderRow ID="TableHeaderRow2" HorizontalAlign="Center" BackColor="#B3AB4D">
+                            <asp:TableHeaderCell ID="TableHeaderCell14" Text="Low Pool" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell15" Text="From" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell16" Text="To" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell13" Text="Waiting >=" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell17" Text="Coop From" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell18" Text="Coop To" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell19" Text="High Pool" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell20" Text="From" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell21" Text="To" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                             <asp:TableHeaderCell ID="TableHeaderCell23" Text="Waiting >=" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell22" Text="Move" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                           <asp:TableHeaderCell Text="Action" HorizontalAlign="Center"></asp:TableHeaderCell>
+                        </asp:TableHeaderRow>
+                    </asp:Table>
                 </td>
             </tr>
+            <tr>
+                <td align="right">
+                    <asp:Button ID="RecalculateFactor" runat="server" OnClick="RecalculateFactorBtn_Click" Text="Re-calculate Factors" Width="141px" />
+                </td>
+                <td>
+                    </td>
+            </tr>
+        </table>
+
+
+    </asp:Panel>
+
+    <br />
+    <asp:Panel ID="MoveRulePanel" runat="server" BackColor="#99FFCC" BorderColor="#3333CC"
+        BorderStyle="Inset">
+        <table>
         </table>
 
 

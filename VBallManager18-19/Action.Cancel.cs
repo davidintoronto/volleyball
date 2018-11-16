@@ -125,24 +125,12 @@ namespace VballManager
            return false;
        }
 
-
-       private Game FindTodayGame(Pool pool)
-       {
-           DateTime gameDate = Manager.EastDateTimeToday;
-           Game targetGame = pool.Games.OrderBy(game => game.Date).ToList<Game>().Find(game => game.Date >= gameDate);
-           if (targetGame != null && targetGame.Date.Date == Manager.EastDateTimeToday)
-           {
-               return targetGame;
-           }
-           return null;
-       }
-       
        public void AutoCancelUnconfirmedReservations()
        {
            if (Manager.EastDateTimeNow.Hour < Manager.AutoCancelHour || Manager.EastDateTimeNow.Hour >= Manager.LockReservationHour) return;
            foreach (Pool pool in Manager.Pools)
            {
-               Game game = FindTodayGame(pool);
+               Game game = pool.FindGameByDate(Manager.EastDateTimeToday);
                if (game == null) continue;
                foreach (Attendee member in game.Members.Items.FindAll(m => !m.Confirmed))
                {

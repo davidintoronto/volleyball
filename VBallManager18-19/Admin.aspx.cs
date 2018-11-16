@@ -10,6 +10,25 @@ namespace VballManager
 {
     public partial class Admin : AdminBase
     {
+
+        private const String POOL_NAME = "PoolName";
+        private const String LOW_POOL_NAME = "LowPoolName";
+        private const String HIGH_POOL_NAME = "HighPoolName";
+        private const String LOW_POOL_FROM = "LowPoolFrom";
+        private const String LOW_POOL_TO = "LowPoolTo";
+        private const String LOW_POOL_WAITING = "LowPoolWaiting";
+        private const String COOP_FROM = "CoopFrom";
+        private const String COOP_TO = "CoopTo";
+        private const String HIGH_POOL_FROM = "HighPoolFrom";
+        private const String HIGH_POOL_TO = "HighPoolTo";
+        private const String HIGH_POOL_WAITING = "HighPoolWaiting";
+        private const String FACTOR_VALUE = "FactorValue";
+        private const String ADD = "Add";
+        private const String DELETE = "Delete";
+        private List<String> playerNumbers = new List<String>() { "24", "18", "16", "15", "14", "13", "12", "11", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1", "0" };
+        private List<String> factorNumbers = new List<String>() { "3", "2.75", "2.5", "2.25", "2", "1.75", "1.5", "1.25", "1", "0.75", "0.5", "0.25", "0.1", "0.01", "0" };
+        private List<String> toMoveNumbers = new List<String>() { "2", "1", "0", "-1", "2" };
+
         protected void Page_Load(object sender, EventArgs e)
         {
             Application[Constants.DATA] = DataAccess.LoadReservation();
@@ -48,16 +67,20 @@ namespace VballManager
             // ShowPermits();
             ShowPermits();
             RanderFactorPanel();
+            RanderMoveRulePanel();
             //Home IP
             String homeIpFile = System.AppDomain.CurrentDomain.BaseDirectory + Constants.IP_FILE;
             if (File.Exists(homeIpFile))
                 this.HomeIPLb.Text = File.ReadAllText(System.AppDomain.CurrentDomain.BaseDirectory + Constants.IP_FILE);
 
         }
+
+        #region Factors
         private void RanderFactorPanel()
         {
             IOrderedEnumerable<Factor> orderedFactors = Manager.Factors.OrderBy(factor => factor.PoolName).ThenBy(factor => factor.LowPoolName).//
-                ThenBy(factor => factor.LowPoolNumberFrom).ThenBy(factor => factor.HighPoolNumberFrom).ThenBy(factor => factor.CoopNumberFrom);
+                ThenBy(factor => factor.LowPoolNumberFrom).ThenBy(factor => factor.LowPoolNumberTo).ThenBy(factor => factor.HighPoolNumberFrom).//
+                ThenBy(factor => factor.HighPoolNumberTo).ThenBy(factor => factor.CoopNumberFrom);
             foreach (Factor factor in orderedFactors)
             {
                 CreateFactorTableRow(factor);
@@ -69,7 +92,7 @@ namespace VballManager
         {
             TableCell poolNameCell = new TableCell();
             DropDownList poolNameDDL = new DropDownList();
-            poolNameDDL.ID = factor.Id + "," + poolNameType;
+            poolNameDDL.ID = factor.Id + "," + poolNameType + ",factor";
             poolNameDDL.DataSource = Manager.Pools;
             poolNameDDL.DataTextField = "Name";
             poolNameDDL.DataValueField = "Name";
@@ -83,7 +106,6 @@ namespace VballManager
             poolNameCell.Controls.Add(poolNameDDL);
             return poolNameCell;
         }
-
         private void FactorPoolNameDDL_Changed(object sender, EventArgs e)
         {
             DropDownList ddl = (DropDownList)sender;
@@ -109,12 +131,12 @@ namespace VballManager
             else if (ids[1] == FACTOR_VALUE) factor.Value = decimal.Parse(ddl.Text);
             DataAccess.Save(Manager);
         }
-        
+
         private TableCell CreateNumberCell(Factor factor, String numberType, String number, List<String> numbers)
         {
             TableCell numberCell = new TableCell();
             DropDownList numberDDL = new DropDownList();
-            numberDDL.ID = factor.Id + "," + numberType;
+            numberDDL.ID = factor.Id + "," + numberType + ",factor";
             numberDDL.DataSource = numbers;
             numberDDL.DataBind();
             numberDDL.SelectedValue = number;
@@ -126,21 +148,6 @@ namespace VballManager
             numberCell.Controls.Add(numberDDL);
             return numberCell;
         }
-
-        private const String POOL_NAME = "PoolName";
-        private const String LOW_POOL_NAME = "LowPoolName";
-        private const String HIGH_POOL_NAME = "HighPoolName";
-        private const String LOW_POOL_FROM = "LowPoolFrom";
-        private const String LOW_POOL_TO = "LowPoolTo";
-        private const String COOP_FROM = "CoopFrom";
-        private const String COOP_TO = "CoopTo";
-        private const String HIGH_POOL_FROM = "HighPoolFrom";
-        private const String HIGH_POOL_TO = "HighPoolTo";
-        private const String FACTOR_VALUE = "FactorValue";
-        private const String ADD = "Add";
-        private const String DELETE = "Delete";
-        private List<String> playerNumbers = new List<String>() { "24", "18", "16", "15", "14", "13", "12", "11", "10", "8", "7", "5", "4", "3", "2", "1", "0" };
-        private List<String> factorNumbers = new List<String>() { "3", "2.5", "2", "1.5", "1", "0.5", "0.1", "0.01", "0"};
 
         private void CreateFactorTableRow(Factor factor)
         {
@@ -168,7 +175,7 @@ namespace VballManager
 
             TableCell actionCell = new TableCell();
             Button actionBtn = new Button();
-            actionBtn.ID = factor.Id + "," + (factor.Id == null ? ADD : DELETE);
+            actionBtn.ID = factor.Id + "," + (factor.Id == null ? ADD : DELETE) + ",factor";
             actionBtn.Text = (factor.Id == null) ? ADD : DELETE;
             actionBtn.Click += new EventHandler(ActionFactor_Click);
             actionBtn.OnClientClick = "if ( !confirm('Are you sure?')) return false;";
@@ -181,22 +188,23 @@ namespace VballManager
             this.FactorTable.Rows.Add(tableRow);
         }
 
+
         private void ActionFactor_Click(object sender, EventArgs e)
         {
             Button tb = (Button)sender;
             String[] ids = tb.ID.Split(',');
             if (ids[1] == ADD)
             {
-                String poolName = ((DropDownList)this.Master.FindControl("MainContent").FindControl("," + POOL_NAME)).Text;
-                String lowPoolName = ((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_NAME)).Text;
-                int lowPoolFrom = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_FROM)).Text);
-                int lowPoolTo = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_TO)).Text);
-                int coopFrom = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + COOP_FROM)).Text);
-                int coopTo = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + COOP_TO)).Text);
-                String highPoolName = ((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HIGH_POOL_NAME)).Text;
-                int highPoolFrom = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HIGH_POOL_FROM)).Text);
-                int highPoolTo = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HIGH_POOL_TO)).Text);
-                decimal value = decimal.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + FACTOR_VALUE)).Text);
+                String poolName = ((DropDownList)this.Master.FindControl("MainContent").FindControl("," + POOL_NAME + ",factor")).Text;
+                String lowPoolName = ((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_NAME + ",factor")).Text;
+                int lowPoolFrom = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_FROM + ",factor")).Text);
+                int lowPoolTo = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_TO + ",factor")).Text);
+                int coopFrom = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + COOP_FROM + ",factor")).Text);
+                int coopTo = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + COOP_TO + ",factor")).Text);
+                String highPoolName = ((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HIGH_POOL_NAME + ",factor")).Text;
+                int highPoolFrom = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HIGH_POOL_FROM + ",factor")).Text);
+                int highPoolTo = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HIGH_POOL_TO + ",factor")).Text);
+                decimal value = decimal.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + FACTOR_VALUE + ",factor")).Text);
                 Factor factor = new Factor(poolName, lowPoolName, lowPoolFrom, lowPoolTo, coopFrom, coopTo, highPoolName, highPoolFrom, highPoolTo, value);
                 Manager.Factors.Add(factor);
             }
@@ -208,7 +216,154 @@ namespace VballManager
             DataAccess.Save(Manager);
             Response.Redirect(Request.RawUrl);
         }
+        #endregion
 
+        #region Move Rules
+        private void RanderMoveRulePanel()
+        {
+            IOrderedEnumerable<MoveRule> orderedMoveRules = Manager.MoveRules.OrderBy(moveRule => moveRule.HighPoolNumberFrom).//
+                ThenBy(moveRule => moveRule.HighPoolNumberTo).ThenBy(moveRule => moveRule.LowPoolName).//
+                ThenBy(moveRule => moveRule.LowPoolNumberFrom);//.ThenBy(moveRule => moveRule.LowPoolNumberTo).ThenBy(moveRule => moveRule.CoopNumberFrom);
+            foreach (MoveRule moveRule in orderedMoveRules)
+            {
+                CreateMoveRuleTableRow(moveRule);
+            }
+            CreateMoveRuleTableRow(new MoveRule());
+        }
+
+        private TableCell CreatePoolNameCell(MoveRule moveRule, String poolNameType, String poolName)
+        {
+            TableCell poolNameCell = new TableCell();
+            DropDownList poolNameDDL = new DropDownList();
+            poolNameDDL.ID = moveRule.Id + "," + poolNameType + ",moveRule";
+            poolNameDDL.DataSource = Manager.Pools;
+            poolNameDDL.DataTextField = "Name";
+            poolNameDDL.DataValueField = "Name";
+            poolNameDDL.DataBind();
+            poolNameDDL.SelectedValue = poolName;
+            if (moveRule.Id != null)
+            {
+                poolNameDDL.AutoPostBack = true;
+                poolNameDDL.SelectedIndexChanged += new EventHandler(MoveRulePoolNameDDL_Changed);
+            }
+            poolNameCell.Controls.Add(poolNameDDL);
+            return poolNameCell;
+        }
+
+        private TableCell CreateNumberCell(MoveRule moveRule, String numberType, String number, List<String> numbers)
+        {
+            TableCell numberCell = new TableCell();
+            DropDownList numberDDL = new DropDownList();
+            numberDDL.ID = moveRule.Id + "," + numberType + ",moveRule";
+            numberDDL.DataSource = numbers;
+            numberDDL.DataBind();
+            numberDDL.SelectedValue = number;
+            if (moveRule.Id != null)
+            {
+                numberDDL.AutoPostBack = true;
+                numberDDL.SelectedIndexChanged += new EventHandler(MoveRuleNumber_Changed);
+            }
+            numberCell.Controls.Add(numberDDL);
+            return numberCell;
+        }
+        private void MoveRulePoolNameDDL_Changed(object sender, EventArgs e)
+        {
+            DropDownList ddl = (DropDownList)sender;
+            String[] ids = ddl.ID.Split(',');
+            MoveRule moveRule = Manager.MoveRules.Find(fa => fa.Id == ids[0]);
+            if (ids[1] == LOW_POOL_NAME) moveRule.LowPoolName = ddl.Text;
+            else if (ids[1] == HIGH_POOL_NAME) moveRule.HighPoolName = ddl.Text;
+            DataAccess.Save(Manager);
+        }
+
+        private void MoveRuleNumber_Changed(object sender, EventArgs e)
+        {
+            DropDownList ddl = (DropDownList)sender;
+            String[] ids = ddl.ID.Split(',');
+            MoveRule moveRule = Manager.MoveRules.Find(fa => fa.Id == ids[0]);
+            if (ids[1] == LOW_POOL_FROM) moveRule.LowPoolNumberFrom = int.Parse(ddl.Text);
+            else if (ids[1] == LOW_POOL_TO) moveRule.LowPoolNumberTo = int.Parse(ddl.Text);
+            else if (ids[1] == LOW_POOL_WAITING) moveRule.LowPoolWaiting = int.Parse(ddl.Text);
+            else if (ids[1] == COOP_FROM) moveRule.CoopNumberFrom = int.Parse(ddl.Text);
+            else if (ids[1] == COOP_TO) moveRule.CoopNumberTo = int.Parse(ddl.Text);
+            else if (ids[1] == HIGH_POOL_FROM) moveRule.HighPoolNumberFrom = int.Parse(ddl.Text);
+            else if (ids[1] == HIGH_POOL_TO) moveRule.HighPoolNumberTo = int.Parse(ddl.Text);
+            else if (ids[1] == HIGH_POOL_WAITING) moveRule.HighPoolWaiting = int.Parse(ddl.Text);
+            else if (ids[1] == FACTOR_VALUE) moveRule.ToMove = int.Parse(ddl.Text);
+            DataAccess.Save(Manager);
+        }
+
+        private void CreateMoveRuleTableRow(MoveRule moveRule)
+        {
+            TableRow tableRow = new TableRow();
+            //Low pool name
+            tableRow.Cells.Add(CreatePoolNameCell(moveRule, LOW_POOL_NAME, moveRule.LowPoolName));
+            //Low pool number from
+            tableRow.Cells.Add(CreateNumberCell(moveRule, LOW_POOL_FROM, moveRule.LowPoolNumberFrom.ToString(), playerNumbers));
+            //Low pool number to
+            tableRow.Cells.Add(CreateNumberCell(moveRule, LOW_POOL_TO, moveRule.LowPoolNumberTo.ToString(), playerNumbers));
+            //Low pool waiting
+            tableRow.Cells.Add(CreateNumberCell(moveRule, LOW_POOL_WAITING, moveRule.LowPoolWaiting.ToString(), playerNumbers));
+            //Coop from
+            tableRow.Cells.Add(CreateNumberCell(moveRule, COOP_FROM, moveRule.CoopNumberFrom.ToString(), playerNumbers));
+            //Coop to
+            tableRow.Cells.Add(CreateNumberCell(moveRule, COOP_TO, moveRule.CoopNumberTo.ToString(), playerNumbers));
+            //high pool name
+            tableRow.Cells.Add(CreatePoolNameCell(moveRule, HIGH_POOL_NAME, moveRule.HighPoolName));
+            //high pool number from
+            tableRow.Cells.Add(CreateNumberCell(moveRule, HIGH_POOL_FROM, moveRule.HighPoolNumberFrom.ToString(), playerNumbers));
+            //high pool number to
+            tableRow.Cells.Add(CreateNumberCell(moveRule, HIGH_POOL_TO, moveRule.HighPoolNumberTo.ToString(), playerNumbers));
+            //High pool waiting
+            tableRow.Cells.Add(CreateNumberCell(moveRule, HIGH_POOL_WAITING, moveRule.HighPoolWaiting.ToString(), playerNumbers));
+            //Value
+            tableRow.Cells.Add(CreateNumberCell(moveRule, FACTOR_VALUE, moveRule.ToMove.ToString(), toMoveNumbers));
+
+            TableCell actionCell = new TableCell();
+            Button actionBtn = new Button();
+            actionBtn.ID = moveRule.Id + "," + (moveRule.Id == null ? ADD : DELETE) + ",moveRule";
+            actionBtn.Text = (moveRule.Id == null) ? ADD : DELETE;
+            actionBtn.Click += new EventHandler(ActionMoveRule_Click);
+            actionBtn.OnClientClick = "if ( !confirm('Are you sure?')) return false;";
+            actionCell.Controls.Add(actionBtn);
+            tableRow.Cells.Add(actionCell);
+            if (moveRule.Id == null)
+            {
+                tableRow.BackColor = System.Drawing.Color.CadetBlue;
+            }
+            this.MoveRuleTable.Rows.Add(tableRow);
+        }
+
+        private void ActionMoveRule_Click(object sender, EventArgs e)
+        {
+            Button tb = (Button)sender;
+            String[] ids = tb.ID.Split(',');
+            if (ids[1] == ADD)
+            {
+                String lowPoolName = ((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_NAME + ",moveRule")).Text;
+                int lowPoolFrom = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_FROM + ",moveRule")).Text);
+                int lowPoolTo = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_TO + ",moveRule")).Text);
+                int lowPoolWaiting = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_WAITING + ",moveRule")).Text);
+                int coopFrom = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + COOP_FROM + ",moveRule")).Text);
+                int coopTo = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + COOP_TO + ",moveRule")).Text);
+                String highPoolName = ((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HIGH_POOL_NAME + ",moveRule")).Text;
+                int highPoolFrom = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HIGH_POOL_FROM + ",moveRule")).Text);
+                int highPoolTo = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HIGH_POOL_TO + ",moveRule")).Text);
+                int highPoolWaiting = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HIGH_POOL_WAITING + ",moveRule")).Text);
+                int value = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + FACTOR_VALUE + ",moveRule")).Text);
+                MoveRule moveRule = new MoveRule(lowPoolName, lowPoolFrom, lowPoolTo, lowPoolWaiting, coopFrom, coopTo, highPoolName, highPoolFrom, highPoolTo, highPoolWaiting, value);
+                Manager.MoveRules.Add(moveRule);
+            }
+            else if (ids[1] == DELETE)
+            {
+                MoveRule moveRule = Manager.MoveRules.Find(fa => fa.Id == ids[0]);
+                Manager.MoveRules.Remove(moveRule);
+            }
+            DataAccess.Save(Manager);
+            Response.Redirect(Request.RawUrl);
+        }
+        #endregion       
+ 
         private void ShowPermits()
         {
             //Bind permits

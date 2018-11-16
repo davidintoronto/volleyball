@@ -16,15 +16,16 @@ namespace VballManager
         {
             List<Pool> pools = Manager.Pools.FindAll(pool => pool.DayOfWeek == day);
             if (pools.Count != 2) return;
-            Pool highPool = pools[0]; //A or C
-            Pool lowPool = pools[1]; //B or D
+            Pool highPool = Manager.Pools.Find(pool => pool.DayOfWeek == day && !pool.IsLowPool);
+            Pool lowPool = Manager.Pools.Find(pool => pool.DayOfWeek == day && pool.IsLowPool);
             if (highPool.AutoCoopReserve && Manager.EastDateTimeToday == gameDate.Date && Manager.EastDateTimeNow.Hour >= highPool.ReservHourForCoop && Manager.EastDateTimeNow.Hour < highPool.SettleHourForCoop)
             {
                 //Set last coop date for each coop player
                 CalculatelastCoopDate(highPool, gameDate);
                 Game highPoolGame = highPool.FindGameByDate(gameDate);
                 Game lowPoolGame = lowPool.FindGameByDate(gameDate);
-                if (MoveToLowPoolRequired(highPool, lowPool, highPoolGame, lowPoolGame))
+                int moveIntern = CalculateMoveIntern(highPool, lowPool, highPoolGame, lowPoolGame);
+                if (moveIntern == -1)
                 {
                     Dropin coopDropin = FindBestCoopCandidateToMoveBackOrignalPool(highPool, highPoolGame, lowPoolGame);
                     if (coopDropin != null)
@@ -33,10 +34,7 @@ namespace VballManager
                         MoveReservation(lowPool, lowPoolGame, coopPlayer);
                         String wechatMessage = String.Format("Sorry, but we had to move your spot back to pool {0} for tonight's volleyball in order to balance the players in each pool. However we may move your spot again later when things change.", lowPool.Name);
                         Manager.WechatNotifier.AddNotifyWechatMessage(coopPlayer, wechatMessage);
-                        wechatMessage = String.Format("Currently, we have {0} players in pool {1} for tonight volleyball", highPoolGame.NumberOfReservedPlayers, highPool.Name);
-                        Manager.WechatNotifier.AddNotifyWechatMessage(highPool, wechatMessage);
-                        wechatMessage = String.Format("Currently, we have {0} players in pool {1} for tonight volleyball", lowPoolGame.NumberOfReservedPlayers, lowPool.Name);
-                        Manager.WechatNotifier.AddNotifyWechatMessage(lowPool, wechatMessage);
+                        Manager.AddReservationNotifyWechatMessage(coopPlayer.Id, CurrentUser.Id, Constants.MOVED, lowPool, highPool, lowPoolGame.Date);
                         LogHistory log = CreateLog(Manager.EastDateTimeNow, gameDate.Date, GetUserIP(), lowPool.Name, coopPlayer.Name, "Moved from " + highPool.Name, "Admin");
                         Manager.Logs.Add(log);
                         DataAccess.Save(Manager);
@@ -44,7 +42,7 @@ namespace VballManager
                     return;
                 }
                 //Check to see if moving coop to high level pool required, and number of reserved coop players already reaches maximum
-                while (MoveToHighPoolRequired(highPool, lowPool, highPoolGame, lowPoolGame) && DropinSpotAvailableForCoop(highPool, gameDate))
+                while (moveIntern == 1 && DropinSpotAvailableForCoop(highPool, gameDate))
                 {
                     //Find the best coop 
                     Dropin coopDropin = FindNextCoopCandidateToMoveHighPool(highPool, highPoolGame, lowPoolGame);
@@ -57,27 +55,27 @@ namespace VballManager
                     String wechatMessage = String.Format("We have moved your spot from pool {0} to pool {1} for tonight's volleyball in order to balance the players in each pool. However we may move you back later when things change." //
                     + " if you don't receive any further notification by {2} o'clock, then this is the final arrangement.", lowPool.Name, highPool.Name, highPool.SettleHourForCoop);
                     Manager.WechatNotifier.AddNotifyWechatMessage(coopPlayer, wechatMessage);
-                    wechatMessage = String.Format("{0} moved from pool {1} to pool {2}. Now, we have {3} players in pool {4} for tonight volleyball", coopPlayer.Name, lowPool.Name, highPool.Name, highPoolGame.NumberOfReservedPlayers, highPool.Name);
-                    Manager.WechatNotifier.AddNotifyWechatMessage(highPool, wechatMessage);
-                    wechatMessage = String.Format("{0} moved from pool {1} to pool {2}. Currently, we have {3} players in pool {4} for tonight volleyball", coopPlayer.Name, lowPool.Name, highPool.Name, lowPoolGame.NumberOfReservedPlayers, lowPool.Name);
-                    Manager.WechatNotifier.AddNotifyWechatMessage(lowPool, wechatMessage);
+                    Manager.AddReservationNotifyWechatMessage(coopPlayer.Id, CurrentUser.Id, Constants.MOVED, highPool, lowPool, lowPoolGame.Date);
                     LogHistory log = CreateLog(Manager.EastDateTimeNow, gameDate.Date, GetUserIP(), highPool.Name, coopPlayer.Name, "Moved from " + lowPool.Name, "Admin");
                     Manager.Logs.Add(log);
                     DataAccess.Save(Manager);
+                    moveIntern = CalculateMoveIntern(highPool, lowPool, highPoolGame, lowPoolGame);
                 }
             }
         }
 
-        public bool MoveToHighPoolRequired(Pool highPool, Pool lowPool, Game highPoolGame, Game lowPoolGame)
+        public int CalculateMoveIntern(Pool highPool, Pool lowPool, Game highPoolGame, Game lowPoolGame)
         {
-            return (highPoolGame.NumberOfReservedPlayers < highPool.LessThanPayersForCoop && lowPoolGame.NumberOfReservedPlayers > lowPool.LessThanPayersForCoop && lowPoolGame.NumberOfReservedPlayers > highPoolGame.NumberOfReservedPlayers +1) || //
-           (lowPoolGame.WaitingList.Count > 0 && highPoolGame.NumberOfReservedPlayers < highPool.MaximumPlayerNumber);
-        }
-
-        private bool MoveToLowPoolRequired(Pool highPool, Pool lowPool, Game highPoolGame, Game lowPoolGame)
-        {
-            return lowPoolGame.NumberOfReservedPlayers < lowPool.LessThanPayersForCoop && highPoolGame.NumberOfReservedPlayers > 12 || // 
-                highPoolGame.WaitingList.Count > 0 && lowPoolGame.NumberOfReservedPlayers < lowPool.MaximumPlayerNumber;
+            int highPoolNumber = highPoolGame.NumberOfReservedPlayers;
+            int highPoolWaiting = highPoolGame.WaitingList.Count;
+            int intern = highPoolGame.Dropins.Items.FindAll(d => d.IsCoop && d.Status == InOutNoshow.In).Count;
+            int lowPoolNumber = lowPoolGame.NumberOfReservedPlayers;
+            int lowPoolWaiting = lowPoolGame.WaitingList.Count;
+            MoveRule moveRule = Manager.MoveRules.Find(mr => mr.LowPoolName == lowPool.Name && mr.LowPoolNumberFrom <= lowPoolNumber && lowPoolNumber <= mr.LowPoolNumberTo &&//
+                lowPoolWaiting >= mr.LowPoolWaiting && mr.CoopNumberFrom <= intern && intern <= mr.CoopNumberTo && mr.HighPoolName == highPool.Name &&//
+                mr.HighPoolNumberFrom <= highPoolNumber && highPoolNumber <= mr.HighPoolNumberTo && highPoolWaiting >= mr.HighPoolWaiting);
+            if (moveRule != null) return moveRule.ToMove;
+            return 0;
         }
 
         public void CalculatelastCoopDate(Pool pool, DateTime gameDate)

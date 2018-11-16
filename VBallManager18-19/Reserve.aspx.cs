@@ -113,6 +113,8 @@ namespace VballManager
             {
                 Handler.AssignDropinSpotToWaiting(CurrentPool, comingGame);
             }
+            //Cancel unconfirmed reservation
+            Handler.AutoCancelUnconfirmedReservations();
             //Fill game information
             FillGameInfoTable(CurrentPool, TargetGameDate);
 

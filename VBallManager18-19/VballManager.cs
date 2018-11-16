@@ -34,7 +34,14 @@ namespace VballManager
         private WechatNotify wechatNotifier = new WechatNotify();
         private DateTime attendRateStartDate;
         private List<Factor> factors = new List<Factor>();
+        private List<MoveRule> moveRules = new List<MoveRule>();
         private String season;
+
+        public List<MoveRule> MoveRules
+        {
+            get { return moveRules; }
+            set { moveRules = value; }
+        }
 
         public String Season
         {
@@ -427,10 +434,8 @@ namespace VballManager
 
         public bool IsReservationLocked(DateTime gameDate)
         {
-            DateTime lockDate = TimeZoneInfo.ConvertTimeFromUtc(gameDate, TimeZoneInfo.FindSystemTimeZoneById(TimeZoneName));
-            lockDate = lockDate.AddHours(-1 * lockDate.Hour + LockReservationHour);
-            DateTime now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(TimeZoneName));
-            return now >= lockDate;
+            DateTime lockDate = gameDate.AddHours(LockReservationHour);
+            return EastDateTimeNow >= lockDate;
         }
 
 
@@ -566,7 +571,7 @@ namespace VballManager
            else
            {
                int coopNumberOfPlayers = pool.FindGameByDate(gameDate).Dropins.Items.FindAll(pickup => pickup.IsCoop && pickup.Status == InOutNoshow.In).Count;
-               Factor factor = Factors.Find(f => f.PoolName == anotherDayPoolWithDifferentLevel.Name && f.LowPoolName == sameDayPool.Name && f.LowPoolNumberFrom <= sameDayPoolNumberOfPlayers && sameDayPoolNumberOfPlayers <= f.LowPoolNumberTo &&//
+               Factor factor = Factors.Find(f => f.PoolName == anotherDayPoolWithSameLevel.Name && f.LowPoolName == sameDayPool.Name && f.LowPoolNumberFrom <= sameDayPoolNumberOfPlayers && sameDayPoolNumberOfPlayers <= f.LowPoolNumberTo &&//
                     f.CoopNumberFrom <= coopNumberOfPlayers && coopNumberOfPlayers <= f.CoopNumberTo && f.HighPoolName == pool.Name && f.HighPoolNumberFrom <= currentPoolNumberOfPlayer &&//
                     currentPoolNumberOfPlayer <= f.HighPoolNumberTo);
                if (factor != null) game.Factor = factor.Value;
@@ -794,7 +799,7 @@ namespace VballManager
             return this.games.Find(
                 delegate(Game game)
                 {
-                    return game.Date.ToShortDateString() == date.ToShortDateString();
+                    return game.Date == date.Date;
                 }
             );
         }
@@ -909,104 +914,5 @@ namespace VballManager
     public enum PlayerBooleanProperties
     {
         IsRegisterMember, IsActive, Waiver, Marked
-    }
-
-    public class Factor
-    {
-        private String id;
-        private String poolName;
-        private String lowPoolName;
-        private int lowPoolNumberFrom;
-        private int lowPoolNumberTo;
-        private int coopNumberFrom;
-        private int coopNumberTo;
-        private String highPoolName;
-        private int highPoolNumberFrom;
-        private int highPoolNumberTo;
-        private decimal value;
-
-        public Factor() { }
-
-        public Factor(String poolName, String lowPoolName, int lowPoolNumberFrom, int lowPoolNumberTo, //
-            int coopNumberFrom, int coopNumberTo, String highPoolName, int highPoolNumberFrom, int highPoolNumberTo, decimal value)
-        {
-            this.id = Guid.NewGuid().ToString();
-            this.poolName = poolName;
-            this.lowPoolName = lowPoolName;
-            this.lowPoolNumberFrom = lowPoolNumberFrom;
-            this.lowPoolNumberTo = lowPoolNumberTo;
-            this.coopNumberFrom = coopNumberFrom;
-            this.coopNumberTo = coopNumberTo;
-            this.highPoolName = highPoolName;
-            this.highPoolNumberFrom = highPoolNumberFrom;
-            this.highPoolNumberTo = highPoolNumberTo;
-            this.value = value;
-        }
-
-        public String Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
-
-        public String PoolName
-        {
-            get { return poolName; }
-            set { poolName = value; }
-        }
-
-        public String LowPoolName
-        {
-            get { return lowPoolName; }
-            set { lowPoolName = value; }
-        }
-
-        public int LowPoolNumberFrom
-        {
-            get { return lowPoolNumberFrom; }
-            set { lowPoolNumberFrom = value; }
-        }
-
-        public int LowPoolNumberTo
-        {
-            get { return lowPoolNumberTo; }
-            set { lowPoolNumberTo = value; }
-        }
-
-        public int CoopNumberFrom
-        {
-            get { return coopNumberFrom; }
-            set { coopNumberFrom = value; }
-        }
-
-        public int CoopNumberTo
-        {
-            get { return coopNumberTo; }
-            set { coopNumberTo = value; }
-        }
-
-        public String HighPoolName
-        {
-            get { return highPoolName; }
-            set { highPoolName = value; }
-        }
-
-        public int HighPoolNumberFrom
-        {
-            get { return highPoolNumberFrom; }
-            set { highPoolNumberFrom = value; }
-        }
-
-        public int HighPoolNumberTo
-        {
-            get { return highPoolNumberTo; }
-            set { highPoolNumberTo = value; }
-        }
-
-        public decimal Value
-        {
-            get { return this.value; }
-            set { this.value = value; }
-        }
     }
 }

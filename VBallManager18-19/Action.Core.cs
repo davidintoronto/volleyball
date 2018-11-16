@@ -79,7 +79,7 @@ namespace VballManager
 
         public DateTime DropinSpotOpeningDate(Pool pool, DateTime gameDate, Player player)
         {
-            DateTime reserveDate = TimeZoneInfo.ConvertTimeFromUtc(gameDate, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
+            DateTime reserveDate = gameDate;
             if (player.IsRegisterdMember && !pool.Dropins.FindByPlayerId(player.Id).WaiveBenefit)
             {
                 //If this is Friday pool, check to see if player attend most recent monday game
@@ -111,17 +111,19 @@ namespace VballManager
             Game sameDayPoolGame = sameDayPool.FindGameByDate(gameDate);
             int sameDayPoolNumberOfPlayers = sameDayPoolGame.NumberOfReservedPlayers;
             Factor factor = null;
-            if (pool.IsLowPool)
+            if (pool.IsLowPool) 
             {
-                int coopNumberOfPlayers = sameDayPool.FindGameByDate(gameDate).Dropins.Items.FindAll(pickup => pickup.IsCoop).Count;
-                if (MoveToHighPoolRequired(sameDayPool, pool, sameDayPoolGame, game) && DropinSpotAvailableForCoop(sameDayPool, gameDate))
+                int coopNumberOfPlayers = sameDayPool.FindGameByDate(gameDate).Dropins.Items.FindAll(pickup => pickup.IsCoop && pickup.Status == InOutNoshow.In).Count;
+                //sameDayPoolNumberOfPlayers = sameDayPoolNumberOfPlayers - coopNumberOfPlayers;
+                int moveIntern = CalculateMoveIntern(sameDayPool, pool, sameDayPoolGame, game);
+                if (moveIntern == 1 && DropinSpotAvailableForCoop(sameDayPool, gameDate))//Move to high pool
                 {
                     coopNumberOfPlayers++;
-                    sameDayPoolNumberOfPlayers++;
+                    sameDayPoolNumberOfPlayers++; //A
                 }
                 else
                 {
-                    currentPoolNumberOfPlayer++;
+                    currentPoolNumberOfPlayer++; //B
                 }
                 factor = Manager.Factors.Find(f => f.PoolName == anotherDayPool.Name && f.LowPoolName == pool.Name && f.LowPoolNumberFrom <= currentPoolNumberOfPlayer && currentPoolNumberOfPlayer <= f.LowPoolNumberTo &&//
                     f.CoopNumberFrom <= coopNumberOfPlayers && coopNumberOfPlayers <= f.CoopNumberTo && f.HighPoolName == sameDayPool.Name && f.HighPoolNumberFrom <= sameDayPoolNumberOfPlayers &&//
@@ -129,15 +131,17 @@ namespace VballManager
             }
             else
             {
-                int coopNumberOfPlayers = pool.FindGameByDate(gameDate).Dropins.Items.FindAll(pickup => pickup.IsCoop).Count;
-                if (MoveToHighPoolRequired(pool, sameDayPool, game, sameDayPoolGame) && DropinSpotAvailableForCoop(pool, gameDate))
+                int coopNumberOfPlayers = pool.FindGameByDate(gameDate).Dropins.Items.FindAll(pickup => pickup.IsCoop && pickup.Status == InOutNoshow.In).Count;
+                //currentPoolNumberOfPlayer = currentPoolNumberOfPlayer - coopNumberOfPlayers;
+                int moveIntern = CalculateMoveIntern(pool, sameDayPool, game, sameDayPoolGame);
+                if (coopNumberOfPlayers > 0 && moveIntern == -1 && sameDayPoolGame.NumberOfReservedPlayers < sameDayPool.MaximumPlayerNumber) //Move back to low pool
                 {
-                    coopNumberOfPlayers++;
-                    currentPoolNumberOfPlayer++;
+                    coopNumberOfPlayers--;
+                    sameDayPoolNumberOfPlayers++;//B
                 }
                 else
                 {
-                    sameDayPoolNumberOfPlayers++;
+                    currentPoolNumberOfPlayer++;//A
                 }
                 factor = Manager.Factors.Find(f => f.PoolName == anotherDayPool.Name && f.LowPoolName == sameDayPool.Name && f.LowPoolNumberFrom <= sameDayPoolNumberOfPlayers && sameDayPoolNumberOfPlayers <= f.LowPoolNumberTo &&//
                      f.CoopNumberFrom <= coopNumberOfPlayers && coopNumberOfPlayers <= f.CoopNumberTo && f.HighPoolName == pool.Name && f.HighPoolNumberFrom <= currentPoolNumberOfPlayer &&//
@@ -152,6 +156,7 @@ namespace VballManager
             int lowPoolNumberOfPlayer = lowPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
             int highPoolNumberOfPlayer = highPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
             int coopNumberOfPlayers = highPool.FindGameByDate(gameDate).Dropins.Items.FindAll(pickup => pickup.IsCoop && pickup.Status == InOutNoshow.In).Count;
+            //highPoolNumberOfPlayer = highPoolNumberOfPlayer - coopNumberOfPlayers;
             Factor factor = Manager.Factors.Find(f => f.PoolName == pool.Name && f.LowPoolName == lowPool.Name && f.LowPoolNumberFrom <= lowPoolNumberOfPlayer && lowPoolNumberOfPlayer <= f.LowPoolNumberTo &&//
                 f.CoopNumberFrom <= coopNumberOfPlayers && coopNumberOfPlayers <= f.CoopNumberTo && f.HighPoolName == highPool.Name && f.HighPoolNumberFrom <= highPoolNumberOfPlayer &&//
                highPoolNumberOfPlayer <= f.HighPoolNumberTo);

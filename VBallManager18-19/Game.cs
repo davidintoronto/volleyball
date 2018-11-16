@@ -47,7 +47,7 @@ namespace VballManager
 
         public DateTime Date
         {
-            get { return date; }
+            get { return date.Date; }
             set { date = value; }
         }
 
