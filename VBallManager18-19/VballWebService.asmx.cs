@@ -66,13 +66,16 @@ namespace VballManager
         {
             //
             String reservationUrl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.PathAndQuery, HttpContext.Current.Request.ApplicationPath);// +"/" + Constants.POOL_LINK_LIST_PAGE;
-             if (hour != Manager.DropinSpotOpeningHour) return;
+            if (hour != Manager.DropinSpotOpeningHour) return;
              foreach (Pool pool in Manager.Pools)
              {
                  DateTime comingGameDate = FindComingGameDate(pool);
                  String publishTo = null;
                  if (Manager.EastDateTimeToday.AddDays(pool.DaysToReserve4MondayPlayer).Date == comingGameDate.Date && pool.DayOfWeek == DayOfWeek.Friday)
                  {
+                     Game mondayOfSameWeek = Manager.FindMondayGameOfSameLevelInSameWeek(pool, comingGameDate);
+                     if (mondayOfSameWeek != null && mondayOfSameWeek.Factor >= pool.FactorForAdvancedReserve)
+                     {
                          publishTo = "the players who attended Monday volleyball this week";
                          foreach (Dropin dropin in pool.Dropins.Items)
                          {
@@ -83,6 +86,7 @@ namespace VballManager
                                  Manager.WechatNotifier.AddNotifyWechatMessage(player, wechatMessage);
                              }
                          }
+                     }
                  }
                  if (pool.DaysToReserve == pool.DaysToReserve4Member)
                  {
@@ -111,6 +115,7 @@ namespace VballManager
                      String message = pool.DayOfWeek.ToString() + " volleyball reservation starts now for " + publishTo + ". Currently, we have " + availableDropinSpots + (availableDropinSpots<2 ? " dropin spot" : " dropin spots") + " available in pool "+ pool.Name +". Click the link to reserve. " + reservationUrl;
                      Manager.WechatNotifier.AddNotifyWechatMessage(pool, message);
                      Manager.WechatNotifier.AddNotifyWechatMessage(pool, "{ReservationLink}");
+                     DataAccess.Save(Manager);
                  }
              }
         }
@@ -133,6 +138,7 @@ namespace VballManager
                     int availableSpots = pool.MaximumPlayerNumber - game.NumberOfReservedPlayers;
                     message = message + availableSpots + (availableSpots > 1 ? " spots are" : " spot is") + " available. Click the link to reserve. " + reservationUrl;
                     Manager.WechatNotifier.AddNotifyWechatMessage(pool, message);
+                    DataAccess.Save(Manager);
                 }
             }
         }
@@ -212,6 +218,7 @@ namespace VballManager
                 if (birthday.Length == 3) poolName = birthday[2];
                 String wish = birthdayWishes[new Random().Next(birthdayWishes.Count)];
                 Manager.WechatNotifier.AddNotifyWechatMessage(Manager.FindPoolByName(poolName), player, wish + message);
+                DataAccess.Save(Manager);
             }
         }
 

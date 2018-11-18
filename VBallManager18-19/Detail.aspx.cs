@@ -374,6 +374,8 @@ namespace VballManager
                 Manager.AddReservationNotifyWechatMessage(player.Id, CurrentUser.Id, Constants.CANCELLED, CurrentPool, CurrentPool, game.Date);
                 Handler.AssignDropinSpotToWaiting(CurrentPool, game);
             }
+            //Recalculate factor
+            Manager.ReCalculateFactor(CurrentPool, date);
             DataAccess.Save(Manager);
             Response.Redirect(Request.RawUrl);
         }

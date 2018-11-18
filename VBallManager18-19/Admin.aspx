@@ -47,6 +47,13 @@
         .auto-style6 {
             width: 100px;
         }
+        .auto-style7 {
+            height: 25px;
+        }
+        .auto-style8 {
+            width: 177px;
+            height: 25px;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -179,6 +186,17 @@
                 </td>
                 <td class="auto-style2">
                     <table>
+                       <tr>
+                            <td class="auto-style7">
+
+                            </td>
+                            <td class="auto-style7">
+                                <asp:CheckBox ID="MaintenanceCb" runat="server" Text="Under Maintenance" />
+                            </td>
+                            <td class="auto-style7"></td>
+                            <td class="auto-style8">
+                            </td>
+                        </tr>
                         <tr>
                             <td>&nbsp;Admin email&nbsp;
 

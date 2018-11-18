@@ -116,7 +116,8 @@ namespace VballManager
                 int coopNumberOfPlayers = sameDayPool.FindGameByDate(gameDate).Dropins.Items.FindAll(pickup => pickup.IsCoop && pickup.Status == InOutNoshow.In).Count;
                 //sameDayPoolNumberOfPlayers = sameDayPoolNumberOfPlayers - coopNumberOfPlayers;
                 int moveIntern = CalculateMoveIntern(sameDayPool, pool, sameDayPoolGame, game);
-                if (moveIntern == 1 && DropinSpotAvailableForCoop(sameDayPool, gameDate))//Move to high pool
+                if (gameDate == Manager.EastDateTimeToday && Manager.EastDateTimeNow.Hour >= pool.ReservHourForCoop && Manager.EastDateTimeNow.Hour < pool.SettleHourForCoop &&//
+                    moveIntern == 1 && DropinSpotAvailableForCoop(sameDayPool, gameDate))//Move to high pool
                 {
                     coopNumberOfPlayers++;
                     sameDayPoolNumberOfPlayers++; //A
@@ -134,7 +135,8 @@ namespace VballManager
                 int coopNumberOfPlayers = pool.FindGameByDate(gameDate).Dropins.Items.FindAll(pickup => pickup.IsCoop && pickup.Status == InOutNoshow.In).Count;
                 //currentPoolNumberOfPlayer = currentPoolNumberOfPlayer - coopNumberOfPlayers;
                 int moveIntern = CalculateMoveIntern(pool, sameDayPool, game, sameDayPoolGame);
-                if (coopNumberOfPlayers > 0 && moveIntern == -1 && sameDayPoolGame.NumberOfReservedPlayers < sameDayPool.MaximumPlayerNumber) //Move back to low pool
+                if (gameDate == Manager.EastDateTimeToday && Manager.EastDateTimeNow.Hour >= pool.ReservHourForCoop && Manager.EastDateTimeNow.Hour < pool.SettleHourForCoop &&//
+                    coopNumberOfPlayers > 0 && moveIntern == -1 && sameDayPoolGame.NumberOfReservedPlayers < sameDayPool.MaximumPlayerNumber) //Move back to low pool
                 {
                     coopNumberOfPlayers--;
                     sameDayPoolNumberOfPlayers++;//B

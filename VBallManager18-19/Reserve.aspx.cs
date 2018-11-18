@@ -77,6 +77,15 @@ namespace VballManager
                 Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
                 return;
             }
+            if (!Manager.ActionPermitted(Actions.Admin_Management, currentUser.Role) && Manager.InMaintenance)
+            {
+                GameInfoTable.Caption = "Under Maintenance!";
+                this.RateBtn.Visible = false;
+                this.ToReadmeBtn.Visible = false;
+                this.MemberTable.Visible = false;
+                this.DropinCandidateTable.Visible = false;
+                return;
+            }
             //Initialize processor
             InitializeActionHandler();
            //Fill message board

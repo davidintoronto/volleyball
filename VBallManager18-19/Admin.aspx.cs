@@ -56,6 +56,7 @@ namespace VballManager
                 DateTime time = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(Manager.TimeZoneName));
                 this.SystemTimeLb.Text = time.ToString("MMM dd yyyy HH/mm/ss") + " - H" + time.Hour;
                 this.SeasonTb.Text = Manager.Season;
+                this.MaintenanceCb.Checked = Manager.InMaintenance;
                 //
                 if (null != Session[Constants.SUPER_ADMIN])
                 {
@@ -474,6 +475,7 @@ namespace VballManager
             Manager.MaxDropinFeeOwe = int.Parse(this.MaxDropinfeeOweTb.Text);
             Manager.Season = this.SeasonTb.Text;
             Manager.AutoCancelHour = int.Parse(this.AutoCancelHourTb.Text);
+            Manager.InMaintenance = this.MaintenanceCb.Checked;
             DataAccess.Save(Manager);
             Response.Redirect(Request.RawUrl);
 

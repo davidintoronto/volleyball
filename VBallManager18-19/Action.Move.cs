@@ -102,22 +102,30 @@ namespace VballManager
         {
             Dropin coopCandidate = null;
             //Find the best candidate of coop
-            //Filter the coop who cancelled his spot for coming game in his original pool, including the intern is the first one in waiting list
-            List<Dropin> coops = highPool.Dropins.Items.FindAll(coop => coop.IsCoop && //
+            //Excluding the coop who cancelled his spot for coming game in his original pool, but including the intern is the first one in waiting list
+            List<Dropin> interns = highPool.Dropins.Items.FindAll(coop => coop.IsCoop && //
                 highPoolGame.Dropins.FindByPlayerId(coop.PlayerId) != null && highPoolGame.Dropins.FindByPlayerId(coop.PlayerId).Status == InOutNoshow.Out &&//
                 lowPoolGame.AllPlayers.FindByPlayerId(coop.PlayerId) != null && (lowPoolGame.AllPlayers.FindByPlayerId(coop.PlayerId).Status == InOutNoshow.In||//
                 (lowPoolGame.WaitingList.Count >0 && lowPoolGame.WaitingList[0].PlayerId==coop.PlayerId))); //intern is the first peron in waiting list 
+            //If search result is empty, 
             //Compare the last coop date to find the best one
-            foreach (Dropin dropin in coops)
+            List<Dropin> candidates = new List<Dropin>();
+            foreach (Dropin dropin in interns)
             {
-                //ignore the intern who did not attend the game last time
+                //ignore the intern who did not attend the game in low pool last time
                 Game previewGame = Manager.FindSameDayPool(highPool).Games.OrderByDescending(game => game.Date).ToList<Game>().Find(game=> game.Date < lowPoolGame.Date);
-                Game previewHighPoolGame = highPool.FindGameByDate(previewGame.Date);
-                if (previewGame != null && (previewGame.AllPlayers.Items.Exists(p => p.PlayerId == dropin.PlayerId && p.Status == InOutNoshow.In) || //
-                    previewHighPoolGame.AllPlayers.Items.Exists(p => p.PlayerId == dropin.PlayerId && p.Status == InOutNoshow.In)))
+                //Game previewHighPoolGame = highPool.FindGameByDate(previewGame.Date);
+                if (previewGame != null && previewGame.AllPlayers.Items.Exists(p => p.PlayerId == dropin.PlayerId && p.Status == InOutNoshow.In))// || //
+                    //previewHighPoolGame.AllPlayers.Items.Exists(p => p.PlayerId == dropin.PlayerId && p.Status == InOutNoshow.In)))
                 {
-                    if (coopCandidate == null || coopCandidate.LastCoopDate > dropin.LastCoopDate) coopCandidate = dropin;
+                    candidates.Add(dropin);
                 }
+            }
+            //if no one in the result, then all the interns will be candidetes
+            if (candidates.Count == 0) candidates = interns;
+            foreach(Dropin dropin in candidates)
+            {
+               if (coopCandidate == null || coopCandidate.LastCoopDate > dropin.LastCoopDate) coopCandidate = dropin;
             }
             return coopCandidate;
         }

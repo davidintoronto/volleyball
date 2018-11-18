@@ -36,6 +36,13 @@ namespace VballManager
         private List<Factor> factors = new List<Factor>();
         private List<MoveRule> moveRules = new List<MoveRule>();
         private String season;
+        private bool inMaintenance = false;
+
+        public bool InMaintenance
+        {
+            get { return inMaintenance; }
+            set { inMaintenance = value; }
+        }
 
         public List<MoveRule> MoveRules
         {
