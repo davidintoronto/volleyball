@@ -12,6 +12,7 @@ namespace VballManager
     {
 
         private const String POOL_NAME = "PoolName";
+        private const String HOUR = "Hour";
         private const String LOW_POOL_NAME = "LowPoolName";
         private const String HIGH_POOL_NAME = "HighPoolName";
         private const String LOW_POOL_FROM = "LowPoolFrom";
@@ -25,7 +26,7 @@ namespace VballManager
         private const String FACTOR_VALUE = "FactorValue";
         private const String ADD = "Add";
         private const String DELETE = "Delete";
-        private List<String> playerNumbers = new List<String>() { "24", "18", "16", "15", "14", "13", "12", "11", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1", "0" };
+        private List<String> Numbers = new List<String>() { "24", "20", "19", "18", "17", "16", "15", "14", "13", "12", "11", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1", "0" };
         private List<String> factorNumbers = new List<String>() { "3", "2.75", "2.5", "2.25", "2", "1.75", "1.5", "1.25", "1", "0.75", "0.5", "0.25", "0.1", "0.01", "0" };
         private List<String> toMoveNumbers = new List<String>() { "2", "1", "0", "-1", "2" };
 
@@ -57,6 +58,7 @@ namespace VballManager
                 this.SystemTimeLb.Text = time.ToString("MMM dd yyyy HH/mm/ss") + " - H" + time.Hour;
                 this.SeasonTb.Text = Manager.Season;
                 this.MaintenanceCb.Checked = Manager.InMaintenance;
+                this.WechatTb.Text = Manager.WechatGroupName;
                 //
                 if (null != Session[Constants.SUPER_ADMIN])
                 {
@@ -158,19 +160,19 @@ namespace VballManager
             //Low pool name
             tableRow.Cells.Add(CreatePoolNameCell(factor, LOW_POOL_NAME, factor.LowPoolName));
             //Low pool number from
-            tableRow.Cells.Add(CreateNumberCell(factor, LOW_POOL_FROM, factor.LowPoolNumberFrom.ToString(), playerNumbers));
+            tableRow.Cells.Add(CreateNumberCell(factor, LOW_POOL_FROM, factor.LowPoolNumberFrom.ToString(), Numbers));
             //Low pool number to
-            tableRow.Cells.Add(CreateNumberCell(factor, LOW_POOL_TO, factor.LowPoolNumberTo.ToString(), playerNumbers));
+            tableRow.Cells.Add(CreateNumberCell(factor, LOW_POOL_TO, factor.LowPoolNumberTo.ToString(), Numbers));
             //Coop from
-            tableRow.Cells.Add(CreateNumberCell(factor, COOP_FROM, factor.CoopNumberFrom.ToString(), playerNumbers));
+            tableRow.Cells.Add(CreateNumberCell(factor, COOP_FROM, factor.CoopNumberFrom.ToString(), Numbers));
             //Coop to
-            tableRow.Cells.Add(CreateNumberCell(factor, COOP_TO, factor.CoopNumberTo.ToString(), playerNumbers));
+            tableRow.Cells.Add(CreateNumberCell(factor, COOP_TO, factor.CoopNumberTo.ToString(), Numbers));
             //high pool name
             tableRow.Cells.Add(CreatePoolNameCell(factor, HIGH_POOL_NAME, factor.HighPoolName));
             //high pool number from
-            tableRow.Cells.Add(CreateNumberCell(factor, HIGH_POOL_FROM, factor.HighPoolNumberFrom.ToString(), playerNumbers));
+            tableRow.Cells.Add(CreateNumberCell(factor, HIGH_POOL_FROM, factor.HighPoolNumberFrom.ToString(), Numbers));
             //high pool number to
-            tableRow.Cells.Add(CreateNumberCell(factor, HIGH_POOL_TO, factor.HighPoolNumberTo.ToString(), playerNumbers));
+            tableRow.Cells.Add(CreateNumberCell(factor, HIGH_POOL_TO, factor.HighPoolNumberTo.ToString(), Numbers));
             //Value
             tableRow.Cells.Add(CreateNumberCell(factor, FACTOR_VALUE, factor.Value.ToString(), factorNumbers));
 
@@ -282,7 +284,8 @@ namespace VballManager
             DropDownList ddl = (DropDownList)sender;
             String[] ids = ddl.ID.Split(',');
             MoveRule moveRule = Manager.MoveRules.Find(fa => fa.Id == ids[0]);
-            if (ids[1] == LOW_POOL_FROM) moveRule.LowPoolNumberFrom = int.Parse(ddl.Text);
+            if (ids[1] == HOUR) moveRule.Hour = int.Parse(ddl.Text);
+            else if (ids[1] == LOW_POOL_FROM) moveRule.LowPoolNumberFrom = int.Parse(ddl.Text);
             else if (ids[1] == LOW_POOL_TO) moveRule.LowPoolNumberTo = int.Parse(ddl.Text);
             else if (ids[1] == LOW_POOL_WAITING) moveRule.LowPoolWaiting = int.Parse(ddl.Text);
             else if (ids[1] == COOP_FROM) moveRule.CoopNumberFrom = int.Parse(ddl.Text);
@@ -297,26 +300,28 @@ namespace VballManager
         private void CreateMoveRuleTableRow(MoveRule moveRule)
         {
             TableRow tableRow = new TableRow();
+            //Hour
+            tableRow.Cells.Add(CreateNumberCell(moveRule, HOUR, moveRule.Hour.ToString(), Numbers));
             //Low pool name
             tableRow.Cells.Add(CreatePoolNameCell(moveRule, LOW_POOL_NAME, moveRule.LowPoolName));
             //Low pool number from
-            tableRow.Cells.Add(CreateNumberCell(moveRule, LOW_POOL_FROM, moveRule.LowPoolNumberFrom.ToString(), playerNumbers));
+            tableRow.Cells.Add(CreateNumberCell(moveRule, LOW_POOL_FROM, moveRule.LowPoolNumberFrom.ToString(), Numbers));
             //Low pool number to
-            tableRow.Cells.Add(CreateNumberCell(moveRule, LOW_POOL_TO, moveRule.LowPoolNumberTo.ToString(), playerNumbers));
+            tableRow.Cells.Add(CreateNumberCell(moveRule, LOW_POOL_TO, moveRule.LowPoolNumberTo.ToString(), Numbers));
             //Low pool waiting
-            tableRow.Cells.Add(CreateNumberCell(moveRule, LOW_POOL_WAITING, moveRule.LowPoolWaiting.ToString(), playerNumbers));
+            tableRow.Cells.Add(CreateNumberCell(moveRule, LOW_POOL_WAITING, moveRule.LowPoolWaiting.ToString(), Numbers));
             //Coop from
-            tableRow.Cells.Add(CreateNumberCell(moveRule, COOP_FROM, moveRule.CoopNumberFrom.ToString(), playerNumbers));
+            tableRow.Cells.Add(CreateNumberCell(moveRule, COOP_FROM, moveRule.CoopNumberFrom.ToString(), Numbers));
             //Coop to
-            tableRow.Cells.Add(CreateNumberCell(moveRule, COOP_TO, moveRule.CoopNumberTo.ToString(), playerNumbers));
+            tableRow.Cells.Add(CreateNumberCell(moveRule, COOP_TO, moveRule.CoopNumberTo.ToString(), Numbers));
             //high pool name
             tableRow.Cells.Add(CreatePoolNameCell(moveRule, HIGH_POOL_NAME, moveRule.HighPoolName));
             //high pool number from
-            tableRow.Cells.Add(CreateNumberCell(moveRule, HIGH_POOL_FROM, moveRule.HighPoolNumberFrom.ToString(), playerNumbers));
+            tableRow.Cells.Add(CreateNumberCell(moveRule, HIGH_POOL_FROM, moveRule.HighPoolNumberFrom.ToString(), Numbers));
             //high pool number to
-            tableRow.Cells.Add(CreateNumberCell(moveRule, HIGH_POOL_TO, moveRule.HighPoolNumberTo.ToString(), playerNumbers));
+            tableRow.Cells.Add(CreateNumberCell(moveRule, HIGH_POOL_TO, moveRule.HighPoolNumberTo.ToString(), Numbers));
             //High pool waiting
-            tableRow.Cells.Add(CreateNumberCell(moveRule, HIGH_POOL_WAITING, moveRule.HighPoolWaiting.ToString(), playerNumbers));
+            tableRow.Cells.Add(CreateNumberCell(moveRule, HIGH_POOL_WAITING, moveRule.HighPoolWaiting.ToString(), Numbers));
             //Value
             tableRow.Cells.Add(CreateNumberCell(moveRule, FACTOR_VALUE, moveRule.ToMove.ToString(), toMoveNumbers));
 
@@ -341,6 +346,7 @@ namespace VballManager
             String[] ids = tb.ID.Split(',');
             if (ids[1] == ADD)
             {
+                int hour = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HOUR + ",moveRule")).Text);
                 String lowPoolName = ((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_NAME + ",moveRule")).Text;
                 int lowPoolFrom = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_FROM + ",moveRule")).Text);
                 int lowPoolTo = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + LOW_POOL_TO + ",moveRule")).Text);
@@ -352,7 +358,7 @@ namespace VballManager
                 int highPoolTo = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HIGH_POOL_TO + ",moveRule")).Text);
                 int highPoolWaiting = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + HIGH_POOL_WAITING + ",moveRule")).Text);
                 int value = int.Parse(((DropDownList)this.Master.FindControl("MainContent").FindControl("," + FACTOR_VALUE + ",moveRule")).Text);
-                MoveRule moveRule = new MoveRule(lowPoolName, lowPoolFrom, lowPoolTo, lowPoolWaiting, coopFrom, coopTo, highPoolName, highPoolFrom, highPoolTo, highPoolWaiting, value);
+                MoveRule moveRule = new MoveRule(hour, lowPoolName, lowPoolFrom, lowPoolTo, lowPoolWaiting, coopFrom, coopTo, highPoolName, highPoolFrom, highPoolTo, highPoolWaiting, value);
                 Manager.MoveRules.Add(moveRule);
             }
             else if (ids[1] == DELETE)
@@ -476,6 +482,7 @@ namespace VballManager
             Manager.Season = this.SeasonTb.Text;
             Manager.AutoCancelHour = int.Parse(this.AutoCancelHourTb.Text);
             Manager.InMaintenance = this.MaintenanceCb.Checked;
+            Manager.WechatGroupName = this.WechatTb.Text;
             DataAccess.Save(Manager);
             Response.Redirect(Request.RawUrl);
 

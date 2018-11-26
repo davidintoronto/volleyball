@@ -18,20 +18,22 @@ namespace VballManager
             if (pools.Count != 2) return;
             Pool highPool = Manager.Pools.Find(pool => pool.DayOfWeek == day && !pool.IsLowPool);
             Pool lowPool = Manager.Pools.Find(pool => pool.DayOfWeek == day && pool.IsLowPool);
-            if (highPool.AutoCoopReserve && Manager.EastDateTimeToday == gameDate.Date && Manager.EastDateTimeNow.Hour >= highPool.ReservHourForCoop && Manager.EastDateTimeNow.Hour < highPool.SettleHourForCoop)
+            if (highPool.AutoCoopReserve && Manager.EastDateTimeToday == gameDate.Date && Manager.EastDateTimeNow.Hour >= highPool.ReservHourForCoop)
             {
                 //Set last coop date for each coop player
                 CalculatelastCoopDate(highPool, gameDate);
                 Game highPoolGame = highPool.FindGameByDate(gameDate);
                 Game lowPoolGame = lowPool.FindGameByDate(gameDate);
                 int moveIntern = CalculateMoveIntern(highPool, lowPool, highPoolGame, lowPoolGame);
-                if (moveIntern == -1)
+                if (moveIntern == -1 && Manager.EastDateTimeNow.Hour < highPool.SettleHourForCoop)
                 {
                     Dropin coopDropin = FindBestCoopCandidateToMoveBackOrignalPool(highPool, highPoolGame, lowPoolGame);
-                    if (coopDropin != null)
+                    if (coopDropin != null )
                     {
                         Player coopPlayer = Manager.FindPlayerById(coopDropin.PlayerId);
                         MoveReservation(lowPool, lowPoolGame, coopPlayer);
+                        Manager.ReCalculateFactor(lowPool, gameDate);
+                        Manager.ReCalculateFactor(highPool, gameDate);
                         String wechatMessage = String.Format("Sorry, but we had to move your spot back to pool {0} for tonight's volleyball in order to balance the players in each pool. However we may move your spot again later when things change.", lowPool.Name);
                         Manager.WechatNotifier.AddNotifyWechatMessage(coopPlayer, wechatMessage);
                         Manager.AddReservationNotifyWechatMessage(coopPlayer.Id, CurrentUser.Id, Constants.MOVED, lowPool, highPool, lowPoolGame.Date);
@@ -52,6 +54,8 @@ namespace VballManager
                     }
                     Player coopPlayer = Manager.FindPlayerById(coopDropin.PlayerId);
                     MoveReservation(highPool, highPoolGame, coopPlayer);
+                    Manager.ReCalculateFactor(lowPool, gameDate);
+                    Manager.ReCalculateFactor(highPool, gameDate);
                     String wechatMessage = String.Format("We have moved your spot from pool {0} to pool {1} for tonight's volleyball in order to balance the players in each pool. However we may move you back later when things change." //
                     + " if you don't receive any further notification by {2} o'clock, then this is the final arrangement.", lowPool.Name, highPool.Name, highPool.SettleHourForCoop);
                     Manager.WechatNotifier.AddNotifyWechatMessage(coopPlayer, wechatMessage);
@@ -71,7 +75,8 @@ namespace VballManager
             int intern = highPoolGame.Dropins.Items.FindAll(d => d.IsCoop && d.Status == InOutNoshow.In).Count;
             int lowPoolNumber = lowPoolGame.NumberOfReservedPlayers;
             int lowPoolWaiting = lowPoolGame.WaitingList.Count;
-            MoveRule moveRule = Manager.MoveRules.Find(mr => mr.LowPoolName == lowPool.Name && mr.LowPoolNumberFrom <= lowPoolNumber && lowPoolNumber <= mr.LowPoolNumberTo &&//
+            int hour = Manager.EastDateTimeNow.Hour;
+            MoveRule moveRule = Manager.MoveRules.Find(mr => hour>= mr.Hour && mr.LowPoolName == lowPool.Name && mr.LowPoolNumberFrom <= lowPoolNumber && lowPoolNumber <= mr.LowPoolNumberTo &&//
                 lowPoolWaiting >= mr.LowPoolWaiting && mr.CoopNumberFrom <= intern && intern <= mr.CoopNumberTo && mr.HighPoolName == highPool.Name &&//
                 mr.HighPoolNumberFrom <= highPoolNumber && highPoolNumber <= mr.HighPoolNumberTo && highPoolWaiting >= mr.HighPoolWaiting);
             if (moveRule != null) return moveRule.ToMove;

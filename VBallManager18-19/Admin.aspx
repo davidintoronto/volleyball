@@ -193,8 +193,10 @@
                             <td class="auto-style7">
                                 <asp:CheckBox ID="MaintenanceCb" runat="server" Text="Under Maintenance" />
                             </td>
-                            <td class="auto-style7"></td>
+                            <td class="auto-style7">Max dropin fee owe</td>
                             <td class="auto-style8">
+                                <asp:TextBox ID="MaxDropinfeeOweTb" runat="server" Width="66px">0</asp:TextBox>
+                                <asp:CompareValidator ID="CompareValidator9" runat="server" ControlToValidate="MaxDropinfeeOweTb" ErrorMessage="Integers only please" ForeColor="#FF3300" Operator="DataTypeCheck" Type="Integer"></asp:CompareValidator>
                             </td>
                         </tr>
                         <tr>
@@ -206,11 +208,10 @@
                                 <asp:TextBox ID="AdminEmailTb" runat="server" Width="167px"></asp:TextBox>
 
                             </td>
-                            <td>Max dropin fee owe</td>
+                            <td>Main Wechat</td>
                             <td class="auto-style1">
 
-                                <asp:TextBox ID="MaxDropinfeeOweTb" runat="server" Width="66px">0</asp:TextBox>
-                                <asp:CompareValidator ID="CompareValidator9" runat="server" ControlToValidate="MaxDropinfeeOweTb" ErrorMessage="Integers only please" ForeColor="#FF3300" Operator="DataTypeCheck" Type="Integer"></asp:CompareValidator>
+                                <asp:TextBox ID="WechatTb" runat="server" Width="167px"></asp:TextBox>
 
                             </td>
                         </tr>
@@ -234,7 +235,7 @@
                 <td>
                     <asp:Panel ID="AuthorizationPanel" runat="server" BackColor="#FFFFCC" BorderColor="#3333CC"
                         BorderStyle="Inset">
-                        <asp:Table ID="AuthorizeTable" runat="server" Caption="Authorization/Permissions">
+                        <asp:Table ID="AuthorizeTable" runat="server" Caption="Authorization/Permissions" Font-Bold="True">
                             <asp:TableHeaderRow ID="TableHeaderRow" HorizontalAlign="Left" BackColor="#B3AB4D">
                                 <asp:TableHeaderCell ID="TableHeaderCell9" Text="Action Name" HorizontalAlign="Left"
                                     runat="server"></asp:TableHeaderCell>
@@ -253,7 +254,7 @@
         <table>
             <tr>
                 <td>
-                    <asp:Table ID="FactorTable" runat="server" Caption="Factors">
+                    <asp:Table ID="FactorTable" runat="server" Caption="Factors" Font-Bold="True">
                         <asp:TableHeaderRow ID="TableHeaderRow1" HorizontalAlign="Center" BackColor="#B3AB4D">
                             <asp:TableHeaderCell ID="TableHeaderCell1" Text="Pool" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="TableHeaderCell2" Text="Low Pool" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
@@ -269,10 +270,19 @@
                         </asp:TableHeaderRow>
                     </asp:Table>
                 </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <asp:Button ID="RecalculateFactor" runat="server" OnClick="RecalculateFactorBtn_Click" Text="Re-calculate Factors" Width="141px" />
+                </td>
+            </tr>
+                <tr>
+
                <td>
-                    <asp:Table ID="MoveRuleTable" runat="server" Caption="Intern Move Rules">
+                    <asp:Table ID="MoveRuleTable" runat="server" Caption="Intern Move Rules" Font-Bold="True">
                         <asp:TableHeaderRow ID="TableHeaderRow2" HorizontalAlign="Center" BackColor="#B3AB4D">
-                            <asp:TableHeaderCell ID="TableHeaderCell14" Text="Low Pool" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell14" Text="Hour" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderCell24" Text="Low Pool" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="TableHeaderCell15" Text="From" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="TableHeaderCell16" Text="To" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="TableHeaderCell13" Text="Waiting >=" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
@@ -287,14 +297,8 @@
                         </asp:TableHeaderRow>
                     </asp:Table>
                 </td>
-            </tr>
-            <tr>
-                <td align="right">
-                    <asp:Button ID="RecalculateFactor" runat="server" OnClick="RecalculateFactorBtn_Click" Text="Re-calculate Factors" Width="141px" />
-                </td>
-                <td>
-                    </td>
-            </tr>
+                 </tr>
+           </tr>
         </table>
 
 

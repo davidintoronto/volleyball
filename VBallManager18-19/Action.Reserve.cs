@@ -132,6 +132,7 @@ namespace VballManager
             String playerId = waiting.PlayerId;
             Player player = Manager.FindPlayerById(playerId);
             ReserveSpot(thePool, theGame, player);
+            Manager.ReCalculateFactor(thePool, theGame.Date);
             theGame.WaitingList.Remove(playerId);
             Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.WAITING_TO_RESERVED, thePool, thePool, theGame.Date);
             LogHistory log = CreateLog(Manager.EastDateTimeNow, theGame.Date, GetUserIP(), thePool.Name, Manager.FindPlayerById(playerId).Name, "Reserved", "Admin");
@@ -141,6 +142,7 @@ namespace VballManager
             Pool sameDayPool = Manager.Pools.Find(pool => pool.Name != thePool.Name && pool.DayOfWeek == thePool.DayOfWeek);
             if (CancelSpot(sameDayPool, sameDayPool.FindGameByDate(theGame.Date), player))
             {
+                Manager.ReCalculateFactor(sameDayPool, theGame.Date);
                 Manager.AddReservationNotifyWechatMessage(playerId, null, Constants.CANCELLED, sameDayPool, sameDayPool, theGame.Date);
                 AssignDropinSpotToWaiting(sameDayPool, sameDayPool.FindGameByDate(theGame.Date));
             }

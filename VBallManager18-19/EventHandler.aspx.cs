@@ -36,7 +36,7 @@ namespace VballManager
                         ShowMessage("Sorry, but the reservation for " + player.Name + " is not permitted in this pool, contact admin for advise");
                         return;
                     }
-                    if (!Handler.IsDropinSpotOpeningForCoop(CurrentPool, TargetGameDate, player))
+                    if (Manager.EastDateTimeNow < TargetGameDate.AddHours(CurrentPool.ReservHourForCoop))
                     {
                         ShowMessage("Sorry, but the reservation for " + player.Name + " starts at " + CurrentPool.ReservHourForCoop + " O'clock on game day. Check back later");
                         return;

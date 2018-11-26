@@ -214,10 +214,14 @@ namespace VballManager
             foreach (Player player in birthdayPlayers)
             {
                 String[] birthday = player.Birthday.Split('/');
-                String poolName = "B";
-                if (birthday.Length == 3) poolName = birthday[2];
+                String wechatGroupName = Manager.WechatGroupName;
+                if (birthday.Length == 3)
+                {
+                    wechatGroupName = Manager.FindPoolByName(birthday[2]).WechatGroupName;
+                }
                 String wish = birthdayWishes[new Random().Next(birthdayWishes.Count)];
-                Manager.WechatNotifier.AddNotifyWechatMessage(Manager.FindPoolByName(poolName), player, wish + message);
+                WechatMessage wechat = new WechatMessage(wechatGroupName, player, wish + message);
+                Manager.WechatNotifier.WechatMessages.Add(wechat);
                 DataAccess.Save(Manager);
             }
         }

@@ -126,7 +126,8 @@ namespace VballManager
                 {
                     foreach (Game game in pool.Games)
                     {
-                        if (game.Date < DateTime.Today && game.AllPlayers.Items.Exists(attendee => attendee.PlayerId == player.Id && attendee.Status == InOutNoshow.In))
+                        if (game.Date < DateTime.Today && (game.AllPlayers.Items.Exists(attendee => attendee.PlayerId == player.Id && attendee.Status == InOutNoshow.In) || //
+                            Manager.FindSameDayPool(pool).FindGameByDate(game.Date).AllPlayers.Items.Exists(attendee => attendee.PlayerId == player.Id && attendee.Status == InOutNoshow.In)))
                         {
                             playedCount++;
                         }

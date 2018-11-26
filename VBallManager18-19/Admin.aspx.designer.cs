@@ -238,15 +238,6 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.CheckBox MaintenanceCb;
         
         /// <summary>
-        /// AdminEmailTb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox AdminEmailTb;
-        
-        /// <summary>
         /// MaxDropinfeeOweTb control.
         /// </summary>
         /// <remarks>
@@ -263,6 +254,24 @@ namespace VballManager {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CompareValidator CompareValidator9;
+        
+        /// <summary>
+        /// AdminEmailTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox AdminEmailTb;
+        
+        /// <summary>
+        /// WechatTb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox WechatTb;
         
         /// <summary>
         /// ReadmeTb control.
@@ -454,6 +463,15 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell12;
         
         /// <summary>
+        /// RecalculateFactor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button RecalculateFactor;
+        
+        /// <summary>
         /// MoveRuleTable control.
         /// </summary>
         /// <remarks>
@@ -479,6 +497,15 @@ namespace VballManager {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell14;
+        
+        /// <summary>
+        /// TableHeaderCell24 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell24;
         
         /// <summary>
         /// TableHeaderCell15 control.
@@ -569,15 +596,6 @@ namespace VballManager {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell22;
-        
-        /// <summary>
-        /// RecalculateFactor control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button RecalculateFactor;
         
         /// <summary>
         /// MoveRulePanel control.

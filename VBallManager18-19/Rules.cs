@@ -107,6 +107,7 @@ namespace VballManager
     public class MoveRule
     {
         private String id;
+        private int hour;
         private String lowPoolName;
         private int lowPoolNumberFrom;
         private int lowPoolNumberTo;
@@ -121,10 +122,11 @@ namespace VballManager
 
         public MoveRule() { }
 
-        public MoveRule(String lowPoolName, int lowPoolNumberFrom, int lowPoolNumberTo, int lowPoolWaiting, //
+        public MoveRule(int hour, String lowPoolName, int lowPoolNumberFrom, int lowPoolNumberTo, int lowPoolWaiting, //
             int coopNumberFrom, int coopNumberTo, String highPoolName, int highPoolNumberFrom, int highPoolNumberTo, int highPoolWaiting, int toMove)
         {
             this.id = Guid.NewGuid().ToString();
+            this.hour = hour;
             this.lowPoolName = lowPoolName;
             this.lowPoolNumberFrom = lowPoolNumberFrom;
             this.lowPoolNumberTo = lowPoolNumberTo;
@@ -142,6 +144,12 @@ namespace VballManager
         {
             get { return id; }
             set { id = value; }
+        }
+
+        public int Hour
+        {
+            get { return hour; }
+            set { hour = value; }
         }
 
         public int HighPoolWaiting

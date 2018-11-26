@@ -35,7 +35,7 @@ namespace VballManager
             {
                 FillList(order++, stats);
             }
-            this.StatsTable.Caption = "Pool " + pool.Name + " Attendance Rate";
+            this.StatsTable.Caption = "Pool " + pool.Name + " Attendance Rankings";
         }
 
         private Pool CurrentPool
@@ -98,7 +98,8 @@ namespace VballManager
                 {
                     Stats stats = new Stats();
                     stats.Player = player;
-                    stats.PlayedCount = pool.Games.FindAll(g => g.Date >= Manager.AttendRateStartDate && g.Date <Manager.EastDateTimeToday.Date && g.AllPlayers.Items.Find(p => p.PlayerId == player.Id && p.Status == InOutNoshow.In) != null).Count;
+                    stats.PlayedCount = pool.Games.FindAll(g => g.Date >= Manager.AttendRateStartDate && g.Date < Manager.EastDateTimeToday.Date && g.AllPlayers.Items.Find(p => p.PlayerId == player.Id && p.Status == InOutNoshow.In) != null).Count;
+                    stats.PlayedCount = stats.PlayedCount + Manager.FindSameDayPool(pool).Games.FindAll(g => g.Date >= Manager.AttendRateStartDate && g.Date < Manager.EastDateTimeToday.Date && g.AllPlayers.Items.Find(p => p.PlayerId == player.Id && p.Status == InOutNoshow.In) != null).Count;
                     stats.FactorBonus = CalculateFactorBonus(pool, player);
                     stats.Total = stats.PlayedCount + stats.FactorBonus;
                     statsList.Add(stats);
