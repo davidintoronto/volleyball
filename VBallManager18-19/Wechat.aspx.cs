@@ -34,7 +34,7 @@ namespace VballManager
                 this.PoolWechatMessageTb.Text = Manager.WechatNotifier.WechatPoolMessage;
                 this.TestAllTb.Text = Manager.WechatNotifier.WechatToAllTestMessage;
                 this.WechatNotifyCb.Checked = Manager.WechatNotifier.Enable;
-                this.EnableEmoCb.Checked = Manager.WechatNotifier.EnableEmoMessage;
+                this.EnableReserveEmoCb.Checked = Manager.WechatNotifier.EnableReserveEmoMessage;
                 this.PoolListBox.DataSource = Manager.Pools;
                 this.PoolListBox.DataTextField = "Name";
                 this.PoolListBox.DataValueField = "Name";
@@ -342,9 +342,15 @@ namespace VballManager
             DataAccess.Save(Manager);
         }
 
-        protected void EnableEmoCb_CheckedChanged(object sender, EventArgs e)
+        protected void EnableReserveEmoCb_CheckedChanged(object sender, EventArgs e)
         {
-            Manager.WechatNotifier.EnableEmoMessage = this.EnableEmoCb.Checked;
+            Manager.WechatNotifier.EnableReserveEmoMessage = this.EnableReserveEmoCb.Checked;
+            DataAccess.Save(Manager);
+        }
+
+        protected void EnableCancelEmoCb_CheckedChanged(object sender, EventArgs e)
+        {
+            Manager.WechatNotifier.EnableCancelEmoMessage = this.EnableCancelEmoCb.Checked;
             DataAccess.Save(Manager);
         }
     }

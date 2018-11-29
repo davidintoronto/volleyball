@@ -49,6 +49,7 @@ namespace VballManager
         public const String REQUEST_REGISTER_LINK_PAGE = "RequestRegisterLink.aspx";
         public const String POOL_LINK_LIST_PAGE = "Default.aspx";
         public const String AUTHORIZE_USER_PAGE = "Authorize.aspx";
+        public const String PLUGIN_PAGE = "Plugin.aspx";
         public const String REGISTER_DEVICE_PAGE = "RegisterDevice.aspx";
         public const String AUTO_RESERVE = "AutoReserve.aspx";
         public const String RESERVE_PAGE = "Reserve.aspx";

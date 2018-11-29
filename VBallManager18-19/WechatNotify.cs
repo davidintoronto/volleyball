@@ -14,19 +14,27 @@ namespace VballManager
         private String wechatPoolMessage;
         private String wechatPrimaryMemberMessage;
         private String wechatToAllTestMessage;
-        private bool enableEmoMessage = false;
+        private bool enableReserveEmoMessage = false;
+        private bool enableCancelEmoMessage = false;
+
         private List<EmoMessage> emoMessages = new List<EmoMessage>();
 
 
         public WechatNotify() { }
 
-        public bool EnableEmoMessage
+        public bool EnableReserveEmoMessage
         {
-            get { return enableEmoMessage; }
-            set { enableEmoMessage = value; }
+            get { return enableReserveEmoMessage; }
+            set { enableReserveEmoMessage = value; }
         }
 
-        public bool Enable
+         public bool EnableCancelEmoMessage
+        {
+            get { return enableCancelEmoMessage; }
+            set { enableCancelEmoMessage = value; }
+        }
+
+       public bool Enable
         {
             get { return enable; }
             set { enable = value; }
@@ -148,7 +156,7 @@ namespace VballManager
 
         public WechatMessage(String wechatName, String name, String message)
         {
-            this.date = DateTime.Today;
+            this.date = DateTime.Now;
             this.wechatName = wechatName;
             this.name = name;
             this.message = message;

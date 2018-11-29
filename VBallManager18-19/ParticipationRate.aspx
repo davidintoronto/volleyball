@@ -7,7 +7,7 @@
              <asp:TableHeaderRow ID="TableHeaderRow" HorizontalAlign="Left" BackColor="#B3AB4D">
                 <asp:TableHeaderCell ID="TableHeaderCell9" Text="" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
                 <asp:TableHeaderCell ID="TableHeaderCell6" Text="Player" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
-                <asp:TableHeaderCell ID="PlayedCountCell" Text="Played" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
+                <asp:TableHeaderCell ID="PlayedCountCell" Text="Rate" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
                 <asp:TableHeaderCell ID="AdditionalFactorCell" Text="Bonus" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
                 <asp:TableHeaderCell ID="TableHeaderCell1" Text="Total" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
              </asp:TableHeaderRow>

@@ -7,7 +7,7 @@
     <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
-
+    <link rel="shortcut icon" href="Icons\Blackball.png" />
 </head>
 <body>
     <form runat="server">

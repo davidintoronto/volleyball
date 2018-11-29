@@ -166,13 +166,22 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.Panel EmoPanel;
         
         /// <summary>
-        /// EnableEmoCb control.
+        /// EnableReserveEmoCb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox EnableEmoCb;
+        protected global::System.Web.UI.WebControls.CheckBox EnableReserveEmoCb;
+        
+        /// <summary>
+        /// EnableCancelEmoCb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox EnableCancelEmoCb;
         
         /// <summary>
         /// EmoTable control.

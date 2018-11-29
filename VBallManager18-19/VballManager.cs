@@ -486,9 +486,14 @@ namespace VballManager
                         message = message + ". Current factor is " + game.Factor;
                     }
                     WechatNotifier.AddNotifyWechatMessage(targetPool, player, message);
-                    if (wechatNotifier.EnableEmoMessage)
+                    if (result == Constants.RESERVED && wechatNotifier.EnableReserveEmoMessage)
                     {
-                        int emoType = result == Constants.RESERVED ? (int)EmoTypes.Reserve : (int)EmoTypes.Cancel;
+                        int emoType = (int)EmoTypes.Reserve;
+                        WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage(emoType, numberOfReservedPlayerInTargetPool));
+                    } 
+                    if (result == Constants.CANCELLED && wechatNotifier.EnableCancelEmoMessage)
+                    {
+                        int emoType = (int)EmoTypes.Cancel;
                         WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage(emoType, numberOfReservedPlayerInTargetPool));
                     }
                 }
@@ -524,7 +529,7 @@ namespace VballManager
                     message = message + ". Current factor is " + game.Factor;
                 }
                 WechatNotifier.AddNotifyWechatMessage(targetPool, player, message);
-                if (wechatNotifier.EnableEmoMessage) 
+                if (wechatNotifier.EnableReserveEmoMessage) 
                     WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage((int)EmoTypes.Move, numberOfReservedPlayerInTargetPool));
             }
             else if (result == Constants.WAITING)

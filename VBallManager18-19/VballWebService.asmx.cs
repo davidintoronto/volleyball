@@ -35,7 +35,7 @@ namespace VballManager
         [WebMethod]
         public List<WechatMessage> WechatMessages()
         {
-            IEnumerable<WechatMessage> weChatMassages = Manager.WechatNotifier.WechatMessages.FindAll(wechat=> wechat.Date.Date == DateTime.Today.Date);
+            IEnumerable<WechatMessage> weChatMassages = Manager.WechatNotifier.WechatMessages.FindAll(wechat=> wechat.Date.AddHours(2) >= DateTime.Now);
             Manager.WechatNotifier.WechatMessages.Clear();
             DataAccess.Save(Manager);
             return weChatMassages.ToList();

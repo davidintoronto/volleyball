@@ -90,7 +90,8 @@
         <table id="Table2" style="width: 100%;">
             <tr>
                 <td class="auto-style8">
-                    <asp:CheckBox ID="EnableEmoCb" runat="server" AutoPostBack="True" OnCheckedChanged="EnableEmoCb_CheckedChanged" Text="Enbale Sending Emo Messages" />
+                    <asp:CheckBox ID="EnableReserveEmoCb" runat="server" AutoPostBack="True" OnCheckedChanged="EnableReserveEmoCb_CheckedChanged" Text="Enbale Sending Emo Messages for Reserve" />
+                    <asp:CheckBox ID="EnableCancelEmoCb" runat="server" AutoPostBack="True" OnCheckedChanged="EnableCancelEmoCb_CheckedChanged" Text="Enbale Sending Emo Messages for cancel" />
                 </td>
              </tr>
     </asp:Panel>

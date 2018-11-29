@@ -17,6 +17,11 @@ namespace VballManager
                 Player user = Manager.FindPlayerById(existingUserId);
                 if (user != null)
                 {
+                    if (!IsCallback && String.IsNullOrEmpty(user.Birthday) && !String.IsNullOrEmpty(user.WechatName))
+                    {
+                        Response.Redirect(Constants.PLUGIN_PAGE);
+                        return;
+                    }
                     FillReservationLinkTable(user);
                     return;
                 }

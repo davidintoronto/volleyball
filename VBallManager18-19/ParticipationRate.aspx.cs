@@ -71,6 +71,7 @@ namespace VballManager
             cell = new TableCell();
             cell.Text = stats.Total.ToString(); ;
             row.Cells.Add(cell);
+            if (order % 2 == 0) row.BackColor = System.Drawing.Color.LightSkyBlue;
             this.StatsTable.Rows.Add(row);
         }
 

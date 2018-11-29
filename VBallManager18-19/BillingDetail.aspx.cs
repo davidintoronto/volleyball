@@ -157,8 +157,8 @@ namespace VballManager
                      total = total + fee.Amount;
                  }
              }
-              DataAccess.Save(Manager);
              if (total >0) Manager.WechatNotifier.AddNotifyWechatMessage(player, "We have received your payment $" + total + " . Thank you!");
+              DataAccess.Save(Manager);
              Response.Redirect("BillingDetail.aspx?id=" + playerId);
          }
 
@@ -219,6 +219,7 @@ namespace VballManager
             fee.PayDate = DateTime.Today;
             player.Fees.Add(fee);
             this.PrePayAmountTb.Text = "";
+            Manager.WechatNotifier.AddNotifyWechatMessage(player, "We have received your pre-paid dropin fee $" + fee.Amount + " . Thank you!");
             DataAccess.Save(Manager);
             Response.Redirect("BillingDetail.aspx?id=" + playerId);
         }
