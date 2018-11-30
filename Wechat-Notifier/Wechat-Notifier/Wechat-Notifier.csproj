@@ -54,11 +54,17 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\VballMangerWebservice\Reference.cs">
+    <Compile Include="Service References\ActivityWebservice\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\VballManagerWebservice\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="WechatMessage.cs" />
     <EmbeddedResource Include="Notifier.resx">
       <DependentUpon>Notifier.cs</DependentUpon>
     </EmbeddedResource>
@@ -80,11 +86,21 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Service References\VballMangerWebservice\VballWebService.wsdl" />
-    <None Include="Service References\VballMangerWebservice\Wechat_Notifier.VballMangerWebservice.WechatMessage.datasource">
+    <None Include="Service References\ActivityWebservice\ActivityWebService.wsdl" />
+    <None Include="Service References\ActivityWebservice\Wechat_Notifier.ActivityWebservice.WechatMessage.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\VballMangerWebservice\Wechat_Notifier.VballMangerWebservice.WechatMessagesResponse.datasource">
+    <None Include="Service References\ActivityWebservice\Wechat_Notifier.ActivityWebservice.WechatMessagesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VballManagerWebservice\VballWebService1.wsdl" />
+    <None Include="Service References\VballManagerWebservice\Wechat_Notifier.VballManagerWebservice.RetrieveDataResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VballManagerWebservice\Wechat_Notifier.VballManagerWebservice.WechatMessage.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\VballManagerWebservice\Wechat_Notifier.VballManagerWebservice.WechatMessagesResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
   </ItemGroup>
@@ -97,22 +113,38 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\VballMangerWebservice\" />
+    <WCFMetadataStorage Include="Service References\ActivityWebservice\" />
+    <WCFMetadataStorage Include="Service References\VballManagerWebservice\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\VballMangerWebservice\VballWebService.disco" />
+    <None Include="Service References\VballManagerWebservice\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\VballMangerWebservice\configuration91.svcinfo" />
+    <None Include="Service References\VballManagerWebservice\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\VballMangerWebservice\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\VballMangerWebservice\Reference.svcmap">
+    <None Include="Service References\VballManagerWebservice\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ActivityWebservice\ActivityWebService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ActivityWebservice\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ActivityWebservice\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ActivityWebservice\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\VballManagerWebservice\VballWebService1.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

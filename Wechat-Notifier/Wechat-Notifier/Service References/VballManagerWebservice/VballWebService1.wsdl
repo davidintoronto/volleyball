@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="WechatMessages">
+        <s:complexType />
+      </s:element>
+      <s:element name="WechatMessagesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WechatMessagesResult" type="tns:ArrayOfWechatMessage" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfWechatMessage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="WechatMessage" nillable="true" type="tns:WechatMessage" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="WechatMessage">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Date" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="WechatName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="At" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RunScheduleTasks">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="hour" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RunScheduleTasksResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="RetrieveData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="hour" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetrieveDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RetrieveDataResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="WechatMessagesSoapIn">
+    <wsdl:part name="parameters" element="tns:WechatMessages" />
+  </wsdl:message>
+  <wsdl:message name="WechatMessagesSoapOut">
+    <wsdl:part name="parameters" element="tns:WechatMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="RunScheduleTasksSoapIn">
+    <wsdl:part name="parameters" element="tns:RunScheduleTasks" />
+  </wsdl:message>
+  <wsdl:message name="RunScheduleTasksSoapOut">
+    <wsdl:part name="parameters" element="tns:RunScheduleTasksResponse" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveDataSoapIn">
+    <wsdl:part name="parameters" element="tns:RetrieveData" />
+  </wsdl:message>
+  <wsdl:message name="RetrieveDataSoapOut">
+    <wsdl:part name="parameters" element="tns:RetrieveDataResponse" />
+  </wsdl:message>
+  <wsdl:portType name="VballWebServiceSoap">
+    <wsdl:operation name="WechatMessages">
+      <wsdl:input message="tns:WechatMessagesSoapIn" />
+      <wsdl:output message="tns:WechatMessagesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RunScheduleTasks">
+      <wsdl:input message="tns:RunScheduleTasksSoapIn" />
+      <wsdl:output message="tns:RunScheduleTasksSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveData">
+      <wsdl:input message="tns:RetrieveDataSoapIn" />
+      <wsdl:output message="tns:RetrieveDataSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="VballWebServiceSoap" type="tns:VballWebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WechatMessages">
+      <soap:operation soapAction="http://tempuri.org/WechatMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RunScheduleTasks">
+      <soap:operation soapAction="http://tempuri.org/RunScheduleTasks" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveData">
+      <soap:operation soapAction="http://tempuri.org/RetrieveData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="VballWebServiceSoap12" type="tns:VballWebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WechatMessages">
+      <soap12:operation soapAction="http://tempuri.org/WechatMessages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RunScheduleTasks">
+      <soap12:operation soapAction="http://tempuri.org/RunScheduleTasks" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveData">
+      <soap12:operation soapAction="http://tempuri.org/RetrieveData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="VballWebService">
+    <wsdl:port name="VballWebServiceSoap" binding="tns:VballWebServiceSoap">
+      <soap:address location="http://volleyball.gear.host/hm/VballWebService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="VballWebServiceSoap12" binding="tns:VballWebServiceSoap12">
+      <soap12:address location="http://volleyball.gear.host/hm/VballWebService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
