@@ -33,7 +33,7 @@ namespace Reservation
             {
                 this.MessageTextTable.Visible = true;
                 TableCell messageCell = new TableCell();
-                messageCell.Text = selectedGame.Message;
+                messageCell.Text = selectedGame.Message.Replace(Environment.NewLine, "<br/>");
                 TableRow messageRow = new TableRow();
                 messageRow.Cells.Add(messageCell);
                 this.MessageTextTable.Rows.Add(messageRow);
@@ -232,10 +232,14 @@ namespace Reservation
                 game.Players.Remove(userId);
                 if (!String.IsNullOrEmpty(game.WechatName))
                 {
-                    String message = "你偷偷的取消了报名参加(" + game.Title + ")。目前的报名总人数: " + game.Players.Count;
-                    if (game.MaxPlayers > 0) message = message + "，还有" + (game.MaxPlayers - game.Players.Count) + "个空位";
-                    WechatMessage wechatMessage = new WechatMessage(game.WechatName, Reservations.FindPlayerById(userId).Name, message);
-                    Reservations.WechatMessages.Add(wechatMessage);
+                    String[] wechatGroups = game.WechatName.Split(',');
+                    foreach (String group in wechatGroups)
+                    {
+                        String message = "你偷偷的取消了报名参加(" + game.Title + ")。目前的报名总人数: " + game.Players.Count;
+                        if (game.MaxPlayers > 0) message = message + "，还有" + (game.MaxPlayers - game.Players.Count) + "个空位";
+                        WechatMessage wechatMessage = new WechatMessage(group, Reservations.FindPlayerById(userId).Name, message);
+                        Reservations.WechatMessages.Add(wechatMessage);
+                    }
                 }
                 Reservations.AssignASpotToWaitingList(game);
             }
@@ -409,11 +413,18 @@ namespace Reservation
             if (game.Players.Contains(userId))
             {
                 game.Players.Remove(userId);
-                String message = "你偷偷的取消了报名参加(" + game.Title + ")。目前的报名总人数: " + game.Players.Count;
-                if (game.MaxPlayers > 0) message = message + "，还有" + (game.MaxPlayers - game.Players.Count) + "个空位";
-                WechatMessage wechatMessage = new WechatMessage(game.WechatName, Reservations.FindPlayerById(userId).Name, message);
-                Reservations.WechatMessages.Add(wechatMessage);
-                Reservations.AssignASpotToWaitingList(game);
+                if (!String.IsNullOrEmpty(game.WechatName))
+                {
+                    String[] wechatGroups = game.WechatName.Split(',');
+                    foreach (String group in wechatGroups)
+                    {
+                        String message = "你偷偷的取消了报名参加(" + game.Title + ")。目前的报名总人数: " + game.Players.Count;
+                        if (game.MaxPlayers > 0) message = message + "，还有" + (game.MaxPlayers - game.Players.Count) + "个空位";
+                        WechatMessage wechatMessage = new WechatMessage(group, Reservations.FindPlayerById(userId).Name, message);
+                        Reservations.WechatMessages.Add(wechatMessage);
+                        Reservations.AssignASpotToWaitingList(game);
+                    }
+                }
             }
             else
             {
@@ -467,10 +478,14 @@ namespace Reservation
                 game.Players.Add(playerId);
                 if (!String.IsNullOrEmpty(game.WechatName))
                 {
+                    String[] wechatGroups = game.WechatName.Split(',');
+                    foreach (String group in wechatGroups)
+                    {
                     String message = "你悄悄地给自己报了名参加" + game.Title + "。目前的报名总人数: " + game.Players.Count;
                     if (game.MaxPlayers > 0) message = message + "，还有" + (game.MaxPlayers - game.Players.Count) + "个空位";
-                    WechatMessage wechatMessage = new WechatMessage(game.WechatName, Reservations.FindPlayerById(playerId).Name, message);
+                    WechatMessage wechatMessage = new WechatMessage(group, Reservations.FindPlayerById(playerId).Name, message);
                     Reservations.WechatMessages.Add(wechatMessage);
+                        }
                 }
             }
             DataAccess.Save(Reservations);

@@ -11,7 +11,7 @@ namespace VballManager
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Application[Constants.DATA] = DataAccess.LoadReservation();
+            //Application[Constants.DATA] = DataAccess.LoadReservation();
             if (!IsPostBack)
             {
                 //

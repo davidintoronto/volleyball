@@ -366,17 +366,7 @@ namespace Wechat_Notifier
 
         private void HourSharpBtn_Click(object sender, EventArgs e)
         {
-            try
-            {
-                VballManagerWebservice.VballWebServiceSoapClient client = new VballManagerWebservice.VballWebServiceSoapClient();
-                client.RunScheduleTasks(DateTime.Now.Hour);
-                //String reservationData = client.RetrieveData(DateTime.Now.Hour);
-                //if (!String.IsNullOrEmpty(reservationData)) File.WriteAllText(System.AppDomain.CurrentDomain.BaseDirectory + DATAFILE + DateTime.Today.ToString("yyyy-MM-dd"), reservationData);
-            }
-            catch (Exception ex)
-            {
-                this.LogTb.Text = this.LogTb.Text + "\r\n" + DateTime.Now.ToString() + " " + ex.Message;
-            }
+            DoScheduleTasks();
         }
 
         private void ShowWindowStartLocation_Click(object sender, EventArgs e)

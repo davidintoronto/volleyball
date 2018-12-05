@@ -20,7 +20,7 @@ namespace VballManager
 
         protected void ReloadManager()
         {
-             Application[Constants.DATA] = DataAccess.LoadReservation();
+             //Application[Constants.DATA] = DataAccess.LoadReservation();
        }
         protected void InitializeActionHandler()
         {

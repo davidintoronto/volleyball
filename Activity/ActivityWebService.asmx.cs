@@ -22,8 +22,11 @@ namespace Reservation
         [WebMethod]
         public List<WechatMessage> WechatMessages()
         {
-            IEnumerable<WechatMessage> weChatMassages = Reservations.WechatMessages.FindAll(wechat=> wechat.Date.Date == DateTime.Today.Date);
-            Reservations.WechatMessages.Clear();
+            List<WechatMessage> weChatMassages = Reservations.WechatMessages.ToList();
+            foreach (WechatMessage message in weChatMassages)
+            {
+                Reservations.WechatMessages.Remove(Reservations.WechatMessages.Find(m => m.WechatName == message.WechatName && m.Name == message.Name && m.Message == message.Message));
+            }
             DataAccess.Save(Reservations);
             return weChatMassages.ToList();
         }

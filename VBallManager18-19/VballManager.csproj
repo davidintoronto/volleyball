@@ -80,6 +80,7 @@
     <Content Include="BillingDetail.aspx" />
     <Content Include="Authen.aspx" />
     <Content Include="Authorize.aspx" />
+    <Content Include="Factors.aspx" />
     <Content Include="Plugin.aspx" />
     <Content Include="Players.aspx" />
     <Content Include="ParticipationRate.aspx" />
@@ -200,6 +201,13 @@
     <Compile Include="Action.Move.cs" />
     <Compile Include="BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Factors.aspx.cs">
+      <DependentUpon>Factors.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Factors.aspx.designer.cs">
+      <DependentUpon>Factors.aspx</DependentUpon>
     </Compile>
     <Compile Include="Plugin.aspx.cs">
       <DependentUpon>Plugin.aspx</DependentUpon>

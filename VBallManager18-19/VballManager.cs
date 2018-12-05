@@ -471,7 +471,7 @@ namespace VballManager
                 }
                 else
                 {
-                    message = (user == null ? "Admin" : user.Name) + " " + result.ToString() + poolAndGameDate + " for you";
+                    message = (user == null ? "Admin" : user.Name) + " " + result.ToString() + poolAndGameDate;
                 }
                 if (EastDateTimeToday.AddDays(7) < gameDate)
                 {
@@ -514,21 +514,20 @@ namespace VballManager
             {
                 message = result.ToString() + " from pool " + originalPool.Name + " to pool " + targetPool.Name + " for the " + targetPool.DayOfWeek + " volleyball on " + gameDate.ToString("MM/dd/yyyy");
                 WechatNotifier.AddNotifyWechatMessage(player, message);
-                message = message + ". Total player number in pool " + originalPool.Name + ": " + originalPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
+                String wechatMessage = message + ". Total player number in pool " + originalPool.Name + ": " + originalPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
                 Game game = originalPool.FindGameByDate(gameDate);
                 if (game.Factor > 0)
                 {
-                    message = message + ". Current factor is " + game.Factor;
+                    wechatMessage = wechatMessage + ". Current factor is " + game.Factor;
                 }
-                WechatNotifier.AddNotifyWechatMessage(originalPool, player, message);
-                message = message + ". Total player number in pool " + targetPool.Name + ": " + numberOfReservedPlayerInTargetPool;
-                WechatNotifier.AddNotifyWechatMessage(player, message);
+                WechatNotifier.AddNotifyWechatMessage(originalPool, player, wechatMessage);
+                wechatMessage = message + ". Total player number in pool " + targetPool.Name + ": " + numberOfReservedPlayerInTargetPool;
                 game = targetPool.FindGameByDate(gameDate);
                 if (game.Factor > 0)
                 {
-                    message = message + ". Current factor is " + game.Factor;
+                    wechatMessage = wechatMessage + ". Current factor is " + game.Factor;
                 }
-                WechatNotifier.AddNotifyWechatMessage(targetPool, player, message);
+                WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatMessage);
                 if (wechatNotifier.EnableReserveEmoMessage) 
                     WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage((int)EmoTypes.Move, numberOfReservedPlayerInTargetPool));
             }
@@ -598,7 +597,7 @@ namespace VballManager
                     f.CoopNumberFrom <= coopNumberOfPlayers && coopNumberOfPlayers <= f.CoopNumberTo && f.HighPoolName == pool.Name && f.HighPoolNumberFrom <= currentPoolNumberOfPlayer &&//
                     currentPoolNumberOfPlayer <= f.HighPoolNumberTo);
                if (factor != null) game.Factor = factor.Value;
-               factor = Factors.Find(f => f.PoolName == anotherDayPoolWithSameLevel.Name && f.LowPoolName == sameDayPool.Name && f.LowPoolNumberFrom <= sameDayPoolNumberOfPlayers && sameDayPoolNumberOfPlayers <= f.LowPoolNumberTo &&//
+               factor = Factors.Find(f => f.PoolName == anotherDayPoolWithDifferentLevel.Name && f.LowPoolName == sameDayPool.Name && f.LowPoolNumberFrom <= sameDayPoolNumberOfPlayers && sameDayPoolNumberOfPlayers <= f.LowPoolNumberTo &&//
                     f.CoopNumberFrom <= coopNumberOfPlayers && coopNumberOfPlayers <= f.CoopNumberTo && f.HighPoolName == pool.Name && f.HighPoolNumberFrom <= currentPoolNumberOfPlayer &&//
                     currentPoolNumberOfPlayer <= f.HighPoolNumberTo);
                if (factor != null) sameDayPoolGame.Factor = factor.Value;

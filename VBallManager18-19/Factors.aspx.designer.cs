@@ -10,240 +10,204 @@
 namespace VballManager {
     
     
-    public partial class Wechat {
+    public partial class Factors {
         
         /// <summary>
-        /// SendWechatPanel control.
+        /// RulePanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel SendWechatPanel;
+        protected global::System.Web.UI.WebControls.Panel RulePanel;
         
         /// <summary>
-        /// WechatNotifyCb control.
+        /// FactorSettingTable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox WechatNotifyCb;
+        protected global::System.Web.UI.WebControls.Table FactorSettingTable;
         
         /// <summary>
-        /// messageNumber control.
+        /// TableHeaderRow1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label messageNumber;
+        protected global::System.Web.UI.WebControls.TableHeaderRow TableHeaderRow1;
         
         /// <summary>
-        /// SaveBtn control.
+        /// TableHeaderCell1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SaveBtn;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell1;
         
         /// <summary>
-        /// Panel3 control.
+        /// TableHeaderCell2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel3;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell2;
         
         /// <summary>
-        /// PlayerListBox control.
+        /// TableHeaderCell3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox PlayerListBox;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell3;
         
         /// <summary>
-        /// SendWelcomeToPlayerBtn control.
+        /// TableHeaderCell4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SendWelcomeToPlayerBtn;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell4;
         
         /// <summary>
-        /// WelcomeMemberWechatMessageTb control.
+        /// TableHeaderCell5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox WelcomeMemberWechatMessageTb;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell5;
         
         /// <summary>
-        /// SendWelcomeToPlayersBtn control.
+        /// TableHeaderCell7 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SendWelcomeToPlayersBtn;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell7;
         
         /// <summary>
-        /// WelcomeDropinWechatMessageTb control.
+        /// TableHeaderCell8 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox WelcomeDropinWechatMessageTb;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell8;
         
         /// <summary>
-        /// SendToDropinsBtn control.
+        /// TableHeaderCell10 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SendToDropinsBtn;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell10;
         
         /// <summary>
-        /// PoolListBox control.
+        /// TableHeaderCell11 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox PoolListBox;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell11;
         
         /// <summary>
-        /// PoolWechatMessageTb control.
+        /// TableHeaderCell12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PoolWechatMessageTb;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderCell12;
         
         /// <summary>
-        /// SendToGroupBtn control.
+        /// RecalculateFactor control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SendToGroupBtn;
+        protected global::System.Web.UI.WebControls.Button RecalculateFactor;
         
         /// <summary>
-        /// PrimaryMemberMessgeTb control.
+        /// PoolGameFactorTable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PrimaryMemberMessgeTb;
+        protected global::System.Web.UI.WebControls.Table PoolGameFactorTable;
         
         /// <summary>
-        /// TestAllTb control.
+        /// TableHeaderRow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TestAllTb;
+        protected global::System.Web.UI.WebControls.TableHeaderRow TableHeaderRow;
         
         /// <summary>
-        /// TestToAllBtn control.
+        /// TableHeaderDateCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button TestToAllBtn;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderDateCell;
         
         /// <summary>
-        /// EmoPanel control.
+        /// TableHeaderLowPoolCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel EmoPanel;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderLowPoolCell;
         
         /// <summary>
-        /// EnableReserveEmoCb control.
+        /// TableHeaderlowPoolFactorCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox EnableReserveEmoCb;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderlowPoolFactorCell;
         
         /// <summary>
-        /// EnableCancelEmoCb control.
+        /// TableHeaderInternCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox EnableCancelEmoCb;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderInternCell;
         
         /// <summary>
-        /// EmoTable control.
+        /// TableHeaderHighPoolCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Table EmoTable;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderHighPoolCell;
         
         /// <summary>
-        /// EmoTableHeaderRow control.
+        /// TableHeaderHighPoolFactorCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderRow EmoTableHeaderRow;
-        
-        /// <summary>
-        /// PlayerPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel PlayerPanel;
-        
-        /// <summary>
-        /// WechatNameTable control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Table WechatNameTable;
-        
-        /// <summary>
-        /// FeeTableHeaderRow control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderRow FeeTableHeaderRow;
-        
-        /// <summary>
-        /// SetWechatNameBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SetWechatNameBtn;
+        protected global::System.Web.UI.WebControls.TableHeaderCell TableHeaderHighPoolFactorCell;
     }
 }
