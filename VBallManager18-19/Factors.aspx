@@ -50,7 +50,7 @@
 
                 </td>
                 <td align="center" class="auto-style1">
-                    <asp:Table ID="PoolGameFactorTable" runat="server" Caption="Game Factors" Font-Bold="True" BackColor="#BFC6EE" GridLines="Both">
+                    <asp:Table ID="PoolGameFactorTable" runat="server" Caption="Monday Attendance Factors" Font-Bold="True" BackColor="#BFC6EE" GridLines="Both">
                         <asp:TableHeaderRow ID="TableHeaderRow" HorizontalAlign="Center" BackColor="#B3AB4D">
                             <asp:TableHeaderCell ID="TableHeaderDateCell" Text="Date" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="TableHeaderLowPoolCell" Text="Pool B" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>

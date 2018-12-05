@@ -207,16 +207,16 @@ namespace VballManager
             Pool poolA = Manager.Pools.Find(p => p.DayOfWeek == DayOfWeek.Monday && !p.IsLowPool);
             Pool poolB = Manager.Pools.Find(p => p.DayOfWeek == DayOfWeek.Monday && p.IsLowPool);
             if (poolA == null || poolB == null) return;
-            foreach (Game gameA in poolA.Games.FindAll(g=>g.Date>=Manager.AttendRateStartDate && g.Date <= Manager.EastDateTimeToday))
+            foreach (Game gameA in poolA.Games.FindAll(g=>g.Date <= Manager.EastDateTimeToday))
             {
                 Game gameB = poolB.FindGameByDate(gameA.Date);
                 TableRow row = new TableRow();
                 AddTableCell(row, gameA.Date.ToShortDateString());
                 AddTableCell(row, gameB.NumberOfReservedPlayers.ToString());
-                AddTableCell(row, gameB.Factor.ToString());
+                AddTableCell(row, gameB.Factor);
                 AddTableCell(row, gameA.Dropins.Items.FindAll(d=>d.IsCoop && d.Status == InOutNoshow.In).Count.ToString());
                 AddTableCell(row, gameA.NumberOfReservedPlayers.ToString());
-                AddTableCell(row, gameA.Factor.ToString());
+                AddTableCell(row, gameA.Factor);
                 this.PoolGameFactorTable.Rows.Add(row);
             }
         }
@@ -225,6 +225,13 @@ namespace VballManager
         {
             TableCell cell = new TableCell();
             cell.Text = text;
+            row.Cells.Add(cell);
+        }
+        private void AddTableCell(TableRow row, decimal factor)
+        {
+            TableCell cell = new TableCell();
+            cell.Text = factor.ToString();
+            cell.ForeColor = System.Drawing.Color.DarkRed;
             row.Cells.Add(cell);
         }
     }
