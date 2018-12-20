@@ -124,6 +124,8 @@ namespace VballManager
             }
             //Cancel unconfirmed reservation
             Handler.AutoCancelUnconfirmedReservations();
+            //Auto move intern
+            Handler.AutoMoveCoop();
             //Fill game information
             FillGameInfoTable(CurrentPool, TargetGameDate);
 

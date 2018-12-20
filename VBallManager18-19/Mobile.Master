@@ -36,7 +36,9 @@
             <div class="title">
                  <h1 align="center">
                      <asp:Label ID="TitleLabel" runat="server" Text="VOLLEYBALL RESERVATIONS" Font-Bold="True"
-                        ForeColor="White" ></asp:Label>
+                        ForeColor="White" Visible="False" ></asp:Label>
+                     <asp:LinkButton ID="Homepage" runat="server" Font-Bold="True"
+                        ForeColor="White" OnClick="Homepage_Click"></asp:LinkButton>
                 </h1>
             </div>
             <div class="clear hideSkiplink">
