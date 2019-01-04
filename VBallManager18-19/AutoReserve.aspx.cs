@@ -12,7 +12,7 @@ namespace VballManager
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ReloadManager();
+            //ReloadManager();
             InitializeActionHandler();
             Handler.AutoMoveCoop();
             Handler.AutoCancelUnconfirmedReservations();

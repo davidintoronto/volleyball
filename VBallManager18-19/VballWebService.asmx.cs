@@ -35,10 +35,10 @@ namespace VballManager
         [WebMethod]
         public List<WechatMessage> WechatMessages()
         {
-            IEnumerable<WechatMessage> weChatMassages = Manager.WechatNotifier.WechatMessages.FindAll(wechat=> wechat.Date.AddHours(2) >= DateTime.Now);
-            Manager.WechatNotifier.WechatMessages.Clear();
+            List<WechatMessage> weChatMassages = Manager.WechatNotifier.RetrieveUnsentMessages();
+           // Manager.WechatNotifier.WechatMessages.Clear();
             DataAccess.Save(Manager);
-            return weChatMassages.ToList();
+            return weChatMassages;
         }
 
         [WebMethod]
@@ -123,11 +123,11 @@ namespace VballManager
         private void NoonRemainder(int hour)
         {
             String reservationUrl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.PathAndQuery, HttpContext.Current.Request.ApplicationPath);// +"/" + Constants.POOL_LINK_LIST_PAGE;
-            if (hour != 12) return;
+            if (hour != Manager.AutoCancelHour) return;
             foreach (Pool pool in Manager.Pools)
             {
                 DateTime comingGameDate = FindComingGameDate(pool);
-                if (comingGameDate.Date == Manager.EastDateTimeToday.Date)
+                if (comingGameDate == Manager.EastDateTimeToday)
                 {
                     Game game = pool.FindGameByDate(comingGameDate);
                     String message = String.Format("Hi, all. Currently we have {0} players for tonight volleyball. If you are holding a spot but cannot make it , please cancel your spot, thanks. ", game.NumberOfReservedPlayers);

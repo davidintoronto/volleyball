@@ -17,6 +17,7 @@ namespace VballManager
             Page.Title = title;
             }
             this.TitleLabel.Text = title;
+            this.Homepage.Text = title;
             //this.ClosePanel.Visible = false;
             if (Request.UserAgent.Contains("MicroMessenger"))
             {
@@ -46,6 +47,11 @@ namespace VballManager
             }*/
             return "Hitmen Volleyball Club";
 
+        }
+
+        protected void Homepage_Click(object sender, EventArgs e)
+        {
+            Response.Redirect(Constants.POOL_LINK_LIST_PAGE);
         }
     }
 }

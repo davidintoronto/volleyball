@@ -33,7 +33,7 @@ namespace VballManager
                         Player coopPlayer = Manager.FindPlayerById(coopDropin.PlayerId);
                         MoveReservation(lowPool, lowPoolGame, coopPlayer);
                         Manager.ReCalculateFactor(lowPool, gameDate);
-                        Manager.ReCalculateFactor(highPool, gameDate);
+                        //Manager.ReCalculateFactor(highPool, gameDate);
                         String wechatMessage = String.Format("Sorry, but we had to move your spot back to pool {0} for tonight's volleyball in order to balance the players in each pool. However we may move your spot again later when things change.", lowPool.Name);
                         Manager.WechatNotifier.AddNotifyWechatMessage(coopPlayer, wechatMessage);
                         Manager.AddReservationNotifyWechatMessage(coopPlayer.Id, CurrentUser.Id, Constants.MOVED, lowPool, highPool, lowPoolGame.Date);
@@ -55,11 +55,11 @@ namespace VballManager
                     Player coopPlayer = Manager.FindPlayerById(coopDropin.PlayerId);
                     MoveReservation(highPool, highPoolGame, coopPlayer);
                     Manager.ReCalculateFactor(lowPool, gameDate);
-                    Manager.ReCalculateFactor(highPool, gameDate);
+                    //Manager.ReCalculateFactor(highPool, gameDate);
                     String wechatMessage = String.Format("We have moved your spot from pool {0} to pool {1} for tonight's volleyball in order to balance the players in each pool. However we may move you back later when things change." //
                     + " if you don't receive any further notification by {2} o'clock, then this is the final arrangement.", lowPool.Name, highPool.Name, highPool.SettleHourForCoop);
                     Manager.WechatNotifier.AddNotifyWechatMessage(coopPlayer, wechatMessage);
-                    Manager.AddReservationNotifyWechatMessage(coopPlayer.Id, CurrentUser.Id, Constants.MOVED, highPool, lowPool, lowPoolGame.Date);
+                    Manager.AddReservationNotifyWechatMessage(coopPlayer.Id, null, Constants.MOVED, highPool, lowPool, lowPoolGame.Date);
                     LogHistory log = CreateLog(Manager.EastDateTimeNow, gameDate.Date, GetUserIP(), highPool.Name, coopPlayer.Name, "Moved from " + lowPool.Name, "Admin");
                     Manager.Logs.Add(log);
                     DataAccess.Save(Manager);

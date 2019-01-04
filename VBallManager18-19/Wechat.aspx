@@ -32,6 +32,9 @@
                 <td class="auto-style8">
                     <asp:CheckBox ID="WechatNotifyCb" runat="server" AutoPostBack="True" OnCheckedChanged="WechatNotifyCb_CheckedChanged" Text="Enbale Wechat Notification" />
                 </td>
+                <td class="auto-style8">
+                    <asp:Label ID="messageNumber" runat="server" Text=""></asp:Label>
+                </td>
                 <td align="center">
                     <asp:Button ID="SaveBtn" runat="server" OnClick="SaveBtn_Click" Text="Save" Width="89px" />
                 </td>

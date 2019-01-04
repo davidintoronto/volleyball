@@ -50,6 +50,7 @@ namespace VballManager
             this.TestToAllBtn.OnClientClick = "if ( !confirm('Are you sure to send test messages to all?')) return false;";
             RanderEmoMessagePanel();
             RanderPlayerWechatPanel();
+            this.messageNumber.Text = "Current message number: " + Manager.WechatNotifier.WechatMessages.Count;
         }
 
         private void RanderEmoMessagePanel()

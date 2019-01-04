@@ -61,6 +61,9 @@
             width: 131px;
             height: 46px;
         }
+        .auto-style9 {
+            width: 194px;
+        }
     </style>
  </asp:Content>
 
@@ -447,7 +450,7 @@
                 onselectedindexchanged="GameList_SelectedIndexChanged" Width="132px">
             </asp:ListBox>
             </td>
-        <td>
+        <td class="auto-style9">
             <table class="inlineBlock" style="width: 32%; top: inherit;">
                 <tr>
                     <td align="center" colspan="2">
@@ -518,5 +521,16 @@
             </td>
         </tr></table>
         </asp:Panel>
+    </asp:Panel>
+    <asp:Panel ID="FactorListPanel" runat="server">
+                    <asp:Table ID="FactorListTable" runat="server" Caption="Factors" Font-Bold="True">
+                        <asp:TableHeaderRow ID="TableHeaderRow" HorizontalAlign="Center" BackColor="#B3AB4D">
+                            <asp:TableHeaderCell ID="TableHeaderLowPoolCell" Text="Pool B" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderlowPoolFactorCell" Text="Factor" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderInternCell" Text="Intern" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderHighPoolCell" Text="Pool A" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="TableHeaderHighPoolFactorCell" Text="Factor" HorizontalAlign="Center" runat="server"></asp:TableHeaderCell>
+                        </asp:TableHeaderRow>
+                    </asp:Table>
     </asp:Panel>
 </asp:Content>

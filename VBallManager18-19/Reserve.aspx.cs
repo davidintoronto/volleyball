@@ -15,7 +15,7 @@ namespace VballManager
  
         protected void Page_Load(object sender, EventArgs e)
         {
-            ReloadManager();
+            //ReloadManager();
             this.PopupModal.Hide();
             if (Manager.CookieAuthRequired && Request.Cookies[Constants.PRIMARY_USER] == null)
             {
@@ -124,6 +124,8 @@ namespace VballManager
             }
             //Cancel unconfirmed reservation
             Handler.AutoCancelUnconfirmedReservations();
+            //Auto move intern
+            Handler.AutoMoveCoop();
             //Fill game information
             FillGameInfoTable(CurrentPool, TargetGameDate);
 
@@ -237,18 +239,19 @@ namespace VballManager
         #endregion
 
         #region Fill 
-        private void FillGameInfoTable(Pool pool, DateTime date)
+        private void FillGameInfoTable(Pool pool, DateTime gameDate)
         {
             FillNavTable();
-            int memberPlayers = pool.GetNumberOfAttendingMembers(date);
-            int dropinPlayers = pool.GetNumberOfDropins(date);
+            int memberPlayers = pool.GetNumberOfAttendingMembers(gameDate);
+            int dropinPlayers = pool.GetNumberOfDropins(gameDate);
             int span = 7;
             FillGameInfoRow("Date", 1, ((DateTime)Session[Constants.GAME_DATE]).ToString("ddd, MMM d, yyyy"), span);
             FillGameInfoRow("Time", 1, pool.GameScheduleTime, span);
-            Game game = pool.FindGameByDate(date);
+            //Manager.ReCalculateFactor(pool, gameDate);
+            Game game = pool.FindGameByDate(gameDate);
             if (game.Factor > 0)
             {
-                FillGameInfoRow("Factor/Next", span, game.Factor.ToString() + " / " + Handler.CalculateNextFactor(CurrentPool, date).ToString(), 1);
+                FillGameInfoRow("Factor/Next", span, game.Factor.ToString() + " / " + Handler.CalculateNextFactor(CurrentPool, gameDate).ToString(), 1);
             }
             FillGameInfoRow("Members", span, memberPlayers.ToString(), 1);
             TableRow dropinRow = new TableRow();

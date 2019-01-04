@@ -74,7 +74,7 @@
             <table width="100%">
                 <tr>
                     <td align="left">
-                        <asp:Button ID="RateBtn" Text="Rate" runat="server"
+                        <asp:Button ID="RateBtn" Text="Rates" runat="server"
                             Style="font-size: 5em;" OnClick="RateBtn_Click"
                             BackColor="#F2A8AA" ForeColor="#006600" />
                     </td>

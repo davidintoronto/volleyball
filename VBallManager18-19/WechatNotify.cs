@@ -120,6 +120,16 @@ namespace VballManager
             }
             return null;
         }
+
+        public List<WechatMessage> RetrieveUnsentMessages()
+        {
+            List<WechatMessage> unsentMessage = this.wechatMessages.ToList();
+            foreach (WechatMessage message in unsentMessage)
+            {
+                this.wechatMessages.Remove(this.wechatMessages.Find(m=>m.WechatName == message.WechatName && m.Name == message.Name && m.Message == message.Message));
+            }
+            return unsentMessage;
+        }
     }
 
     public enum EmoTypes

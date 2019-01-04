@@ -141,7 +141,9 @@ namespace VballManager
                    Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
                    message = "Your reservation is cancelled. Currently we have " + game.NumberOfReservedPlayers + " players for tonight volleyball games";
                    Manager.WechatNotifier.AddNotifyWechatMessage(pool, player, message);
-                    //Assing the spot to waiting list
+                   LogHistory log = CreateLog(Manager.EastDateTimeNow, game.Date, GetUserIP(), pool.Name, player.Name, "Cancelled", "Admin");
+                   Manager.Logs.Add(log);
+                   //Assing the spot to waiting list
                    if (game.WaitingList.Count > 0)
                    {
                        AssignDropinSpotToWaiting(pool, game);
