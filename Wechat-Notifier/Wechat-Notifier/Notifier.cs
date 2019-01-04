@@ -16,6 +16,7 @@ namespace Wechat_Notifier
     public partial class Notifier : Form
     {
         public const String DATAFILE = @"\App_Data\Reservation.data.";
+        private int nextHour;
         
         [DllImport("user32.dll", SetLastError = true)]
         static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
@@ -67,6 +68,7 @@ namespace Wechat_Notifier
         public Notifier()
         {
             InitializeComponent();
+            this.nextHour = DateTime.Now.DayOfYear * 24 + DateTime.Now.Hour + 1;
             //ResetHourSharpTimer();
             WechatTimer.Start();
         }
@@ -266,7 +268,8 @@ namespace Wechat_Notifier
         {
             VballManagerWebservice.VballWebServiceSoapClient client = new VballManagerWebservice.VballWebServiceSoapClient();
             List<WechatMessage> wechatMessages = new List<WechatMessage>();
-            foreach (VballManagerWebservice.WechatMessage wechatMessage in client.WechatMessages())
+            VballManagerWebservice.WechatMessage[] receivdMesseages =  client.WechatMessages();
+            foreach (VballManagerWebservice.WechatMessage wechatMessage in receivdMesseages)
             {
                 WechatMessage theWechatMessage = new WechatMessage();
                 theWechatMessage.At = wechatMessage.At;
@@ -334,28 +337,32 @@ namespace Wechat_Notifier
 
         private void ScheduleTaskTimer_Tick(object sender, EventArgs e)
         {
-            DoScheduleTasks();
+            DoScheduleTasks(DateTime.Now.Hour);
         }
 
-        private void DoScheduleTasks()
+        private bool DoScheduleTasks(int hour)
         {
             try
             {
                 VballManagerWebservice.VballWebServiceSoapClient client = new VballManagerWebservice.VballWebServiceSoapClient();
                 client.RunScheduleTasks(DateTime.Now.Hour);
-                String reservationData = client.RetrieveData(DateTime.Now.Hour);
-                if (!String.IsNullOrEmpty(reservationData)) File.WriteAllText(System.AppDomain.CurrentDomain.BaseDirectory + DateTime.Today.ToString("yyyy-MM-dd")+ DATAFILE , reservationData);
+                String reservationData = client.RetrieveData(hour);
+                if (!String.IsNullOrEmpty(reservationData)) File.WriteAllText(System.AppDomain.CurrentDomain.BaseDirectory+ DATAFILE  + DateTime.Today.ToString("yyyy-MM-dd"), reservationData);
+                return true;
+
             }catch(Exception ex){
                 this.LogTb.Text = this.LogTb.Text + "\r\n" + DateTime.Now.ToString() + " " + ex.Message;
+                return false;
             }
            // ResetHourSharpTimer();
         }
 
         private void WechatTimer_Tick(object sender, EventArgs e)
         {
-            if (DateTime.Now.Minute == 0)
+            if (this.nextHour <= DateTime.Now.DayOfYear * 24 + DateTime.Now.Hour)
             {
-                DoScheduleTasks();
+                if (DoScheduleTasks(this.nextHour%24))
+                    this.nextHour++;
             }
             SendMessagesToWechat();
             int seconds = DateTime.Now.Second;
@@ -366,17 +373,7 @@ namespace Wechat_Notifier
 
         private void HourSharpBtn_Click(object sender, EventArgs e)
         {
-            try
-            {
-                VballManagerWebservice.VballWebServiceSoapClient client = new VballManagerWebservice.VballWebServiceSoapClient();
-                client.RunScheduleTasks(DateTime.Now.Hour);
-                //String reservationData = client.RetrieveData(DateTime.Now.Hour);
-                //if (!String.IsNullOrEmpty(reservationData)) File.WriteAllText(System.AppDomain.CurrentDomain.BaseDirectory + DATAFILE + DateTime.Today.ToString("yyyy-MM-dd"), reservationData);
-            }
-            catch (Exception ex)
-            {
-                this.LogTb.Text = this.LogTb.Text + "\r\n" + DateTime.Now.ToString() + " " + ex.Message;
-            }
+            DoScheduleTasks(DateTime.Now.Hour);
         }
 
         private void ShowWindowStartLocation_Click(object sender, EventArgs e)
