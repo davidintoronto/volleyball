@@ -457,6 +457,7 @@ namespace VballManager
         {
            if (IsReservationLocked(gameDate)) return;
             Player player = FindPlayerById(playerId);
+            if (player.Marked && result == Constants.CANCELLED) return;
             Player user = operatorId == null ? null : FindPlayerById(operatorId);
             String message = null;
             int numberOfReservedPlayerInTargetPool = targetPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
@@ -486,12 +487,12 @@ namespace VballManager
                         message = message + ". Current factor is " + game.Factor;
                     }
                     WechatNotifier.AddNotifyWechatMessage(targetPool, player, message);
-                    if (result == Constants.RESERVED && wechatNotifier.EnableReserveEmoMessage)
+                    if (player.Role != (int)Roles.Guest && result == Constants.RESERVED && wechatNotifier.EnableReserveEmoMessage)
                     {
                         int emoType = (int)EmoTypes.Reserve;
                         WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage(emoType, numberOfReservedPlayerInTargetPool));
-                    } 
-                    if (result == Constants.CANCELLED && wechatNotifier.EnableCancelEmoMessage)
+                    }
+                    if (player.Role != (int)Roles.Guest && result == Constants.CANCELLED && wechatNotifier.EnableCancelEmoMessage)
                     {
                         int emoType = (int)EmoTypes.Cancel;
                         WechatNotifier.AddNotifyWechatMessage(targetPool, player, wechatNotifier.GetEmoMessage(emoType, numberOfReservedPlayerInTargetPool));

@@ -123,7 +123,7 @@ namespace VballManager
         private void NoonRemainder(int hour)
         {
             String reservationUrl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.PathAndQuery, HttpContext.Current.Request.ApplicationPath);// +"/" + Constants.POOL_LINK_LIST_PAGE;
-            if (hour != Manager.AutoCancelHour) return;
+            if (hour != 12) return;
             foreach (Pool pool in Manager.Pools)
             {
                 DateTime comingGameDate = FindComingGameDate(pool);
@@ -208,7 +208,7 @@ namespace VballManager
 
         private void BirthdayWishes(int hour)
         {
-            if (hour != 9) return;
+            if (hour != 8) return;
             List<Player> birthdayPlayers = Manager.Players.FindAll(player => !String.IsNullOrEmpty(player.Birthday) && player.Birthday.Split('/')[0] == Manager.EastDateTimeToday.Month.ToString() && player.Birthday.Split('/')[1] == Manager.EastDateTimeToday.Day.ToString());
             String message = " 🎉[Cake]🍾💰🎻[Rose]🎁🍻[Packet][Hug]";
             foreach (Player player in birthdayPlayers)

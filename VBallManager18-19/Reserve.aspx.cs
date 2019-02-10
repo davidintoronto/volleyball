@@ -333,7 +333,7 @@ namespace VballManager
                 {
                     Image image = new Image();
                     image.ImageUrl = "~/Icons/Colorball.png";
-                    nameCell.Controls.Add(image);
+                    //nameCell.Controls.Add(image);
                 }
                 foreach (Fee fee in player.Fees)
                 {
@@ -492,7 +492,7 @@ namespace VballManager
                     Dropin dropin = CurrentPool.Dropins.FindByPlayerId(player.Id);
                     if (dropin != null)
                     {
-                        if (dropin.IsCoop && pool.AutoCoopReserve && (nextIntern == null || nextIntern.PlayerId != dropin.PlayerId)) continue;
+                        if (!Manager.ActionPermitted(Actions.Power_Reserve, CurrentUser.Role) && dropin.IsCoop && pool.AutoCoopReserve && (nextIntern == null || nextIntern.PlayerId != dropin.PlayerId)) continue;
                         TableRow row = CreateDropinTableRow(player, attdenee, game.WaitingList.Exists(player.Id));
                         this.DropinCandidateTable.Rows.Add(row);
                         if (DropinCandidateTable.Rows.Count % 2 == 1)

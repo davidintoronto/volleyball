@@ -14,8 +14,8 @@ namespace VballManager
         {
             //ReloadManager();
             InitializeActionHandler();
-            Handler.AutoMoveCoop();
             Handler.AutoCancelUnconfirmedReservations();
+            Handler.AutoMoveCoop();
         }
 
     }
