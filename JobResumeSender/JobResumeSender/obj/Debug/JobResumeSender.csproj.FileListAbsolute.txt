@@ -1,0 +1,9 @@
+C:\Users\david\OneDrive\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\bin\Debug\JobResumeSender.exe.config
+C:\Users\david\OneDrive\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\bin\Debug\JobResumeSender.exe
+C:\Users\david\OneDrive\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\bin\Debug\JobResumeSender.pdb
+C:\Users\david\OneDrive\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\obj\Debug\JobResumeSender.Console.resources
+C:\Users\david\OneDrive\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\obj\Debug\JobResumeSender.Properties.Resources.resources
+C:\Users\david\OneDrive\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\obj\Debug\JobResumeSender.csproj.GenerateResource.Cache
+C:\Users\david\OneDrive\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\obj\Debug\JobResumeSender.exe
+C:\Users\david\OneDrive\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\obj\Debug\JobResumeSender.pdb
+C:\Users\david\OneDrive\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\obj\Debug\JobResumeSender.Email.resources

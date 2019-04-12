@@ -80,7 +80,7 @@ namespace VballManager
                          foreach (Dropin dropin in pool.Dropins.Items)
                          {
                              Player player = Manager.FindPlayerById(dropin.PlayerId);
-                             if (player.IsRegisterdMember && !dropin.IsCoop && Manager.IsPlayerAttendedThisWeekMondayGame(comingGameDate.Date, player))
+                             if (player.IsRegisterdMember && !dropin.IsCoop && Manager.IsPlayerAttendedThisWeekMondayGame(comingGameDate.Date, player) && !dropin.WaiveBenefit)
                              {
                                  String wechatMessage = String.Format("Because you attended Monday volleyball, you are rewarded with making reservation for Friday volleyball {0} days in advance. Click the link to reserve now. {1}", pool.DaysToReserve4MondayPlayer, reservationUrl);
                                  Manager.WechatNotifier.AddNotifyWechatMessage(player, wechatMessage);
@@ -88,6 +88,7 @@ namespace VballManager
                          }
                      }
                  }
+                 List<Player> notinGroupPlayers = new List<Player>();
                  if (pool.DaysToReserve == pool.DaysToReserve4Member)
                  {
                      if (Manager.EastDateTimeToday.AddDays(pool.DaysToReserve4Member).Date == comingGameDate.Date)
@@ -100,10 +101,26 @@ namespace VballManager
                      if (Manager.EastDateTimeToday.AddDays(pool.DaysToReserve4Member).Date == comingGameDate.Date)
                      {
                          publishTo = "register members";
+                         foreach (Dropin dropin in pool.Dropins.Items)
+                         {
+                             Player player = Manager.FindPlayerById(dropin.PlayerId);
+                             if (player.NotInGroupNotify && player.IsRegisterdMember && !dropin.IsCoop)
+                             {
+                                 notinGroupPlayers.Add(player);
+                             }
+                         }
                      }
                      if (Manager.EastDateTimeToday.AddDays(pool.DaysToReserve).Date == comingGameDate.Date)
                      {
                          publishTo = "every one";
+                         foreach (Dropin dropin in pool.Dropins.Items)
+                         {
+                             Player player = Manager.FindPlayerById(dropin.PlayerId);
+                             if (player.NotInGroupNotify && !dropin.IsCoop)
+                             {
+                                 notinGroupPlayers.Add(player);
+                             }
+                         }
                      }
                  }
                  if (publishTo != null)
@@ -115,6 +132,10 @@ namespace VballManager
                      String message = pool.DayOfWeek.ToString() + " volleyball reservation starts now for " + publishTo + ". Currently, we have " + availableDropinSpots + (availableDropinSpots<2 ? " dropin spot" : " dropin spots") + " available in pool "+ pool.Name +". Click the link to reserve. " + reservationUrl;
                      Manager.WechatNotifier.AddNotifyWechatMessage(pool, message);
                      Manager.WechatNotifier.AddNotifyWechatMessage(pool, "{ReservationLink}");
+                     foreach (Player player in notinGroupPlayers)
+                     {
+                         Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
+                     }
                      DataAccess.Save(Manager);
                  }
              }

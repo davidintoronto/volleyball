@@ -457,7 +457,7 @@ namespace VballManager
         {
            if (IsReservationLocked(gameDate)) return;
             Player player = FindPlayerById(playerId);
-            if (player.Marked && result == Constants.CANCELLED) return;
+            //if (player.Marked && result == Constants.CANCELLED) return;
             Player user = operatorId == null ? null : FindPlayerById(operatorId);
             String message = null;
             int numberOfReservedPlayerInTargetPool = targetPool.FindGameByDate(gameDate).NumberOfReservedPlayers;

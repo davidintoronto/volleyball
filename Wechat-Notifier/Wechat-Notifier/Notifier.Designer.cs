@@ -38,6 +38,7 @@
             this.LogTb = new System.Windows.Forms.TextBox();
             this.WechatStatusLb = new System.Windows.Forms.Label();
             this.MessageNumberLb = new System.Windows.Forms.Label();
+            this.ClearBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // StartBtn
@@ -116,11 +117,22 @@
             this.MessageNumberLb.TabIndex = 7;
             this.MessageNumberLb.Text = "Message number";
             // 
+            // ClearBtn
+            // 
+            this.ClearBtn.Location = new System.Drawing.Point(745, 61);
+            this.ClearBtn.Name = "ClearBtn";
+            this.ClearBtn.Size = new System.Drawing.Size(75, 23);
+            this.ClearBtn.TabIndex = 8;
+            this.ClearBtn.Text = "Clear";
+            this.ClearBtn.UseVisualStyleBackColor = true;
+            this.ClearBtn.Click += new System.EventHandler(this.ClearBtn_Click);
+            // 
             // Notifier
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(836, 443);
+            this.Controls.Add(this.ClearBtn);
             this.Controls.Add(this.MessageNumberLb);
             this.Controls.Add(this.WechatStatusLb);
             this.Controls.Add(this.LogTb);
@@ -146,6 +158,7 @@
         private System.Windows.Forms.TextBox LogTb;
         private System.Windows.Forms.Label WechatStatusLb;
         private System.Windows.Forms.Label MessageNumberLb;
+        private System.Windows.Forms.Button ClearBtn;
     }
 }
 

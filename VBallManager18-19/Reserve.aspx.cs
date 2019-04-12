@@ -329,12 +329,12 @@ namespace VballManager
                 nameLink.ID = player.Id + ",MEMEBER";
                 this.MemberTable.Rows.Add(row);
                 nameCell.Controls.Add(nameLink);
-                if (player.Marked)
+               /* if (player.Marked)
                 {
                     Image image = new Image();
                     image.ImageUrl = "~/Icons/Colorball.png";
                     //nameCell.Controls.Add(image);
-                }
+                }*/
                 foreach (Fee fee in player.Fees)
                 {
                     if (!fee.IsPaid && fee.Amount > 0)
@@ -439,12 +439,12 @@ namespace VballManager
                 {
                     nameLink.Click += new EventHandler(Username_Click);
                 }
-                if (player.Marked)
+                /*if (player.Marked)
                 {
                     Image image = new Image();
                     image.ImageUrl = "~/Icons/Colorball.png";
                     nameCell.Controls.Add(image);
-                }
+                }*/
                 foreach (Fee fee in player.Fees)
                 {
                     if (!fee.IsPaid && fee.Amount > 0)

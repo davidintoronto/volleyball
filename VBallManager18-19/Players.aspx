@@ -82,24 +82,31 @@
                             </td>
                         </tr>
                          <tr>
-                            <td>Active
-                            </td>
-                            <td>
+                            <td align="right">
                                 <asp:CheckBox ID="PlayerActiveCb" runat="server" />
                             </td>
-                        </tr>
-                      <tr>
-                            <td align="right">Mark
+                           <td>Active
                             </td>
-                            <td>
+                         </tr>
+                      <tr>
+                            <td align="right">
                                 <asp:CheckBox ID="PlayerMarkCb" runat="server" />
                             </td>
-                        </tr>
-                      <tr>
-                            <td align="right">Waiver Signed
+                           <td align="left">Mark
                             </td>
-                            <td>
+                         </tr>
+                      <tr>
+                            <td align="right">
                                 <asp:CheckBox ID="PlayerWaiverSigned" runat="server" />
+                            </td>
+                            <td align="left">Waiver Signed
+                            </td>
+                        </tr>
+                     <tr>
+                           <td align="right">
+                                <asp:CheckBox ID="NotInGroupNotify" runat="server" />
+                            </td>
+                             <td align="left">Not-In-Group Notify
                             </td>
                         </tr>
                          <tr>

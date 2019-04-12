@@ -419,5 +419,10 @@ namespace Wechat_Notifier
             }
         }
 
+        private void ClearBtn_Click(object sender, EventArgs e)
+        {
+            this.LogTb.Text = "";
+        }
+
     }
 }

@@ -12,6 +12,7 @@ namespace VballManager
         private String passcode;
         private bool marked;
         private bool signedWaiver;
+        private bool notInGroupNotify;
         private List<Transfer> transfers = new List<Transfer>();
         private bool isActive = true;
         private List<Fee> fees = new List<Fee>();
@@ -93,6 +94,12 @@ namespace VballManager
             set { isActive = value; }
         }
 
+        public bool NotInGroupNotify
+        {
+            get { return notInGroupNotify; }
+            set { notInGroupNotify = value; }
+        }
+        
         public List<Transfer> Transfers
         {
             get { return transfers; }

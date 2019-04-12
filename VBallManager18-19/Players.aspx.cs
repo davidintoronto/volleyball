@@ -158,6 +158,7 @@ namespace VballManager
             player.Marked = PlayerMarkCb.Checked;
             player.IsActive = PlayerActiveCb.Checked;
             player.SignedWaiver = PlayerWaiverSigned.Checked;
+            player.NotInGroupNotify = this.NotInGroupNotify.Checked;
             player.Birthday = PlayerBirthdayTb.Text;
             //Save
             DataAccess.Save(Manager);
@@ -193,6 +194,7 @@ namespace VballManager
             PlayerMarkCb.Checked = player.Marked;
             PlayerActiveCb.Checked = player.IsActive;
             PlayerWaiverSigned.Checked = player.SignedWaiver;
+            NotInGroupNotify.Checked = player.NotInGroupNotify;
             PlayerBirthdayTb.Text = player.Birthday;
             this.Role.SelectedValue = player.Role.ToString();
             this.WechatNameTb.Text = player.WechatName;

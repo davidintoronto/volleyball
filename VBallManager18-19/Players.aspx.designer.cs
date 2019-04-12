@@ -103,6 +103,15 @@ namespace VballManager {
         protected global::System.Web.UI.WebControls.CheckBox PlayerWaiverSigned;
         
         /// <summary>
+        /// NotInGroupNotify control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox NotInGroupNotify;
+        
+        /// <summary>
         /// PlayerPasscodeTb control.
         /// </summary>
         /// <remarks>
