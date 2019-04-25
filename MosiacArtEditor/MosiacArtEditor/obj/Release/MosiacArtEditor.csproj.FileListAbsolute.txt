@@ -1,0 +1,10 @@
+C:\Users\Zhao\source\repos\MosiacArtEditor\MosiacArtEditor\bin\Release\MosiacArtEditor.exe.config
+C:\Users\Zhao\source\repos\MosiacArtEditor\MosiacArtEditor\bin\Release\MosiacArtEditor.exe
+C:\Users\Zhao\source\repos\MosiacArtEditor\MosiacArtEditor\bin\Release\MosiacArtEditor.pdb
+C:\Users\Zhao\source\repos\MosiacArtEditor\MosiacArtEditor\obj\Release\MosiacArtEditor.csprojAssemblyReference.cache
+C:\Users\Zhao\source\repos\MosiacArtEditor\MosiacArtEditor\obj\Release\MosiacArtEditor.Properties.Resources.resources
+C:\Users\Zhao\source\repos\MosiacArtEditor\MosiacArtEditor\obj\Release\MosiacArtEditor.MosaicWorkshops.resources
+C:\Users\Zhao\source\repos\MosiacArtEditor\MosiacArtEditor\obj\Release\MosiacArtEditor.csproj.GenerateResource.cache
+C:\Users\Zhao\source\repos\MosiacArtEditor\MosiacArtEditor\obj\Release\MosiacArtEditor.csproj.CoreCompileInputs.cache
+C:\Users\Zhao\source\repos\MosiacArtEditor\MosiacArtEditor\obj\Release\MosiacArtEditor.exe
+C:\Users\Zhao\source\repos\MosiacArtEditor\MosiacArtEditor\obj\Release\MosiacArtEditor.pdb
