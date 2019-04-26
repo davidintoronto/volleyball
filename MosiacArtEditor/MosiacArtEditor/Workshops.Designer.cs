@@ -30,11 +30,9 @@
         {
             this.StatusPanel = new System.Windows.Forms.Panel();
             this.MessageTb = new System.Windows.Forms.TextBox();
-            this.PicturePanel = new System.Windows.Forms.SplitContainer();
-            this.SourceImage = new System.Windows.Forms.PictureBox();
             this.MosaicImage = new System.Windows.Forms.PictureBox();
             this.ControlPanel = new System.Windows.Forms.Panel();
-            this.normalSizeCb = new System.Windows.Forms.CheckBox();
+            this.sizeCb = new System.Windows.Forms.CheckBox();
             this.blueCb = new System.Windows.Forms.CheckBox();
             this.greenCb = new System.Windows.Forms.CheckBox();
             this.redCb = new System.Windows.Forms.CheckBox();
@@ -48,18 +46,24 @@
             this.mosaicBtn = new System.Windows.Forms.Button();
             this.openBtn = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.PicturePanel = new System.Windows.Forms.SplitContainer();
+            this.sourcePanel = new System.Windows.Forms.Panel();
+            this.mosaicPanel = new System.Windows.Forms.Panel();
+            this.sourceImage = new System.Windows.Forms.PictureBox();
             this.StatusPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PicturePanel)).BeginInit();
-            this.PicturePanel.Panel1.SuspendLayout();
-            this.PicturePanel.Panel2.SuspendLayout();
-            this.PicturePanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SourceImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MosaicImage)).BeginInit();
             this.ControlPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.greyOffset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.greenOffset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.redOffset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.blueOffset)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PicturePanel)).BeginInit();
+            this.PicturePanel.Panel1.SuspendLayout();
+            this.PicturePanel.Panel2.SuspendLayout();
+            this.PicturePanel.SuspendLayout();
+            this.sourcePanel.SuspendLayout();
+            this.mosaicPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sourceImage)).BeginInit();
             this.SuspendLayout();
             // 
             // StatusPanel
@@ -81,50 +85,19 @@
             this.MessageTb.Size = new System.Drawing.Size(1470, 100);
             this.MessageTb.TabIndex = 0;
             // 
-            // PicturePanel
-            // 
-            this.PicturePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PicturePanel.Location = new System.Drawing.Point(0, 0);
-            this.PicturePanel.Name = "PicturePanel";
-            // 
-            // PicturePanel.Panel1
-            // 
-            this.PicturePanel.Panel1.AutoScroll = true;
-            this.PicturePanel.Panel1.Controls.Add(this.SourceImage);
-            // 
-            // PicturePanel.Panel2
-            // 
-            this.PicturePanel.Panel2.AutoScroll = true;
-            this.PicturePanel.Panel2.Controls.Add(this.MosaicImage);
-            this.PicturePanel.Size = new System.Drawing.Size(1344, 683);
-            this.PicturePanel.SplitterDistance = 677;
-            this.PicturePanel.TabIndex = 2;
-            // 
-            // SourceImage
-            // 
-            this.SourceImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SourceImage.Location = new System.Drawing.Point(0, 0);
-            this.SourceImage.Name = "SourceImage";
-            this.SourceImage.Size = new System.Drawing.Size(677, 683);
-            this.SourceImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.SourceImage.TabIndex = 1;
-            this.SourceImage.TabStop = false;
-            this.SourceImage.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SourceImage_MouseClick);
-            // 
             // MosaicImage
             // 
-            this.MosaicImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MosaicImage.Location = new System.Drawing.Point(0, 0);
             this.MosaicImage.Name = "MosaicImage";
             this.MosaicImage.Size = new System.Drawing.Size(663, 683);
-            this.MosaicImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.MosaicImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.MosaicImage.TabIndex = 1;
             this.MosaicImage.TabStop = false;
             this.MosaicImage.MouseClick += new System.Windows.Forms.MouseEventHandler(this.AfterImage_MouseClick);
             // 
             // ControlPanel
             // 
-            this.ControlPanel.Controls.Add(this.normalSizeCb);
+            this.ControlPanel.Controls.Add(this.sizeCb);
             this.ControlPanel.Controls.Add(this.blueCb);
             this.ControlPanel.Controls.Add(this.greenCb);
             this.ControlPanel.Controls.Add(this.redCb);
@@ -143,20 +116,24 @@
             this.ControlPanel.Size = new System.Drawing.Size(126, 683);
             this.ControlPanel.TabIndex = 1;
             // 
-            // normalSizeCb
+            // sizeCb
             // 
-            this.normalSizeCb.AutoSize = true;
-            this.normalSizeCb.Location = new System.Drawing.Point(18, 647);
-            this.normalSizeCb.Name = "normalSizeCb";
-            this.normalSizeCb.Size = new System.Drawing.Size(82, 17);
-            this.normalSizeCb.TabIndex = 15;
-            this.normalSizeCb.Text = "Normal Size";
-            this.normalSizeCb.UseVisualStyleBackColor = true;
-            this.normalSizeCb.CheckedChanged += new System.EventHandler(this.NormalSizeCb_CheckedChanged);
+            this.sizeCb.AutoSize = true;
+            this.sizeCb.Checked = true;
+            this.sizeCb.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.sizeCb.Location = new System.Drawing.Point(18, 647);
+            this.sizeCb.Name = "sizeCb";
+            this.sizeCb.Size = new System.Drawing.Size(71, 17);
+            this.sizeCb.TabIndex = 15;
+            this.sizeCb.Text = "Auto Size";
+            this.sizeCb.UseVisualStyleBackColor = true;
+            this.sizeCb.CheckedChanged += new System.EventHandler(this.SizeCb_CheckedChanged);
             // 
             // blueCb
             // 
             this.blueCb.AutoSize = true;
+            this.blueCb.Checked = true;
+            this.blueCb.CheckState = System.Windows.Forms.CheckState.Checked;
             this.blueCb.Location = new System.Drawing.Point(16, 224);
             this.blueCb.Name = "blueCb";
             this.blueCb.Size = new System.Drawing.Size(47, 17);
@@ -167,6 +144,8 @@
             // greenCb
             // 
             this.greenCb.AutoSize = true;
+            this.greenCb.Checked = true;
+            this.greenCb.CheckState = System.Windows.Forms.CheckState.Checked;
             this.greenCb.Location = new System.Drawing.Point(17, 199);
             this.greenCb.Name = "greenCb";
             this.greenCb.Size = new System.Drawing.Size(55, 17);
@@ -177,6 +156,8 @@
             // redCb
             // 
             this.redCb.AutoSize = true;
+            this.redCb.Checked = true;
+            this.redCb.CheckState = System.Windows.Forms.CheckState.Checked;
             this.redCb.Location = new System.Drawing.Point(17, 176);
             this.redCb.Name = "redCb";
             this.redCb.Size = new System.Drawing.Size(46, 17);
@@ -306,6 +287,56 @@
             this.openFileDialog.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp; *.png)|*.jpg; *.jpeg; *.gif; *.bmp; *.pn" +
     "g";
             // 
+            // PicturePanel
+            // 
+            this.PicturePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PicturePanel.Location = new System.Drawing.Point(0, 0);
+            this.PicturePanel.Name = "PicturePanel";
+            // 
+            // PicturePanel.Panel1
+            // 
+            this.PicturePanel.Panel1.AutoScroll = true;
+            this.PicturePanel.Panel1.Controls.Add(this.sourcePanel);
+            // 
+            // PicturePanel.Panel2
+            // 
+            this.PicturePanel.Panel2.AutoScroll = true;
+            this.PicturePanel.Panel2.Controls.Add(this.mosaicPanel);
+            this.PicturePanel.Size = new System.Drawing.Size(1344, 683);
+            this.PicturePanel.SplitterDistance = 677;
+            this.PicturePanel.TabIndex = 2;
+            // 
+            // sourcePanel
+            // 
+            this.sourcePanel.AutoScroll = true;
+            this.sourcePanel.AutoSize = true;
+            this.sourcePanel.Controls.Add(this.sourceImage);
+            this.sourcePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sourcePanel.Location = new System.Drawing.Point(0, 0);
+            this.sourcePanel.Name = "sourcePanel";
+            this.sourcePanel.Size = new System.Drawing.Size(677, 683);
+            this.sourcePanel.TabIndex = 0;
+            // 
+            // mosaicPanel
+            // 
+            this.mosaicPanel.AutoScroll = true;
+            this.mosaicPanel.AutoSize = true;
+            this.mosaicPanel.Controls.Add(this.MosaicImage);
+            this.mosaicPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mosaicPanel.Location = new System.Drawing.Point(0, 0);
+            this.mosaicPanel.Name = "mosaicPanel";
+            this.mosaicPanel.Size = new System.Drawing.Size(663, 683);
+            this.mosaicPanel.TabIndex = 0;
+            // 
+            // sourceImage
+            // 
+            this.sourceImage.Location = new System.Drawing.Point(0, 3);
+            this.sourceImage.Name = "sourceImage";
+            this.sourceImage.Size = new System.Drawing.Size(675, 680);
+            this.sourceImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.sourceImage.TabIndex = 0;
+            this.sourceImage.TabStop = false;
+            // 
             // MosaicWorkshops
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -318,11 +349,6 @@
             this.Text = "Mosaic Workshops";
             this.StatusPanel.ResumeLayout(false);
             this.StatusPanel.PerformLayout();
-            this.PicturePanel.Panel1.ResumeLayout(false);
-            this.PicturePanel.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.PicturePanel)).EndInit();
-            this.PicturePanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.SourceImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MosaicImage)).EndInit();
             this.ControlPanel.ResumeLayout(false);
             this.ControlPanel.PerformLayout();
@@ -330,6 +356,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.greenOffset)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.redOffset)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.blueOffset)).EndInit();
+            this.PicturePanel.Panel1.ResumeLayout(false);
+            this.PicturePanel.Panel1.PerformLayout();
+            this.PicturePanel.Panel2.ResumeLayout(false);
+            this.PicturePanel.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PicturePanel)).EndInit();
+            this.PicturePanel.ResumeLayout(false);
+            this.sourcePanel.ResumeLayout(false);
+            this.sourcePanel.PerformLayout();
+            this.mosaicPanel.ResumeLayout(false);
+            this.mosaicPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sourceImage)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -337,8 +374,6 @@
         #endregion
 
         private System.Windows.Forms.Panel StatusPanel;
-        private System.Windows.Forms.SplitContainer PicturePanel;
-        private System.Windows.Forms.PictureBox SourceImage;
         private System.Windows.Forms.Panel ControlPanel;
         private System.Windows.Forms.Button openBtn;
         private System.Windows.Forms.PictureBox MosaicImage;
@@ -355,7 +390,11 @@
         private System.Windows.Forms.CheckBox greenCb;
         private System.Windows.Forms.CheckBox redCb;
         private System.Windows.Forms.NumericUpDown greyOffset;
-        private System.Windows.Forms.CheckBox normalSizeCb;
+        private System.Windows.Forms.CheckBox sizeCb;
+        private System.Windows.Forms.SplitContainer PicturePanel;
+        private System.Windows.Forms.Panel sourcePanel;
+        private System.Windows.Forms.Panel mosaicPanel;
+        private System.Windows.Forms.PictureBox sourceImage;
     }
 }
 
