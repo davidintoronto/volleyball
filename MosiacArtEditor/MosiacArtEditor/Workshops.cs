@@ -42,7 +42,7 @@ namespace MosiacArtEditor
                 }
         }
 
-        private Picture LoadPicture(Bitmap bitmap)
+        private Picture LoadPicture(Bitmap bitmap, bool toGrey)
         {
             Picture pic = new Picture(bitmap.Width, bitmap.Height);
             for (int x = 0; x < bitmap.Width; x++)
@@ -51,7 +51,7 @@ namespace MosiacArtEditor
                 {
                     Color pixelColor = bitmap.GetPixel(x, y);
                     RGBColor color;
-                    if (this.greyCb.Checked)
+                    if (toGrey)
                     {
                         int gray = Convert.ToInt32(0.299 * pixelColor.R + 0.587 * pixelColor.G + 0.114 * pixelColor.B);
                         color = new RGBColor(gray, gray, gray);
@@ -68,7 +68,7 @@ namespace MosiacArtEditor
 
         private void MosaicBtn_Click(object sender, EventArgs e)
         {
-            Picture pic = LoadPicture(new Bitmap(this.sourceImage.Image));
+            Picture pic = LoadPicture(new Bitmap(this.sourceImage.Image), this.greyCb.Checked);
             var mosaics = new List<Mosaic>();
             for(int x=1; x<pic.Width; x++)
                 for (int y=1; y<pic.Height; y++)
@@ -159,13 +159,13 @@ namespace MosiacArtEditor
         }
 
         //Check if the dot is inside of picture and not scanned yet, and has similar color
-        private bool CheckIfDotValidAndSimilarColor(Picture pic, Mosaic mosaic, Dot dot)
+        private bool CheckIfDotValidAndSimilarColor(Picture pic, Mosaic mosaic, Dot dot, RGBColor offset)
         {
             if (pic.IsInside(dot))
                 if (pic.IsUnscanned(dot))
                 {
                     pic.GetPixel(dot).Scanned = true;
-                    if (IsSimilarColor(mosaic, dot, pic.GetColor(dot)))
+                    if (IsSimilarColor(mosaic, dot, pic.GetColor(dot), offset))
                     {
                         return true;
                     }
@@ -178,27 +178,33 @@ namespace MosiacArtEditor
         }
         private void ScanLiner(Picture pic, Mosaic mosaic, Queue<Dot> queue)
         {
+            ScanLiner(pic, mosaic, queue, null);
+        }
+
+        private void ScanLiner(Picture pic, Mosaic mosaic, Queue<Dot> queue, RGBColor offset)
+        {
             while (queue.Count > 0)
             {
                 Dot dot = queue.Dequeue();
                 //Scan the up dot if it is wthin the picture and unscanned
                 Dot nextDot = dot.GetLeftDot();
-                if (CheckIfDotValidAndSimilarColor(pic, mosaic, nextDot)) queue.Enqueue(nextDot);
+                if (CheckIfDotValidAndSimilarColor(pic, mosaic, nextDot, offset)) queue.Enqueue(nextDot);
                 nextDot = dot.GetUpDot();
-                if (CheckIfDotValidAndSimilarColor(pic, mosaic, nextDot)) queue.Enqueue(nextDot);
+                if (CheckIfDotValidAndSimilarColor(pic, mosaic, nextDot, offset)) queue.Enqueue(nextDot);
                 nextDot = dot.GetRightDot();
-                if (CheckIfDotValidAndSimilarColor(pic, mosaic, nextDot)) queue.Enqueue(nextDot);
+                if (CheckIfDotValidAndSimilarColor(pic, mosaic, nextDot, offset)) queue.Enqueue(nextDot);
                 nextDot = dot.GetDownDot();
-                if (CheckIfDotValidAndSimilarColor(pic, mosaic, nextDot)) queue.Enqueue(nextDot);
+                if (CheckIfDotValidAndSimilarColor(pic, mosaic, nextDot, offset)) queue.Enqueue(nextDot);
             }
         }
 
-        private void SourceImage_MouseClick(object sender, MouseEventArgs e)
+
+        private void SourceImage_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Bitmap bitmap = new Bitmap(this.sourceImage.Image);
           // this.SourceImage.ImageLocation
             Color color = bitmap.GetPixel(e.X, e.Y);
-            Picture pic = LoadPicture(new Bitmap(this.sourceImage.Image));
+            Picture pic = LoadPicture(new Bitmap(this.sourceImage.Image), false);
             Mosaic mosaic = new Mosaic();
             Queue<Dot> queue = new Queue<Dot>();
             queue.Enqueue(new Dot(e.X, e.Y));
@@ -218,7 +224,7 @@ namespace MosiacArtEditor
 
         private void LinerBtn_Click(object sender, EventArgs e)
         {
-            Picture pic = LoadPicture(new Bitmap(this.sourceImage.Image));
+            Picture pic = LoadPicture(new Bitmap(this.sourceImage.Image), this.greyCb.Checked);
             var mosaic = new Mosaic();
             //Vertical process
             for (int x = 0; x < pic.Width; x++)
@@ -228,7 +234,7 @@ namespace MosiacArtEditor
                 {
                     Dot dot = new Dot(x, y);
                     var color = pic.GetColor(dot);
-                    if (!IsSimilarColor(mosaic, dot, color))
+                    if (!IsSimilarColor(mosaic, dot, color, null))
                     {
                         mosaic.Dots.Add(dot);
                         mosaic.Color = color;
@@ -244,7 +250,7 @@ namespace MosiacArtEditor
                 {
                     Dot dot = new Dot(x, y);
                     var color = pic.GetColor(dot);
-                    if (!IsSimilarColor(mosaic, dot, color))
+                    if (!IsSimilarColor(mosaic, dot, color, null))
                     {
                         mosaic.Dots.Add(dot);
                         mosaic.Color = color;
@@ -285,25 +291,119 @@ namespace MosiacArtEditor
             }
         }
 
-        private bool IsSimilarColor(Mosaic mosaic, Dot dot, RGBColor color)
+        private bool IsSimilarColor(Mosaic mosaic, Dot dot, RGBColor color, RGBColor offset)
         {
-            if (this.greyCb.Checked)
+            if (offset == null) //Use pre-fined offset
             {
-                if (mosaic.IsSimilarColor(dot, color, Convert.ToInt32(this.greyOffset.Value), Convert.ToInt32(this.greyOffset.Value), Convert.ToInt32(this.greyOffset.Value)))
+                if (this.greyCb.Checked)
+                {
+                    if (mosaic.IsSimilarColor(dot, color, Convert.ToInt32(this.greyOffset.Value), Convert.ToInt32(this.greyOffset.Value), Convert.ToInt32(this.greyOffset.Value)))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (mosaic.IsSimilarColor(dot, color, this.redCb.Checked ? Convert.ToInt32(this.redOffset.Value) : 0, this.greenCb.Checked ? Convert.ToInt32(this.redOffset.Value) : 0, this.blueCb.Checked ? Convert.ToInt32(this.redOffset.Value) : 0))
+                    // if (!mosaic.IsSimilarColor(dot, color, Convert.ToInt32(this.redOffset.Value), Convert.ToInt32(this.greenOffset.Value), Convert.ToInt32(this.blueOffset.Value)))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (offset.Red == 0 && offset.Green == 0 && offset.Blue == 0) //Use optimize offset
+            {
+                if (mosaic.IsSimilarColor(dot, color, optimizeOffset(color.Red), optimizeOffset(color.Green), optimizeOffset(color.Blue)))
                 {
                     return true;
                 }
             }
-            else
+            else if (mosaic.IsSimilarColor(dot, color, offset.Red, offset.Green, offset.Blue))
             {
-                if (mosaic.IsSimilarColor(dot, color, this.redCb.Checked ? Convert.ToInt32(this.redOffset.Value) : 0, this.greenCb.Checked ? Convert.ToInt32(this.redOffset.Value) : 0, this.blueCb.Checked ? Convert.ToInt32(this.redOffset.Value) : 0))
-                // if (!mosaic.IsSimilarColor(dot, color, Convert.ToInt32(this.redOffset.Value), Convert.ToInt32(this.greenOffset.Value), Convert.ToInt32(this.blueOffset.Value)))
-                {
-                    return true;
-                }
+                return true;
             }
             return false;
         }
 
-     }
+        private int optimizeOffset(int colorValue)
+        {
+            return colorValue * 2 /10 + 5;
+        }
+
+        private void OffsetMosaic_DoubleClick(object sender, EventArgs e)
+        {
+            PictureBox picBox = (PictureBox)sender;
+            this.MosaicImage.Image = picBox.Image;
+        }
+
+        private void MosaicAllBtn_Click(object sender, EventArgs e)
+        {
+            long checkPoint = DateTime.Now.Ticks;
+            //Small offset mosaic
+            var mosaics = CreateMosaic(new RGBColor(Convert.ToInt32(this.redOffset.Value), Convert.ToInt32(this.greenOffset.Value), Convert.ToInt32(this.blueOffset.Value)), false);
+            ShowMosaicInPictureBox(this.smallOffsetMosaic, mosaics);
+            //Big offset mosaic
+            mosaics = CreateMosaic(new RGBColor(Convert.ToInt32(this.redOffset.Value * this.amplify.Value), Convert.ToInt32(this.greenOffset.Value * this.amplify.Value), Convert.ToInt32(this.blueOffset.Value * this.amplify.Value)), false);
+            ShowMosaicInPictureBox(this.bigOffsetMasaic, mosaics);
+            //Optimize offset mosaic
+            mosaics = CreateMosaic(new RGBColor(0,0,0), false);
+            ShowMosaicInPictureBox(this.optimizeOffsetMosaic, mosaics);
+            //Small grey offset mosaic
+            mosaics = CreateMosaic(new RGBColor(Convert.ToInt32(this.greyOffset.Value), Convert.ToInt32(this.greyOffset.Value), Convert.ToInt32(this.greyOffset.Value)), false);
+            ShowMosaicInPictureBox(this.greySmallOffsetMosaic, mosaics);
+            //Big grey offset mosaic
+            mosaics = CreateMosaic(new RGBColor(Convert.ToInt32(this.greyOffset.Value * this.amplify.Value), Convert.ToInt32(this.greyOffset.Value * this.amplify.Value), Convert.ToInt32(this.greyOffset.Value * this.amplify.Value)), false);
+            ShowMosaicInPictureBox(this.greyBigOffsetMosaic, mosaics);
+            //Optimize grey offset mosaic
+            mosaics = CreateMosaic(new RGBColor(0, 0, 0), false);
+            ShowMosaicInPictureBox(this.greyOptimizeOffsetMosaic, mosaics);
+            this.MessageTb.Text = $"It took {DateTime.Now.Ticks - checkPoint}";
+        }
+
+        private void ShowMosaicInPictureBox(PictureBox picBox, List<Mosaic> mosaics)
+        {
+            //Form entire mosaic picture
+            Bitmap bitmap = null;
+            if (this.showSourceImageCb.Checked)
+            {
+                bitmap = new Bitmap(this.sourceImage.Image);
+            }
+            else
+            {
+                bitmap = new Bitmap(this.sourceImage.Image.Width, this.sourceImage.Image.Height);
+            }
+            foreach (Mosaic mosaic in mosaics)
+            {
+                if (mosaic.Dots.Count < 101) continue;
+                foreach (Dot dot in mosaic.Dots)
+                {
+                    Color color = Color.FromArgb(0, 0, 0);// mosaic.Color.Red, mosaic.Color.Green, mosaic.Color.Blue);
+                    bitmap.SetPixel(dot.X, dot.Y, color);
+                }
+              }
+            //Display mosaic picture 
+            picBox.Image = bitmap;
+        }
+
+        private List<Mosaic> CreateMosaic(RGBColor offset, bool toGrey)
+        { 
+            Picture pic = LoadPicture(new Bitmap(this.sourceImage.Image), toGrey);
+            var mosaics = new List<Mosaic>();
+            for (int x = 1; x < pic.Width; x++)
+                for (int y = 1; y < pic.Height; y++)
+                {
+                    Dot dot = new Dot(x, y);
+                    if (pic.IsUnscanned(dot))
+                    {
+                        Queue<Dot> queue = new Queue<Dot>();
+                        queue.Enqueue(dot);
+                        var mosaic = new Mosaic(dot, pic.GetColor(dot));
+                        pic.GetPixel(dot).Scanned = true;
+                        ScanLiner(pic, mosaic, queue, offset);
+                        mosaics.Add(mosaic);
+                    }
+                }
+            return mosaics;
+        }
+    }
 }
