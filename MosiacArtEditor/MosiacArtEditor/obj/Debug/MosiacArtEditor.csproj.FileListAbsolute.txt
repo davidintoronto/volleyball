@@ -18,3 +18,13 @@ D:\Users\Zhao\Documents\GitHub\volleyball\MosiacArtEditor\MosiacArtEditor\obj\De
 D:\Users\Zhao\Documents\GitHub\volleyball\MosiacArtEditor\MosiacArtEditor\obj\Debug\MosiacArtEditor.csproj.CoreCompileInputs.cache
 D:\Users\Zhao\Documents\GitHub\volleyball\MosiacArtEditor\MosiacArtEditor\obj\Debug\MosiacArtEditor.exe
 D:\Users\Zhao\Documents\GitHub\volleyball\MosiacArtEditor\MosiacArtEditor\obj\Debug\MosiacArtEditor.pdb
+D:\Users\david\Documents\GitHub\volleyball\MosiacArtEditor\MosiacArtEditor\bin\Debug\MosiacArtEditor.exe.config
+D:\Users\david\Documents\GitHub\volleyball\MosiacArtEditor\MosiacArtEditor\bin\Debug\MosiacArtEditor.exe
+D:\Users\david\Documents\GitHub\volleyball\MosiacArtEditor\MosiacArtEditor\bin\Debug\MosiacArtEditor.pdb
+D:\Users\david\Documents\GitHub\volleyball\MosiacArtEditor\MosiacArtEditor\obj\Debug\MosiacArtEditor.csprojAssemblyReference.cache
+D:\Users\david\Documents\GitHub\volleyball\MosiacArtEditor\MosiacArtEditor\obj\Debug\MosiacArtEditor.Properties.Resources.resources
+D:\Users\david\Documents\GitHub\volleyball\MosiacArtEditor\MosiacArtEditor\obj\Debug\MosiacArtEditor.MosaicWorkshops.resources
+D:\Users\david\Documents\GitHub\volleyball\MosiacArtEditor\MosiacArtEditor\obj\Debug\MosiacArtEditor.csproj.GenerateResource.cache
+D:\Users\david\Documents\GitHub\volleyball\MosiacArtEditor\MosiacArtEditor\obj\Debug\MosiacArtEditor.csproj.CoreCompileInputs.cache
+D:\Users\david\Documents\GitHub\volleyball\MosiacArtEditor\MosiacArtEditor\obj\Debug\MosiacArtEditor.exe
+D:\Users\david\Documents\GitHub\volleyball\MosiacArtEditor\MosiacArtEditor\obj\Debug\MosiacArtEditor.pdb

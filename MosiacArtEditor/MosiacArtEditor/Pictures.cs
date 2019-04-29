@@ -158,7 +158,23 @@ namespace MosiacArtEditor
         {
             return new Dot(X + 1, Y);
         }
-    }
+       public Dot GetUpRightDot()
+        {
+            return new Dot(X + 1, Y - 1);
+        }
+        public Dot GetUpLeftDot()
+        {
+            return new Dot(X -1, Y - 1);
+        }
+        public Dot GetDownLeftDot()
+        {
+            return new Dot(X - 1, Y + 1);
+        }
+        public Dot GetDownRightDot()
+        {
+            return new Dot(X+1, Y + 1);
+        }
+     }
 
     //Pixel in picture
     public class Pixel
