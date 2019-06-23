@@ -11,6 +11,8 @@ namespace VballManager
     {
          protected void Page_Load(object sender, EventArgs e)
         {
+            this.Page.Title = Manager.Season + Page.Title;
+            this.StatTable.Caption = Manager.Season + this.StatTable.Caption;
             IEnumerable<Player> playerQuery = Manager.Players.OrderBy(player => player.Name);
             foreach (Player player in playerQuery)
             {
@@ -126,7 +128,7 @@ namespace VballManager
                 {
                     foreach (Game game in pool.Games)
                     {
-                        if (game.Date < DateTime.Today && (game.AllPlayers.Items.Exists(attendee => attendee.PlayerId == player.Id && attendee.Status == InOutNoshow.In) || //
+                        if (game.Date < DateTime.Today && (//game.AllPlayers.Items.Exists(attendee => attendee.PlayerId == player.Id && attendee.Status == InOutNoshow.In) || //
                             Manager.FindSameDayPool(pool).FindGameByDate(game.Date).AllPlayers.Items.Exists(attendee => attendee.PlayerId == player.Id && attendee.Status == InOutNoshow.In)))
                         {
                             playedCount++;

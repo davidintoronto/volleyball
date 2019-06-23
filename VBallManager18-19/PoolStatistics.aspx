@@ -1,4 +1,4 @@
-﻿<%@ Page Title="2017-2018 Pool Statistics" Language="C#" MasterPageFile="~/Mobile.Master" AutoEventWireup="true" CodeBehind="PoolStatistics.aspx.cs" Inherits="VballManager.PoolStatistics" %>
+﻿<%@ Page Title=" Pool Statistics" Language="C#" MasterPageFile="~/Mobile.Master" AutoEventWireup="true" CodeBehind="PoolStatistics.aspx.cs" Inherits="VballManager.PoolStatistics" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
          <asp:Panel ID="PoolStatPanel" runat="server">

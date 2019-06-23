@@ -59,7 +59,8 @@ namespace VballManager
                     TableCell cell = new TableCell();
                     HyperLink link = new HyperLink();
                     link.Text = pool.DayOfWeek.ToString() + " Pool " + pool.Name;
-                    link.NavigateUrl = Constants.RESERVE_PAGE + "?Pool=" + pool.Name;
+                    //link.NavigateUrl = Constants.RESERVE_PAGE + "?Pool=" + pool.Name;
+                    link.NavigateUrl = Constants.PRE_REGISTER_LINK_PAGE + "?Pool=" + pool.Name;
                     cell.Controls.Add(link);
                     cell.HorizontalAlign = HorizontalAlign.Center;
                     row.Cells.Add(cell);

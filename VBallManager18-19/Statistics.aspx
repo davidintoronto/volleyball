@@ -5,7 +5,7 @@
     </asp:ScriptManager>
     <asp:Label ID="L1" runat="server" Text="" />
          <asp:Panel ID="StatPanel" runat="server">
-            <asp:Table ID="StatTable" runat="server"  Style="width: 100%;  font-size: 2em;" Caption="2017-2018 Statistics"
+            <asp:Table ID="StatTable" runat="server"  Style="width: 100%;  font-size: 2em;" Caption=" Statistics"
                 Font-Bold="True" BackColor="#FAE0DC"> 
              <asp:TableHeaderRow ID="StatTableHeaderRow" HorizontalAlign="Left" BackColor="#B3AB4D">
                 <asp:TableHeaderCell ID="TableHeaderCell9" Text="" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>

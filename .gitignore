@@ -30,3 +30,6 @@ Wechat-Notifier/Wechat-Notifier/bin/
 *.dll
 Wechat-Notifier/Wechat-Notifier/obj/
 *.dll
+*.lock
+*.ide
+*.data

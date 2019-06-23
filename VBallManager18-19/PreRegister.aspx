@@ -1,4 +1,4 @@
-﻿<%@ Page Title="2017-2018 Pre-Register" Language="C#" MasterPageFile="~/Mobile.Master" AutoEventWireup="true" CodeBehind="PreRegister.aspx.cs" Inherits="VballManager.PreRegister" %>
+﻿<%@ Page Title=" Pre-Register" Language="C#" MasterPageFile="~/Mobile.Master" AutoEventWireup="true" CodeBehind="PreRegister.aspx.cs" Inherits="VballManager.PreRegister" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server">
@@ -33,12 +33,12 @@
         </div>
     </asp:Panel>
         <asp:Panel ID="SurveyPanel" runat="server">
-            <asp:Table ID="SurveyTable" runat="server"  Style="width: 100%;  font-size: 5em;" Caption="2016-2017 Member Pre-registration (*)"
+            <asp:Table ID="SurveyTable" runat="server"  Style="width: 100%;  font-size: 5em;" Caption=" Member Pre-registration (*)"
                 Font-Bold="True" BackColor="#FAE0DC"> 
              <asp:TableHeaderRow ID="TableHeaderRow" HorizontalAlign="Left" BackColor="#B3AB4D">
                 <asp:TableHeaderCell ID="TableHeaderCell9" Text="" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
                 <asp:TableHeaderCell ID="TableHeaderCell6" Text="Player Name" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
-                <asp:TableHeaderCell ID="PlayedCountCell" Text="Played" HorizontalAlign="Left" runat="server"></asp:TableHeaderCell>
+                <asp:TableHeaderCell ID="PlayedCountCell" Text="Played" HorizontalAlign="Left" runat="server" Visible="false"></asp:TableHeaderCell>
                 <asp:TableHeaderCell ID="DayHeaderCell" Text="Member" HorizontalAlign="Left"></asp:TableHeaderCell>
              </asp:TableHeaderRow>
             </asp:Table>

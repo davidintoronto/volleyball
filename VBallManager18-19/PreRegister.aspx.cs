@@ -12,6 +12,9 @@ namespace VballManager
         private int count = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
+            int year = DateTime.Today.Year;
+            string newSeason = string.Format("{0}-{1}", year, year + 1);
+            this.Page.Title = string.Format("{0}{1}", newSeason, this.Page.Title);
             String poolId = this.Request.Params[Constants.POOL_ID];
             String poolName = this.Request.Params[Constants.POOL];
 
@@ -80,10 +83,11 @@ namespace VballManager
             foreach (Person attendee in sortedAttendees)
             {
                 Player player = Manager.FindPlayerById(attendee.PlayerId);
-                if (!player.IsActive || (typeof(Dropin).IsInstanceOfType(attendee) && ((Dropin)attendee).IsCoop)) continue;
+                if (!player.IsActive || (typeof(Dropin).IsInstanceOfType(attendee) && ((Dropin)attendee).IsCoop) || player.Role == (int)Roles.Guest) continue;
                 FillPreRegister(order++, attendee);
             }
-         }
+            this.SurveyTable.Caption = newSeason + " Pre-register Membership (" + count + ")";
+        }
 
         private void SetPlayedCount(Person attendee, DayOfWeek day)
         {
@@ -130,13 +134,12 @@ namespace VballManager
  
             row.Cells.Add(cell);
              //PlayerCount
-            cell = new TableCell();
-            cell.Text = attendee.PlayedCount.ToString(); ;
-            row.Cells.Add(cell);
+            //cell = new TableCell();
+            //cell.Text = attendee.PlayedCount.ToString(); ;
+            //row.Cells.Add(cell);
              //Membership
             row.Cells.Add(createCheckBoxCell(player.Id, attendee.PreRegistered));
            this.SurveyTable.Rows.Add(row);
-            this.SurveyTable.Caption = "2017-2018 Pre-register Membership (" + count + ")";
         }
         private TableCell createCheckBoxCell(String id, bool status)
         {

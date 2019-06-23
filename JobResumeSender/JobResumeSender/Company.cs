@@ -9,12 +9,15 @@ namespace JobResumeSender
     public class Companies
     {
         private List<Company> companyList = new List<Company>();
+        private List<ComEmail> comEmails = new List<ComEmail>();
 
         public List<Company> CompanyList
         {
             get { return companyList; }
             set { companyList = value; }
         }
+
+        public List<ComEmail> ComEmails { get => comEmails; set => comEmails = value; }
 
         public bool LinkUrlExist(String linkUrl)
         {
@@ -25,6 +28,17 @@ namespace JobResumeSender
             return companyList.Exists(c => c.Url == url);
         }
 
+    }
+
+    public class ComEmail
+    {
+        private String email;
+        private bool selected;
+        private bool sent;
+
+        public string Email { get => email; set => email = value; }
+        public bool Selected { get => selected; set => selected = value; }
+        public bool Sent { get => sent; set => sent = value; }
     }
 
     public class Company
