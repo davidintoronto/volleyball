@@ -15,6 +15,7 @@ namespace VballManager
             ((TextBox)Master.FindControl("PasscodeTb")).Visible = false;
             ((Label)Master.FindControl("TitleLabel")).Text = "Financial Reports";
             Application[Constants.DATA] = DataAccess.LoadReservation();
+            this.FeeReportTable.Caption = Manager.Season + this.FeeReportTable.Caption;
             GenerationFeeReport();
         }
 
@@ -111,7 +112,7 @@ namespace VballManager
             balanceRow.Cells.Add(balanceCell);
             
             //this.FeeReportTable.Rows.AddAt(0, balanceRow);
-            this.FeeReportTable.Caption = "2017-2018 Financial Reports - Balance : $" + balance.ToString();
+            this.FeeReportTable.Caption = Manager.Season + " Financial Reports - Balance : $" + balance.ToString();
   
         }
 

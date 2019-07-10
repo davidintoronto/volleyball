@@ -29,3 +29,6 @@ D:\Users\david\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\obj\D
 D:\Users\david\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\obj\Debug\JobResumeSender.csproj.CoreCompileInputs.cache
 D:\Users\david\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\obj\Debug\JobResumeSender.exe
 D:\Users\david\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\obj\Debug\JobResumeSender.pdb
+D:\Users\david\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\obj\Debug\JobResumeSender.CanBusiness.resources
+D:\Users\david\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\obj\Debug\JobResumeSender.TorontoCA.resources
+D:\Users\david\Documents\GitHub\volleyball\JobResumeSender\JobResumeSender\obj\Debug\JobResumeSender.JP.resources

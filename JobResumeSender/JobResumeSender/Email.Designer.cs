@@ -37,6 +37,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.AttachedFile = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.replyToTb = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.ConvertEmailListBtn = new System.Windows.Forms.Button();
             this.TestBtn = new System.Windows.Forms.Button();
             this.TestEmailTb = new System.Windows.Forms.TextBox();
@@ -51,8 +53,6 @@
             this.EmailListClb = new System.Windows.Forms.CheckedListBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.LogTb = new System.Windows.Forms.TextBox();
-            this.replyToTb = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -144,6 +144,23 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1456, 233);
             this.panel1.TabIndex = 0;
+            // 
+            // replyToTb
+            // 
+            this.replyToTb.Location = new System.Drawing.Point(448, 16);
+            this.replyToTb.Name = "replyToTb";
+            this.replyToTb.Size = new System.Drawing.Size(129, 20);
+            this.replyToTb.TabIndex = 19;
+            this.replyToTb.Text = "tn131191@gmail.com";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(401, 19);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(46, 13);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Reply to";
             // 
             // ConvertEmailListBtn
             // 
@@ -276,23 +293,6 @@
             this.LogTb.Name = "LogTb";
             this.LogTb.Size = new System.Drawing.Size(240, 594);
             this.LogTb.TabIndex = 15;
-            // 
-            // replyToTb
-            // 
-            this.replyToTb.Location = new System.Drawing.Point(448, 16);
-            this.replyToTb.Name = "replyToTb";
-            this.replyToTb.Size = new System.Drawing.Size(129, 20);
-            this.replyToTb.TabIndex = 19;
-            this.replyToTb.Text = "tn131191@gmail.com";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(401, 19);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(46, 13);
-            this.label5.TabIndex = 18;
-            this.label5.Text = "Reply to";
             // 
             // Email
             // 

@@ -27,6 +27,10 @@ namespace JobResumeSender
         {
             return companyList.Exists(c => c.Url == url);
         }
+        public bool Exist(String name)
+        {
+            return companyList.Exists(c => c.Name == name);
+        }
 
     }
 
@@ -70,6 +74,13 @@ namespace JobResumeSender
         {
             get { return emails; }
             set { emails = value; }
+        }
+        private bool emailSearched;
+
+        public bool EmailSearched
+        {
+            get { return emailSearched; }
+            set { emailSearched = value; }
         }
         private bool searched;
 

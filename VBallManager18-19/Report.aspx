@@ -8,7 +8,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
          <asp:Panel ID="FeeReportPanel" runat="server">
        <asp:Table Width="100%" ID="FeeReportTable" runat="server" 
-                 Caption="2017-2018 Financial Reports" BackColor="#DFE3FD" Font-Bold="True" 
+                 Caption=" Financial Reports" BackColor="#DFE3FD" Font-Bold="True" 
                  Font-Size="Large">
             <asp:TableHeaderRow ID="FeeReportHeaderRow" HorizontalAlign="Left" BackColor="#B3AB4D">
                 <asp:TableHeaderCell Text="Date" HorizontalAlign="Left"></asp:TableHeaderCell>

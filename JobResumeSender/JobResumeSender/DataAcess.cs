@@ -46,5 +46,13 @@ namespace JobResumeSender
             }
             return new Companies();
         }
+
+        public static Result GetResult(String resp)
+        {
+            var jss = new JavaScriptSerializer();
+             Result result = jss.Deserialize<Result>(resp);
+            //
+            return result;
+        }
     }
 }

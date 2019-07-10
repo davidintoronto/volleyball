@@ -48,6 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Company.cs" />
+    <Compile Include="Console.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Console.Designer.cs">
+      <DependentUpon>Console.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataAcess.cs" />
     <Compile Include="Email.cs">
       <SubType>Form</SubType>
@@ -55,19 +61,41 @@
     <Compile Include="Email.Designer.cs">
       <DependentUpon>Email.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="GoogleSearch.cs" />
+    <Compile Include="JP.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="JP.Designer.cs">
+      <DependentUpon>JP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TorontoCA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TorontoCA.Designer.cs">
+      <DependentUpon>TorontoCA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Canbusiness.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Canbusiness.Designer.cs">
+      <DependentUpon>Canbusiness.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Console.resx">
+      <DependentUpon>Console.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Email.resx">
       <DependentUpon>Email.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="JP.resx">
+      <DependentUpon>JP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TorontoCA.resx">
+      <DependentUpon>TorontoCA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Canbusiness.resx">
+      <DependentUpon>Canbusiness.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

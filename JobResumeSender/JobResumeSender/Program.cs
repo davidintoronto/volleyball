@@ -16,8 +16,9 @@ namespace JobResumeSender
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Console());
             //Application.Run(new Console());
-            Application.Run(new Email());
+            //Application.Run(new Email());
         }
     }
 }
