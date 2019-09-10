@@ -1,0 +1,9 @@
+D:\Users\david\Documents\GitHub\volleyball\VBallManager18-19\obj\Release\VballManager.csproj.CoreCompileInputs.cache
+D:\Users\david\Documents\GitHub\volleyball\VBallManager18-19\bin\VballManager.dll.config
+D:\Users\david\Documents\GitHub\volleyball\VBallManager18-19\bin\VballManager.dll
+D:\Users\david\Documents\GitHub\volleyball\VBallManager18-19\bin\VballManager.pdb
+D:\Users\david\Documents\GitHub\volleyball\VBallManager18-19\bin\Microsoft.Web.XmlTransform.dll
+D:\Users\david\Documents\GitHub\volleyball\VBallManager18-19\bin\NuGet.Core.dll
+D:\Users\david\Documents\GitHub\volleyball\VBallManager18-19\obj\Release\VballManager.csproj.CopyComplete
+D:\Users\david\Documents\GitHub\volleyball\VBallManager18-19\obj\Release\VballManager.dll
+D:\Users\david\Documents\GitHub\volleyball\VBallManager18-19\obj\Release\VballManager.pdb
