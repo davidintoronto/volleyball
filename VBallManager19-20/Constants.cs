@@ -56,5 +56,7 @@ namespace VballManager
         public const String RESERVE_PAGE = "Reserve.aspx";
         public const String HOME_PC_IP = "HomePcIp";
         public const String HOUR = "Hour";
+        public const String THURSDAY_NOTIFY_MESSAGE = "Please note that our Thursday volleyball is from 19:30 to 21:30 at École secondaire Étienne-Brûlé, located at 300 Banbury Rd, North York!";
+        public const String THURSDAY_GAME_TIME = "19:30 - 21:30";  
     }
 }

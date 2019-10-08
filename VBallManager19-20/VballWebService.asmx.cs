@@ -129,9 +129,13 @@ namespace VballManager
                      int dropinPlayers = pool.GetNumberOfDropins(comingGameDate);
                      int availableDropinSpots = pool.MaximumPlayerNumber - memberPlayers - dropinPlayers;
                      if (availableDropinSpots < 0) availableDropinSpots = 0;
-                     String message = pool.DayOfWeek.ToString() + " volleyball reservation starts now for " + publishTo + ". Currently, we have " + availableDropinSpots + (availableDropinSpots<2 ? " dropin spot" : " dropin spots") + " available in pool "+ pool.Name +". Click the link to reserve. " + reservationUrl;
+                     String message = comingGameDate.DayOfWeek.ToString() + " volleyball reservation starts now for " + publishTo + ". Currently, we have " + availableDropinSpots + (availableDropinSpots<2 ? " dropin spot" : " dropin spots") + " available in pool "+ pool.Name +". Click the link to reserve. " + reservationUrl;
                      Manager.WechatNotifier.AddNotifyWechatMessage(pool, message);
-                     Manager.WechatNotifier.AddNotifyWechatMessage(pool, "{ReservationLink}");
+                    if (comingGameDate.DayOfWeek == DayOfWeek.Thursday)
+                    {
+                        Manager.WechatNotifier.AddNotifyWechatMessage(pool, Constants.THURSDAY_NOTIFY_MESSAGE);
+                    }
+                    Manager.WechatNotifier.AddNotifyWechatMessage(pool, "{ReservationLink}");
                      foreach (Player player in notinGroupPlayers)
                      {
                          Manager.WechatNotifier.AddNotifyWechatMessage(player, message);
@@ -157,8 +161,13 @@ namespace VballManager
                         message = String.Format("Hi, all. Currently we have {0} players for tonight volleyball, {1} people in waiting list. If you are holding a spot but cannot make it , please cancel your spot, thanks. ", game.NumberOfReservedPlayers, game.WaitingList.Count);
                     }
                     int availableSpots = pool.MaximumPlayerNumber - game.NumberOfReservedPlayers;
+                    if (availableSpots < 0) availableSpots = 0;
                     message = message + availableSpots + (availableSpots > 1 ? " spots are" : " spot is") + " available. Click the link to reserve. " + reservationUrl;
                     Manager.WechatNotifier.AddNotifyWechatMessage(pool, message);
+                    if (comingGameDate.DayOfWeek == DayOfWeek.Thursday)
+                    {
+                        Manager.WechatNotifier.AddNotifyWechatMessage(pool, Constants.THURSDAY_NOTIFY_MESSAGE);
+                    }
                     DataAccess.Save(Manager);
                 }
             }
@@ -176,7 +185,7 @@ namespace VballManager
         private DateTime FindComingGameDate(Pool pool)
         {
             DateTime gameDate = Manager.EastDateTimeToday;
-            Game targetGame = pool.Games.OrderBy(game => game.Date).ToList<Game>().Find(game => game.Date >= gameDate);
+            Game targetGame = pool.Games.OrderBy(game => game.Date).ToList<Game>().Find(game => game.Date >= gameDate && !game.IsCancelled);
             if (targetGame != null)
             {
                 return targetGame.Date;

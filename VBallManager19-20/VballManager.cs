@@ -462,7 +462,7 @@ namespace VballManager
             String message = null;
             int numberOfReservedPlayerInTargetPool = targetPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
 
-            String poolAndGameDate = " of the " + targetPool.DayOfWeek + " volleyball on " + gameDate.ToString("MM/dd/yyyy") +" in pool " + targetPool.Name + "." ;
+            String poolAndGameDate = " of the " + gameDate.DayOfWeek + " volleyball on " + gameDate.ToString("MM/dd/yyyy") +" in pool " + targetPool.Name + "." ;
             String playerNumber = " Total player number in pool : " + numberOfReservedPlayerInTargetPool;
             if (result == Constants.RESERVED || result == Constants.CANCELLED)
             {
@@ -513,7 +513,7 @@ namespace VballManager
             }
             else if (result == Constants.MOVED)
             {
-                message = result.ToString() + " from pool " + originalPool.Name + " to pool " + targetPool.Name + " for the " + targetPool.DayOfWeek + " volleyball on " + gameDate.ToString("MM/dd/yyyy");
+                message = result.ToString() + " from pool " + originalPool.Name + " to pool " + targetPool.Name + " for the " + gameDate.DayOfWeek + " volleyball on " + gameDate.ToString("MM/dd/yyyy");
                 WechatNotifier.AddNotifyWechatMessage(player, message);
                 String wechatMessage = message + ". Total player number in pool " + originalPool.Name + ": " + originalPool.FindGameByDate(gameDate).NumberOfReservedPlayers;
                 Game game = originalPool.FindGameByDate(gameDate);

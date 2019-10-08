@@ -459,15 +459,16 @@
                 </tr>
                 <tr>
                     <td>
-                        &nbsp;</td>
-                    <td>
-                        &nbsp;</td>
-                </tr>
-                <tr>
-                    <td align="right">
                         Date</td>
                     <td>
                         <asp:TextBox ID="GameDateTb" runat="server" Height="65px" Width="149px"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        &nbsp;</td>
+                    <td align="center">
+                        <asp:CheckBox ID="gameCancelledCb" runat="server" Text="Cancelled" />
                     </td>
                 </tr>
                 <tr>

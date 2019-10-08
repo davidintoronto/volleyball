@@ -33,3 +33,10 @@ Wechat-Notifier/Wechat-Notifier/obj/
 *.lock
 *.ide
 *.data
+*.ide-shm
+*.ide-wal
+*.ide-wal
+*.ide-wal
+VBallManager19-20/App_Data/Reservation.data.2019-09-30
+VBallManager19-20/App_Data/Reservation.data.2019-10-08
+VBallManager19-20/App_Data/Reservation.data.2019-09-10

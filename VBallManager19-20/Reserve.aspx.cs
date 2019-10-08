@@ -91,12 +91,11 @@ namespace VballManager
            //Fill message board
             if (!String.IsNullOrEmpty(CurrentPool.MessageBoard))
             {
-                this.MessageTextTable.Visible = true;
-                TableCell messageCell = new TableCell();
-                messageCell.Text = CurrentPool.MessageBoard;
-                TableRow messageRow = new TableRow();
-                messageRow.Cells.Add(messageCell);
-                this.MessageTextTable.Rows.Add(messageRow);
+                ShowBoardMessage(CurrentPool.MessageBoard);
+            }
+            else if (TargetGameDate.DayOfWeek == DayOfWeek.Thursday)
+            {
+                ShowBoardMessage(Constants.THURSDAY_NOTIFY_MESSAGE);
             }
             else
             {
@@ -139,6 +138,16 @@ namespace VballManager
             this.AddDropinImageBtn.Click += new ImageClickEventHandler(AddDropinImageBtn_Click);
             this.CreateNewPlayerBtn.Click += new ImageClickEventHandler(CreateNewPlayerBtn_Click);
             //this.PopupModal.Hide();
+        }
+
+        private void ShowBoardMessage(String message)
+        {
+            this.MessageTextTable.Visible = true;
+            TableCell messageCell = new TableCell();
+            messageCell.Text = message;
+            TableRow messageRow = new TableRow();
+            messageRow.Cells.Add(messageCell);
+            this.MessageTextTable.Rows.Add(messageRow);
         }
 
         #region Navigation
@@ -246,7 +255,10 @@ namespace VballManager
             int dropinPlayers = pool.GetNumberOfDropins(gameDate);
             int span = 7;
             FillGameInfoRow("Date", 1, ((DateTime)Session[Constants.GAME_DATE]).ToString("ddd, MMM d, yyyy"), span);
-            FillGameInfoRow("Time", 1, pool.GameScheduleTime, span);
+            if (gameDate.DayOfWeek == DayOfWeek.Thursday)
+                FillGameInfoRow("Time", 1, Constants.THURSDAY_GAME_TIME, span);
+            else
+                FillGameInfoRow("Time", 1, pool.GameScheduleTime, span);
             //Manager.ReCalculateFactor(pool, gameDate);
             Game game = pool.FindGameByDate(gameDate);
             if (game.Factor > 0)

@@ -263,6 +263,8 @@ namespace VballManager
           protected void GameList_SelectedIndexChanged(object sender, EventArgs e)
         {
             GameDateTb.Text = this.GameListbox.SelectedItem.Text;
+            Game game = CurrentPool.FindGameByDate(DateTime.Parse(GameListbox.SelectedItem.Text));
+            gameCancelledCb.Checked = game.IsCancelled;
         }
 
         protected void AddGameBtn_Click(object sender, EventArgs e)
@@ -340,35 +342,35 @@ namespace VballManager
 
         protected void UpdateGameBtn_Click(object sender, EventArgs e)
         {
-            if (!IsSuperAdmin() || this.GameDateTb.Text == "" || this.GameListbox.SelectedItem == null || this.GameListbox.SelectedItem.Text == this.GameDateTb.Text)
+            if (!IsSuperAdmin() || this.GameDateTb.Text == "" || this.GameListbox.SelectedItem == null)// || this.GameListbox.SelectedItem.Text == this.GameDateTb.Text)
             {
                 return;
             }
-                try
+            try
+            {
+                DateTime gameDate = DateTime.Parse(GameDateTb.Text);
+                if (this.GameListbox.SelectedItem.Text != this.GameDateTb.Text && CurrentPool.GameExists(gameDate))
                 {
-                    DateTime gameDate = DateTime.Parse(GameDateTb.Text);
-                    if (CurrentPool.GameExists(gameDate))
-                    {
-                        ClientScript.RegisterStartupScript(Page.GetType(), "msgid", "alert('Game on " + gameDate.ToShortDateString() + " is already in system!')", true);
-                        return;
-                    }
-                    Game game = CurrentPool.FindGameByDate(DateTime.Parse(GameListbox.SelectedItem.Text));
-                    if (game != null)
-                    {
-                        game.Date = gameDate;
-                    }
-                }
-                catch (Exception)
-                {
-                    ClientScript.RegisterStartupScript(Page.GetType(), "msgid", "alert('Wrong game date format!  Fix it and try again')", true);
+                    ClientScript.RegisterStartupScript(Page.GetType(), "msgid", "alert('Game on " + gameDate.ToShortDateString() + " is already in system!')", true);
                     return;
                 }
-                this.GameListbox.DataSource = CurrentPool.Games;
-                this.GameListbox.DataBind();
-                DataAccess.Save(Manager);
-                SetNextGameDate();
-               // Response.Redirect(Request.RawUrl);
-
+                Game game = CurrentPool.FindGameByDate(DateTime.Parse(GameListbox.SelectedItem.Text));
+                if (game != null)
+                {
+                    game.Date = gameDate;
+                    game.IsCancelled = this.gameCancelledCb.Checked;
+                }
+            }
+            catch (Exception)
+            {
+                ClientScript.RegisterStartupScript(Page.GetType(), "msgid", "alert('Wrong game date format!  Fix it and try again')", true);
+                return;
+            }
+            this.GameListbox.DataSource = CurrentPool.Games;
+            this.GameListbox.DataBind();
+            DataAccess.Save(Manager);
+            SetNextGameDate();
+            // Response.Redirect(Request.RawUrl);
         }
 
         protected void DeleteGameBtn_Click(object sender, EventArgs e)

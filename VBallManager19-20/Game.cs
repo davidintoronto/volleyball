@@ -12,6 +12,7 @@ namespace VballManager
         private VList<Attendee> members = new VList<Attendee>();
         private VList<Pickup> dropins = new VList<Pickup>();
         private VList<Waiting> waitingList = new VList<Waiting>();
+        private bool isCancelled = false;
 
         public Game()
         { }
@@ -66,7 +67,9 @@ namespace VballManager
         {
             get { return AllPlayers.Items.FindAll(player => player.Status == InOutNoshow.In).Count; }
         }
-     }
+
+        public bool IsCancelled { get => isCancelled; set => isCancelled = value; }
+    }
 
     public class Payment : Identifier
     {
