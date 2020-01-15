@@ -12,7 +12,6 @@ D:\Users\david\Documents\GitHub\volleyball\VBallManager19-20\bin\VballManager.dl
 D:\Users\david\Documents\GitHub\volleyball\VBallManager19-20\bin\VballManager.pdb
 D:\Users\david\Documents\GitHub\volleyball\VBallManager19-20\bin\Microsoft.Web.XmlTransform.dll
 D:\Users\david\Documents\GitHub\volleyball\VBallManager19-20\bin\NuGet.Core.dll
-D:\Users\david\Documents\GitHub\volleyball\VBallManager19-20\obj\Release\VballManager.csproj.CoreCompileInputs.cache
 D:\Users\david\Documents\GitHub\volleyball\VBallManager19-20\obj\Release\VballManager.csproj.CopyComplete
 D:\Users\david\Documents\GitHub\volleyball\VBallManager19-20\obj\Release\VballManager.dll
 D:\Users\david\Documents\GitHub\volleyball\VBallManager19-20\obj\Release\VballManager.pdb

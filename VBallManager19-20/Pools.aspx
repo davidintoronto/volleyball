@@ -461,7 +461,14 @@
                     <td>
                         Date</td>
                     <td>
-                        <asp:TextBox ID="GameDateTb" runat="server" Height="65px" Width="149px"></asp:TextBox>
+                        <asp:TextBox ID="GameDateTb" runat="server" Height="31px" Width="211px"></asp:TextBox>
+                    </td>
+                </tr>
+               <tr>
+                    <td align="right">
+                        &nbsp;</td>
+                    <td align="center">
+                        <asp:CheckBox ID="DropinRestricted" runat="server" Text="No Dropin" />
                     </td>
                 </tr>
                 <tr>

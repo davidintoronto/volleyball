@@ -13,6 +13,7 @@ namespace VballManager
         private VList<Pickup> dropins = new VList<Pickup>();
         private VList<Waiting> waitingList = new VList<Waiting>();
         private bool isCancelled = false;
+        private bool dropinRestricted;
 
         public Game()
         { }
@@ -69,6 +70,7 @@ namespace VballManager
         }
 
         public bool IsCancelled { get => isCancelled; set => isCancelled = value; }
+        public bool DropinRestricted { get => dropinRestricted; set => dropinRestricted = value; }
     }
 
     public class Payment : Identifier

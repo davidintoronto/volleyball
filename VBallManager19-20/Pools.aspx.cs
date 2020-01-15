@@ -265,6 +265,7 @@ namespace VballManager
             GameDateTb.Text = this.GameListbox.SelectedItem.Text;
             Game game = CurrentPool.FindGameByDate(DateTime.Parse(GameListbox.SelectedItem.Text));
             gameCancelledCb.Checked = game.IsCancelled;
+            DropinRestricted.Checked = game.DropinRestricted;
         }
 
         protected void AddGameBtn_Click(object sender, EventArgs e)
@@ -359,6 +360,7 @@ namespace VballManager
                 {
                     game.Date = gameDate;
                     game.IsCancelled = this.gameCancelledCb.Checked;
+                    game.DropinRestricted = this.DropinRestricted.Checked;
                 }
             }
             catch (Exception)

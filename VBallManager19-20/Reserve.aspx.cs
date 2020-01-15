@@ -482,8 +482,13 @@ namespace VballManager
         private void FillDropinTable(Pool pool, DateTime gameDate)
         {
             //Calcuate stats for dropins
-            List<Player> players = GetDropinPlayers(pool, gameDate);
             Game game = pool.FindGameByDate(gameDate);
+            if (game.DropinRestricted)
+            {
+                DropinCandidateTable.Caption = "Dropin Restricted for this time!";
+                return;
+            }
+            List<Player> players = GetDropinPlayers(pool, gameDate);
             Dropin nextIntern = null;
             if (!pool.IsLowPool && pool.AutoCoopReserve)
             {
